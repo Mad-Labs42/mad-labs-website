@@ -9,6 +9,9 @@ build/
 out/
 public/build/
 
+# Astro
+.astro/
+
 # Environment & secrets
 .env
 .env.local
@@ -25,7 +28,6 @@ public/build/
 
 # Cloudflare
 .wrangler/
-worker/
 
 # Logs
 *.log
