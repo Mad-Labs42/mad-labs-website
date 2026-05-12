@@ -1,0 +1,157 @@
+---
+// src/layouts/BaseLayout.astro
+
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "MAD LABS computer repair and mobile IT solutions." } = Astro.props;
+const pageTitle = title === "MAD LABS" ? "MAD LABS" : `${title} — MAD LABS`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+  </head>
+
+  <body>
+    <!-- Skip to main content — momentum-accelerated for CRT intro -->
+    <a class="skip-link" href="#main-content" data-skip-link> Skip to main content </a>
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} MAD LABS. All rights reserved.</p>
+    </footer>
+
+    <!-- Back-to-top button (CRT-themed) -->
+    <button class="back-to-top" type="button" aria-label="Back to top" data-back-to-top>
+      <span class="back-to-top-chevron" aria-hidden="true"></span>
+    </button>
+
+    <style>
+      .skip-link {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        z-index: 100;
+        transform: translate(-50%, -100%);
+        padding: 0.6rem 1.2rem;
+        border-radius: 0 0 6px 6px;
+        background: rgba(20, 10, 32, 0.96);
+        color: rgba(246, 239, 255, 0.94);
+        font-family: "Jersey 25", "VT323", "Courier New", monospace;
+        font-size: 0.95rem;
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        text-transform: uppercase;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s ease;
+      }
+
+      .skip-link:focus {
+        transform: translate(-50%, 0);
+      }
+
+      .back-to-top {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(247, 158, 85, 0.5);
+        border-radius: 50%;
+        background: rgba(20, 10, 32, 0.88);
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(12px);
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease,
+          transform 0.3s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .back-to-top.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .back-to-top:hover {
+        box-shadow:
+          0 0 16px rgba(247, 158, 85, 0.45),
+          0 0 32px rgba(247, 158, 85, 0.18);
+      }
+
+      .back-to-top:focus-visible {
+        outline: 2px solid rgba(247, 158, 85, 0.86);
+        outline-offset: 4px;
+      }
+
+      .back-to-top-chevron {
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid rgba(247, 158, 85, 0.85);
+        border-top: 2px solid rgba(247, 158, 85, 0.85);
+        transform: rotate(-45deg) translate(1px, 2px);
+      }
+    </style>
+
+    <script>
+      const skipLink = document.querySelector<HTMLAnchorElement>("[data-skip-link]");
+      const backToTop = document.querySelector<HTMLButtonElement>("[data-back-to-top]");
+      const mainContent = document.getElementById("main-content");
+
+      if (skipLink) {
+        skipLink.addEventListener("click", (e: Event) => {
+          e.preventDefault();
+          // Dispatch to CrtHero to trigger accelerated transition
+          window.dispatchEvent(new CustomEvent("madlabs:skip-intro"));
+          // Focus main content after transition settles
+          window.setTimeout(() => {
+            mainContent?.focus();
+            // Set tabindex so main content is focusable
+            if (mainContent && mainContent.getAttribute("tabindex") === null) {
+              mainContent.setAttribute("tabindex", "-1");
+            }
+          }, 700);
+        });
+      }
+
+      if (backToTop) {
+        let visible = false;
+
+        const updateBackToTop = (): void => {
+          const shouldShow = window.scrollY > window.innerHeight;
+          if (shouldShow !== visible) {
+            visible = shouldShow;
+            backToTop.classList.toggle("is-visible", visible);
+          }
+        };
+
+        window.addEventListener("scroll", updateBackToTop, { passive: true });
+
+        backToTop.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    </script>
+  </body>
+</html>

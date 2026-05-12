@@ -1,0 +1,183 @@
+---
+const navItems = [
+  { label: "Services", href: "/services/" },
+  { label: "About", href: "/about/" },
+  { label: "Contact", href: "/contact/" },
+];
+---
+
+<nav class="crt-taskbar-nav" aria-label="Primary">
+  <ul class="crt-taskbar-list">
+    {
+      navItems.map((item) => (
+        <li class="crt-taskbar-item">
+          <a href={item.href} class="crt-taskbar-link">
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .crt-taskbar-nav {
+    width: 100%;
+  }
+
+  .crt-taskbar-list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: visible;
+    border-top: 2px solid rgba(247, 158, 85, 0.92);
+    background: transparent;
+    box-shadow:
+      0 -1px 0 rgba(255, 215, 185, 0.2),
+      0 -1px 14px rgba(247, 158, 85, 0.29),
+      0 -1px 26px rgba(247, 158, 85, 0.14);
+  }
+
+  .crt-taskbar-item {
+    flex: 1 1 0;
+    display: flex;
+    min-width: 0;
+    position: relative;
+  }
+
+  .crt-taskbar-item + .crt-taskbar-item {
+    border-left: 2px solid rgba(247, 158, 85, 0.58);
+    box-shadow:
+      -1px 0 9px rgba(247, 158, 85, 0.13),
+      -1px 0 18px rgba(247, 158, 85, 0.06);
+  }
+
+  .crt-taskbar-link {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.56rem 0.3rem;
+    position: relative;
+    color: rgba(246, 239, 255, 0.84);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(0.8rem, 1.45vw, 1.05rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.09em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: transparent;
+    text-shadow:
+      -0.32px 0 currentColor,
+      0.32px 0 currentColor,
+      0 0 10px rgba(247, 158, 85, 0.41),
+      0 0 22px rgba(247, 158, 85, 0.22);
+    -webkit-text-stroke: 0.24px currentColor;
+    transition:
+      transform 0.18s cubic-bezier(0.18, 0.84, 0.24, 1),
+      color 0.18s ease,
+      text-shadow 0.18s ease,
+      background 0.18s ease,
+      filter 0.18s ease;
+    will-change: transform;
+  }
+
+  .crt-taskbar-link::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 2px;
+    border: 1px solid rgba(247, 158, 85, 0);
+    pointer-events: none;
+    transition:
+      border-color 0.24s ease,
+      inset 0.24s ease;
+  }
+
+  .crt-taskbar-link:hover::after {
+    animation: crtLinkRipple 0.55s ease-out;
+  }
+
+  .crt-taskbar-link:active::after {
+    animation: none;
+    border-color: rgba(247, 158, 85, 0.35);
+    inset: 2px;
+  }
+
+  @keyframes crtLinkRipple {
+    0% {
+      border-color: rgba(247, 158, 85, 0.55);
+      inset: 8px;
+    }
+
+    100% {
+      border-color: rgba(247, 158, 85, 0);
+      inset: 2px;
+    }
+  }
+
+  .crt-taskbar-link:hover {
+    transform: translateY(-3px);
+    color: rgba(255, 250, 255, 0.98);
+    background: rgba(255, 255, 255, 0.025);
+    filter: brightness(1.08);
+    text-shadow:
+      -0.34px 0 currentColor,
+      0.34px 0 currentColor,
+      0 0 12px rgba(247, 158, 85, 0.5),
+      0 0 28px rgba(247, 158, 85, 0.27);
+  }
+
+  .crt-taskbar-link:focus-visible {
+    outline: none;
+    transform: translateY(-3px);
+    color: rgba(255, 250, 255, 1);
+    background: rgba(255, 255, 255, 0.045);
+    box-shadow:
+      inset 0 0 0 1px rgba(247, 158, 85, 0.42),
+      inset 0 0 12px rgba(247, 158, 85, 0.08);
+    text-shadow:
+      -0.34px 0 currentColor,
+      0.34px 0 currentColor,
+      0 0 13px rgba(247, 158, 85, 0.55),
+      0 0 30px rgba(247, 158, 85, 0.3);
+  }
+
+  .crt-taskbar-link:active {
+    transform: translateY(-1px);
+    filter: brightness(0.98);
+  }
+
+  @media (max-width: 640px) {
+    .crt-taskbar-list {
+      border-top-width: 2px;
+    }
+
+    .crt-taskbar-item + .crt-taskbar-item {
+      border-left-width: 1px;
+    }
+
+    .crt-taskbar-link {
+      min-height: 42px;
+      padding: 0.48rem 0.2rem;
+      font-size: clamp(0.74rem, 3vw, 0.9rem);
+      letter-spacing: 0.062em;
+      -webkit-text-stroke: 0.18px currentColor;
+      text-shadow:
+        -0.24px 0 currentColor,
+        0.24px 0 currentColor,
+        0 0 8px rgba(247, 158, 85, 0.4),
+        0 0 18px rgba(247, 158, 85, 0.2);
+    }
+
+    .crt-taskbar-link:hover,
+    .crt-taskbar-link:focus-visible {
+      transform: translateY(-2px);
+    }
+  }
+</style>

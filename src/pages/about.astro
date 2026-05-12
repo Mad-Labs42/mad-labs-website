@@ -1,0 +1,140 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About">
+  <section class="lab-section">
+    <div class="lab-section-inner">
+      <span class="lab-heading-accent">The Lab</span>
+      <h1 class="lab-heading" style="font-size:clamp(1.75rem,4vw,2.75rem); margin-bottom:0.75rem;">
+        About MAD LABS
+      </h1>
+      <p
+        style="font-size:clamp(1rem,2vw,1.2rem); color:var(--lab-text); line-height:1.6; max-width:600px;"
+      >
+        MAD LABS is an independent computer repair and mobile IT diagnostics lab. We fix devices
+        that others have given up on — with transparency, skill, and a genuine love for the work.
+      </p>
+    </div>
+  </section>
+
+  <section class="lab-section-alt">
+    <div class="lab-section-inner">
+      <span class="lab-heading-accent">Origin</span>
+      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:1rem;">
+        The Story
+      </h2>
+      <p class="lab-text" style="line-height:1.7; margin-bottom:1rem;">
+        MAD LABS started the same way most good repair shops do: a pile of broken laptops, a deep
+        curiosity about how things work, and frustration with an industry that often recommends
+        replacement over repair. What began as fixing friends' and family's computers grew into a
+        full diagnostic lab serving home users, small businesses, and creative professionals.
+      </p>
+      <p class="lab-text" style="line-height:1.7;">
+        Every device tells a story. A photographer's workstation with years of edits. A small
+        business's accounting machine running on borrowed time. A student's only laptop. We treat
+        each one with the same care: find the real problem, explain it clearly, and fix it right.
+      </p>
+    </div>
+  </section>
+
+  <section class="lab-section">
+    <div class="lab-section-inner">
+      <span class="lab-heading-accent">Approach</span>
+      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:1.5rem;">
+        How We Work
+      </h2>
+      <div style="display:grid; grid-template-columns:1fr; gap:1.5rem;">
+        <div
+          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.5rem;"
+        >
+          <h3 style="color:var(--lab-accent); font-size:1.05rem; margin-bottom:0.3rem;">
+            Diagnose First
+          </h3>
+          <p class="lab-text">
+            Every repair starts with a full diagnostic. We run hardware and software tests to find
+            the root cause — not just treat the symptoms.
+          </p>
+        </div>
+        <div
+          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.5rem;"
+        >
+          <h3 style="color:var(--lab-accent); font-size:1.05rem; margin-bottom:0.3rem;">
+            Explain Clearly
+          </h3>
+          <p class="lab-text">
+            We tell you what's wrong, why it matters, and what your options are. No jargon, no
+            upselling, no surprises.
+          </p>
+        </div>
+        <div
+          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.5rem;"
+        >
+          <h3 style="color:var(--lab-accent); font-size:1.05rem; margin-bottom:0.3rem;">
+            Fix with Care
+          </h3>
+          <p class="lab-text">
+            With your approval, we perform the repair using quality components and proven
+            techniques. Every device is tested before it goes home.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-section-alt">
+    <div class="lab-section-inner">
+      <span class="lab-heading-accent">Trust</span>
+      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:1rem;">
+        Why People Trust MAD LABS
+      </h2>
+      <ul
+        style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem;"
+      >
+        <li
+          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
+        >
+          <strong style="color:var(--lab-heading);">Years of hands-on experience</strong> with PCs, Macs,
+          phones, tablets, and networking — across every major brand and operating system.
+        </li>
+        <li
+          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
+        >
+          <strong style="color:var(--lab-heading);">Diagnostic-first approach</strong> means we find the
+          real problem instead of guessing and replacing parts.
+        </li>
+        <li
+          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
+        >
+          <strong style="color:var(--lab-heading);">Transparent pricing</strong> — we quote the work before
+          we start, and never add hidden fees.
+        </li>
+        <li
+          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
+        >
+          <strong style="color:var(--lab-heading);">Same-day service</strong> on most common repairs.
+          We know you can't be without your device.
+        </li>
+        <li
+          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
+        >
+          <strong style="color:var(--lab-heading);">No data compromises</strong> — your privacy and data
+          security are built into every step of our process.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="lab-section">
+    <div class="lab-section-inner" style="text-align:center;">
+      <span class="lab-heading-accent">Next Steps</span>
+      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem;">
+        Have a device that needs attention?
+      </h2>
+      <p class="lab-text-muted" style="max-width:450px; margin:0 auto 1.5rem;">
+        Tell us what's going on and we'll recommend the next steps — no charge, no commitment.
+      </p>
+      <a href="/contact/" class="lab-button">Contact MAD LABS</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,82 @@
+---
+// src/components/ReviewShower.astro
+// Auto-scrolling review cards. Gated: renders nothing if `reviews` is empty.
+
+export interface Props {
+  reviews?: Array<{
+    author: string;
+    text: string;
+    rating?: number;
+  }>;
+}
+
+const { reviews = [] } = Astro.props;
+---
+
+{
+  reviews.length > 0 && (
+    <aside class="review-shower" aria-label="Customer reviews">
+      <div class="review-shower-track" data-review-track>
+        {reviews.map((review, idx) => (
+          <blockquote class="review-card" style={`--review-idx: ${idx}`}>
+            <p class="review-text">&ldquo;{review.text}&rdquo;</p>
+            <footer class="review-author">&mdash; {review.author}</footer>
+          </blockquote>
+        ))}
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .review-shower {
+    overflow: hidden;
+    padding: 1rem 0;
+  }
+
+  .review-shower-track {
+    display: flex;
+    gap: 1.25rem;
+    animation: reviewScroll 24s linear infinite;
+  }
+
+  .review-shower-track:hover {
+    animation-play-state: paused;
+  }
+
+  .review-card {
+    flex: 0 0 min(320px, 80vw);
+    padding: 1.25rem;
+    border: 1px solid var(--lab-border);
+    border-radius: 8px;
+    background: var(--lab-card);
+    box-shadow: 0 0 12px rgba(232, 144, 80, 0.08);
+  }
+
+  .review-text {
+    margin: 0 0 0.6rem;
+    color: var(--lab-text);
+    font-size: 0.92rem;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  .review-author {
+    color: var(--lab-accent);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  @keyframes reviewScroll {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>

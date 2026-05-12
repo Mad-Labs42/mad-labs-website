@@ -1,0 +1,76 @@
+---
+// src/components/SocialLinks.astro
+// Social media icon links. Gated: renders nothing if `socialLinks` map is empty.
+
+export interface Props {
+  socialLinks?: Record<string, string>;
+}
+
+const { socialLinks = {} } = Astro.props;
+
+const entries = Object.entries(socialLinks);
+---
+
+{
+  entries.length > 0 && (
+    <nav class="social-links" aria-label="Social media">
+      <ul class="social-links-list">
+        {entries.map(([platform, url]) => (
+          <li>
+            <a
+              href={url}
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={platform}
+            >
+              {platform}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .social-links {
+    margin-top: 1.5rem;
+  }
+
+  .social-links-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .social-link {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--lab-border);
+    border-radius: 4px;
+    background: var(--lab-card);
+    color: var(--lab-accent);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: 0.88rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .social-link:hover {
+    background: rgba(232, 144, 80, 0.1);
+    box-shadow: 0 0 12px rgba(232, 144, 80, 0.18);
+  }
+
+  .social-link:focus-visible {
+    outline: 2px solid var(--lab-accent);
+    outline-offset: 3px;
+  }
+</style>

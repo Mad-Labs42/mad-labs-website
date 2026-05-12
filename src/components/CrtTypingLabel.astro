@@ -1,0 +1,247 @@
+---
+const letterStepSeconds = 0.228;
+const letters = ["M", "A", "D", "\u00A0", "L", "A", "B", "S"];
+---
+
+<div class="crt-typing-wrapper" data-crt-typing-label>
+  <h1 class="crt-wordmark" aria-label="MAD LABS">
+    <span class="crt-typing-reveal" aria-hidden="true">
+      {
+        letters.map((letter, index) => (
+          <span
+            class:list={["crt-letter", letter === "\u00A0" && "crt-letter--space"]}
+            style={`--letter-delay: ${index * letterStepSeconds}s;`}
+          >
+            {letter}
+          </span>
+        ))
+      }
+    </span>
+  </h1>
+
+  <span class="crt-glow-settle" aria-hidden="true"></span>
+</div>
+
+<style>
+  .crt-typing-wrapper {
+    --wordmark-march-distance: clamp(180px, 34vw, 540px);
+
+    position: relative;
+    display: inline-flex;
+    padding-right: 0.18em;
+    opacity: 0;
+    transform: translateX(var(--wordmark-march-distance));
+    will-change: transform, opacity;
+  }
+
+  :global(.is-title-sequencing) .crt-typing-wrapper {
+    opacity: 1;
+    animation: crtWordmarkMarch 2.05s steps(8, end) forwards;
+  }
+
+  :global(.is-title-glowing) .crt-typing-wrapper,
+  :global(.is-divider-opening) .crt-typing-wrapper,
+  :global(.is-restoring) .crt-typing-wrapper,
+  :global(.is-stable) .crt-typing-wrapper {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .crt-wordmark {
+    position: relative;
+    z-index: 11;
+    margin: 0;
+    color: var(--crt-text, #f4eeff);
+    font-family: "Monofett", monospace;
+    font-size: clamp(2.55rem, 8vw, 8.35rem);
+    font-weight: 400;
+    letter-spacing: 0.018em;
+    line-height: 0.9;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.62),
+      0 0 58px rgba(200, 160, 255, 0.58),
+      0 0 24px rgba(180, 140, 255, 0.38),
+      0 0 5px rgba(255, 255, 255, 0.16);
+    transform-origin: center center;
+    will-change: transform, text-shadow, filter;
+  }
+
+  :global(.is-title-glowing) .crt-wordmark {
+    animation: crtWordmarkFinalGlow 1.04s cubic-bezier(0.18, 0.84, 0.24, 1) both;
+  }
+
+  .crt-typing-reveal {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .crt-letter {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(1.2px);
+    transform: translateX(0.74em) translateY(0) scale(0.96);
+    will-change: transform, opacity, filter;
+  }
+
+  .crt-letter--space {
+    width: 0.36em;
+  }
+
+  :global(.is-title-sequencing) .crt-letter {
+    animation: crtLetterEnter 0.44s steps(2, end) var(--letter-delay) both;
+  }
+
+  :global(.is-title-glowing) .crt-letter,
+  :global(.is-divider-opening) .crt-letter,
+  :global(.is-restoring) .crt-letter,
+  :global(.is-stable) .crt-letter {
+    opacity: 1;
+    filter: none;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  .crt-glow-settle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  :global(.is-title-glowing) .crt-glow-settle {
+    animation: crtGlowSettle 1.04s ease-in-out both;
+  }
+
+  @keyframes crtWordmarkMarch {
+    0% {
+      opacity: 0;
+      transform: translateX(var(--wordmark-march-distance));
+    }
+
+    12% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes crtLetterEnter {
+    0% {
+      opacity: 0;
+      filter: blur(1.2px);
+      transform: translateX(0.74em) translateY(0) scale(0.96);
+    }
+
+    20% {
+      opacity: 1;
+      filter: blur(0.55px);
+      transform: translateX(0.48em) translateY(-0.05em) scale(1.02);
+    }
+
+    38% {
+      opacity: 1;
+      filter: blur(0.25px);
+      transform: translateX(0.22em) translateY(0.045em) scale(0.99);
+    }
+
+    56% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateX(0.08em) translateY(-0.035em) scale(1.015);
+    }
+
+    72% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateX(-0.025em) translateY(0.025em) scale(1);
+    }
+
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateX(0) translateY(0) scale(1);
+    }
+  }
+
+  @keyframes crtWordmarkFinalGlow {
+    0% {
+      filter: brightness(1);
+      transform: scale(1);
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.62),
+        0 0 58px rgba(200, 160, 255, 0.58),
+        0 0 24px rgba(180, 140, 255, 0.38),
+        0 0 5px rgba(255, 255, 255, 0.16);
+    }
+
+    36% {
+      filter: brightness(1.22);
+      transform: scale(1.045);
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.66),
+        0 0 78px rgba(220, 192, 255, 0.8),
+        0 0 38px rgba(200, 160, 255, 0.62),
+        0 0 14px rgba(255, 255, 255, 0.34);
+    }
+
+    68% {
+      filter: brightness(1.12);
+      transform: scale(1.025);
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.64),
+        0 0 66px rgba(220, 192, 255, 0.62),
+        0 0 30px rgba(200, 160, 255, 0.46),
+        0 0 10px rgba(255, 255, 255, 0.26);
+    }
+
+    100% {
+      filter: brightness(1);
+      transform: scale(1);
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.62),
+        0 0 58px rgba(200, 160, 255, 0.58),
+        0 0 24px rgba(180, 140, 255, 0.38),
+        0 0 5px rgba(255, 255, 255, 0.16);
+    }
+  }
+
+  @keyframes crtGlowSettle {
+    0% {
+      opacity: 0;
+    }
+
+    18% {
+      opacity: 1;
+      box-shadow:
+        0 0 12px rgba(220, 192, 255, 0.62),
+        0 0 34px rgba(200, 160, 255, 0.44),
+        0 0 62px rgba(180, 140, 255, 0.28),
+        inset 0 0 12px rgba(200, 160, 255, 0.16);
+    }
+
+    54% {
+      opacity: 1;
+      box-shadow:
+        0 0 9px rgba(220, 192, 255, 0.48),
+        0 0 24px rgba(200, 160, 255, 0.3),
+        0 0 42px rgba(180, 140, 255, 0.18),
+        inset 0 0 8px rgba(200, 160, 255, 0.1);
+    }
+
+    100% {
+      opacity: 0;
+      box-shadow:
+        0 0 0 rgba(200, 160, 255, 0),
+        0 0 0 rgba(200, 160, 255, 0),
+        inset 0 0 0 rgba(200, 160, 255, 0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .crt-typing-wrapper {
+      --wordmark-march-distance: clamp(90px, 38vw, 210px);
+    }
+  }
+</style>

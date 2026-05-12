@@ -1,14 +1,253 @@
 ---
-// Placeholder: Landing page for project foundation validation only.
-// No brand copy, no design, no visual decisions.
-// Will be replaced during the design phase.
-import Layout from "../layouts/Layout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CrtHero from "../components/CrtHero.astro";
+import ReviewShower from "../components/ReviewShower.astro";
+import SocialLinks from "../components/SocialLinks.astro";
 ---
 
-<Layout title="MAD LABS">
-  <main>
-    <h1>MAD LABS</h1>
-    <p>Placeholder — foundation validation page.</p>
-    <p>Computer repair · Mobile IT services</p>
-  </main>
-</Layout>
+<BaseLayout title="MAD LABS">
+  <CrtHero />
+
+  <section class="hero-sub lab-section" aria-labelledby="home-tagline">
+    <div class="lab-section-inner-wide">
+      <p id="home-tagline" class="sub-tagline">
+        <span>
+          Everyone deserves high quality tech support. MAD LABS brings decades of hands-on
+          experience to the table to help solve your toughest tech problems. We can help repair
+          what's broken, overclock what's working, or provide you with cutting edge AI solutions to
+          keep you ahead of the game.
+        </span>
+        <span class="welcome-line">Welcome to the lab.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="what-we-do lab-section-alt" aria-labelledby="capabilities-heading">
+    <div class="lab-section-inner-wide">
+      <span class="lab-heading-accent">Capabilities</span>
+      <h2 id="capabilities-heading">
+        What <span class="brand-wordmark brand-wordmark-large">MAD LABS</span> Delivers
+      </h2>
+      <p>
+        If it beeps, boops, or bleeps—we fix it. Computer crashes? Network gremlins? AI that
+        actually saves you time and money instead of wasting it? MAD LABS handles diagnostics,
+        repairs, upgrades, Wi-Fi troubleshooting, custom PCs, smart-home setups, workflow
+        automation, and killer small business websites. We are dedicated to providing top-tier
+        service for Cincinnati homeowners and small businesses.
+      </p>
+    </div>
+  </section>
+
+  <section class="trust lab-section" aria-labelledby="trust-heading">
+    <div class="lab-section-inner-wide">
+      <span class="lab-heading-accent">Why Choose Us</span>
+      <h2 id="trust-heading">Upfront Pricing. No Upsells. Results That Work for You.</h2>
+      <p>
+        Every job starts with a full diagnostic and a clear explanation of the costs—before we touch
+        a thing. We explain the problem, offer solutions, and let you make the call.
+      </p>
+      <span class="welcome-line">Modern tools. Old-school reliability. Zero tech tantrums.</span>
+    </div>
+  </section>
+
+  <section class="cta lab-section-alt" aria-labelledby="cta-heading">
+    <div class="lab-section-inner-wide cta-inner">
+      <div class="cta-grid">
+        <div class="cta-reviews">
+          <ReviewShower reviews={[]} />
+        </div>
+        <div class="cta-action">
+          <span class="lab-heading-accent">Get Started</span>
+          <h2 id="cta-heading">Let MAD LABS tame your tech!</h2>
+          <a href="/contact/" class="lab-button">Contact MAD LABS</a>
+          <SocialLinks socialLinks={{}} />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .cta-reviews {
+    min-height: 0;
+  }
+
+  .cta-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .cta-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .brand-wordmark {
+    font-family: "Monofett", "Jersey 25", monospace;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .brand-wordmark-large {
+    display: inline-block;
+    font-size: 1.5em;
+    line-height: 0.75;
+    letter-spacing: 0.015em;
+    transform: translateY(0.08em);
+    text-shadow:
+      0 0 10px rgba(216, 180, 254, 0.34),
+      0 0 22px rgba(147, 51, 234, 0.22);
+  }
+
+  .sub-tagline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1220px;
+    margin: 0 auto;
+    color: var(--lab-text);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(1.08rem, 2vw, 1.42rem);
+    font-weight: 400;
+    line-height: 1.22;
+    letter-spacing: 0.035em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .sub-tagline span {
+    display: block;
+    width: 100%;
+  }
+
+  .welcome-line {
+    display: block;
+    margin-top: 1.5rem;
+    color: var(--lab-heading);
+    font-size: 1.12em;
+    text-shadow:
+      0 0 8px rgba(216, 180, 254, 0.28),
+      0 0 18px rgba(147, 51, 234, 0.18);
+  }
+
+  .what-we-do h2,
+  .trust h2,
+  .cta h2 {
+    margin-bottom: 0.75rem;
+    color: var(--lab-heading);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(1.5rem, 3.25vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .what-we-do p,
+  .trust p,
+  .cta p {
+    color: var(--lab-text);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(1.08rem, 2vw, 1.38rem);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0.035em;
+  }
+
+  .what-we-do p,
+  .trust p {
+    max-width: 920px;
+  }
+
+  .cta-inner {
+    text-align: center;
+  }
+
+  .cta .lab-button {
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .sub-tagline {
+      max-width: 94%;
+      font-size: clamp(1rem, 4.5vw, 1.25rem);
+      letter-spacing: 0.025em;
+    }
+
+    .what-we-do h2,
+    .trust h2,
+    .cta h2 {
+      font-size: clamp(1.35rem, 7vw, 1.8rem);
+      letter-spacing: 0.03em;
+    }
+
+    .brand-wordmark-large {
+      font-size: 1.32em;
+      line-height: 0.82;
+    }
+
+    .what-we-do p,
+    .trust p,
+    .cta p {
+      font-size: clamp(1rem, 4vw, 1.18rem);
+      letter-spacing: 0.025em;
+    }
+  }
+
+  /* Scroll-reveal animation — lower page sections */
+  @keyframes lab-section-rise {
+    from {
+      opacity: 0;
+      transform: translateY(42px);
+      filter: blur(3px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .lab-section,
+    .lab-section-alt {
+      animation: lab-section-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 34%;
+    }
+  }
+</style>
+
+<script is:inline>
+  if (!CSS.supports("animation-timeline", "view()")) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+            entry.target.style.filter = "blur(0)";
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    document
+      .querySelectorAll(".lab-section, .lab-section-alt")
+      .forEach((el) => observer.observe(el));
+  }
+</script>

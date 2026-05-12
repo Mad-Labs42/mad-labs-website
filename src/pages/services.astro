@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import { services } from "../data/services";
+---
+
+<BaseLayout title="Services">
+  <section class="page-header lab-section">
+    <div class="lab-section-inner-wide">
+      <span class="lab-heading-accent">What We Fix</span>
+      <h1>Services</h1>
+      <p class="header-intro">
+        Every repair starts with a full diagnostic. We find the real problem, explain it clearly,
+        and only proceed with your approval.
+      </p>
+    </div>
+  </section>
+
+  <section class="services-grid-section lab-section-alt">
+    <div class="lab-section-inner-wide">
+      <div class="services-grid">
+        {
+          services.map((s) => (
+            <ServiceCard
+              name={s.name}
+              shortDescription={s.shortDescription}
+              bullets={s.bullets}
+              icon={s.icon}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="process-section lab-section">
+    <div class="lab-section-inner">
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <section class="cta-section lab-section-alt">
+    <div class="lab-section-inner" style="text-align:center;">
+      <span class="lab-heading-accent">Next Steps</span>
+      <h2
+        style="color:var(--lab-heading); font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem;"
+      >
+        Not sure what you need?
+      </h2>
+      <p style="color:var(--lab-text-muted); max-width:500px; margin:0 auto 1.5rem;">
+        Describe your issue and we'll recommend the right service — no commitment, no pressure.
+      </p>
+      <a href="/contact/" class="lab-button">Contact us for a diagnostic quote</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header h1 {
+    color: var(--lab-heading);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-intro {
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    color: var(--lab-text);
+    max-width: 600px;
+    line-height: 1.5;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .services-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,1 +1,434 @@
+/* src/styles/global.css */
+
 @import "tailwindcss";
+
+/* ============================================
+   Self-Hosted Fonts
+   ============================================ */
+@font-face {
+  font-family: "Jersey 25";
+  src: url("/fonts/jersey-25-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Monofett";
+  src: url("/fonts/monofett-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "VT323";
+  src: url("/fonts/vt323-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
+   Early GameBoy font — Jimmy Campbell
+   ============================================ */
+@font-face {
+  font-family: "Early GameBoy";
+  src: url("/fonts/Early GameBoy.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
+   CRT Design Tokens — MAD LABS
+   ============================================ */
+:root {
+  --crt-bezel-bg: #d0ccc9;
+  --crt-bezel-highlight: #e8e4e2;
+  --crt-bezel-mid: #dbd6d3;
+  --crt-bezel-shadow: #908882;
+  --crt-bezel-shadow2: #a09890;
+  --crt-bezel-edge: #62585e;
+
+  --crt-screen-bg: #362866;
+  --crt-screen-channel: #4a3d6a;
+  --crt-screen-channel-deep: #1a1228;
+  --crt-screen-glow: rgba(140, 80, 240, 0.45);
+  --crt-screen-glow2: rgba(140, 80, 240, 0.3);
+  --crt-screen-glow3: rgba(100, 50, 200, 0.2);
+
+  --crt-text: #f0eaff;
+  --crt-text-muted: #d0bcf4;
+
+  --crt-separator: #e89050;
+  --crt-led-on: #00e676;
+  --crt-wordmark-glow: rgba(200, 160, 255, 0.55);
+  --taskbar-line: #e89050;
+
+  --lab-bg: #000000;
+  --lab-surface: #1a0e30;
+  --lab-surface-alt: #28184c;
+  --lab-card: #1e1a32;
+  --lab-border: rgba(232, 144, 80, 0.12);
+  --lab-accent: #e89050;
+  --lab-accent-dim: rgba(232, 144, 80, 0.6);
+  --lab-heading: #e0d0ff;
+  --lab-text: #b0a8c8;
+  --lab-text-muted: #706888;
+}
+
+/* ============================================
+   Base structural
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--lab-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--lab-bg);
+  color: var(--lab-text);
+  font-family: "Early GameBoy", "Jersey 25", "VT323", "Courier New", monospace;
+  line-height: 1.6;
+}
+
+main {
+  flex: 1;
+}
+
+::selection {
+  background: rgba(232, 144, 80, 0.45);
+  color: #fff6ec;
+}
+
+/* Accessible, hidden unless keyboard-focused. */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 9999;
+  transform: translateY(-220%);
+  border: 1px solid rgba(255, 213, 164, 0.8);
+  border-radius: 999px;
+  background: #050208;
+  color: rgba(255, 239, 214, 1);
+  padding: 0.65rem 0.9rem;
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 0 18px rgba(232, 144, 80, 0.35);
+  transition: transform 150ms ease;
+}
+
+.skip-link:focus:not(:focus-visible) {
+  transform: translateY(-220%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.site-footer,
+footer.site-footer {
+  border-top: 1px solid var(--lab-border);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(80, 30, 120, 0.06) 0%,
+      rgba(232, 144, 80, 0.04) 50%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(232, 144, 80, 0.04)), var(--lab-surface);
+  color: var(--lab-text-muted);
+  padding: 1.5rem 1rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ─── Ambient CRT glow spill below hero ─── */
+.hero-sub.lab-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(140, 80, 240, 0.1) 0%,
+    rgba(232, 144, 80, 0.04) 40%,
+    transparent 75%
+  );
+  pointer-events: none;
+}
+
+.hero-sub.lab-section {
+  position: relative;
+}
+
+/* ============================================
+   Lab utility classes
+   ============================================ */
+.lab-section {
+  border-bottom: 1px solid var(--lab-border);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(232, 144, 80, 0.04), transparent 38%), var(--lab-surface);
+}
+
+.lab-section-alt {
+  border-bottom: 1px solid var(--lab-border);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(140, 80, 240, 0.08), transparent 42%),
+    var(--lab-surface-alt);
+}
+
+.lab-section-dark {
+  border-bottom: 1px solid var(--lab-border);
+  background: var(--lab-bg);
+}
+
+.lab-section-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.lab-section-inner-wide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.lab-heading {
+  color: var(--lab-heading);
+  font-weight: 400;
+}
+
+.lab-heading-accent {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  color: var(--lab-accent);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 8px rgba(232, 144, 80, 0.32),
+    0 0 18px rgba(232, 144, 80, 0.16);
+}
+
+.lab-text {
+  color: var(--lab-text);
+}
+
+.lab-text-muted {
+  color: var(--lab-text-muted);
+}
+
+.lab-link {
+  color: var(--lab-accent);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.lab-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.lab-link:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.lab-button {
+  display: inline-block;
+  border: 1px solid rgba(255, 213, 164, 0.55);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 213, 164, 0.18), rgba(0, 0, 0, 0.06)), var(--lab-accent);
+  color: #000;
+  padding: 0.7rem 1.5rem;
+  font-family: "Early GameBoy", "VT323", monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow:
+    0 0 12px rgba(232, 144, 80, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.lab-button:hover {
+  background: linear-gradient(180deg, rgba(255, 228, 194, 0.24), rgba(0, 0, 0, 0.04)), #e89050;
+  box-shadow:
+    0 0 20px rgba(232, 144, 80, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.lab-button:active {
+  transform: translateY(1px);
+}
+
+.lab-button:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   prefers-reduced-motion — consolidated
+   ============================================
+   All reduced-motion overrides live in ONE place (non-scoped global.css).
+   This consolidation eliminates scattered !important declarations in scoped
+   component styles. The remaining !important usages below are architecturally
+   intentional: they must override scoped CSS [data-astro-cid] selectors that
+   carry higher specificity. This is one of the legitimate use cases for
+   !important — accessibility overrides that must never lose cascade battles.
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* --- Disable all animations --- */
+  .hero-glow,
+  .crt-bezel,
+  .crt-screen,
+  .crt-metal,
+  .crt-boot-overlay,
+  .crt-power-bloom,
+  .crt-loading-icon,
+  .crt-bands,
+  .crt-atom,
+  .crt-wordmark-slot,
+  .crt-divider-slot,
+  .crt-taskbar-area,
+  .crt-tagline,
+  .crt-corner,
+  .crt-letter,
+  .crt-wordmark,
+  .crt-glow-settle,
+  .crt-typing-wrapper,
+  .crt-divider,
+  .crt-divider-line,
+  .atom-orbits,
+  .atom-orbit-highlight,
+  .atom-nucleus-halo,
+  .atom-nucleus-core,
+  .crt-particle,
+  .crt-power-led,
+  .crt-scroll-chevron,
+  .crt-glitch-chroma,
+  .crt-glitch-static,
+  .crt-glitch-tear,
+  .crt-glitch-slices,
+  .lab-section,
+  .lab-section-alt {
+    animation: none !important;
+  }
+
+  /* --- Disable transitions --- */
+  .crt-taskbar-link,
+  .crt-taskbar-link::after,
+  .back-to-top,
+  .skip-link {
+    transition: none;
+  }
+
+  /* --- Disable interactive transform effects --- */
+  .crt-taskbar-link:hover,
+  .crt-taskbar-link:focus-visible,
+  .crt-taskbar-link:active {
+    transform: none;
+  }
+
+  /* --- Override transform and filter for elements that animate them --- */
+  .crt-letter,
+  .crt-wordmark,
+  .crt-glow-settle,
+  .crt-typing-wrapper,
+  .crt-screen,
+  .crt-bands,
+  .crt-atom,
+  .crt-divider,
+  .crt-divider-line,
+  .crt-taskbar-area,
+  .crt-tagline,
+  .crt-corner,
+  .crt-wordmark-slot,
+  .crt-divider-slot,
+  .lab-section,
+  .lab-section-alt {
+    transform: none;
+    filter: none;
+  }
+
+  /* --- Make invisible elements visible in their final state --- */
+  .crt-letter,
+  .crt-atom,
+  .crt-wordmark-slot,
+  .crt-divider-slot,
+  .crt-taskbar-area,
+  .crt-tagline,
+  .crt-divider {
+    opacity: 1;
+  }
+
+  /* --- Divider final state for reduced motion --- */
+  .crt-divider {
+    gap: clamp(0.07rem, 0.18vw, 0.13rem);
+  }
+
+  .crt-divider-line {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .crt-divider-mark {
+    max-width: 5.8ch;
+    margin-inline: clamp(0.08rem, 0.22vw, 0.16rem);
+    opacity: 1;
+    transform: translateY(0.5px) scale(1);
+    transition: none;
+  }
+
+  /* --- Hide overlays and decorative layers --- */
+  .crt-boot-overlay,
+  .crt-glow-settle,
+  .crt-glitch-chroma,
+  .crt-glitch-static,
+  .crt-glitch-tear,
+  .crt-glitch-slices {
+    display: none;
+  }
+
+  /* --- Bezel/screen final state --- */
+  .crt-bezel {
+    filter: brightness(1) saturate(1) drop-shadow(0 24px 68px rgba(0, 0, 0, 0.76));
+  }
+
+  .crt-screen {
+    background: #362866;
+  }
+
+  .crt-metal {
+    background: linear-gradient(145deg, #4a3880 0%, #362866 50%, #362866 100%);
+  }
+}

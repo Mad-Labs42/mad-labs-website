@@ -1,0 +1,138 @@
+---
+// Process Steps — "How It Works" for Services page.
+// Semantic <ol> with numbered steps for screen-reader clarity.
+export interface Step {
+  number: number;
+  title: string;
+  description: string;
+}
+
+const steps: Step[] = [
+  {
+    number: 1,
+    title: "Diagnose",
+    description:
+      "We start with a full diagnostic to identify the root cause — no guesswork, no surprises.",
+  },
+  {
+    number: 2,
+    title: "Quote",
+    description:
+      "We explain what's wrong, outline your options, and provide a clear, upfront quote.",
+  },
+  {
+    number: 3,
+    title: "Repair",
+    description:
+      "With your approval, we perform the repair using quality parts and proven techniques.",
+  },
+  {
+    number: 4,
+    title: "Test",
+    description:
+      "Every device is tested before pickup. We confirm the fix and walk you through the results.",
+  },
+];
+---
+
+<section class="process">
+  <h2 class="process-heading">How It Works</h2>
+  <ol class="process-list">
+    {
+      steps.map((step) => (
+        <li class="process-step">
+          <span class="step-number" aria-hidden="true">
+            {step.number}
+          </span>
+          <div class="step-content">
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.description}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .process {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .process-heading {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 600;
+    color: var(--lab-heading, #e0d0ff);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  ol {
+    list-style: none;
+    counter-reset: step-counter;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    counter-increment: step-counter;
+  }
+
+  li::before {
+    content: counter(step-counter);
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--lab-accent, #e89050);
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    box-shadow: 0 0 12px rgba(212, 133, 74, 0.3);
+    font-family: "Jersey 25", monospace;
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--lab-accent, #00e676);
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.3);
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .step-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--lab-heading, #e0d0ff);
+    margin-bottom: 0.2rem;
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+  }
+</style>

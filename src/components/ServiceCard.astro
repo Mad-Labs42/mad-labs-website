@@ -1,0 +1,87 @@
+---
+export interface Props {
+  name: string;
+  shortDescription: string;
+  bullets: string[];
+  icon: string;
+}
+
+const { name, shortDescription, bullets, icon } = Astro.props;
+---
+
+<article class="service-card">
+  <div class="card-icon" aria-hidden="true">{icon}</div>
+  <h3 class="card-title">{name}</h3>
+  <p class="card-summary">{shortDescription}</p>
+  <ul class="card-bullets">
+    {bullets.map((b) => <li>{b}</li>)}
+  </ul>
+</article>
+
+<style>
+  .service-card {
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(0, 230, 118, 0.12));
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .service-card:hover {
+    border-color: var(--lab-border-light, rgba(0, 230, 118, 0.25));
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(0, 230, 118, 0.05);
+  }
+
+  .card-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+
+  .card-title {
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    font-weight: 600;
+    color: var(--lab-heading, #e0d0ff);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .card-summary {
+    font-size: 0.9rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  li::before {
+    content: ">";
+    color: var(--lab-accent);
+    opacity: 0.4;
+    margin-right: 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .card-bullets li {
+    font-size: 0.85rem;
+    color: #9090a8;
+    line-height: 1.45;
+    padding-left: 0;
+    position: relative;
+  }
+</style>

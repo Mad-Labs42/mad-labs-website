@@ -1,0 +1,253 @@
+---
+
+---
+
+<div class="crt-divider" data-crt-divider aria-hidden="true">
+  <span class="crt-divider-line crt-divider-line--left"></span>
+  <span class="crt-divider-mark">&lt; / &gt;</span>
+  <span class="crt-divider-line crt-divider-line--right"></span>
+</div>
+
+<script>
+  const dividerCandidate = document.querySelector("[data-crt-divider]");
+
+  if (dividerCandidate instanceof HTMLElement) {
+    const divider = dividerCandidate;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timers: number[] = [];
+
+    const schedule = (delay: number, callback: () => void): void => {
+      timers.push(window.setTimeout(callback, delay));
+    };
+
+    if (prefersReducedMotion) {
+      divider.classList.add("is-line-built", "is-divider-open");
+    } else {
+      window.addEventListener("madlabs:hero-divider-line-build", () => {
+        resetDivider();
+        divider.classList.add("is-line-building");
+
+        schedule(820, () => {
+          divider.classList.add("is-line-built");
+        });
+      });
+
+      const resetDivider = (): void => {
+        timers.forEach((timerId) => window.clearTimeout(timerId));
+        timers.length = 0;
+
+        divider.classList.remove("is-line-building", "is-line-built", "is-divider-open");
+      };
+
+      window.addEventListener("madlabs:hero-reset", resetDivider);
+
+      window.addEventListener(
+        "madlabs:hero-divider-open",
+        () => {
+          divider.classList.add("is-line-built");
+
+          window.requestAnimationFrame(() => {
+            divider.classList.add("is-divider-open");
+          });
+        },
+        { once: true },
+      );
+    }
+
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        timers.forEach((timerId) => window.clearTimeout(timerId));
+      },
+      { once: true },
+    );
+  }
+</script>
+
+<style>
+  .crt-divider {
+    --divider-orange: #f79e55;
+    --divider-orange-glow-soft: rgba(247, 158, 85, 0.24);
+    --divider-orange-glow-tight: rgba(247, 158, 85, 0.52);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(76%, 720px);
+    min-height: 1.1rem;
+    margin: clamp(0.5rem, 1vw, 0.9rem) auto clamp(0.55rem, 1vw, 0.95rem);
+    gap: 0;
+    opacity: 0;
+  }
+
+  .crt-divider.is-line-building,
+  .crt-divider.is-line-built,
+  .crt-divider.is-divider-open,
+  :global(.is-divider-building) .crt-divider,
+  :global(.is-divider-opening) .crt-divider,
+  :global(.is-restoring) .crt-divider,
+  :global(.is-stable) .crt-divider {
+    opacity: 1;
+  }
+
+  .crt-divider-line {
+    display: block;
+    flex: 1 1 0;
+    min-width: clamp(3.2rem, 14vw, 18rem);
+    height: 2.5px;
+    border-radius: 999px;
+    background: var(--divider-orange);
+    box-shadow:
+      0 0 4px var(--divider-orange-glow-tight),
+      0 0 10px var(--divider-orange-glow-soft);
+    opacity: 1;
+    transform: scaleX(0);
+    will-change: transform, opacity;
+  }
+
+  .crt-divider-line--left {
+    transform-origin: right center;
+  }
+
+  .crt-divider-line--right {
+    transform-origin: left center;
+  }
+
+  .crt-divider.is-line-building .crt-divider-line,
+  :global(.is-divider-building) .crt-divider-line {
+    animation: crtDividerLineMarch 0.82s cubic-bezier(0.18, 0.84, 0.24, 1) forwards;
+  }
+
+  .crt-divider.is-line-built .crt-divider-line,
+  .crt-divider.is-divider-open .crt-divider-line,
+  :global(.is-divider-opening) .crt-divider-line,
+  :global(.is-restoring) .crt-divider-line,
+  :global(.is-stable) .crt-divider-line {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .crt-divider-mark {
+    flex: 0 0 auto;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 0;
+    margin-inline: 0;
+    color: var(--divider-orange);
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.095em;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(0.5px) scale(0.9);
+    text-shadow:
+      -0.55px 0 currentColor,
+      0.55px 0 currentColor,
+      0 0 4px rgba(247, 158, 85, 0.46),
+      0 0 9px rgba(247, 158, 85, 0.22);
+    -webkit-text-stroke: 0.52px currentColor;
+    transition:
+      max-width 0.62s cubic-bezier(0.18, 0.84, 0.24, 1),
+      margin-inline 0.62s cubic-bezier(0.18, 0.84, 0.24, 1),
+      opacity 0.26s ease,
+      transform 0.62s cubic-bezier(0.18, 0.84, 0.24, 1);
+  }
+
+  .crt-divider.is-divider-open,
+  :global(.is-divider-opening) .crt-divider,
+  :global(.is-restoring) .crt-divider,
+  :global(.is-stable) .crt-divider {
+    gap: clamp(0.07rem, 0.18vw, 0.13rem);
+  }
+
+  .crt-divider.is-divider-open .crt-divider-mark,
+  :global(.is-divider-opening) .crt-divider-mark,
+  :global(.is-restoring) .crt-divider-mark,
+  :global(.is-stable) .crt-divider-mark {
+    max-width: 5.8ch;
+    margin-inline: clamp(0.08rem, 0.22vw, 0.16rem);
+    opacity: 1;
+    transform: translateY(0.5px) scale(1);
+  }
+
+  @keyframes crtDividerLineMarch {
+    0% {
+      opacity: 0.68;
+      transform: scaleX(0);
+    }
+
+    12.5% {
+      opacity: 0.78;
+      transform: scaleX(0.14);
+    }
+
+    25% {
+      opacity: 0.86;
+      transform: scaleX(0.28);
+    }
+
+    37.5% {
+      opacity: 0.9;
+      transform: scaleX(0.42);
+    }
+
+    50% {
+      opacity: 0.94;
+      transform: scaleX(0.56);
+    }
+
+    62.5% {
+      opacity: 0.97;
+      transform: scaleX(0.7);
+    }
+
+    75% {
+      opacity: 1;
+      transform: scaleX(0.84);
+    }
+
+    87.5% {
+      opacity: 1;
+      transform: scaleX(0.94);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .crt-divider {
+      width: min(84%, 420px);
+      margin: 0.45rem 0 0.55rem;
+    }
+
+    .crt-divider-line {
+      min-width: clamp(2.4rem, 18vw, 8rem);
+      height: 2px;
+    }
+
+    .crt-divider-mark {
+      font-size: clamp(0.8rem, 3.4vw, 1rem);
+      letter-spacing: 0.075em;
+      -webkit-text-stroke: 0.42px currentColor;
+    }
+
+    .crt-divider.is-divider-open,
+    :global(.is-divider-opening) .crt-divider,
+    :global(.is-restoring) .crt-divider,
+    :global(.is-stable) .crt-divider {
+      gap: 0.07rem;
+    }
+
+    .crt-divider.is-divider-open .crt-divider-mark,
+    :global(.is-divider-opening) .crt-divider-mark,
+    :global(.is-restoring) .crt-divider-mark,
+    :global(.is-stable) .crt-divider-mark {
+      margin-inline: 0.08rem;
+    }
+  }
+</style>
