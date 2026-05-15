@@ -1,0 +1,1209 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AboutMementoWall from "../../components/AboutMementoWall.astro";
+---
+
+<BaseLayout title="About Admin">
+  <!-- ═══════════════════════════════════════════════════════════
+       ADMIN OVERLAY — appears above all page content
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="admin-overlay" class="admin-overlay">
+    <!-- Toolbar -->
+    <div class="admin-toolbar" id="admin-toolbar">
+      <span class="admin-toolbar-brand">About Page Editor</span>
+      <div class="admin-toolbar-actions">
+        <button id="admin-toggle-edit" class="admin-btn admin-btn--active">Edit Mode</button>
+        <button id="admin-save" class="admin-btn">Save</button>
+        <button id="admin-export" class="admin-btn">Export JSON</button>
+        <button id="admin-reset" class="admin-btn admin-btn--danger">Reset All</button>
+        <span id="admin-status" class="admin-status">Ready</span>
+      </div>
+    </div>
+
+    <!-- Properties Panel (shown when element selected) -->
+    <div class="admin-panel" id="admin-panel" hidden>
+      <div class="admin-panel-header">
+        <span id="admin-panel-title">Properties</span>
+        <button class="admin-panel-close" id="admin-panel-close">&times;</button>
+      </div>
+      <div class="admin-panel-body" id="admin-panel-body">
+        <!-- Filled dynamically by JS -->
+      </div>
+    </div>
+
+    <!-- Legend Panel -->
+    <div class="admin-legend" id="admin-legend">
+      <div class="admin-legend-header">
+        <span>Legend</span>
+        <button class="admin-legend-toggle" id="admin-legend-toggle">&minus;</button>
+      </div>
+      <div class="admin-legend-body" id="admin-legend-body">
+        <div class="legend-item">
+          <span class="legend-key">Click</span>
+          <span class="legend-val">Select any text, card, or icon to edit its properties</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Shift+Click</span>
+          <span class="legend-val">Select a section to resize it</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Drag ▬</span>
+          <span class="legend-val">Drag the bottom handle of a selected section to resize</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Esc</span>
+          <span class="legend-val">Deselect current element</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Properties panel →</span>
+          <span class="legend-val">Edit text, font, size, width, padding, etc.</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Save</span>
+          <span class="legend-val">Persist changes to localStorage</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Export JSON</span>
+          <span class="legend-val">Copy all edits as JSON to clipboard</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Reset All</span>
+          <span class="legend-val">Clear all edits (reloads page)</span>
+        </div>
+        <div class="legend-section">Available Fonts</div>
+        <div class="legend-item">
+          <span class="legend-key font-sample" style="font-family:'Jersey 25',monospace"
+            >Jersey 25</span
+          >
+          <span class="legend-val">Body text default</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key font-sample" style="font-family:'Monofett',monospace"
+            >Monofett</span
+          >
+          <span class="legend-val">Brand display</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key font-sample" style="font-family:'VT323',monospace">VT323</span>
+          <span class="legend-val">Terminal style</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key font-sample" style="font-family:'Early GameBoy',monospace"
+            >Early GameBoy</span
+          >
+          <span class="legend-val">Heading display</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ABOUT PAGE CONTENT (mirrors about/index.astro with admin IDs)
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="page-content">
+    <!-- ─── Hero / The Lab ─── -->
+    <section class="about-hero lab-section" data-section="hero" data-section-id="hero">
+      <div class="lab-section-inner-wide">
+        <span class="lab-heading-accent" data-admin="hero-accent" data-type="text">The Lab</span>
+        <h1 class="about-heading" data-admin="hero-heading" data-type="container">
+          <span class="about-sub" data-admin="hero-sub" data-type="text">About</span>
+          <span class="about-brand" data-admin="hero-brand" data-type="text">MAD LABS</span>
+        </h1>
+        <p class="about-intro" data-admin="hero-intro" data-type="text">
+          MAD LABS is an independent computer repair and mobile IT diagnostics lab. We fix devices
+          that others have given up on — with transparency, skill, and a genuine love for the work.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─── Origin / The Story ─── -->
+    <section class="about-story lab-section-alt" data-section="story" data-section-id="story">
+      <div class="lab-section-inner">
+        <span class="lab-heading-accent" data-admin="story-accent" data-type="text">Origin</span>
+        <h2 class="section-heading" data-admin="story-heading" data-type="text">The Story</h2>
+        <p class="story-text" data-admin="story-text-1" data-type="text">
+          MAD LABS started the same way most good repair shops do: a pile of broken laptops, a deep
+          curiosity about how things work, and frustration with an industry that often recommends
+          replacement over repair. What began as fixing friends' and family's computers grew into a
+          full diagnostic lab serving home users, small businesses, and creative professionals.
+        </p>
+        <p class="story-text" data-admin="story-text-2" data-type="text">
+          Every device tells a story. A photographer's workstation with years of edits. A small
+          business's accounting machine running on borrowed time. A student's only laptop. We treat
+          each one with the same care: find the real problem, explain it clearly, and fix it right.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─── Approach / How We Work ─── -->
+    <section class="about-approach lab-section" data-section="approach" data-section-id="approach">
+      <div class="lab-section-inner">
+        <span class="lab-heading-accent" data-admin="approach-accent" data-type="text"
+          >Approach</span
+        >
+        <h2 class="section-heading" data-admin="approach-heading" data-type="text">How We Work</h2>
+        <div class="approach-grid">
+          <div class="approach-card" data-admin="approach-card-1" data-type="card">
+            <span class="approach-step" data-admin="approach-card-1-step" data-type="text">01</span>
+            <h3 class="approach-card-title" data-admin="approach-card-1-title" data-type="text">
+              Diagnose First
+            </h3>
+            <p class="approach-card-text" data-admin="approach-card-1-text" data-type="text">
+              Every repair starts with a full diagnostic. We run hardware and software tests to find
+              the root cause — not just treat the symptoms.
+            </p>
+          </div>
+          <div class="approach-card" data-admin="approach-card-2" data-type="card">
+            <span class="approach-step" data-admin="approach-card-2-step" data-type="text">02</span>
+            <h3 class="approach-card-title" data-admin="approach-card-2-title" data-type="text">
+              Explain Clearly
+            </h3>
+            <p class="approach-card-text" data-admin="approach-card-2-text" data-type="text">
+              We tell you what's wrong, why it matters, and what your options are. No jargon, no
+              upselling, no surprises.
+            </p>
+          </div>
+          <div class="approach-card" data-admin="approach-card-3" data-type="card">
+            <span class="approach-step" data-admin="approach-card-3-step" data-type="text">03</span>
+            <h3 class="approach-card-title" data-admin="approach-card-3-title" data-type="text">
+              Fix with Care
+            </h3>
+            <p class="approach-card-text" data-admin="approach-card-3-text" data-type="text">
+              With your approval, we perform the repair using quality components and proven
+              techniques. Every device is tested before it goes home.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Trust / Why People Trust MAD LABS ─── -->
+    <section class="about-trust lab-section-alt" data-section="trust" data-section-id="trust">
+      <div class="lab-section-inner">
+        <span class="lab-heading-accent" data-admin="trust-accent" data-type="text">Trust</span>
+        <h2 class="section-heading" data-admin="trust-heading" data-type="text">
+          Why People Trust MAD LABS
+        </h2>
+        <div class="trust-grid">
+          <div class="trust-card" data-admin="trust-card-1" data-type="card">
+            <span class="trust-icon" data-admin="trust-card-1-icon" data-type="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M10 2.5 3 5.5v5c0 5 3.5 8.5 7 9.5 3.5-1 7-4.5 7-9.5v-5l-7-3Z"></path></svg
+              >
+            </span>
+            <div>
+              <strong class="trust-label" data-admin="trust-card-1-label" data-type="text"
+                >Years of hands-on experience</strong
+              >
+              <p class="trust-text" data-admin="trust-card-1-text" data-type="text">
+                with PCs, Macs, phones, tablets, and networking — across major brands and operating
+                systems.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin="trust-card-2" data-type="card">
+            <span class="trust-icon" data-admin="trust-card-2-icon" data-type="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><circle cx="10" cy="10" r="7.5"></circle><path d="M7 10.5 9 12.5 13 7.5"
+                ></path></svg
+              >
+            </span>
+            <div>
+              <strong class="trust-label" data-admin="trust-card-2-label" data-type="text"
+                >Diagnostic-first approach</strong
+              >
+              <p class="trust-text" data-admin="trust-card-2-text" data-type="text">
+                means we find the real problem instead of guessing and replacing parts.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin="trust-card-3" data-type="card">
+            <span class="trust-icon" data-admin="trust-card-3-icon" data-type="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"><path d="M3 10h14"></path><path d="M10 3v14"></path></svg
+              >
+            </span>
+            <div>
+              <strong class="trust-label" data-admin="trust-card-3-label" data-type="text"
+                >Transparent pricing</strong
+              >
+              <p class="trust-text" data-admin="trust-card-3-text" data-type="text">
+                — we quote the work before we start, and never add hidden fees.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin="trust-card-4" data-type="card">
+            <span class="trust-icon" data-admin="trust-card-4-icon" data-type="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><circle cx="10" cy="10" r="7.5"></circle><path d="M10 6v4.5l3 1.5"></path></svg
+              >
+            </span>
+            <div>
+              <strong class="trust-label" data-admin="trust-card-4-label" data-type="text"
+                >Same-day service</strong
+              >
+              <p class="trust-text" data-admin="trust-card-4-text" data-type="text">
+                on most common repairs. We know you can't be without your device.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin="trust-card-5" data-type="card">
+            <span class="trust-icon" data-admin="trust-card-5-icon" data-type="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><rect x="3" y="7" width="14" height="11" rx="1.5"></rect><path
+                  d="M6.5 7V5a3.5 3.5 0 0 1 7 0v2"></path></svg
+              >
+            </span>
+            <div>
+              <strong class="trust-label" data-admin="trust-card-5-label" data-type="text"
+                >No data compromises</strong
+              >
+              <p class="trust-text" data-admin="trust-card-5-text" data-type="text">
+                — your privacy and data security are built into every step of our process.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Memento Wall ─── -->
+    <section class="wall-section lab-section" data-section="wall" data-section-id="wall">
+      <AboutMementoWall />
+    </section>
+
+    <!-- ─── Next Steps / CTA ─── -->
+    <section class="about-cta lab-section" data-section="cta" data-section-id="cta">
+      <div class="lab-section-inner cta-inner">
+        <span class="lab-heading-accent" data-admin="cta-accent" data-type="text">Next Steps</span>
+        <h2 class="cta-heading" data-admin="cta-heading" data-type="text">
+          Have a device that needs attention?
+        </h2>
+        <p class="cta-text" data-admin="cta-text" data-type="text">
+          Tell us what's going on and we'll recommend the next steps — no charge, no commitment.
+        </p>
+        <a href="/contact/" class="lab-button" data-admin="cta-button" data-type="text"
+          >Contact MAD LABS</a
+        >
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ADMIN CSS
+     ═══════════════════════════════════════════════════════════ -->
+<style>
+  /* ─── Overlay base ─── */
+  .admin-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    pointer-events: none;
+    font-family: system-ui, sans-serif;
+  }
+  .admin-overlay * {
+    pointer-events: auto;
+  }
+
+  /* ─── Toolbar ─── */
+  .admin-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0a0618;
+    border-bottom: 1px solid #e89050;
+    padding: 6px 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .admin-toolbar-brand {
+    color: #e89050;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+  .admin-toolbar-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .admin-btn {
+    background: #1a0e30;
+    border: 1px solid #4a3d6a;
+    border-radius: 4px;
+    color: #b0a8c8;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      border-color 0.15s;
+  }
+  .admin-btn:hover {
+    background: #28184c;
+    border-color: #e89050;
+  }
+  .admin-btn--active {
+    background: #362866;
+    border-color: #e89050;
+    color: #e89050;
+  }
+  .admin-btn--danger {
+    border-color: #662020;
+    color: #cc5555;
+  }
+  .admin-btn--danger:hover {
+    background: #3a1818;
+    border-color: #cc5555;
+  }
+  .admin-status {
+    color: #706888;
+    font-size: 11px;
+    margin-left: 8px;
+    min-width: 60px;
+  }
+
+  /* ─── Properties Panel ─── */
+  .admin-panel {
+    position: fixed;
+    top: 52px;
+    right: 12px;
+    width: 280px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: #0e0820;
+    border: 1px solid #4a3d6a;
+    border-radius: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+  }
+  .admin-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #2a1a4a;
+    color: #e89050;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .admin-panel-close {
+    background: none;
+    border: none;
+    color: #706888;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .admin-panel-close:hover {
+    color: #cc5555;
+  }
+  .admin-panel-body {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .admin-field label {
+    color: #9088a8;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .admin-field input,
+  .admin-field select,
+  .admin-field textarea {
+    background: #1a0e30;
+    border: 1px solid #4a3d6a;
+    border-radius: 3px;
+    color: #f0eaff;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-family: monospace;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .admin-field textarea {
+    resize: vertical;
+    min-height: 48px;
+  }
+  .admin-field input:focus,
+  .admin-field select:focus,
+  .admin-field textarea:focus {
+    outline: none;
+    border-color: #e89050;
+  }
+  .admin-field input[type="range"] {
+    padding: 0;
+    accent-color: #e89050;
+  }
+  .admin-field-row {
+    display: flex;
+    gap: 8px;
+  }
+  .admin-field-row .admin-field {
+    flex: 1;
+  }
+  .admin-field-unit {
+    color: #706888;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+  .admin-section-label {
+    color: #e89050;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-top: 1px solid #2a1a4a;
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+
+  /* ─── Legend ─── */
+  .admin-legend {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    width: 320px;
+    max-height: 60vh;
+    overflow-y: auto;
+    background: #0e0820;
+    border: 1px solid #4a3d6a;
+    border-radius: 6px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    font-size: 11px;
+  }
+  .admin-legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid #2a1a4a;
+    color: #e89050;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .admin-legend-toggle {
+    background: none;
+    border: none;
+    color: #706888;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .admin-legend-body {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .legend-item {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .legend-key {
+    color: #e89050;
+    font-family: monospace;
+    font-size: 10px;
+    min-width: 90px;
+    flex-shrink: 0;
+  }
+  .legend-val {
+    color: #706888;
+    font-size: 10px;
+  }
+  .legend-section {
+    color: #4a3d6a;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-top: 1px solid #2a1a4a;
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+  .font-sample {
+    font-size: 13px;
+    color: #e0d0ff;
+  }
+
+  /* ─── Selection highlight ─── */
+  .admin-selected {
+    outline: 2px solid #e89050 !important;
+    outline-offset: 3px !important;
+    position: relative;
+    z-index: 1;
+  }
+  .admin-section-selected {
+    outline: 2px dashed #8c50f0 !important;
+    outline-offset: -2px !important;
+  }
+  .admin-hoverable {
+    cursor: pointer;
+    transition: outline 0.1s;
+  }
+  .admin-hoverable:hover {
+    outline: 1px dashed rgba(232, 144, 80, 0.3);
+    outline-offset: 1px;
+  }
+
+  /* ─── Section resize handles ─── */
+  .admin-section-handle {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 8px;
+    background: #8c50f0;
+    border-radius: 0 0 2px 2px;
+    cursor: ns-resize;
+    z-index: 10;
+    opacity: 0.8;
+    transition:
+      opacity 0.15s,
+      width 0.15s;
+  }
+  .admin-section-handle:hover {
+    opacity: 1;
+    width: 160px;
+  }
+  .admin-section-handle::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: #f0eaff;
+    border-radius: 2px;
+  }
+  section[data-section] {
+    position: relative;
+  }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ADMIN JAVASCRIPT
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+  (function () {
+    "use strict";
+
+    const LS_KEY = "mad-labs-about-admin";
+    const FONTS: string[] = ["Jersey 25", "Monofett", "VT323", "Early GameBoy"];
+
+    // ─── Types ───
+    interface EditProps {
+      text?: string;
+      font?: string;
+      fontSize?: string;
+      width?: string;
+      padding?: string;
+      minHeight?: string;
+    }
+
+    // ─── State ───
+    let editMode = true;
+    let selectedEl: HTMLElement | null = null;
+    let selectedSection: HTMLElement | null = null;
+    let sectionResizing = false;
+    let resizeStartY = 0;
+    let resizeStartH = 0;
+    let edits: Record<string, EditProps> = {};
+
+    // ─── DOM refs ───
+    const getEl = (id: string): HTMLElement => document.getElementById(id)!;
+    const toggleBtn = getEl("admin-toggle-edit");
+    const saveBtn = getEl("admin-save");
+    const exportBtn = getEl("admin-export");
+    const resetBtn = getEl("admin-reset");
+    const statusEl = getEl("admin-status");
+    const panel = getEl("admin-panel");
+    const panelTitle = getEl("admin-panel-title");
+    const panelBody = getEl("admin-panel-body");
+    const panelClose = getEl("admin-panel-close");
+    const legendBody = getEl("admin-legend-body");
+    const legendToggle = getEl("admin-legend-toggle");
+    const pageContent = getEl("page-content");
+
+    // ─── Load saved edits ───
+    function loadEdits(): void {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (raw) edits = JSON.parse(raw) as Record<string, EditProps>;
+      } catch {
+        edits = {};
+      }
+    }
+
+    function saveEdits(): void {
+      localStorage.setItem(LS_KEY, JSON.stringify(edits));
+    }
+
+    function applyAllEdits(): void {
+      Object.entries(edits).forEach(([id, props]) => {
+        applyEdit(id, props);
+      });
+    }
+
+    function applyEdit(id: string, props: EditProps): void {
+      const el = document.querySelector(`[data-admin="${id}"]`) as HTMLElement | null;
+      if (!el) return;
+      if (props.text !== undefined) {
+        if (!el.querySelector("[data-admin]")) {
+          el.textContent = props.text;
+        }
+      }
+      if (props.font !== undefined) el.style.fontFamily = `"${props.font}", monospace`;
+      if (props.fontSize !== undefined) el.style.fontSize = props.fontSize;
+      if (props.width !== undefined) el.style.width = props.width;
+      if (props.minHeight !== undefined) el.style.minHeight = props.minHeight;
+      if (props.padding !== undefined) el.style.padding = props.padding;
+    }
+
+    // ─── Get element style (computed, not inline) ───
+    function getComputedFont(el: HTMLElement): string {
+      const f = getComputedStyle(el).fontFamily;
+      for (const font of FONTS) {
+        if (f.includes(font)) return font;
+      }
+      return "inherit";
+    }
+
+    function getComputedFontSize(el: HTMLElement): string {
+      return getComputedStyle(el).fontSize;
+    }
+
+    // ─── Build properties panel ───
+    function showPanel(el: HTMLElement): void {
+      const id = el.dataset.admin;
+      const type = el.dataset.type;
+      if (!id) return;
+
+      selectedEl = el;
+      selectedSection = null;
+      clearSectionSelections();
+      el.classList.add("admin-selected");
+
+      panelTitle.textContent = id.replace(/-/g, " ");
+      const existing = edits[id] || ({} as EditProps);
+
+      let html = "";
+
+      if (
+        type === "text" ||
+        type === "card" ||
+        (!el.querySelector("[data-admin]") && el.textContent?.trim())
+      ) {
+        const textVal = existing.text !== undefined ? existing.text : (el.textContent || "").trim();
+        html += `<div class="admin-field">
+          <label>Text Content</label>
+          <textarea data-field="text">${escapeHtml(textVal)}</textarea>
+        </div>`;
+      }
+
+      if (type === "text") {
+        const currentFont = existing.font || getComputedFont(el);
+        html += `<div class="admin-field">
+          <label>Font Family</label>
+          <select data-field="font">
+            ${FONTS.map((f) => `<option value="${f}" ${f === currentFont ? "selected" : ""}>${f}</option>`).join("")}
+          </select>
+        </div>`;
+      }
+
+      if (type === "text" || type === "icon") {
+        const currentSize = existing.fontSize || getComputedFontSize(el);
+        html += `<div class="admin-field">
+          <label>Font Size <span class="admin-field-unit">${currentSize}</span></label>
+          <input type="range" min="0.5" max="5" step="0.05" value="${parseFloat(currentSize)}" data-field="fontSize">
+        </div>`;
+      }
+
+      if (type === "card") {
+        const currentW = existing.width || getComputedStyle(el).width;
+        html += `<div class="admin-section-label">Card Dimensions</div>`;
+        html += `<div class="admin-field">
+          <label>Width <span class="admin-field-unit">${currentW}</span></label>
+          <input type="text" value="${existing.width || ""}" placeholder="${currentW}" data-field="width">
+        </div>`;
+      }
+
+      if (type === "card") {
+        const currentP = existing.padding || getComputedStyle(el).padding;
+        html += `<div class="admin-field">
+          <label>Padding <span class="admin-field-unit">${currentP}</span></label>
+          <input type="text" value="${existing.padding || ""}" placeholder="${currentP}" data-field="padding">
+        </div>`;
+      }
+
+      if (type === "icon") {
+        const currentW = existing.width || getComputedStyle(el).width;
+        html += `<div class="admin-section-label">Icon Size</div>`;
+        html += `<div class="admin-field">
+          <label>Width <span class="admin-field-unit">${currentW}</span></label>
+          <input type="text" value="${existing.width || ""}" placeholder="${currentW}" data-field="width">
+        </div>`;
+      }
+
+      panelBody.innerHTML = html;
+      panel.hidden = false;
+
+      // Attach listeners
+      panelBody.querySelectorAll("[data-field]").forEach((rawInput) => {
+        const input = rawInput as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+        input.addEventListener("input", () => {
+          const field = input.dataset.field!;
+          const val = (input as HTMLInputElement).value;
+          if (!edits[id]) edits[id] = {};
+          if (
+            val === "" ||
+            (input.tagName === "TEXTAREA" && val === (el.textContent || "").trim()) ||
+            (field === "font" && val === getComputedFont(el)) ||
+            (field === "fontSize" &&
+              Math.abs(parseFloat(val) - parseFloat(getComputedFontSize(el))) < 0.01)
+          ) {
+            delete (edits[id] as Record<string, string | undefined>)[field];
+            if (Object.keys(edits[id]).length === 0) delete edits[id];
+            if (field === "font") el.style.removeProperty("fontFamily");
+            else el.style.removeProperty(field);
+          } else {
+            (edits[id] as Record<string, string | undefined>)[field] =
+              field === "fontSize" ? val + "rem" : field === "font" ? val : val;
+          }
+          applyEdit(id, edits[id] || {});
+          updateFieldLabels(id);
+          setStatus("Unsaved");
+        });
+      });
+    }
+
+    function updateFieldLabels(id: string): void {
+      const el = document.querySelector(`[data-admin="${id}"]`) as HTMLElement | null;
+      if (!el) return;
+      panelBody.querySelectorAll(".admin-field-unit").forEach((rawUnit) => {
+        const unit = rawUnit as HTMLElement;
+        const label = unit.parentElement?.querySelector("label");
+        if (!label) return;
+        const fieldInput = unit.parentElement?.querySelector("[data-field]") as HTMLElement | null;
+        const field = fieldInput?.dataset.field;
+        if (field === "fontSize") unit.textContent = getComputedFontSize(el);
+        if (field === "width") unit.textContent = getComputedStyle(el).width;
+        if (field === "padding") unit.textContent = getComputedStyle(el).padding;
+      });
+    }
+
+    function hidePanel(): void {
+      panel.hidden = true;
+      panelBody.innerHTML = "";
+      if (selectedEl) {
+        selectedEl.classList.remove("admin-selected");
+        selectedEl = null;
+      }
+      clearSectionSelections();
+    }
+
+    // ─── Section selection & resize ───
+    function clearSectionSelections(): void {
+      document.querySelectorAll("section[data-section]").forEach((rawS) => {
+        const s = rawS as HTMLElement;
+        s.classList.remove("admin-section-selected");
+        const handle = s.querySelector(".admin-section-handle") as HTMLElement | null;
+        if (handle) handle.style.display = "none";
+      });
+      selectedSection = null;
+    }
+
+    function selectSection(section: HTMLElement): void {
+      clearSectionSelections();
+      hidePanel();
+      selectedSection = section;
+      section.classList.add("admin-section-selected");
+      let handle = section.querySelector(".admin-section-handle") as HTMLElement | null;
+      if (!handle) {
+        handle = document.createElement("div");
+        handle.className = "admin-section-handle";
+        handle.addEventListener("mousedown", startSectionResize);
+        section.appendChild(handle);
+      }
+      handle.style.display = "block";
+    }
+
+    function startSectionResize(e: MouseEvent): void {
+      e.preventDefault();
+      e.stopPropagation();
+      sectionResizing = true;
+      resizeStartY = e.clientY;
+      resizeStartH = selectedSection!.getBoundingClientRect().height;
+      document.addEventListener("mousemove", doSectionResize);
+      document.addEventListener("mouseup", endSectionResize);
+    }
+
+    function doSectionResize(e: MouseEvent): void {
+      if (!sectionResizing || !selectedSection) return;
+      const dy = e.clientY - resizeStartY;
+      const newH = Math.max(100, resizeStartH + dy);
+      selectedSection.style.minHeight = newH + "px";
+      const sid = selectedSection.dataset.sectionId;
+      if (sid) {
+        if (!edits[sid]) edits[sid] = {};
+        edits[sid].minHeight = newH + "px";
+      }
+      setStatus("Unsaved");
+    }
+
+    function endSectionResize(): void {
+      sectionResizing = false;
+      document.removeEventListener("mousemove", doSectionResize);
+      document.removeEventListener("mouseup", endSectionResize);
+    }
+
+    // ─── Click handling ───
+    pageContent.addEventListener("click", (e: MouseEvent) => {
+      if (!editMode) return;
+      if (sectionResizing) return;
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      if (
+        target.closest(".admin-panel") ||
+        target.closest(".admin-toolbar") ||
+        target.closest(".admin-legend") ||
+        target.closest(".admin-overlay")
+      )
+        return;
+      if (target.closest(".admin-section-handle")) return;
+
+      if (e.shiftKey) {
+        const section = target.closest("section[data-section]") as HTMLElement | null;
+        if (section) {
+          selectSection(section);
+          return;
+        }
+      }
+
+      const el = target.closest("[data-admin]") as HTMLElement | null;
+      if (el && el.dataset.admin) {
+        showPanel(el);
+      } else {
+        hidePanel();
+        clearSectionSelections();
+        setStatus("Ready");
+      }
+    });
+
+    // ─── Keyboard ───
+    document.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        hidePanel();
+        clearSectionSelections();
+        setStatus("Ready");
+      }
+    });
+
+    // ─── Panel close ───
+    panelClose.addEventListener("click", () => {
+      hidePanel();
+      setStatus("Ready");
+    });
+
+    // ─── Toolbar: Toggle edit mode ───
+    toggleBtn.addEventListener("click", () => {
+      editMode = !editMode;
+      toggleBtn.classList.toggle("admin-btn--active", editMode);
+      toggleBtn.textContent = editMode ? "Edit Mode" : "View Mode";
+      if (!editMode) {
+        hidePanel();
+        clearSectionSelections();
+      }
+      setStatus(editMode ? "Ready" : "View only");
+    });
+
+    // ─── Toolbar: Save ───
+    saveBtn.addEventListener("click", () => {
+      saveEdits();
+      setStatus("Saved to localStorage");
+      setTimeout(() => {
+        if (Object.keys(edits).length) setStatus("Unsaved");
+        else setStatus("Ready");
+      }, 2000);
+    });
+
+    // ─── Toolbar: Export ───
+    exportBtn.addEventListener("click", () => {
+      saveEdits();
+      const json = JSON.stringify(edits, null, 2);
+      navigator.clipboard
+        .writeText(json)
+        .then(() => {
+          setStatus("JSON copied to clipboard");
+        })
+        .catch(() => {
+          setStatus("Copy failed — check console");
+          console.log("Export JSON:", json);
+        });
+    });
+
+    // ─── Toolbar: Reset ───
+    resetBtn.addEventListener("click", () => {
+      if (confirm("Reset ALL edits? This cannot be undone.")) {
+        localStorage.removeItem(LS_KEY);
+        edits = {};
+        location.reload();
+      }
+    });
+
+    // ─── Legend toggle ───
+    legendToggle.addEventListener("click", () => {
+      const collapsed = legendBody.style.display === "none";
+      legendBody.style.display = collapsed ? "" : "none";
+      legendToggle.textContent = collapsed ? "\u2212" : "+";
+    });
+
+    // ─── Helpers ───
+    function setStatus(msg: string): void {
+      statusEl.textContent = msg;
+    }
+
+    function escapeHtml(str: string): string {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // ─── Add hover cursor to all admin elements ───
+    function addHoverCursors(): void {
+      document.querySelectorAll("[data-admin]").forEach((rawEl) => {
+        (rawEl as HTMLElement).classList.add("admin-hoverable");
+      });
+      document.querySelectorAll("section[data-section]").forEach((rawSection) => {
+        const section = rawSection as HTMLElement;
+        section.style.cursor = editMode ? "default" : "";
+      });
+    }
+
+    // ─── Initialize ───
+    loadEdits();
+    applyAllEdits();
+    addHoverCursors();
+
+    // Re-apply hover cursors after mutating
+    const observer = new MutationObserver(() => addHoverCursors());
+    observer.observe(pageContent, { childList: true, subtree: true });
+
+    // Apply section min-heights from edits
+    document.querySelectorAll("section[data-section-id]").forEach((rawSection) => {
+      const section = rawSection as HTMLElement;
+      const sid = section.dataset.sectionId;
+      if (sid && edits[sid]?.minHeight) {
+        section.style.minHeight = edits[sid].minHeight!;
+      }
+    });
+
+    setStatus("Ready");
+  })();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ABOUT PAGE CSS (mirrors about/index.astro styles)
+     ═══════════════════════════════════════════════════════════ -->
+<style>
+  .about-heading {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .about-sub {
+    font-family: "Jersey 25", monospace;
+  }
+  .about-brand {
+    font-family: "Monofett", monospace;
+    font-size: 1.15em;
+  }
+  .about-intro {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--lab-text);
+    max-width: 620px;
+    line-height: 1.6;
+  }
+  .section-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 1rem;
+  }
+  .about-story .lab-heading-accent {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .about-story .section-heading {
+    font-size: clamp(1.875rem, 3.75vw, 2.4375rem);
+    margin-bottom: 1.5rem;
+  }
+  .story-text {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1.35rem, 2.25vw, 1.575rem);
+    color: var(--lab-text);
+    line-height: 1.6;
+    max-width: 780px;
+    margin-bottom: 1.5rem;
+  }
+  .story-text:last-child {
+    margin-bottom: 0;
+  }
+  .approach-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .approach-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  .approach-card {
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.12));
+    border-left: 3px solid var(--lab-accent, #e89050);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+  .approach-step {
+    font-family: "Monofett", monospace;
+    font-size: 1.6rem;
+    color: var(--lab-accent, #e89050);
+    opacity: 0.35;
+    line-height: 1;
+  }
+  .approach-card-title {
+    font-family: "Jersey 25", monospace;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--lab-accent, #e89050);
+    margin: 0;
+  }
+  .approach-card-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.9rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .trust-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .trust-card {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.08));
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+  .trust-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .trust-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .trust-label {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--lab-heading, #e0d0ff);
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+  .trust-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.85rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .cta-inner {
+    text-align: center;
+  }
+  .cta-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.5rem;
+  }
+  .cta-text {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    color: var(--lab-text-muted, #706888);
+    max-width: 450px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.5;
+  }
+</style>
