@@ -235,13 +235,11 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   </div>
 </BaseLayout>
 
-<!-- ═══ Moveable CDN ═══ -->
-<script is:inline src="https://cdn.jsdelivr.net/npm/moveable@0.61.0/dist/moveable.min.js"></script>
-
 <!-- ═══ Admin JS ═══ -->
 <script>
   /* eslint-disable @typescript-eslint/ban-ts-comment */
   // @ts-nocheck
+  import Moveable from "moveable/dist/moveable.esm.js";
   (function () {
     const LS_KEY = "mad-labs-about-v2";
 
@@ -314,39 +312,38 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         throttleResize: 0,
         renderDirections: isSection ? ["s"] : ["n", "s", "e", "w", "nw", "ne", "sw", "se"],
         edge: true,
-        // Snappable
         snappable: false,
+      });
 
-        onDragStart: function () {
-          status("Dragging " + id);
-        },
-        onDrag: function (e) {
-          const x = ((edits[id] && edits[id].x) || 0) + e.delta[0];
-          const y = ((edits[id] && edits[id].y) || 0) + e.delta[1];
-          if (!edits[id]) edits[id] = {};
-          edits[id].x = Math.round(x);
-          edits[id].y = Math.round(y);
-          el.style.transform = "translate(" + edits[id].x + "px, " + edits[id].y + "px)";
-        },
-        onDragEnd: function () {
-          status("Moved " + id);
-        },
-
-        onResizeStart: function () {
-          status("Resizing " + id);
-        },
-        onResize: function (e) {
-          if (!edits[id]) edits[id] = {};
-          edits[id].w = Math.round(e.width) + "px";
-          edits[id].h = Math.round(e.height) + "px";
-          el.style.setProperty("width", edits[id].w, "important");
-          el.style.setProperty("height", edits[id].h, "important");
-          el.style.transform =
-            "translate(" + (edits[id].x || 0) + "px, " + (edits[id].y || 0) + "px)";
-        },
-        onResizeEnd: function () {
-          status("Resized " + id);
-        },
+      // Use .on() event API — tested reliably in Moveable v0.53.0
+      moveable.on("dragStart", () => {
+        status("Dragging " + id);
+      });
+      moveable.on("drag", (e) => {
+        const x = ((edits[id] && edits[id].x) || 0) + e.delta[0];
+        const y = ((edits[id] && edits[id].y) || 0) + e.delta[1];
+        if (!edits[id]) edits[id] = {};
+        edits[id].x = Math.round(x);
+        edits[id].y = Math.round(y);
+        el.style.transform = "translate(" + edits[id].x + "px, " + edits[id].y + "px)";
+      });
+      moveable.on("dragEnd", () => {
+        status("Moved " + id);
+      });
+      moveable.on("resizeStart", () => {
+        status("Resizing " + id);
+      });
+      moveable.on("resize", (e) => {
+        if (!edits[id]) edits[id] = {};
+        edits[id].w = Math.round(e.width) + "px";
+        edits[id].h = Math.round(e.height) + "px";
+        el.style.setProperty("width", edits[id].w, "important");
+        el.style.setProperty("height", edits[id].h, "important");
+        el.style.transform =
+          "translate(" + (edits[id].x || 0) + "px, " + (edits[id].y || 0) + "px)";
+      });
+      moveable.on("resizeEnd", () => {
+        status("Resized " + id);
       });
     }
 
@@ -360,6 +357,8 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         status("Click a card or section");
         return;
       }
+      // Don't re-create Moveable for already-selected element
+      if (el === selected) return;
       select(el);
     });
 
@@ -589,6 +588,8 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   [data-admin-card] {
     min-width: 100px !important;
     min-height: 60px !important;
+    justify-self: start !important;
+    align-self: start !important;
   }
   [data-admin-section] {
     min-height: 80px !important;
