@@ -1,0 +1,596 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AboutMementoWall from "../../components/AboutMementoWall.astro";
+---
+
+<BaseLayout title="About Admin">
+  <!-- ═══ Editor Toolbar ═══ -->
+  <div
+    id="editor-toolbar"
+    style="position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;background:#0a0618;border-bottom:2px solid #e89050;padding:6px 16px;font-family:system-ui,sans-serif"
+  >
+    <span style="color:#e89050;font-weight:700;font-size:13px">About Page Editor</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button
+        id="btn-save"
+        style="background:#1a0e30;border:1px solid #4a3d6a;border-radius:4px;color:#b0a8c8;padding:4px 14px;font-size:12px;cursor:pointer"
+        >Save</button
+      >
+      <button
+        id="btn-export"
+        style="background:#1a0e30;border:1px solid #4a3d6a;border-radius:4px;color:#b0a8c8;padding:4px 14px;font-size:12px;cursor:pointer"
+        >Export JSON</button
+      >
+      <button
+        id="btn-reset-all"
+        style="background:#1a0e30;border:1px solid #662020;border-radius:4px;color:#cc5555;padding:4px 14px;font-size:12px;cursor:pointer"
+        >Reset All</button
+      >
+      <button
+        id="btn-reset-el"
+        style="background:#1a0e30;border:1px solid #cc8800;border-radius:4px;color:#cc8800;padding:4px 14px;font-size:12px;cursor:pointer"
+        >Reset Selected</button
+      >
+      <span id="editor-status" style="color:#706888;font-size:11px;margin-left:8px"
+        >Click a card or section</span
+      >
+    </div>
+  </div>
+
+  <!-- ═══ About Page Content (with admin IDs) ═══ -->
+  <div id="editor-page" style="padding-top:42px">
+    <!-- Hero -->
+    <section class="about-hero lab-section" data-admin-section="sec-hero">
+      <div class="lab-section-inner-wide">
+        <span class="lab-heading-accent">The Lab</span>
+        <h1 class="about-heading">
+          <span class="about-sub">About</span>
+          <span class="about-brand">MAD LABS</span>
+        </h1>
+        <p class="about-intro">
+          MAD LABS is an independent computer repair and mobile IT diagnostics lab. We fix devices
+          that others have given up on — with transparency, skill, and a genuine love for the work.
+        </p>
+      </div>
+    </section>
+
+    <!-- Story -->
+    <section class="about-story lab-section-alt" data-admin-section="sec-story">
+      <div class="lab-section-inner">
+        <span class="lab-heading-accent">Origin</span>
+        <h2 class="section-heading">The Story</h2>
+        <p class="story-text">
+          MAD LABS started the same way most good repair shops do: a pile of broken laptops, a deep
+          curiosity about how things work, and frustration with an industry that often recommends
+          replacement over repair. What began as fixing friends' and family's computers grew into a
+          full diagnostic lab serving home users, small businesses, and creative professionals.
+        </p>
+        <p class="story-text">
+          Every device tells a story. A photographer's workstation with years of edits. A small
+          business's accounting machine running on borrowed time. A student's only laptop. We treat
+          each one with the same care: find the real problem, explain it clearly, and fix it right.
+        </p>
+      </div>
+    </section>
+
+    <!-- Approach (3 cards) -->
+    <section class="about-approach lab-section" data-admin-section="sec-approach">
+      <div class="lab-section-inner">
+        <span class="lab-heading-accent">Approach</span>
+        <h2 class="section-heading">How We Work</h2>
+        <div class="approach-grid" id="approach-grid">
+          <div class="approach-card" data-admin-card="card-approach-1">
+            <span class="approach-step" aria-hidden="true">01</span>
+            <h3 class="approach-card-title">Diagnose First</h3>
+            <p class="approach-card-text">
+              Every repair starts with a full diagnostic. We run hardware and software tests to find
+              the root cause — not just treat the symptoms.
+            </p>
+          </div>
+          <div class="approach-card" data-admin-card="card-approach-2">
+            <span class="approach-step" aria-hidden="true">02</span>
+            <h3 class="approach-card-title">Explain Clearly</h3>
+            <p class="approach-card-text">
+              We tell you what's wrong, why it matters, and what your options are. No jargon, no
+              upselling, no surprises.
+            </p>
+          </div>
+          <div class="approach-card" data-admin-card="card-approach-3">
+            <span class="approach-step" aria-hidden="true">03</span>
+            <h3 class="approach-card-title">Fix with Care</h3>
+            <p class="approach-card-text">
+              With your approval, we perform the repair using quality components and proven
+              techniques. Every device is tested before it goes home.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust (5 cards) -->
+    <section class="about-trust lab-section-alt" data-admin-section="sec-trust">
+      <div class="lab-section-inner">
+        <span class="lab-heading-accent">Trust</span>
+        <h2 class="section-heading">Why People Trust MAD LABS</h2>
+        <div class="trust-grid" id="trust-grid">
+          <div class="trust-card" data-admin-card="card-trust-1">
+            <span class="trust-icon" aria-hidden="true"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M10 2.5 3 5.5v5c0 5 3.5 8.5 7 9.5 3.5-1 7-4.5 7-9.5v-5l-7-3Z"></path></svg
+              ></span
+            >
+            <div>
+              <strong class="trust-label">Years of hands-on experience</strong><p
+                class="trust-text"
+              >
+                with PCs, Macs, phones, tablets, and networking — across major brands and operating
+                systems.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin-card="card-trust-2">
+            <span class="trust-icon" aria-hidden="true"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><circle cx="10" cy="10" r="7.5"></circle><path d="M7 10.5 9 12.5 13 7.5"
+                ></path></svg
+              ></span
+            >
+            <div>
+              <strong class="trust-label">Diagnostic-first approach</strong><p class="trust-text">
+                means we find the real problem instead of guessing and replacing parts.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin-card="card-trust-3">
+            <span class="trust-icon" aria-hidden="true"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"><path d="M3 10h14"></path><path d="M10 3v14"></path></svg
+              ></span
+            >
+            <div>
+              <strong class="trust-label">Transparent pricing</strong><p class="trust-text">
+                — we quote the work before we start, and never add hidden fees.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin-card="card-trust-4">
+            <span class="trust-icon" aria-hidden="true"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><circle cx="10" cy="10" r="7.5"></circle><path d="M10 6v4.5l3 1.5"></path></svg
+              ></span
+            >
+            <div>
+              <strong class="trust-label">Same-day service</strong><p class="trust-text">
+                on most common repairs. We know you can't be without your device.
+              </p>
+            </div>
+          </div>
+          <div class="trust-card" data-admin-card="card-trust-5">
+            <span class="trust-icon" aria-hidden="true"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="#00e676"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><rect x="3" y="7" width="14" height="11" rx="1.5"></rect><path
+                  d="M6.5 7V5a3.5 3.5 0 0 1 7 0v2"></path></svg
+              ></span
+            >
+            <div>
+              <strong class="trust-label">No data compromises</strong><p class="trust-text">
+                — your privacy and data security are built into every step of our process.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Memento Wall -->
+    <section class="wall-section lab-section" data-admin-section="sec-wall">
+      <AboutMementoWall />
+    </section>
+
+    <!-- CTA -->
+    <section class="about-cta lab-section" data-admin-section="sec-cta">
+      <div class="lab-section-inner cta-inner">
+        <span class="lab-heading-accent">Next Steps</span>
+        <h2 class="cta-heading">Have a device that needs attention?</h2>
+        <p class="cta-text">
+          Tell us what's going on and we'll recommend the next steps — no charge, no commitment.
+        </p>
+        <a href="/contact/" class="lab-button">Contact MAD LABS</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<!-- ═══ Moveable CDN ═══ -->
+<script src="https://cdn.jsdelivr.net/npm/moveable@0.61.0/dist/moveable.min.js"></script>
+
+<!-- ═══ Admin JS ═══ -->
+<script>
+  /* eslint-disable @typescript-eslint/ban-ts-comment */
+  // @ts-nocheck
+  (function () {
+    const LS_KEY = "mad-labs-about-v2";
+
+    let moveable = null;
+    let selected = null;
+    let edits = {};
+
+    function load() {
+      try {
+        const r = localStorage.getItem(LS_KEY);
+        if (r) edits = JSON.parse(r);
+      } catch {
+        /* ignore parse errors */
+      }
+    }
+    function save() {
+      localStorage.setItem(LS_KEY, JSON.stringify(edits));
+    }
+
+    function applySaved() {
+      Object.entries(edits).forEach(function (_a) {
+        const id = _a[0],
+        p = _a[1];
+        const el = document.querySelector(
+        '[data-admin-card="' + id + '"], [data-admin-section="' + id + '"]',
+      );
+        if (!el) return;
+        if (p.w) el.style.setProperty("width", p.w, "important");
+        if (p.h) el.style.setProperty("height", p.h, "important");
+        if (p.x !== undefined || p.y !== undefined) {
+          el.style.transform = "translate(" + (p.x || 0) + "px, " + (p.y || 0) + "px)";
+        }
+      });
+    }
+
+    function status(msg) {
+      document.getElementById("editor-status").textContent = msg;
+    }
+
+    function detach() {
+      if (moveable) {
+        moveable.destroy();
+        moveable = null;
+      }
+      if (selected) {
+        selected.style.outline = "";
+        selected.style.outlineOffset = "";
+        selected = null;
+      }
+    }
+
+    function select(el) {
+      detach();
+      selected = el;
+      el.style.outline = "2px solid #e89050";
+      el.style.outlineOffset = "3px";
+
+      const id = el.dataset.adminCard || el.dataset.adminSection;
+      const isCard = !!el.dataset.adminCard;
+      const isSection = !!el.dataset.adminSection;
+
+      status("Selected: " + id);
+
+      moveable = new Moveable(document.body, {
+        target: el,
+        draggable: isCard,
+        resizable: true,
+        keepRatio: false,
+        throttleDrag: 0,
+        throttleResize: 0,
+        renderDirections: isSection ? ["s"] : ["n", "s", "e", "w", "nw", "ne", "sw", "se"],
+        edge: true,
+        // Snappable
+        snappable: false,
+
+        onDragStart: function () {
+          status("Dragging " + id);
+        },
+        onDrag: function (e) {
+          const x = ((edits[id] && edits[id].x) || 0) + e.delta[0];
+          const y = ((edits[id] && edits[id].y) || 0) + e.delta[1];
+          if (!edits[id]) edits[id] = {};
+          edits[id].x = Math.round(x);
+          edits[id].y = Math.round(y);
+          el.style.transform = "translate(" + edits[id].x + "px, " + edits[id].y + "px)";
+        },
+        onDragEnd: function () {
+          status("Moved " + id);
+        },
+
+        onResizeStart: function () {
+          status("Resizing " + id);
+        },
+        onResize: function (e) {
+          if (!edits[id]) edits[id] = {};
+          edits[id].w = Math.round(e.width) + "px";
+          edits[id].h = Math.round(e.height) + "px";
+          el.style.setProperty("width", edits[id].w, "important");
+          el.style.setProperty("height", edits[id].h, "important");
+          el.style.transform =
+            "translate(" + (edits[id].x || 0) + "px, " + (edits[id].y || 0) + "px)";
+        },
+        onResizeEnd: function () {
+          status("Resized " + id);
+        },
+      });
+    }
+
+    // Click to select
+    document.getElementById("editor-page").addEventListener("click", function (e) {
+      const card = e.target.closest("[data-admin-card]");
+      const section = e.target.closest("[data-admin-section]");
+      const el = card || section;
+      if (!el) {
+        detach();
+        status("Click a card or section");
+        return;
+      }
+      select(el);
+    });
+
+    // Esc to deselect
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        detach();
+        status("Click a card or section");
+      }
+    });
+
+    // Save
+    document.getElementById("btn-save").addEventListener("click", function () {
+      save();
+      status("Saved to localStorage");
+      setTimeout(function () {
+        status(
+          selected
+            ? "Selected: " + (selected.dataset.adminCard || selected.dataset.adminSection)
+            : "Click a card or section",
+        );
+      }, 1500);
+    });
+
+    // Export
+    document.getElementById("btn-export").addEventListener("click", function () {
+      save();
+      navigator.clipboard.writeText(JSON.stringify(edits, null, 2)).then(function () {
+        status("JSON copied");
+      });
+    });
+
+    // Reset All
+    document.getElementById("btn-reset-all").addEventListener("click", function () {
+      if (!confirm("Reset ALL edits?")) return;
+      localStorage.removeItem(LS_KEY);
+      location.reload();
+    });
+
+    // Reset Selected
+    document.getElementById("btn-reset-el").addEventListener("click", function () {
+      if (!selected) return;
+      const id = selected.dataset.adminCard || selected.dataset.adminSection;
+      if (!confirm('Reset "' + id + '" to defaults?')) return;
+      delete edits[id];
+      selected.style.removeProperty("width");
+      selected.style.removeProperty("height");
+      selected.style.removeProperty("transform");
+      detach();
+      save();
+      status("Reset: " + id);
+    });
+
+    // Init
+    load();
+    applySaved();
+  })();
+</script>
+
+<!-- ═══ About Page CSS (mirrors about/index.astro) ═══ -->
+<style>
+  .about-heading {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .about-sub {
+    font-family: "Jersey 25", monospace;
+  }
+  .about-brand {
+    font-family: "Monofett", monospace;
+    font-size: 1.15em;
+  }
+  .about-intro {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--lab-text);
+    max-width: 620px;
+    line-height: 1.6;
+  }
+  .section-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 1rem;
+  }
+  .about-story .lab-heading-accent {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .about-story .section-heading {
+    font-size: clamp(1.875rem, 3.75vw, 2.4375rem);
+    margin-bottom: 1.5rem;
+  }
+  .story-text {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1.35rem, 2.25vw, 1.575rem);
+    color: var(--lab-text);
+    line-height: 1.6;
+    max-width: 780px;
+    margin-bottom: 1.5rem;
+  }
+  .story-text:last-child {
+    margin-bottom: 0;
+  }
+  .approach-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .approach-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  .approach-card {
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.12));
+    border-left: 3px solid var(--lab-accent, #e89050);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+  .approach-step {
+    font-family: "Monofett", monospace;
+    font-size: 1.6rem;
+    color: var(--lab-accent, #e89050);
+    opacity: 0.35;
+    line-height: 1;
+  }
+  .approach-card-title {
+    font-family: "Jersey 25", monospace;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--lab-accent, #e89050);
+    margin: 0;
+  }
+  .approach-card-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.9rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .trust-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .trust-card {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.08));
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+  .trust-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .trust-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .trust-label {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--lab-heading, #e0d0ff);
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+  .trust-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.85rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .cta-inner {
+    text-align: center;
+  }
+  .cta-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.5rem;
+  }
+  .cta-text {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    color: var(--lab-text-muted, #706888);
+    max-width: 450px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.5;
+  }
+
+  /* ═══ Editor: allow cards/sections to be resized beyond grid/flex constraints ═══ */
+  [data-admin-card],
+  [data-admin-section] {
+    cursor: pointer;
+    transition: outline 0.1s;
+    position: relative;
+  }
+  [data-admin-card]:hover,
+  [data-admin-section]:hover {
+    outline: 1px dashed rgba(232, 144, 80, 0.35);
+    outline-offset: 2px;
+  }
+  /* Override grid/flex so explicit dimensions win */
+  [data-admin-card] {
+    min-width: 100px !important;
+    min-height: 60px !important;
+  }
+  [data-admin-section] {
+    min-height: 80px !important;
+  }
+</style>
