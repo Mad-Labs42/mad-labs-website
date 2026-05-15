@@ -1,6 +1,7 @@
 export interface Memento {
   id: string;
   type: "polaroid" | "certificate" | "postit" | "sticker" | "card" | "badge";
+  frameMode?: "raw"; // "raw" = render image directly without card/polaroid wrapper
   title?: string;
   body?: string;
   image?: string;
@@ -229,6 +230,7 @@ export const mementos: Memento[] = [
   {
     id: "wifi-gremlin",
     type: "polaroid",
+    frameMode: "raw",
     title: "Wi-Fi Gremlin Caught on Camera",
     body: "Located behind the break room microwave. Relocated to a server closet in Kentucky. The signal has been stable ever since.",
     image: "/Images/network-gremlin-polaroid.png",

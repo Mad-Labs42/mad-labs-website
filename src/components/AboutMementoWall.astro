@@ -18,7 +18,11 @@ const defaultsJson = JSON.stringify(getDefaultLayout());
               data-id={m.id}
               style={`--x:${m.x};--y:${m.y};--w:${m.w};--r:${m.rotate};--z:${m.z}`}
             >
-              {m.type === "polaroid" && (
+              {m.type === "polaroid" && m.frameMode === "raw" && m.image && (
+                <img class="raw-polaroid-img" src={m.image} alt={m.alt || ""} loading="lazy" />
+              )}
+
+              {m.type === "polaroid" && m.frameMode !== "raw" && (
                 <div class="polaroid" role="img" aria-label={m.alt || m.title || ""}>
                   <div class="polaroid-photo">
                     {m.image ? (
@@ -623,6 +627,17 @@ const defaultsJson = JSON.stringify(getDefaultLayout());
   }
 
   /* ═══════════════════════════════════════
+     RAW POLAROID (source image already IS a polaroid)
+     ═══════════════════════════════════════ */
+  .raw-polaroid-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.18)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.3))
+      drop-shadow(0 12px 40px rgba(0, 0, 0, 0.12));
+  }
+
+  /* ═══════════════════════════════════════
      CERTIFICATE
      ═══════════════════════════════════════ */
   .cert-frame {
@@ -1049,7 +1064,8 @@ const defaultsJson = JSON.stringify(getDefaultLayout());
   .wall-item:hover .postit-img-wrap,
   .wall-item:hover .sticker-img-wrap,
   .wall-item:hover .sticker,
-  .wall-item:hover .badge-wrap {
+  .wall-item:hover .badge-wrap,
+  .wall-item:hover .raw-polaroid-img {
     filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.5));
   }
 
