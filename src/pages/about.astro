@@ -1,36 +1,33 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import AboutMementoWall from "../components/AboutMementoWall.astro";
 ---
 
 <BaseLayout title="About">
-  <section class="lab-section">
-    <div class="lab-section-inner">
+  <!-- ─── Hero / The Lab ─── -->
+  <section class="about-hero lab-section">
+    <div class="lab-section-inner-wide">
       <span class="lab-heading-accent">The Lab</span>
-      <h1 class="lab-heading" style="font-size:clamp(1.75rem,4vw,2.75rem); margin-bottom:0.75rem;">
-        About MAD LABS
-      </h1>
-      <p
-        style="font-size:clamp(1rem,2vw,1.2rem); color:var(--lab-text); line-height:1.6; max-width:600px;"
-      >
+      <h1 class="about-heading"><span class="about-sub">About</span> <span class="about-brand">MAD LABS</span></h1>
+      <p class="about-intro">
         MAD LABS is an independent computer repair and mobile IT diagnostics lab. We fix devices
         that others have given up on — with transparency, skill, and a genuine love for the work.
       </p>
     </div>
   </section>
 
-  <section class="lab-section-alt">
+  <!-- ─── Origin / The Story ─── -->
+  <section class="about-story lab-section-alt">
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Origin</span>
-      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:1rem;">
-        The Story
-      </h2>
-      <p class="lab-text" style="line-height:1.7; margin-bottom:1rem;">
+      <h2 class="section-heading">The Story</h2>
+      <p class="story-text">
         MAD LABS started the same way most good repair shops do: a pile of broken laptops, a deep
         curiosity about how things work, and frustration with an industry that often recommends
         replacement over repair. What began as fixing friends' and family's computers grew into a
         full diagnostic lab serving home users, small businesses, and creative professionals.
       </p>
-      <p class="lab-text" style="line-height:1.7;">
+      <p class="story-text">
         Every device tells a story. A photographer's workstation with years of edits. A small
         business's accounting machine running on borrowed time. A student's only laptop. We treat
         each one with the same care: find the real problem, explain it clearly, and fix it right.
@@ -38,42 +35,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section class="lab-section">
+  <!-- ─── Approach / How We Work ─── -->
+  <section class="about-approach lab-section">
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Approach</span>
-      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:1.5rem;">
-        How We Work
-      </h2>
-      <div style="display:grid; grid-template-columns:1fr; gap:1.5rem;">
-        <div
-          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.5rem;"
-        >
-          <h3 style="color:var(--lab-accent); font-size:1.05rem; margin-bottom:0.3rem;">
-            Diagnose First
-          </h3>
-          <p class="lab-text">
+      <h2 class="section-heading">How We Work</h2>
+      <div class="approach-grid">
+        <div class="approach-card">
+          <span class="approach-step" aria-hidden="true">01</span>
+          <h3 class="approach-card-title">Diagnose First</h3>
+          <p class="approach-card-text">
             Every repair starts with a full diagnostic. We run hardware and software tests to find
             the root cause — not just treat the symptoms.
           </p>
         </div>
-        <div
-          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.5rem;"
-        >
-          <h3 style="color:var(--lab-accent); font-size:1.05rem; margin-bottom:0.3rem;">
-            Explain Clearly
-          </h3>
-          <p class="lab-text">
+        <div class="approach-card">
+          <span class="approach-step" aria-hidden="true">02</span>
+          <h3 class="approach-card-title">Explain Clearly</h3>
+          <p class="approach-card-text">
             We tell you what's wrong, why it matters, and what your options are. No jargon, no
             upselling, no surprises.
           </p>
         </div>
-        <div
-          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.5rem;"
-        >
-          <h3 style="color:var(--lab-accent); font-size:1.05rem; margin-bottom:0.3rem;">
-            Fix with Care
-          </h3>
-          <p class="lab-text">
+        <div class="approach-card">
+          <span class="approach-step" aria-hidden="true">03</span>
+          <h3 class="approach-card-title">Fix with Care</h3>
+          <p class="approach-card-text">
             With your approval, we perform the repair using quality components and proven
             techniques. Every device is tested before it goes home.
           </p>
@@ -82,59 +69,311 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section class="lab-section-alt">
+  <!-- ─── Trust / Why People Trust MAD LABS ─── -->
+  <section class="about-trust lab-section-alt">
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Trust</span>
-      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:1rem;">
-        Why People Trust MAD LABS
-      </h2>
-      <ul
-        style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem;"
-      >
-        <li
-          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
-        >
-          <strong style="color:var(--lab-heading);">Years of hands-on experience</strong> with PCs, Macs,
-          phones, tablets, and networking — across every major brand and operating system.
-        </li>
-        <li
-          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
-        >
-          <strong style="color:var(--lab-heading);">Diagnostic-first approach</strong> means we find the
-          real problem instead of guessing and replacing parts.
-        </li>
-        <li
-          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
-        >
-          <strong style="color:var(--lab-heading);">Transparent pricing</strong> — we quote the work before
-          we start, and never add hidden fees.
-        </li>
-        <li
-          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
-        >
-          <strong style="color:var(--lab-heading);">Same-day service</strong> on most common repairs.
-          We know you can't be without your device.
-        </li>
-        <li
-          style="padding-left:1.5rem; position:relative; color:var(--lab-text); line-height:1.55;"
-        >
-          <strong style="color:var(--lab-heading);">No data compromises</strong> — your privacy and data
-          security are built into every step of our process.
-        </li>
-      </ul>
+      <h2 class="section-heading">Why People Trust MAD LABS</h2>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="#00e676"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path d="M10 2.5 3 5.5v5c0 5 3.5 8.5 7 9.5 3.5-1 7-4.5 7-9.5v-5l-7-3Z"></path></svg
+            >
+          </span>
+          <div>
+            <strong class="trust-label">Years of hands-on experience</strong>
+            <p class="trust-text">
+              with PCs, Macs, phones, tablets, and networking — across major brands and operating
+              systems.
+            </p>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="#00e676"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><circle cx="10" cy="10" r="7.5"></circle><path d="M7 10.5 9 12.5 13 7.5"></path></svg
+            >
+          </span>
+          <div>
+            <strong class="trust-label">Diagnostic-first approach</strong>
+            <p class="trust-text">
+              means we find the real problem instead of guessing and replacing parts.
+            </p>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="#00e676"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="M3 10h14"></path><path d="M10 3v14"></path></svg
+            >
+          </span>
+          <div>
+            <strong class="trust-label">Transparent pricing</strong>
+            <p class="trust-text">
+              — we quote the work before we start, and never add hidden fees.
+            </p>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="#00e676"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><circle cx="10" cy="10" r="7.5"></circle><path d="M10 6v4.5l3 1.5"></path></svg
+            >
+          </span>
+          <div>
+            <strong class="trust-label">Same-day service</strong>
+            <p class="trust-text">
+              on most common repairs. We know you can't be without your device.
+            </p>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="#00e676"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><rect x="3" y="7" width="14" height="11" rx="1.5"></rect><path
+                d="M6.5 7V5a3.5 3.5 0 0 1 7 0v2"></path></svg
+            >
+          </span>
+          <div>
+            <strong class="trust-label">No data compromises</strong>
+            <p class="trust-text">
+              — your privacy and data security are built into every step of our process.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="lab-section">
-    <div class="lab-section-inner" style="text-align:center;">
+  <!-- ─── Memento Wall ─── -->
+  <AboutMementoWall />
+
+  <!-- ─── Next Steps / CTA ─── -->
+  <section class="about-cta lab-section">
+    <div class="lab-section-inner cta-inner">
       <span class="lab-heading-accent">Next Steps</span>
-      <h2 class="lab-heading" style="font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem;">
-        Have a device that needs attention?
-      </h2>
-      <p class="lab-text-muted" style="max-width:450px; margin:0 auto 1.5rem;">
+      <h2 class="cta-heading">Have a device that needs attention?</h2>
+      <p class="cta-text">
         Tell us what's going on and we'll recommend the next steps — no charge, no commitment.
       </p>
       <a href="/contact/" class="lab-button">Contact MAD LABS</a>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* ─── Typography ─── */
+  .about-heading {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .about-sub {
+    font-family: "Jersey 25", monospace;
+  }
+
+  .about-brand {
+    font-family: "Monofett", monospace;
+    font-size: 1.15em;
+  }
+
+  .about-intro {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--lab-text);
+    max-width: 620px;
+    line-height: 1.6;
+  }
+
+  .section-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 1rem;
+  }
+
+  /* ─── Story section ─── */
+  .about-story .lab-heading-accent {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-story .section-heading {
+    font-size: clamp(1.875rem, 3.75vw, 2.4375rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .story-text {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1.35rem, 2.25vw, 1.575rem);
+    color: var(--lab-text);
+    line-height: 1.6;
+    max-width: 780px;
+    margin-bottom: 1.5rem;
+  }
+
+  .story-text:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ─── Approach grid ─── */
+  .approach-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .approach-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .approach-card {
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.12));
+    border-left: 3px solid var(--lab-accent, #e89050);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .approach-step {
+    font-family: "Monofett", monospace;
+    font-size: 1.6rem;
+    color: var(--lab-accent, #e89050);
+    opacity: 0.35;
+    line-height: 1;
+  }
+
+  .approach-card-title {
+    font-family: "Jersey 25", monospace;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--lab-accent, #e89050);
+    margin: 0;
+  }
+
+  .approach-card-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.9rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ─── Trust grid ─── */
+  .trust-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .trust-card {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background: var(--lab-card, #131325);
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.08));
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .trust-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trust-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .trust-label {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--lab-heading, #e0d0ff);
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  .trust-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.85rem;
+    color: var(--lab-text, #b0b0c8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ─── CTA ─── */
+  .cta-inner {
+    text-align: center;
+  }
+
+  .cta-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-text {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    color: var(--lab-text-muted, #706888);
+    max-width: 450px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.5;
+  }
+</style>

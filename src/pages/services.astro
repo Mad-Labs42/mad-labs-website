@@ -8,8 +8,8 @@ import { services } from "../data/services";
 <BaseLayout title="Services">
   <section class="page-header lab-section">
     <div class="lab-section-inner-wide">
-      <span class="lab-heading-accent">What We Fix</span>
-      <h1>Services</h1>
+      <span class="lab-heading-accent">What We Do</span>
+      <h1 class="page-heading">Services</h1>
       <p class="header-intro">
         Every repair starts with a full diagnostic. We find the real problem, explain it clearly,
         and only proceed with your approval.
@@ -27,9 +27,73 @@ import { services } from "../data/services";
               shortDescription={s.shortDescription}
               bullets={s.bullets}
               icon={s.icon}
+              pricing={s.pricing}
             />
           ))
         }
+      </div>
+
+      <!-- Trust strip -->
+      <div class="trust-strip" aria-label="Our service promise">
+        <p class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="#e89050"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3.5l2 1.5"></path></svg
+            >
+          </span>
+          Full diagnostic first
+        </p>
+        <p class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="#e89050"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="M4 8.5 6.5 11 12 5.5"></path></svg
+            >
+          </span>
+          Clear quote before work
+        </p>
+        <p class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="#e89050"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"></line></svg
+            >
+          </span>
+          No upsells — just what you need
+        </p>
+        <p class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="#e89050"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path d="M8 2.5 2 5.5v3c0 4.2 2.5 7.5 6 8.5 3.5-1 6-4.3 6-8.5v-3L8 2.5Z"></path><path
+                d="m6 8 1.5 1.5 3-3"></path></svg
+            >
+          </span>
+          Senior &amp; veteran discount
+        </p>
       </div>
     </div>
   </section>
@@ -44,11 +108,13 @@ import { services } from "../data/services";
     <div class="lab-section-inner" style="text-align:center;">
       <span class="lab-heading-accent">Next Steps</span>
       <h2
-        style="color:var(--lab-heading); font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem;"
+        style="color:var(--lab-heading); font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem; font-family:'Early GameBoy','Jersey 25',monospace;"
       >
         Not sure what you need?
       </h2>
-      <p style="color:var(--lab-text-muted); max-width:500px; margin:0 auto 1.5rem;">
+      <p
+        style="color:var(--lab-text-muted); max-width:500px; margin:0 auto 1.5rem; font-family:'Jersey 25',monospace;"
+      >
         Describe your issue and we'll recommend the right service — no commitment, no pressure.
       </p>
       <a href="/contact/" class="lab-button">Contact us for a diagnostic quote</a>
@@ -57,21 +123,61 @@ import { services } from "../data/services";
 </BaseLayout>
 
 <style>
-  .page-header h1 {
+  .page-heading {
+    font-family: "Monofett", monospace;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 400;
     color: var(--lab-heading);
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 700;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
   }
 
   .header-intro {
-    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     color: var(--lab-text);
     max-width: 600px;
     line-height: 1.5;
   }
 
+  /* ─── Diagnostic flair ─── */
+  .services-grid-section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .services-grid-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      /* Faint grid lines — diagnostic equipment feel */
+      linear-gradient(rgba(232, 144, 80, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Subtle radial overlay — CRT/oscilloscope vignette */
+  .services-grid-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      ellipse at 50% 30%,
+      transparent 30%,
+      rgba(232, 144, 80, 0.025) 60%,
+      transparent 80%
+    );
+  }
+
   .services-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -80,6 +186,62 @@ import { services } from "../data/services";
   @media (min-width: 640px) {
     .services-grid {
       grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .services-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ─── Trust strip ─── */
+  .trust-strip {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: 2rem;
+    padding: 1.25rem 1rem;
+    border-top: 1px solid var(--lab-border, rgba(232, 144, 80, 0.1));
+  }
+
+  .trust-item {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.9rem;
+    color: var(--lab-text-muted, #706888);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .trust-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trust-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  @media (max-width: 480px) {
+    .trust-strip {
+      gap: 0.5rem 1.25rem;
+      padding: 1rem 0.5rem;
+    }
+
+    .trust-item {
+      font-size: 0.8rem;
     }
   }
 </style>

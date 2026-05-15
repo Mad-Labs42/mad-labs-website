@@ -1,0 +1,1173 @@
+---
+import { mementos, getDefaultLayout } from "../data/aboutMementos";
+const defaultsJson = JSON.stringify(getDefaultLayout());
+---
+
+<section class="wall-section lab-section" aria-label="MAD LABS memory wall">
+  <div class="lab-section-inner-wide">
+    <span class="lab-heading-accent">The Wall</span>
+    <h2 class="wall-heading">Lab Mementos</h2>
+    <p class="wall-subtitle">Every bench tells a story. These are a few of ours.</p>
+
+    <div class="corkboard-panel">
+      <div class="wall-stage" id="memento-stage">
+        {
+          mementos.map((m) => (
+            <div
+              class={`wall-item wall-item--${m.type}${m.className ? " " + m.className : ""}`}
+              data-id={m.id}
+              style={`--x:${m.x};--y:${m.y};--w:${m.w};--r:${m.rotate};--z:${m.z}`}
+            >
+              {m.type === "polaroid" && (
+                <div class="polaroid" role="img" aria-label={m.alt || m.title || ""}>
+                  <div class="polaroid-photo">
+                    {m.image ? (
+                      <img class="polaroid-img" src={m.image} alt="" loading="lazy" />
+                    ) : (
+                      <div class="polaroid-placeholder" aria-hidden="true">
+                        <span class="polaroid-placeholder-icon">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <circle cx="16" cy="16" r="12" />
+                            <path d="M16 10v6l4 2" />
+                          </svg>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div class="polaroid-footer">
+                    {m.title && <span class="polaroid-label">{m.title}</span>}
+                    {m.body && <p class="polaroid-body">{m.body}</p>}
+                  </div>
+                </div>
+              )}
+
+              {m.type === "certificate" &&
+                (m.image ? (
+                  <div class="cert-frame" role="img" aria-label={m.alt || m.title || ""}>
+                    <img class="cert-img" src={m.image} alt="" loading="lazy" />
+                  </div>
+                ) : (
+                  <div class="certificate">
+                    <div class="cert-ribbon" aria-hidden="true">
+                      &#9733;
+                    </div>
+                    <span class="cert-badge">CERTIFICATE</span>
+                    {m.title && <span class="cert-title">{m.title}</span>}
+                    {m.body && <p class="cert-body">{m.body}</p>}
+                    <div class="cert-seal" aria-hidden="true">
+                      &#10003;
+                    </div>
+                  </div>
+                ))}
+
+              {m.type === "sticker" &&
+                (m.image ? (
+                  <div class="sticker-img-wrap" role="img" aria-label={m.alt || m.title || ""}>
+                    <img class="sticker-img" src={m.image} alt="" loading="lazy" />
+                  </div>
+                ) : (
+                  <div class="sticker">
+                    {m.title && <span class="sticker-title">{m.title}</span>}
+                    {m.body && <span class="sticker-body">{m.body}</span>}
+                  </div>
+                ))}
+
+              {m.type === "postit" &&
+                (m.image ? (
+                  <div class="postit-img-wrap" role="img" aria-label={m.alt || ""}>
+                    <img class="postit-img" src={m.image} alt="" loading="lazy" />
+                  </div>
+                ) : (
+                  <div class="postit">
+                    {m.body && (
+                      <p class="postit-text">
+                        {m.body.split("\n").map((line) => (
+                          <>
+                            {line}
+                            <br />
+                          </>
+                        ))}
+                      </p>
+                    )}
+                  </div>
+                ))}
+
+              {m.type === "card" && (
+                <div
+                  class={`specimen-card ${m.className || ""}`}
+                  role="img"
+                  aria-label={m.alt || ""}
+                >
+                  <div class="specimen-header">
+                    <span class="specimen-dot" aria-hidden="true" />
+                    <span class="specimen-type">SPECIMEN</span>
+                    <span class="specimen-dot" aria-hidden="true" />
+                  </div>
+                  {m.image && (
+                    <div class="specimen-image-area">
+                      <img class="specimen-card-img" src={m.image} alt="" loading="lazy" />
+                    </div>
+                  )}
+                  {m.title && <span class="specimen-title">{m.title}</span>}
+                  {m.body && (
+                    <div class="specimen-body">
+                      {m.body.split("\n").map((line) => (
+                        <>
+                          {line}
+                          <br />
+                        </>
+                      ))}
+                    </div>
+                  )}
+                  <div class="specimen-footer" aria-hidden="true">
+                    <span class="specimen-pin">&#9679;</span>
+                    <span class="specimen-ref">MAD-LABS-REF</span>
+                    <span class="specimen-pin">&#9679;</span>
+                  </div>
+                </div>
+              )}
+
+              {m.type === "badge" && (
+                <div class="badge-wrap" role="img" aria-label={m.alt || ""}>
+                  <div class="badge-lanyard" aria-hidden="true">
+                    <div class="lanyard-left" />
+                    <div class="lanyard-right" />
+                  </div>
+                  <div class="badge-card">
+                    {m.image && <img class="badge-img" src={m.image} alt="" loading="lazy" />}
+                    <div class="badge-info">
+                      {m.title && <span class="badge-title">{m.title}</span>}
+                      {m.body && <span class="badge-body">{m.body}</span>}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ isDev: import.meta.env.DEV }} is:inline data-defaults={defaultsJson}>
+  (() => {
+    if (!isDev || !location.search.includes("mementoEdit=1")) {
+      return;
+    }
+
+    const LS_KEY = "madlabs:memento-wall-draft-layout";
+    const stage = document.getElementById("memento-stage");
+    if (!stage) return;
+
+    const items = stage.querySelectorAll(".wall-item");
+    const defaultLayout = JSON.parse(document.currentScript?.getAttribute("data-defaults") || "[]");
+    let selected = null;
+
+    // Load layout from localStorage or use defaults
+    function loadLayout() {
+      let layout;
+      try {
+        layout = JSON.parse(localStorage.getItem(LS_KEY));
+      } catch {
+        /* ignore */
+      }
+      if (!layout) layout = defaultLayout;
+      applyLayout(layout);
+    }
+
+    function applyLayout(layout) {
+      items.forEach((el) => {
+        const id = el.dataset.id;
+        const entry = layout.find((l) => l.id === id);
+        if (!entry) return;
+        el.style.setProperty("--x", entry.x);
+        el.style.setProperty("--y", entry.y);
+        el.style.setProperty("--w", entry.w);
+        el.style.setProperty("--r", entry.r);
+        el.style.setProperty("--z", entry.z);
+      });
+    }
+
+    function getCurrentLayout() {
+      const arr = [];
+      items.forEach((el) => {
+        arr.push({
+          id: el.dataset.id,
+          x: parseFloat(el.style.getPropertyValue("--x")),
+          y: parseFloat(el.style.getPropertyValue("--y")),
+          w: parseFloat(el.style.getPropertyValue("--w")),
+          r: parseFloat(el.style.getPropertyValue("--r")),
+          z: parseInt(el.style.getPropertyValue("--z"), 10),
+        });
+      });
+      return arr;
+    }
+
+    function saveLayout() {
+      localStorage.setItem(LS_KEY, JSON.stringify(getCurrentLayout()));
+    }
+
+    function selectItem(el) {
+      if (selected) selected.classList.remove("memento-selected");
+      selected = el;
+      if (el) {
+        el.classList.add("memento-selected");
+        updatePanel();
+      }
+    }
+
+    // ── Editor Panel ──
+    const panel = document.createElement("div");
+    panel.id = "memento-editor";
+    panel.innerHTML = `
+    <div class="editor-header">
+      <strong>Memento Editor</strong>
+      <button id="editor-toggle" style="background:none;border:none;color:#e89050;cursor:pointer;font-size:1rem;">−</button>
+    </div>
+    <div id="editor-body">
+      <div id="editor-selected">No item selected</div>
+      <div class="editor-row"><label>X%</label><input id="inp-x" type="number" step="0.1"></div>
+      <div class="editor-row"><label>Y%</label><input id="inp-y" type="number" step="0.1"></div>
+      <div class="editor-row"><label>W%</label><input id="inp-w" type="number" step="0.1"></div>
+      <div class="editor-row"><label>Rot</label><input id="inp-r" type="number" step="0.25"></div>
+      <div class="editor-row"><label>Z</label><input id="inp-z" type="number" step="1"></div>
+      <div class="editor-actions">
+        <button id="btn-copy">Copy Layout</button>
+        <button id="btn-reset">Reset</button>
+      </div>
+      <details class="editor-help">
+        <summary>Shortcuts</summary>
+        <small>Arrows: move 0.5% · Shift+Arrow: 2% · Alt+Arrow: 0.1%<br>
+        [ ]: rotate ±1° · Shift+[ ]: ±5°<br>
+        - =: resize ±0.5% · Shift+-=: ±2%<br>
+        PgUp/PgDn: z +1/-1</small>
+      </details>
+    </div>
+  `;
+    Object.assign(panel.style, {
+      position: "fixed",
+      bottom: "16px",
+      left: "16px",
+      zIndex: "9999",
+      background: "#1a0e30",
+      border: "1px solid #e89050",
+      borderRadius: "8px",
+      padding: "12px",
+      fontFamily: "monospace",
+      fontSize: "13px",
+      color: "#d0bcf4",
+      maxWidth: "260px",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+    });
+    document.body.appendChild(panel);
+
+    const body = panel.querySelector("#editor-body");
+    const toggle = panel.querySelector("#editor-toggle");
+    toggle.addEventListener("click", () => {
+      const hidden = body.style.display === "none";
+      body.style.display = hidden ? "" : "none";
+      toggle.textContent = hidden ? "−" : "+";
+    });
+
+    function updatePanel() {
+      const info = document.getElementById("editor-selected");
+      if (!selected) {
+        info.textContent = "No item selected";
+        return;
+      }
+      const id = selected.dataset.id;
+      const x = selected.style.getPropertyValue("--x");
+      const y = selected.style.getPropertyValue("--y");
+      const w = selected.style.getPropertyValue("--w");
+      const r = selected.style.getPropertyValue("--r");
+      const z = selected.style.getPropertyValue("--z");
+      info.textContent = id;
+      document.getElementById("inp-x").value = parseFloat(x).toFixed(1);
+      document.getElementById("inp-y").value = parseFloat(y).toFixed(1);
+      document.getElementById("inp-w").value = parseFloat(w).toFixed(1);
+      document.getElementById("inp-r").value = parseFloat(r).toFixed(1);
+      document.getElementById("inp-z").value = parseInt(z, 10);
+    }
+
+    function applyToSelected(prop, val) {
+      if (!selected) return;
+      selected.style.setProperty(prop, val);
+      updatePanel();
+      saveLayout();
+    }
+
+    // Input change handlers
+    ["x", "y", "w", "r", "z"].forEach((p) => {
+      document.getElementById(`inp-${p}`).addEventListener("input", function () {
+        if (!selected) return;
+        selected.style.setProperty(`--${p}`, parseFloat(this.value) || 0);
+        saveLayout();
+      });
+    });
+
+    // ── Selection via clicking ──
+    items.forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectItem(el);
+      });
+    });
+    document.addEventListener("click", () => selectItem(null));
+
+    // ── Pointer dragging ──
+    let drag = null;
+    items.forEach((el) => {
+      el.addEventListener("pointerdown", (e) => {
+        if (e.target.closest(".badge-lanyard")) return;
+        selectItem(el);
+        drag = {
+          el,
+          startX: e.clientX,
+          startY: e.clientY,
+          origX: parseFloat(el.style.getPropertyValue("--x")),
+          origY: parseFloat(el.style.getPropertyValue("--y")),
+        };
+        el.setPointerCapture(e.pointerId);
+        el.style.cursor = "grabbing";
+        e.preventDefault();
+      });
+    });
+
+    document.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const stageRect = stage.getBoundingClientRect();
+      const dx = ((e.clientX - drag.startX) / stageRect.width) * 100;
+      const dy = ((e.clientY - drag.startY) / stageRect.height) * 100;
+      const newX = Math.max(0, Math.min(100, drag.origX + dx));
+      const newY = Math.max(0, Math.min(100, drag.origY + dy));
+      drag.el.style.setProperty("--x", newX.toFixed(1));
+      drag.el.style.setProperty("--y", newY.toFixed(1));
+      updatePanel();
+    });
+
+    document.addEventListener("pointerup", () => {
+      if (drag) {
+        drag.el.style.cursor = "";
+        saveLayout();
+        drag = null;
+      }
+    });
+
+    // ── Keyboard ──
+    document.addEventListener("keydown", (e) => {
+      if (!selected) return;
+      if (e.target.tagName === "INPUT") return;
+      const step = e.shiftKey ? 2 : e.altKey ? 0.1 : 0.5;
+      const rotStep = e.shiftKey ? 5 : 1;
+      const sizeStep = e.shiftKey ? 2 : 0.5;
+
+      switch (e.key) {
+        case "ArrowLeft":
+          applyToSelected(
+            "--x",
+            Math.max(0, parseFloat(selected.style.getPropertyValue("--x")) - step),
+          );
+          e.preventDefault();
+          break;
+        case "ArrowRight":
+          applyToSelected(
+            "--x",
+            Math.min(100, parseFloat(selected.style.getPropertyValue("--x")) + step),
+          );
+          e.preventDefault();
+          break;
+        case "ArrowUp":
+          applyToSelected(
+            "--y",
+            Math.max(0, parseFloat(selected.style.getPropertyValue("--y")) - step),
+          );
+          e.preventDefault();
+          break;
+        case "ArrowDown":
+          applyToSelected(
+            "--y",
+            Math.min(100, parseFloat(selected.style.getPropertyValue("--y")) + step),
+          );
+          e.preventDefault();
+          break;
+        case "[":
+          applyToSelected("--r", parseFloat(selected.style.getPropertyValue("--r")) - rotStep);
+          e.preventDefault();
+          break;
+        case "]":
+          applyToSelected("--r", parseFloat(selected.style.getPropertyValue("--r")) + rotStep);
+          e.preventDefault();
+          break;
+        case "-":
+          applyToSelected(
+            "--w",
+            Math.max(2, parseFloat(selected.style.getPropertyValue("--w")) - sizeStep),
+          );
+          e.preventDefault();
+          break;
+        case "=":
+          applyToSelected(
+            "--w",
+            Math.min(60, parseFloat(selected.style.getPropertyValue("--w")) + sizeStep),
+          );
+          e.preventDefault();
+          break;
+        case "PageUp":
+          applyToSelected("--z", (parseInt(selected.style.getPropertyValue("--z"), 10) || 0) + 1);
+          e.preventDefault();
+          break;
+        case "PageDown":
+          applyToSelected(
+            "--z",
+            Math.max(1, (parseInt(selected.style.getPropertyValue("--z"), 10) || 0) - 1),
+          );
+          e.preventDefault();
+          break;
+      }
+    });
+
+    // ── Copy ──
+    document.getElementById("btn-copy").addEventListener("click", () => {
+      const layout = getCurrentLayout();
+      const json = JSON.stringify(layout, null, 2);
+      navigator.clipboard.writeText(json).then(() => {
+        const btn = document.getElementById("btn-copy");
+        btn.textContent = "Copied!";
+        setTimeout(() => {
+          btn.textContent = "Copy Layout";
+        }, 2000);
+      });
+      console.log("=== Memento Layout Export ===");
+      console.log(json);
+    });
+
+    // ── Reset ──
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      localStorage.removeItem(LS_KEY);
+      applyLayout(defaultLayout);
+      selectItem(null);
+    });
+
+    // ── Init ──
+    loadLayout();
+
+    // Prevent text selection while dragging
+    stage.addEventListener("selectstart", (e) => {
+      if (drag) e.preventDefault();
+    });
+  })();
+</script>
+
+<style>
+  /* ═══════════════════════════════════════
+     SECTION HEADERS
+     ═══════════════════════════════════════ */
+  .wall-heading {
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    color: var(--lab-heading);
+    margin-bottom: 0.25rem;
+  }
+
+  .wall-subtitle {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    color: var(--lab-text-muted);
+    margin-bottom: 2rem;
+    max-width: 480px;
+  }
+
+  /* ═══════════════════════════════════════
+     CORKBOARD PANEL
+     ═══════════════════════════════════════ */
+  .wall-section {
+    position: relative;
+    overflow: visible;
+  }
+
+  .corkboard-panel {
+    position: relative;
+    margin-top: 1.5rem;
+    /* Extend cork surface beyond parent for visual impact */
+    margin-left: -48px;
+    margin-right: -48px;
+    /* Push wall-stage inward inside the cork area of the image.
+       The bulletin-board-use-this.png has a ~4% wood frame on each side (L/R)
+       and ~6% on top/bottom. These padding values ensure all memento items
+       (which span ~0–99% of wall-stage) sit well within the cork area. */
+    padding: 5% 5%;
+    /* Real bulletin board image — replaces the former CSS corkboard */
+    background: url("/Images/bulletin-board-use-this.png") no-repeat center / 100% 100%;
+    z-index: 0;
+  }
+
+  /* ═══════════════════════════════════════
+     WALL STAGE
+     ═══════════════════════════════════════ */
+  .wall-stage {
+    position: relative;
+    width: min(100%, 1320px);
+    min-height: clamp(700px, 80vw, 1100px);
+    margin: 0 auto;
+  }
+
+  .wall-item {
+    position: absolute;
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    width: calc(var(--w) * 1%);
+    transform: rotate(calc(var(--r) * 1deg));
+    z-index: var(--z);
+    transition:
+      filter 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .wall-item:hover {
+    z-index: 20 !important;
+    filter: brightness(1.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wall-item {
+      transition: none;
+    }
+  }
+
+  /* ═══════════════════════════════════════
+     POLAROID
+     ═══════════════════════════════════════ */
+  .polaroid {
+    background: #f2ede4;
+    padding: 9px 9px 16px;
+    border-radius: 2px;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.18),
+      0 6px 20px rgba(0, 0, 0, 0.3),
+      0 12px 40px rgba(0, 0, 0, 0.12),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .polaroid-photo {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    background: #1a0e30;
+    border-radius: 1px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+
+  .polaroid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .polaroid-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a0e30 0%, #28184c 50%, #1a0e30 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .polaroid-placeholder-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--lab-accent, #e89050);
+    opacity: 0.5;
+  }
+
+  .polaroid-footer {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .polaroid-label {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.82rem;
+    color: #2a1e40;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .polaroid-body {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.7rem;
+    color: #4a3a60;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .memento--polaroid-flibbles .polaroid-label {
+    font-family: "Permanent Marker", "Jersey 25", cursive;
+    font-size: 0.85rem;
+    color: #1a1030;
+    letter-spacing: -0.01em;
+  }
+  .memento--polaroid-flibbles .polaroid-img {
+    filter: contrast(1.08) saturate(1.05) brightness(1.03);
+  }
+
+  /* ═══════════════════════════════════════
+     CERTIFICATE
+     ═══════════════════════════════════════ */
+  .cert-frame {
+    background: #faf6ee;
+    padding: 8px;
+    border-radius: 3px;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.18),
+      0 6px 20px rgba(0, 0, 0, 0.3),
+      0 12px 40px rgba(0, 0, 0, 0.12),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    display: flex;
+  }
+  .cert-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 1px;
+  }
+
+  .certificate {
+    background: #faf6ee;
+    border: 2px solid var(--lab-accent, #e89050);
+    border-radius: 4px;
+    padding: 1rem 0.9rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.18),
+      0 5px 16px rgba(0, 0, 0, 0.25),
+      0 10px 30px rgba(0, 0, 0, 0.1),
+      inset 0 0 20px rgba(232, 144, 80, 0.04);
+    margin: 0 auto;
+  }
+  .cert-ribbon {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4rem;
+    color: var(--lab-accent, #e89050);
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+  .cert-badge {
+    font-family: "Early GameBoy", monospace;
+    font-size: 0.65rem;
+    color: var(--lab-accent, #e89050);
+    letter-spacing: 0.2em;
+    margin-top: 0.25rem;
+  }
+  .cert-title {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.9rem;
+    color: #2a1e40;
+    font-weight: 600;
+    text-align: center;
+  }
+  .cert-body {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.7rem;
+    color: #4a3a60;
+    line-height: 1.45;
+    text-align: center;
+    margin: 0;
+  }
+  .cert-seal {
+    font-size: 1.2rem;
+    color: var(--crt-led-on, #00e676);
+    margin-top: 0.25rem;
+    filter: drop-shadow(0 0 4px rgba(0, 230, 118, 0.3));
+  }
+
+  /* ═══════════════════════════════════════
+     STICKER
+     ═══════════════════════════════════════ */
+  .sticker-img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+  }
+  .sticker-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .sticker {
+    background: radial-gradient(circle at 30% 30%, #2a1e40, #1a0e30);
+    border: 2px solid var(--lab-accent, #e89050);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.35),
+      0 0 20px rgba(232, 144, 80, 0.08);
+  }
+  .sticker-title {
+    font-family: "Monofett", monospace;
+    font-size: 1.1rem;
+    color: var(--lab-accent, #e89050);
+    text-align: center;
+    line-height: 1.1;
+    white-space: pre-line;
+  }
+  .sticker-body {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.65rem;
+    color: var(--lab-text-muted, #706888);
+    text-align: center;
+  }
+
+  .memento--sticker-ted .sticker-img-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+  }
+  .memento--sticker-ted .sticker-img {
+    border-radius: 10px;
+    display: block;
+  }
+
+  .memento--patch .sticker-img-wrap {
+    position: relative;
+  }
+  .memento--patch .sticker-img-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border: 2px dashed rgba(200, 200, 180, 0.45);
+    border-radius: 6px;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .memento--patch .sticker-img {
+    border-radius: 4px;
+    border: 1px solid rgba(200, 180, 150, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ═══════════════════════════════════════
+     POST-IT
+     ═══════════════════════════════════════ */
+  .postit {
+    background: linear-gradient(160deg, #fff3b0 0%, #fce47a 100%);
+    border-radius: 2px;
+    padding: 1rem 0.85rem;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 200, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .postit-text {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.8rem;
+    color: #3a3020;
+    line-height: 1.5;
+    margin: 0;
+    white-space: pre-line;
+  }
+  .postit-img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.35));
+  }
+  .postit-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  .memento--postit-list::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(
+      135deg,
+      transparent 40%,
+      rgba(0, 0, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0.15) 60%,
+      transparent 70%
+    );
+    border-radius: 0 0 3px 0;
+    z-index: 3;
+    pointer-events: none;
+    transform: rotate(-1deg);
+  }
+
+  /* ═══════════════════════════════════════
+     SPECIMEN CARD
+     ═══════════════════════════════════════ */
+  .specimen-card {
+    background: #f5f0e0;
+    border: 1px solid #d4ccb0;
+    border-radius: 3px;
+    padding: 1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.18),
+      0 5px 16px rgba(0, 0, 0, 0.25),
+      0 10px 30px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 245, 0.5);
+    position: relative;
+  }
+  .specimen-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.2rem;
+  }
+  .specimen-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--lab-accent, #e89050);
+    display: inline-block;
+  }
+  .specimen-type {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.7rem;
+    color: var(--lab-accent, #e89050);
+    letter-spacing: 0.2em;
+  }
+  .specimen-title {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.9rem;
+    color: #3a3020;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .specimen-body {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.7rem;
+    color: #5a5040;
+    line-height: 1.45;
+    text-align: center;
+    margin: 0.2rem 0;
+  }
+  .specimen-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+  }
+  .specimen-pin {
+    font-size: 0.5rem;
+    color: #cc3322;
+  }
+  .specimen-ref {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.5rem;
+    color: #8a8070;
+    letter-spacing: 0.12em;
+    display: none;
+  }
+  .specimen-image-area {
+    margin: 0.3rem 0 0.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 180px;
+    overflow: hidden;
+  }
+  .specimen-card-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 180px;
+    display: block;
+    border-radius: 2px;
+  }
+
+  .memento--card-artbell .specimen-image-area {
+    max-height: 220px;
+  }
+  .memento--card-artbell .specimen-card-img {
+    max-height: 220px;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  .memento--card-artbell .specimen-title {
+    color: #2a1830;
+    font-size: 0.85rem;
+  }
+  .memento--card-artbell .specimen-body {
+    color: #5a4560;
+  }
+  .memento--card-artbell .specimen-card {
+    background: #f0e8d8;
+    border-color: #c8b898;
+  }
+
+  .memento--card-sonic .specimen-image-area {
+    background: linear-gradient(180deg, #1a1028 0%, #2a1a40 100%);
+    border-radius: 2px;
+    padding: 0.3rem;
+  }
+  .memento--card-sonic .specimen-card-img {
+    mix-blend-mode: screen;
+  }
+
+  /* ═══════════════════════════════════════
+     BADGE
+     ═══════════════════════════════════════ */
+  .badge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  }
+  .badge-lanyard {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .lanyard-left,
+  .lanyard-right {
+    width: 12px;
+    height: 50px;
+    background: linear-gradient(180deg, #3060c0 0%, #4070d0 30%, #3060c0 60%, #2050b0 100%);
+    border-radius: 2px;
+    position: relative;
+  }
+  .lanyard-left::after,
+  .lanyard-right::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 8px;
+    background: #ccc;
+    border-radius: 1px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  .badge-card {
+    background: #f8f4f0;
+    border: 2px solid #cc4444;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.25),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .badge-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 30%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.06) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  .badge-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: saturate(0.92) contrast(0.95);
+  }
+  .badge-info {
+    padding: 0.4rem 0.5rem;
+    background: linear-gradient(180deg, #1a0e30, #28184c);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+  }
+  .badge-title {
+    font-family: "Early GameBoy", monospace;
+    font-size: 0.65rem;
+    color: #e89050;
+    letter-spacing: 0.15em;
+  }
+  .badge-body {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.55rem;
+    color: #9088a8;
+  }
+
+  /* ═══════════════════════════════════════
+     HOVER SHADOW
+     ═══════════════════════════════════════ */
+  .wall-item:hover .polaroid,
+  .wall-item:hover .cert-frame,
+  .wall-item:hover .certificate,
+  .wall-item:hover .specimen-card,
+  .wall-item:hover .postit,
+  .wall-item:hover .postit-img-wrap,
+  .wall-item:hover .sticker-img-wrap,
+  .wall-item:hover .sticker,
+  .wall-item:hover .badge-wrap {
+    filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.5));
+  }
+
+  /* ═══════════════════════════════════════
+     TAPE & PINS
+     ═══════════════════════════════════════ */
+  .memento--best-friend::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 50px;
+    height: 16px;
+    background: linear-gradient(
+      180deg,
+      rgba(200, 195, 175, 0.5) 0%,
+      rgba(220, 215, 195, 0.45) 50%,
+      rgba(200, 195, 175, 0.3) 100%
+    );
+    border-radius: 2px;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .memento--card-sonic::after,
+  .memento--card-artbell::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 35% 35%, #ff6944, #cc3322);
+    border-radius: 50%;
+    z-index: 3;
+    pointer-events: none;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  }
+
+  /* ═══════════════════════════════════════
+     EDITOR OVERRIDES
+     ═══════════════════════════════════════ */
+  .memento-selected {
+    outline: 2px solid #e89050;
+    outline-offset: 2px;
+  }
+
+  .editor-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+  }
+  .editor-row label {
+    width: 28px;
+    color: #9088a8;
+    font-size: 11px;
+  }
+  .editor-row input {
+    flex: 1;
+    background: #0e0820;
+    border: 1px solid #4a3d6a;
+    border-radius: 3px;
+    color: #f0eaff;
+    padding: 3px 6px;
+    font-family: monospace;
+    font-size: 12px;
+  }
+  .editor-row input:focus {
+    outline: none;
+    border-color: #e89050;
+  }
+
+  .editor-actions {
+    display: flex;
+    gap: 6px;
+    margin: 8px 0;
+  }
+  .editor-actions button {
+    flex: 1;
+    background: #362866;
+    border: 1px solid #e89050;
+    border-radius: 4px;
+    color: #e89050;
+    padding: 5px;
+    font-family: monospace;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .editor-actions button:hover {
+    background: #4a3d6a;
+  }
+
+  .editor-help summary {
+    cursor: pointer;
+    color: #706888;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  .editor-help small {
+    color: #504868;
+    font-size: 10px;
+    line-height: 1.5;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ═══════════════════════════════════════
+     MOBILE (≤900px) - hide wall section
+     ═══════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .wall-section {
+      display: none;
+    }
+  }
+</style>

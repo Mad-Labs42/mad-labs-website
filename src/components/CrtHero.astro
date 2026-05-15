@@ -297,7 +297,7 @@ import CrtDivider from "./CrtDivider.astro";
 
     let isPoweredOn = true;
     let introPaused = false;
-    let introWasActive = false;  // Was the intro running when overlay was shown?
+    let introWasActive = false; // Was the intro running when overlay was shown?
 
     const introSeenStorageKey = "madlabs:crt-hero-intro-seen";
 
@@ -551,9 +551,11 @@ import CrtDivider from "./CrtDivider.astro";
       confirmYesBtn.focus();
 
       // Pause the intro timeline if it's running
-      if (!crtHero.classList.contains("is-stable") &&
-          !crtHero.classList.contains("is-shutting-down") &&
-          !crtHero.classList.contains("is-powered-off")) {
+      if (
+        !crtHero.classList.contains("is-stable") &&
+        !crtHero.classList.contains("is-shutting-down") &&
+        !crtHero.classList.contains("is-powered-off")
+      ) {
         introWasActive = true;
         introPaused = true;
       }
@@ -641,15 +643,53 @@ import CrtDivider from "./CrtDivider.astro";
       const ctx = ensureAudioContext();
       if (!ctx || isMuted) return;
       try {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "square";
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        gain.gain.setValueAtTime(0.14, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.06);
+        const now = ctx.currentTime;
+
+        // --- Main clack: the switch actuation snap ---
+        const clickOsc = ctx.createOscillator();
+        const clickGain = ctx.createGain();
+        clickOsc.type = "triangle";
+        clickOsc.frequency.setValueAtTime(1100, now);
+        clickOsc.frequency.exponentialRampToValueAtTime(600, now + 0.03);
+        clickGain.gain.setValueAtTime(0, now);
+        clickGain.gain.linearRampToValueAtTime(0.16, now + 0.002);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+        clickOsc.connect(clickGain).connect(ctx.destination);
+        clickOsc.start(now);
+        clickOsc.stop(now + 0.04);
+
+        // --- Keycap resonance: filtered noise burst for tactile character ---
+        const bufferSize = Math.floor(ctx.sampleRate * 0.025);
+        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const noiseSrc = ctx.createBufferSource();
+        noiseSrc.buffer = noiseBuffer;
+        const noiseGain = ctx.createGain();
+        const noiseFilter = ctx.createBiquadFilter();
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.setValueAtTime(3800, now);
+        noiseFilter.Q.setValueAtTime(0.8, now);
+        noiseGain.gain.setValueAtTime(0, now);
+        noiseGain.gain.linearRampToValueAtTime(0.08, now + 0.001);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+        noiseSrc.connect(noiseFilter).connect(noiseGain).connect(ctx.destination);
+        noiseSrc.start(now);
+        noiseSrc.stop(now + 0.025);
+
+        // --- Subtle metallic shimmer for futuristic edge ---
+        const shimOsc = ctx.createOscillator();
+        const shimGain = ctx.createGain();
+        shimOsc.type = "sine";
+        shimOsc.frequency.setValueAtTime(4200, now);
+        shimGain.gain.setValueAtTime(0, now);
+        shimGain.gain.linearRampToValueAtTime(0.025, now + 0.001);
+        shimGain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
+        shimOsc.connect(shimGain).connect(ctx.destination);
+        shimOsc.start(now);
+        shimOsc.stop(now + 0.02);
       } catch {
         // Audio context may be in a broken state; safely skip
       }
@@ -708,8 +748,16 @@ import CrtDivider from "./CrtDivider.astro";
 
         // Disconnect after fade-out (don't keep the old nodes alive)
         window.setTimeout(() => {
-          try { osc1?.stop(); } catch { /* already stopped */ }
-          try { osc2?.stop(); } catch { /* already stopped */ }
+          try {
+            osc1?.stop();
+          } catch {
+            /* already stopped */
+          }
+          try {
+            osc2?.stop();
+          } catch {
+            /* already stopped */
+          }
           osc1?.disconnect();
           osc2?.disconnect();
           gain.disconnect();

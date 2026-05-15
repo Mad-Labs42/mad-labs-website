@@ -4,50 +4,140 @@ export interface Props {
   shortDescription: string;
   bullets: string[];
   icon: string;
+  pricing: string;
 }
 
-const { name, shortDescription, bullets, icon } = Astro.props;
+const { name, shortDescription, bullets, icon, pricing } = Astro.props;
+
+const icons: Record<string, string> = {
+  monitor:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="24" height="16" rx="1.5"/><line x1="6" y1="24" x2="22" y2="24"/><line x1="14" y1="19" x2="14" y2="24"/></svg>',
+  globe:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="11"/><ellipse cx="14" cy="14" rx="5" ry="11"/><line x1="3" y1="10" x2="25" y2="10"/><line x1="3" y1="18" x2="25" y2="18"/></svg>',
+  signal:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5a7 7 0 0 1 14 0"/><path d="M4 15a10 10 0 0 1 20 0"/><path d="M10 22a4 4 0 0 1 8 0"/><circle cx="14" cy="24" r="1"/></svg>',
+  chip: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="16" height="16" rx="1.5"/><line x1="11" y1="2" x2="11" y2="6"/><line x1="17" y1="2" x2="17" y2="6"/><line x1="11" y1="22" x2="11" y2="26"/><line x1="17" y1="22" x2="17" y2="26"/><line x1="2" y1="11" x2="6" y2="11"/><line x1="2" y1="17" x2="6" y2="17"/><line x1="22" y1="11" x2="26" y2="11"/><line x1="22" y1="17" x2="26" y2="17"/></svg>',
+  shield:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.5 4 6v6c0 6.5 4 11.5 10 13.5 6-2 10-7 10-13.5V6l-10-3.5Z"/><path d="m9.5 13.5 3 3 6-6"/></svg>',
+  bot: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="18" height="13" rx="2"/><rect x="10" y="12" width="3" height="2" rx="0.5"/><rect x="15" y="12" width="3" height="2" rx="0.5"/><line x1="12" y1="17" x2="16" y2="17"/><path d="M11 9V6a3 3 0 0 1 6 0v3"/><line x1="9" y1="22" x2="6" y2="25"/><line x1="19" y1="22" x2="22" y2="25"/></svg>',
+};
 ---
 
 <article class="service-card">
-  <div class="card-icon" aria-hidden="true">{icon}</div>
+  <div class="card-icon" aria-hidden="true" set:html={icons[icon] || ""} />
   <h3 class="card-title">{name}</h3>
   <p class="card-summary">{shortDescription}</p>
   <ul class="card-bullets">
     {bullets.map((b) => <li>{b}</li>)}
   </ul>
+  <p class="card-pricing">{pricing}</p>
 </article>
 
 <style>
   .service-card {
     background: var(--lab-card, #131325);
-    border: 1px solid var(--lab-border, rgba(0, 230, 118, 0.12));
+    border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.12));
     border-radius: 8px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
     transition:
-      border-color 0.2s,
-      box-shadow 0.2s;
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+    transform: translateY(0);
+    position: relative;
+    isolation: isolate;
   }
 
   .service-card:hover {
-    border-color: var(--lab-border-light, rgba(0, 230, 118, 0.25));
+    transform: translateY(-3px);
+    border-color: rgba(232, 144, 80, 0.35);
     box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.4),
-      0 0 30px rgba(0, 230, 118, 0.05);
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 0 24px rgba(232, 144, 80, 0.08);
+  }
+
+  .service-card:focus-within {
+    border-color: rgba(232, 144, 80, 0.45);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 0 28px rgba(232, 144, 80, 0.12);
+  }
+
+  /* Soft scan shimmer on hover */
+  .service-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(232, 144, 80, 0.035) 48%,
+      rgba(232, 144, 80, 0.07) 50%,
+      rgba(232, 144, 80, 0.035) 52%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .service-card:hover::after {
+    opacity: 1;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card {
+      transition: none;
+      transform: none;
+    }
+
+    .service-card::after {
+      display: none;
+    }
   }
 
   .card-icon {
-    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
     margin-bottom: 0.75rem;
     line-height: 1;
+    transition: filter 0.25s ease;
+  }
+
+  .card-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .service-card:hover .card-icon {
+    filter: drop-shadow(0 0 6px rgba(232, 144, 80, 0.35));
+  }
+
+  .service-card:focus-within .card-icon {
+    filter: drop-shadow(0 0 6px rgba(232, 144, 80, 0.35));
   }
 
   .card-title {
-    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-    font-weight: 600;
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+    font-weight: 400;
     color: var(--lab-heading, #e0d0ff);
     margin-bottom: 0.4rem;
     line-height: 1.3;
@@ -60,28 +150,50 @@ const { name, shortDescription, bullets, icon } = Astro.props;
     margin-bottom: 0.75rem;
   }
 
+  .card-summary,
+  .card-bullets li {
+    font-family: "Jersey 25", monospace;
+  }
+
   .card-bullets {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 0.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-  }
-
-  li::before {
-    content: ">";
-    color: var(--lab-accent);
-    opacity: 0.4;
-    margin-right: 0.4rem;
-    font-size: 0.75rem;
+    flex: 1;
   }
 
   .card-bullets li {
+    display: flex;
+    gap: 0.4rem;
+    align-items: flex-start;
     font-size: 0.85rem;
+    font-family: "Jersey 25", monospace;
     color: #9090a8;
     line-height: 1.45;
-    padding-left: 0;
-    position: relative;
+  }
+
+  .card-bullets li::before {
+    content: ">";
+    color: var(--lab-accent);
+    opacity: 0.4;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    width: 0.6rem;
+    text-align: center;
+    line-height: inherit;
+  }
+
+  .card-pricing {
+    font-family: "Jersey 25", monospace;
+    font-size: 0.95rem;
+    color: var(--crt-led-on, #00e676);
+    -webkit-text-stroke: 0.5px #000;
+    text-shadow: 0 0 5px rgba(0, 230, 118, 0.18);
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--lab-border, rgba(232, 144, 80, 0.12));
   }
 </style>

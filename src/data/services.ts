@@ -4,59 +4,93 @@ export interface Service {
   shortDescription: string;
   bullets: string[];
   icon: string;
+  pricing: string;
 }
 
 export const services: Service[] = [
   {
     id: "computer-repair",
-    name: "Computer Repair",
+    name: "Computer Repair & Tune-Ups",
     shortDescription:
-      "Desktop and laptop repairs using modern diagnostic tools and quality replacement parts.",
+      "Desktop and laptop diagnostics, repairs, and performance optimization for home and small business.",
     bullets: [
-      "Screen and keyboard replacement for all major brands",
-      "Data recovery from failed or corrupted drives",
-      "SSD upgrades and memory expansion",
-      "Thermal paste renewal, fan cleaning, and hardware diagnostics",
+      "Full system diagnostics with clear findings and no guesswork",
+      "Virus and malware removal with preventive hardening",
+      "SSD upgrades, memory expansion, and thermal maintenance",
+      "Performance tuning for gaming, office, and creative workflows",
     ],
-    icon: "💻",
+    icon: "monitor",
+    pricing: "Diagnostics start at $45",
   },
   {
-    id: "mobile-it",
-    name: "Mobile IT",
+    id: "small-business-websites",
+    name: "Small Business Websites",
     shortDescription:
-      "Phone and tablet service for common issues, plus mobile device management for small teams.",
+      "Custom websites built for Cincinnati small businesses — fast, modern, mobile-friendly, and easy to maintain.",
     bullets: [
-      "Screen and battery replacement for phones and tablets",
-      "Charging port repair and camera module fixes",
-      "Data transfer between old and new devices",
-      "Mobile device management for business fleets",
+      "Simple marketing sites and online presence setup",
+      "Contact forms, service pages, and local business basics",
+      "Optional AI chatbot setup for common customer questions",
+      "Launch support, domain/DNS help, and ongoing website care available",
+      "No page builders. No bloated templates. Clean code.",
     ],
-    icon: "📱",
+    icon: "globe",
+    pricing: "Websites start at $1,500",
   },
   {
-    id: "diagnostics-tuning",
-    name: "Diagnostics & Tuning",
+    id: "wifi-network-setup",
+    name: "Wi-Fi, Network & Device Setup",
     shortDescription:
-      "Performance audits, malware removal, and system optimization to extend device life.",
+      "Reliable home office and small business networking — from Wi-Fi optimization to full device configuration.",
     bullets: [
-      "Full system health audit with detailed report",
-      "Malware and virus removal with preventive hardening",
-      "Operating system reinstallation and driver updates",
-      "Performance tuning for gaming, design, and office workflows",
-    ],
-    icon: "🔧",
-  },
-  {
-    id: "network-setup",
-    name: "Network & Setup",
-    shortDescription:
-      "Home office and small business networking — from WiFi optimization to complete infrastructure setup.",
-    bullets: [
-      "Home office WiFi optimization and mesh network setup",
+      "Wi-Fi troubleshooting, optimization, and mesh network setup",
       "Printer, scanner, and peripheral configuration",
-      "Small business network design and VLAN setup",
-      "Secure remote access and VPN configuration",
+      "Router, modem, and extender installation",
+      "Smart-home device setup and connection support",
     ],
-    icon: "🌐",
+    icon: "signal",
+    pricing: "Wi-Fi help starts at $105",
+  },
+  {
+    id: "hardware-upgrades",
+    name: "Hardware Upgrades & Custom PCs",
+    shortDescription:
+      "Upgrade your existing machine or have a custom PC built to your exact specifications.",
+    bullets: [
+      "RAM, SSD, GPU, and processor upgrades for desktops and laptops",
+      "Custom gaming PC builds tailored to your budget and games",
+      "Home server and NAS setup for backups and media",
+      "Thermal repaste, fan upgrades, and deep cleaning",
+    ],
+    icon: "chip",
+    pricing: "Contact us for a quote",
+  },
+  {
+    id: "security-backup",
+    name: "Security & Backup",
+    shortDescription:
+      "Protect your data and devices with straightforward security audits and reliable backup solutions.",
+    bullets: [
+      "Full security checkup — passwords, updates, and vulnerable software",
+      "Automated backup setup for documents, photos, and important files",
+      "Basic cybersecurity hardening for home and small office",
+      "Parental controls, monitoring, and safe browsing setup",
+    ],
+    icon: "shield",
+    pricing: "Security checkups start at $95",
+  },
+  {
+    id: "ai-smart-tech",
+    name: "AI & Smart Tech Help",
+    shortDescription:
+      "Practical AI setup and smart-home configuration for homeowners and very small businesses.",
+    bullets: [
+      "AI assistant setup — ChatGPT, voice assistants, and automation tools",
+      "Smart-home device installation and integration",
+      "Light workflow automation for repetitive tasks",
+      "Website chatbot setup for customer inquiries",
+    ],
+    icon: "bot",
+    pricing: "Consultations start at $95",
   },
 ];
