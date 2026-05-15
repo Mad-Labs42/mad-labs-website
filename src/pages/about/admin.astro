@@ -632,7 +632,7 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     cursor: grab;
     user-select: none;
     resize: both;
-    overflow: clip;
+    overflow: auto;
     min-width: 120px;
     min-height: 60px;
   }
@@ -772,8 +772,8 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       if (props.font !== undefined) el.style.fontFamily = `"${props.font}", monospace`;
       if (props.fontSize !== undefined) el.style.fontSize = props.fontSize;
       if (props.color !== undefined) el.style.color = props.color;
-      if (props.width !== undefined) el.style.width = props.width;
-      if (props.height !== undefined) el.style.height = props.height;
+      if (props.width !== undefined) el.style.setProperty("width", props.width, "important");
+      if (props.height !== undefined) el.style.setProperty("height", props.height, "important");
       if (props.minHeight !== undefined) el.style.minHeight = props.minHeight;
       if (props.padding !== undefined) el.style.padding = props.padding;
       if (props.x !== undefined || props.y !== undefined) {
@@ -1237,6 +1237,20 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       initCardHandlers();
     });
     observer.observe(pageContent, { childList: true, subtree: true });
+
+    // Persist native card resize changes (CSS resize:both handle)
+    document.querySelectorAll('[data-type="card"]').forEach((rawCard) => {
+      const card = rawCard as HTMLElement;
+      new ResizeObserver(() => {
+        const id = card.dataset.admin;
+        if (!id) return;
+        const w = card.style.width || getComputedStyle(card).width;
+        const h = card.style.height || getComputedStyle(card).height;
+        if (!edits[id]) edits[id] = {};
+        edits[id].width = w;
+        edits[id].height = h;
+      }).observe(card);
+    });
 
     // Apply section min-heights from edits
     document.querySelectorAll("section[data-section-id]").forEach((rawSection) => {
