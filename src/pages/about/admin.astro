@@ -47,6 +47,14 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
           <span class="legend-val">Select a section to resize it</span>
         </div>
         <div class="legend-item">
+          <span class="legend-key">Drag card</span>
+          <span class="legend-val">Click & drag any card to reposition it</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Corner ▿</span>
+          <span class="legend-val">Drag the orange corner triangle on any card to resize</span>
+        </div>
+        <div class="legend-item">
           <span class="legend-key">Drag ▬</span>
           <span class="legend-val">Drag the bottom handle of a selected section to resize</span>
         </div>
@@ -590,6 +598,55 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     outline-offset: 1px;
   }
 
+  /* ─── Card drag & resize ─── */
+  [data-type="card"] {
+    position: relative;
+    cursor: grab;
+    user-select: none;
+  }
+  [data-type="card"]:active {
+    cursor: grabbing;
+  }
+  [data-type="card"].admin-dragging {
+    cursor: grabbing;
+    z-index: 50;
+    opacity: 0.9;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+  .admin-card-handle {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 24px;
+    height: 24px;
+    cursor: nwse-resize;
+    z-index: 5;
+    background: #e89050;
+    border: 2px solid #f0eaff;
+    border-radius: 0 0 6px 0;
+    opacity: 0.8;
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+    pointer-events: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+  .admin-card-handle:hover {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  .admin-card-handle::after {
+    content: "↘";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0e0820;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+  }
+
   /* ─── Section resize handles ─── */
   .admin-section-handle {
     display: none;
@@ -597,31 +654,34 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 8px;
+    width: 180px;
+    height: 14px;
     background: #8c50f0;
-    border-radius: 0 0 2px 2px;
+    border: 2px solid #f0eaff;
+    border-radius: 4px 4px 0 0;
     cursor: ns-resize;
     z-index: 10;
-    opacity: 0.8;
+    opacity: 0.9;
     transition:
       opacity 0.15s,
       width 0.15s;
+    box-shadow: 0 -2px 12px rgba(140, 80, 240, 0.4);
   }
   .admin-section-handle:hover {
     opacity: 1;
-    width: 160px;
+    width: 220px;
   }
   .admin-section-handle::after {
-    content: "";
+    content: "⬍ drag to resize section";
     position: absolute;
-    top: 2px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 4px;
-    background: #f0eaff;
-    border-radius: 2px;
+    transform: translate(-50%, -50%);
+    color: #f0eaff;
+    font-size: 9px;
+    font-weight: bold;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
   }
   section[data-section] {
     position: relative;
@@ -644,8 +704,11 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       font?: string;
       fontSize?: string;
       width?: string;
+      height?: string;
       padding?: string;
       minHeight?: string;
+      x?: number;
+      y?: number;
     }
 
     // ─── State ───
@@ -656,6 +719,17 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     let resizeStartY = 0;
     let resizeStartH = 0;
     let edits: Record<string, EditProps> = {};
+
+    // ─── Card drag & resize state ───
+    let cardDragging: HTMLElement | null = null;
+    let cardDragStartX = 0;
+    let cardDragStartY = 0;
+    let cardResizing: HTMLElement | null = null;
+    let cardResizeStartW = 0;
+    let cardResizeStartH = 0;
+    let cardResizeStartMX = 0;
+    let cardResizeStartMY = 0;
+    const boundCards = new WeakSet<HTMLElement>();
 
     // ─── DOM refs ───
     const getEl = (id: string): HTMLElement => document.getElementById(id)!;
@@ -703,8 +777,12 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       if (props.font !== undefined) el.style.fontFamily = `"${props.font}", monospace`;
       if (props.fontSize !== undefined) el.style.fontSize = props.fontSize;
       if (props.width !== undefined) el.style.width = props.width;
+      if (props.height !== undefined) el.style.height = props.height;
       if (props.minHeight !== undefined) el.style.minHeight = props.minHeight;
       if (props.padding !== undefined) el.style.padding = props.padding;
+      if (props.x !== undefined || props.y !== undefined) {
+        el.style.transform = `translate(${props.x || 0}px, ${props.y || 0}px)`;
+      }
     }
 
     // ─── Get element style (computed, not inline) ───
@@ -768,10 +846,17 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
 
       if (type === "card") {
         const currentW = existing.width || getComputedStyle(el).width;
+        const currentH = existing.height || getComputedStyle(el).height;
         html += `<div class="admin-section-label">Card Dimensions</div>`;
-        html += `<div class="admin-field">
-          <label>Width <span class="admin-field-unit">${currentW}</span></label>
-          <input type="text" value="${existing.width || ""}" placeholder="${currentW}" data-field="width">
+        html += `<div class="admin-field-row">
+          <div class="admin-field">
+            <label>Width <span class="admin-field-unit">${currentW}</span></label>
+            <input type="text" value="${existing.width || ""}" placeholder="${currentW}" data-field="width">
+          </div>
+          <div class="admin-field">
+            <label>Height <span class="admin-field-unit">${currentH}</span></label>
+            <input type="text" value="${existing.height || ""}" placeholder="${currentH}" data-field="height">
+          </div>
         </div>`;
       }
 
@@ -780,6 +865,19 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         html += `<div class="admin-field">
           <label>Padding <span class="admin-field-unit">${currentP}</span></label>
           <input type="text" value="${existing.padding || ""}" placeholder="${currentP}" data-field="padding">
+        </div>`;
+        const currentX = existing.x !== undefined ? existing.x : 0;
+        const currentY = existing.y !== undefined ? existing.y : 0;
+        html += `<div class="admin-section-label">Position</div>`;
+        html += `<div class="admin-field-row">
+          <div class="admin-field">
+            <label>X <span class="admin-field-unit">${currentX}px</span></label>
+            <input type="text" value="${existing.x !== undefined ? existing.x : ""}" placeholder="0" data-field="x">
+          </div>
+          <div class="admin-field">
+            <label>Y <span class="admin-field-unit">${currentY}px</span></label>
+            <input type="text" value="${existing.y !== undefined ? existing.y : ""}" placeholder="0" data-field="y">
+          </div>
         </div>`;
       }
 
@@ -798,24 +896,35 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       // Attach listeners
       panelBody.querySelectorAll("[data-field]").forEach((rawInput) => {
         const input = rawInput as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        input.addEventListener("input", () => {
+        const isTextField =
+          input.tagName === "TEXTAREA" ||
+          (input.tagName === "INPUT" && (input as HTMLInputElement).type === "text");
+        const eventType = isTextField ? "change" : "input";
+        input.addEventListener(eventType, () => {
           const field = input.dataset.field!;
           const val = (input as HTMLInputElement).value;
           if (!edits[id]) edits[id] = {};
-          if (
+          const isReset =
             val === "" ||
             (input.tagName === "TEXTAREA" && val === (el.textContent || "").trim()) ||
             (field === "font" && val === getComputedFont(el)) ||
+            (field === "x" && (parseInt(val) === 0 || isNaN(parseInt(val)))) ||
+            (field === "y" && (parseInt(val) === 0 || isNaN(parseInt(val)))) ||
             (field === "fontSize" &&
-              Math.abs(parseFloat(val) - parseFloat(getComputedFontSize(el))) < 0.01)
-          ) {
+              Math.abs(parseFloat(val) - parseFloat(getComputedFontSize(el))) < 0.01);
+          if (isReset) {
             delete (edits[id] as Record<string, string | undefined>)[field];
             if (Object.keys(edits[id]).length === 0) delete edits[id];
             if (field === "font") el.style.removeProperty("fontFamily");
+            else if (field === "x" || field === "y") el.style.removeProperty("transform");
             else el.style.removeProperty(field);
           } else {
             (edits[id] as Record<string, string | undefined>)[field] =
-              field === "fontSize" ? val + "rem" : field === "font" ? val : val;
+              field === "fontSize"
+                ? val + "rem"
+                : field === "x" || field === "y"
+                  ? String(parseInt(val) || 0)
+                  : val;
           }
           applyEdit(id, edits[id] || {});
           updateFieldLabels(id);
@@ -835,7 +944,10 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         const field = fieldInput?.dataset.field;
         if (field === "fontSize") unit.textContent = getComputedFontSize(el);
         if (field === "width") unit.textContent = getComputedStyle(el).width;
+        if (field === "height") unit.textContent = getComputedStyle(el).height;
         if (field === "padding") unit.textContent = getComputedStyle(el).padding;
+        if (field === "x") unit.textContent = (edits[id]?.x || 0) + "px";
+        if (field === "y") unit.textContent = (edits[id]?.y || 0) + "px";
       });
     }
 
@@ -902,6 +1014,86 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       sectionResizing = false;
       document.removeEventListener("mousemove", doSectionResize);
       document.removeEventListener("mouseup", endSectionResize);
+    }
+
+    // ─── Card drag-to-reposition ───
+    function startCardDrag(e: MouseEvent, card: HTMLElement): void {
+      if (!editMode) return;
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      // Don't drag when clicking resize handle or editable child elements
+      if (target.closest(".admin-card-handle")) return;
+      if (target !== card && target.closest("[data-admin]")) return;
+      e.preventDefault();
+      cardDragging = card;
+      cardDragStartX = e.clientX;
+      cardDragStartY = e.clientY;
+      card.classList.add("admin-dragging");
+      document.addEventListener("mousemove", doCardDrag);
+      document.addEventListener("mouseup", endCardDrag);
+    }
+
+    function doCardDrag(e: MouseEvent): void {
+      if (!cardDragging) return;
+      const dx = e.clientX - cardDragStartX;
+      const dy = e.clientY - cardDragStartY;
+      const id = cardDragging.dataset.admin;
+      if (!id) return;
+      if (!edits[id]) edits[id] = {};
+      edits[id].x = dx;
+      edits[id].y = dy;
+      cardDragging.style.transform = `translate(${dx}px, ${dy}px)`;
+      setStatus("Unsaved");
+    }
+
+    function endCardDrag(): void {
+      if (cardDragging) {
+        cardDragging.classList.remove("admin-dragging");
+        cardDragging = null;
+      }
+      document.removeEventListener("mousemove", doCardDrag);
+      document.removeEventListener("mouseup", endCardDrag);
+    }
+
+    // ─── Card corner resize ───
+    function startCardResize(e: MouseEvent, card: HTMLElement): void {
+      if (!editMode) return;
+      e.preventDefault();
+      e.stopPropagation();
+      cardResizing = card;
+      cardResizeStartMX = e.clientX;
+      cardResizeStartMY = e.clientY;
+      const rect = card.getBoundingClientRect();
+      cardResizeStartW = rect.width;
+      cardResizeStartH = rect.height;
+      card.classList.add("admin-selected");
+      document.addEventListener("mousemove", doCardResize);
+      document.addEventListener("mouseup", endCardResize);
+    }
+
+    function doCardResize(e: MouseEvent): void {
+      if (!cardResizing) return;
+      const dw = e.clientX - cardResizeStartMX;
+      const dh = e.clientY - cardResizeStartMY;
+      const newW = Math.max(120, cardResizeStartW + dw);
+      const newH = Math.max(60, cardResizeStartH + dh);
+      const id = cardResizing.dataset.admin;
+      if (!id) return;
+      if (!edits[id]) edits[id] = {};
+      edits[id].width = newW + "px";
+      edits[id].height = newH + "px";
+      cardResizing.style.width = newW + "px";
+      cardResizing.style.height = newH + "px";
+      setStatus("Unsaved");
+    }
+
+    function endCardResize(): void {
+      if (cardResizing) {
+        cardResizing.classList.remove("admin-selected");
+        cardResizing = null;
+      }
+      document.removeEventListener("mousemove", doCardResize);
+      document.removeEventListener("mouseup", endCardResize);
     }
 
     // ─── Click handling ───
@@ -1033,9 +1225,13 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     loadEdits();
     applyAllEdits();
     addHoverCursors();
+    initCardHandlers();
 
     // Re-apply hover cursors after mutating
-    const observer = new MutationObserver(() => addHoverCursors());
+    const observer = new MutationObserver(() => {
+      addHoverCursors();
+      initCardHandlers();
+    });
     observer.observe(pageContent, { childList: true, subtree: true });
 
     // Apply section min-heights from edits
@@ -1046,6 +1242,25 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         section.style.minHeight = edits[sid].minHeight!;
       }
     });
+
+    // ─── Inject resize handles + drag listeners on all cards ───
+    function initCardHandlers(): void {
+      document.querySelectorAll('[data-type="card"]').forEach((rawCard) => {
+        const card = rawCard as HTMLElement;
+        // Resize handle
+        if (!card.querySelector(".admin-card-handle")) {
+          const handle = document.createElement("div");
+          handle.className = "admin-card-handle";
+          handle.addEventListener("mousedown", (e) => startCardResize(e as MouseEvent, card));
+          card.appendChild(handle);
+        }
+        // Drag listener (only attach once)
+        if (!boundCards.has(card)) {
+          boundCards.add(card);
+          card.addEventListener("mousedown", (e) => startCardDrag(e as MouseEvent, card));
+        }
+      });
+    }
 
     setStatus("Ready");
   })();
