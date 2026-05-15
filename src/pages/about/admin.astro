@@ -514,10 +514,10 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   }
   .approach-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(0, 230, 118, 0.3);
+    border-color: rgba(232, 144, 80, 0.35);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.45),
-      0 0 24px rgba(0, 230, 118, 0.08);
+      0 0 24px rgba(232, 144, 80, 0.08);
   }
   .approach-card::after {
     content: "";
@@ -527,9 +527,9 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     background: linear-gradient(
       110deg,
       transparent 25%,
-      rgba(0, 230, 118, 0.035) 48%,
-      rgba(0, 230, 118, 0.07) 50%,
-      rgba(0, 230, 118, 0.035) 52%,
+      rgba(232, 144, 80, 0.035) 48%,
+      rgba(232, 144, 80, 0.07) 50%,
+      rgba(232, 144, 80, 0.035) 52%,
       transparent 75%
     );
     background-size: 200% 100%;
@@ -543,10 +543,21 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     animation: about-shimmer 2s ease-in-out infinite;
   }
   .approach-step {
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: #f0eaff;
+    border-radius: 3px;
     font-family: "Monofett", monospace;
-    font-size: 1.6rem;
+    font-size: 1rem;
     color: var(--lab-accent, #e89050);
-    opacity: 0.35;
+    opacity: 1;
     line-height: 1;
   }
   .approach-card-title {
