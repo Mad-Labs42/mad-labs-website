@@ -52,11 +52,19 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         </div>
         <div class="legend-item">
           <span class="legend-key">Corner ▿</span>
-          <span class="legend-val">Drag the orange corner triangle on any card to resize</span>
+          <span class="legend-val"
+            >Drag the browser's resize handle on any card corner to resize</span
+          >
         </div>
         <div class="legend-item">
           <span class="legend-key">Drag ▬</span>
-          <span class="legend-val">Drag the bottom handle of a selected section to resize</span>
+          <span class="legend-val"
+            >Shift+Click a section, then drag the bottom handle to resize</span
+          >
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">↺ Reset</span>
+          <span class="legend-val">Reset button in panel reverts selected element to defaults</span>
         </div>
         <div class="legend-item">
           <span class="legend-key">Esc</span>
@@ -449,6 +457,23 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     flex-direction: column;
     gap: 8px;
   }
+  .admin-panel-footer {
+    border-top: 1px solid #2a1a4a;
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+  .admin-btn--reset-el {
+    width: 100%;
+    border-color: #662020;
+    color: #cc5555;
+    background: #1a0e30;
+    font-size: 11px;
+    padding: 6px;
+  }
+  .admin-btn--reset-el:hover {
+    background: #3a1818;
+    border-color: #cc5555;
+  }
   .admin-field {
     display: flex;
     flex-direction: column;
@@ -584,6 +609,9 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     outline-offset: 3px !important;
     position: relative;
     z-index: 1;
+    box-shadow:
+      0 0 16px rgba(232, 144, 80, 0.3),
+      0 0 4px rgba(232, 144, 80, 0.15);
   }
   .admin-section-selected {
     outline: 2px dashed #8c50f0 !important;
@@ -603,6 +631,10 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     position: relative;
     cursor: grab;
     user-select: none;
+    resize: both;
+    overflow: clip;
+    min-width: 120px;
+    min-height: 60px;
   }
   [data-type="card"]:active {
     cursor: grabbing;
@@ -613,39 +645,6 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     opacity: 0.9;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
   }
-  .admin-card-handle {
-    position: absolute;
-    bottom: -4px;
-    right: -4px;
-    width: 24px;
-    height: 24px;
-    cursor: nwse-resize;
-    z-index: 5;
-    background: #e89050;
-    border: 2px solid #f0eaff;
-    border-radius: 0 0 6px 0;
-    opacity: 0.8;
-    transition:
-      opacity 0.15s,
-      transform 0.15s;
-    pointer-events: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  }
-  .admin-card-handle:hover {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  .admin-card-handle::after {
-    content: "↘";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #0e0820;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 1;
-  }
 
   /* ─── Section resize handles ─── */
   .admin-section-handle {
@@ -654,22 +653,22 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 180px;
-    height: 14px;
+    width: 200px;
+    height: 20px;
     background: #8c50f0;
     border: 2px solid #f0eaff;
-    border-radius: 4px 4px 0 0;
+    border-radius: 6px 6px 0 0;
     cursor: ns-resize;
     z-index: 10;
-    opacity: 0.9;
+    opacity: 0.85;
     transition:
       opacity 0.15s,
       width 0.15s;
-    box-shadow: 0 -2px 12px rgba(140, 80, 240, 0.4);
+    box-shadow: 0 -2px 16px rgba(140, 80, 240, 0.5);
   }
   .admin-section-handle:hover {
     opacity: 1;
-    width: 220px;
+    width: 240px;
   }
   .admin-section-handle::after {
     content: "⬍ drag to resize section";
@@ -678,7 +677,7 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     left: 50%;
     transform: translate(-50%, -50%);
     color: #f0eaff;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: bold;
     white-space: nowrap;
     letter-spacing: 0.05em;
@@ -703,6 +702,7 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       text?: string;
       font?: string;
       fontSize?: string;
+      color?: string;
       width?: string;
       height?: string;
       padding?: string;
@@ -724,11 +724,6 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     let cardDragging: HTMLElement | null = null;
     let cardDragStartX = 0;
     let cardDragStartY = 0;
-    let cardResizing: HTMLElement | null = null;
-    let cardResizeStartW = 0;
-    let cardResizeStartH = 0;
-    let cardResizeStartMX = 0;
-    let cardResizeStartMY = 0;
     const boundCards = new WeakSet<HTMLElement>();
 
     // ─── DOM refs ───
@@ -776,6 +771,7 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       }
       if (props.font !== undefined) el.style.fontFamily = `"${props.font}", monospace`;
       if (props.fontSize !== undefined) el.style.fontSize = props.fontSize;
+      if (props.color !== undefined) el.style.color = props.color;
       if (props.width !== undefined) el.style.width = props.width;
       if (props.height !== undefined) el.style.height = props.height;
       if (props.minHeight !== undefined) el.style.minHeight = props.minHeight;
@@ -844,6 +840,14 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         </div>`;
       }
 
+      if (type === "text") {
+        const currentColor = existing.color || getComputedStyle(el).color;
+        html += `<div class="admin-field">
+          <label>Text Color <span class="admin-field-unit" style="color:${currentColor}">●</span></label>
+          <input type="text" value="${existing.color || currentColor}" placeholder="${currentColor}" data-field="color">
+        </div>`;
+      }
+
       if (type === "card") {
         const currentW = existing.width || getComputedStyle(el).width;
         const currentH = existing.height || getComputedStyle(el).height;
@@ -890,24 +894,33 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         </div>`;
       }
 
+      // Reset button
+      html += `<div class="admin-panel-footer">
+        <button class="admin-btn admin-btn--reset-el" data-action="reset-element">↺ Reset Element</button>
+      </div>`;
+
       panelBody.innerHTML = html;
       panel.hidden = false;
 
       // Attach listeners
       panelBody.querySelectorAll("[data-field]").forEach((rawInput) => {
         const input = rawInput as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        const isTextField =
-          input.tagName === "TEXTAREA" ||
-          (input.tagName === "INPUT" && (input as HTMLInputElement).type === "text");
-        const eventType = isTextField ? "change" : "input";
-        input.addEventListener(eventType, () => {
+        input.addEventListener("input", () => {
           const field = input.dataset.field!;
           const val = (input as HTMLInputElement).value;
+          // Validate CSS values before applying
+          const dimensionFields = ["width", "height", "fontSize", "padding", "x", "y"];
+          const needsValidation =
+            input.tagName === "INPUT" &&
+            (input as HTMLInputElement).type === "text" &&
+            dimensionFields.includes(field);
+          if (needsValidation && val !== "" && !isValidCSSDimension(val)) return;
           if (!edits[id]) edits[id] = {};
           const isReset =
             val === "" ||
             (input.tagName === "TEXTAREA" && val === (el.textContent || "").trim()) ||
             (field === "font" && val === getComputedFont(el)) ||
+            (field === "color" && val === rgbToHex(getComputedStyle(el).color)) ||
             (field === "x" && (parseInt(val) === 0 || isNaN(parseInt(val)))) ||
             (field === "y" && (parseInt(val) === 0 || isNaN(parseInt(val)))) ||
             (field === "fontSize" &&
@@ -931,6 +944,26 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
           setStatus("Unsaved");
         });
       });
+
+      // Reset Element button
+      const resetElBtn = panelBody.querySelector('[data-action="reset-element"]');
+      if (resetElBtn) {
+        resetElBtn.addEventListener("click", () => {
+          if (confirm(`Reset "${id}" to defaults?`)) {
+            delete edits[id];
+            el.style.removeProperty("fontFamily");
+            el.style.removeProperty("fontSize");
+            el.style.removeProperty("color");
+            el.style.removeProperty("width");
+            el.style.removeProperty("height");
+            el.style.removeProperty("padding");
+            el.style.removeProperty("transform");
+            el.style.removeProperty("minHeight");
+            showPanel(el); // refresh panel
+            setStatus("Element reset");
+          }
+        });
+      }
     }
 
     function updateFieldLabels(id: string): void {
@@ -1021,8 +1054,7 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       if (!editMode) return;
       const target = e.target as HTMLElement;
       if (!target) return;
-      // Don't drag when clicking resize handle or editable child elements
-      if (target.closest(".admin-card-handle")) return;
+      // Don't drag when clicking editable child elements
       if (target !== card && target.closest("[data-admin]")) return;
       e.preventDefault();
       cardDragging = card;
@@ -1053,47 +1085,6 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
       }
       document.removeEventListener("mousemove", doCardDrag);
       document.removeEventListener("mouseup", endCardDrag);
-    }
-
-    // ─── Card corner resize ───
-    function startCardResize(e: MouseEvent, card: HTMLElement): void {
-      if (!editMode) return;
-      e.preventDefault();
-      e.stopPropagation();
-      cardResizing = card;
-      cardResizeStartMX = e.clientX;
-      cardResizeStartMY = e.clientY;
-      const rect = card.getBoundingClientRect();
-      cardResizeStartW = rect.width;
-      cardResizeStartH = rect.height;
-      card.classList.add("admin-selected");
-      document.addEventListener("mousemove", doCardResize);
-      document.addEventListener("mouseup", endCardResize);
-    }
-
-    function doCardResize(e: MouseEvent): void {
-      if (!cardResizing) return;
-      const dw = e.clientX - cardResizeStartMX;
-      const dh = e.clientY - cardResizeStartMY;
-      const newW = Math.max(120, cardResizeStartW + dw);
-      const newH = Math.max(60, cardResizeStartH + dh);
-      const id = cardResizing.dataset.admin;
-      if (!id) return;
-      if (!edits[id]) edits[id] = {};
-      edits[id].width = newW + "px";
-      edits[id].height = newH + "px";
-      cardResizing.style.width = newW + "px";
-      cardResizing.style.height = newH + "px";
-      setStatus("Unsaved");
-    }
-
-    function endCardResize(): void {
-      if (cardResizing) {
-        cardResizing.classList.remove("admin-selected");
-        cardResizing = null;
-      }
-      document.removeEventListener("mousemove", doCardResize);
-      document.removeEventListener("mouseup", endCardResize);
     }
 
     // ─── Click handling ───
@@ -1210,6 +1201,19 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
         .replace(/"/g, "&quot;");
     }
 
+    function isValidCSSDimension(val: string): boolean {
+      return /^-?\d+(\.\d+)?(px|rem|em|%|vh|vw|ch|ex|vmin|vmax)?$/.test(val.trim());
+    }
+
+    function rgbToHex(rgb: string): string {
+      const m = rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+      if (!m) return rgb;
+      const r = parseInt(m[1]!),
+        g = parseInt(m[2]!),
+        b = parseInt(m[3]!);
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
     // ─── Add hover cursor to all admin elements ───
     function addHoverCursors(): void {
       document.querySelectorAll("[data-admin]").forEach((rawEl) => {
@@ -1247,13 +1251,6 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     function initCardHandlers(): void {
       document.querySelectorAll('[data-type="card"]').forEach((rawCard) => {
         const card = rawCard as HTMLElement;
-        // Resize handle
-        if (!card.querySelector(".admin-card-handle")) {
-          const handle = document.createElement("div");
-          handle.className = "admin-card-handle";
-          handle.addEventListener("mousedown", (e) => startCardResize(e as MouseEvent, card));
-          card.appendChild(handle);
-        }
         // Drag listener (only attach once)
         if (!boundCards.has(card)) {
           boundCards.add(card);
