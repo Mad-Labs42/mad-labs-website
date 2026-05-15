@@ -43,7 +43,7 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Approach</span>
       <h2 class="section-heading">How We Work</h2>
-      <div class="approach-grid">
+      <div class="approach-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem">
         <div class="approach-card">
           <span class="approach-step" aria-hidden="true">01</span>
           <h3 class="approach-card-title">Diagnose First</h3>
@@ -275,29 +275,81 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   .approach-card {
     background: var(--lab-card, #131325);
     border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.12));
-    border-left: 3px solid var(--lab-accent, #e89050);
+    border-left: 3px solid #f79e55;
     border-radius: 8px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+    transform: translateY(0);
+    isolation: isolate;
   }
-
+  .approach-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(232, 144, 80, 0.35);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 0 24px rgba(232, 144, 80, 0.08);
+  }
+  .approach-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(232, 144, 80, 0.035) 48%,
+      rgba(232, 144, 80, 0.07) 50%,
+      rgba(232, 144, 80, 0.035) 52%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .approach-card:hover::after {
+    opacity: 1;
+    animation: about-shimmer 2s ease-in-out infinite;
+  }
   .approach-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    padding: 5px;
+    border: 2px solid #f79e55;
+    border-radius: 6px;
     font-family: "Monofett", monospace;
     font-size: 1.6rem;
-    color: var(--lab-accent, #e89050);
-    opacity: 0.35;
+    color: #f79e55;
+    opacity: 0.85;
     line-height: 1;
   }
-
   .approach-card-title {
+    display: inline-block;
+    align-self: flex-start;
     font-family: "Jersey 25", monospace;
     font-size: 1.1rem;
     font-weight: 400;
     color: var(--lab-accent, #e89050);
-    margin: 0;
+    margin: 1rem 0 0;
+  }
+  .approach-card-title::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #f79e55;
+    border-radius: 2px;
+    margin-top: 0.2rem;
   }
 
   .approach-card-text {
@@ -323,6 +375,45 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     border: 1px solid var(--lab-border, rgba(232, 144, 80, 0.08));
     border-radius: 6px;
     padding: 1rem 1.25rem;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+    transform: translateY(0);
+    isolation: isolate;
+  }
+  .trust-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 230, 118, 0.3);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 0 24px rgba(0, 230, 118, 0.08);
+  }
+  .trust-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(0, 230, 118, 0.035) 48%,
+      rgba(0, 230, 118, 0.07) 50%,
+      rgba(0, 230, 118, 0.035) 52%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .trust-card:hover::after {
+    opacity: 1;
+    animation: about-shimmer 2s ease-in-out infinite;
+  }
+  .trust-card:hover .trust-icon {
+    filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.35));
   }
 
   .trust-icon {
@@ -378,5 +469,26 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
     max-width: 450px;
     margin: 0 auto 1.5rem;
     line-height: 1.5;
+  }
+
+  @keyframes about-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .approach-card,
+    .trust-card {
+      transition: none;
+      transform: none;
+    }
+    .approach-card::after,
+    .trust-card::after {
+      display: none;
+    }
   }
 </style>
