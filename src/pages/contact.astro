@@ -1,133 +1,219 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactInfo from "../components/ContactInfo.astro";
-import ReviewShower from "../components/ReviewShower.astro";
-import SocialLinks from "../components/SocialLinks.astro";
+import ContactTablet from "../components/ContactTablet.astro";
 ---
 
 <BaseLayout title="Contact">
+  <!-- ─── Header ─── -->
   <section class="lab-section">
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Reach the Lab</span>
-      <h1 class="lab-heading" style="font-size:clamp(1.75rem,4vw,2.75rem); margin-bottom:0.75rem;">
+      <h1
+        class="lab-heading"
+        style="font-size:clamp(1.75rem,4vw,2.75rem); margin-bottom:0.75rem;"
+      >
         Get in Touch
       </h1>
       <p
         style="font-size:clamp(1rem,2vw,1.2rem); color:var(--lab-text); line-height:1.6; max-width:550px;"
       >
-        Tell us what's going on with your device. We'll follow up with next steps and a rough
-        timeline — no charge, no commitment.
+        Tell us what's going on with your device. We'll follow up with next
+        steps and a rough timeline — no charge, no commitment.
       </p>
     </div>
   </section>
 
+  <!-- ─── Contact Info + Tablet (side-by-side on desktop) ─── -->
   <section class="lab-section-alt">
-    <div class="lab-section-inner">
-      <span class="lab-heading-accent">Contact</span>
-      <h2 class="lab-heading" style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-bottom:1.25rem;">
-        Reach Us
-      </h2>
-      <div style="display:flex; flex-direction:column; gap:1.5rem;">
-        <ContactInfo
-          email="hello@madlabs.example.com"
-          phone="(555) 123-4567"
-          location="Greater Cincinnati Area"
-        />
-        <div
-          style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.25rem;"
-        >
-          <p style="font-size:0.9rem; color:var(--lab-text); line-height:1.6;">
-            We typically respond within <strong style="color:var(--lab-heading);">2–4 hours</strong> during
-            business hours. For urgent issues, mention it in your message and we'll prioritize your request.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="lab-section">
-    <div class="lab-section-inner">
-      <div style="display:grid; grid-template-columns:1fr; gap:2rem;">
-        <div>
-          <h2 class="lab-heading" style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem;">
-            Service Area
-          </h2>
-          <p class="lab-text" style="font-size:0.9rem; line-height:1.6; margin-bottom:0.6rem;">
-            We serve the greater Cincinnati metropolitan area, including Cincinnati, Covington,
-            Newport, and surrounding communities.
-          </p>
-          <p class="lab-text" style="font-size:0.9rem; line-height:1.6;">
-            Remote diagnostics and software support are available for clients anywhere — we can
-            diagnose and resolve many issues without an in-person visit.
-          </p>
-        </div>
-        <div>
-          <h2 class="lab-heading" style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem;">
-            Hours
-          </h2>
-          <dl style="margin:0; padding:0;">
-            <div
-              style="display:flex; justify-content:space-between; padding:0.35rem 0; border-bottom:1px solid var(--lab-border); font-size:0.9rem;"
-            >
-              <dt style="color:var(--lab-heading); font-weight:500;">Monday – Friday</dt>
-              <dd style="color:var(--lab-text-muted); margin:0;">9:00 AM – 6:00 PM</dd>
-            </div>
-            <div
-              style="display:flex; justify-content:space-between; padding:0.35rem 0; border-bottom:1px solid var(--lab-border); font-size:0.9rem;"
-            >
-              <dt style="color:var(--lab-heading); font-weight:500;">Saturday</dt>
-              <dd style="color:var(--lab-text-muted); margin:0;">10:00 AM – 4:00 PM</dd>
-            </div>
-            <div
-              style="display:flex; justify-content:space-between; padding:0.35rem 0; font-size:0.9rem;"
-            >
-              <dt style="color:var(--lab-heading); font-weight:500;">Sunday</dt>
-              <dd style="color:var(--lab-text-muted); margin:0;">Closed</dd>
-            </div>
-          </dl>
-          <p style="font-size:0.82rem; color:var(--lab-text-muted); margin-top:0.75rem;">
-            Hardware drop-offs by appointment only. Evening pickup available upon request.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="lab-section-alt">
-    <div class="lab-section-inner" style="text-align:center;">
-      <div
-        style="background:var(--lab-card); border:2px dashed var(--lab-border); border-radius:8px; padding:2rem 1rem;"
-      >
-        <h2 class="lab-heading" style="font-size:1.2rem; margin-bottom:0.5rem;">Online Booking</h2>
-        <p
-          class="lab-text"
-          style="font-size:0.9rem; line-height:1.5; max-width:500px; margin:0 auto;"
-        >
-          An online booking and contact form is in development and will be available soon. Until
-          then, please reach out via email or phone — we're standing by.
-        </p>
-        <p style="margin-top:1rem; font-size:0.82rem; color:var(--lab-text-muted);">
-          <em
-            >This site is in active development. Some features are being built and will appear here
-            as they're completed.</em
+    <div class="lab-section-inner-wide">
+      <div class="contact-layout">
+        <!-- Left: contact details, service area, hours -->
+        <div class="contact-info-col">
+          <span class="lab-heading-accent">Contact</span>
+          <h2
+            class="lab-heading"
+            style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-bottom:1.25rem;"
           >
-        </p>
-      </div>
-    </div>
-  </section>
+            Reach Us
+          </h2>
+          <div style="display:flex; flex-direction:column; gap:1.5rem;">
+            <ContactInfo
+              email="customer-service@madlabs.rocks"
+              phone="(513) 306-5331"
+              location="Greater Cincinnati Area"
+            />
+            <div
+              style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.25rem;"
+            >
+              <p style="font-size:0.9rem; color:var(--lab-text); line-height:1.6;">
+                We typically respond within
+                <strong style="color:var(--lab-heading);">2–4 hours</strong>
+                during business hours. For urgent issues, mention it in your
+                message and we'll prioritize your request.
+              </p>
+            </div>
+          </div>
 
-  <section class="lab-section">
-    <div class="lab-section-inner" style="text-align:center;">
-      <span class="lab-heading-accent">Send a Message</span>
-      <h2 class="lab-heading" style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-bottom:0.5rem;">
-        Ready to get started?
-      </h2>
-      <p class="lab-text-muted" style="max-width:450px; margin:0 auto 1.5rem;">
-        Describe your issue and we'll recommend the right service — no obligation.
-      </p>
-      <a href="mailto:hello@madlabs.example.com" class="lab-button"> Email MAD LABS </a>
-      <ReviewShower reviews={[]} />
-      <SocialLinks socialLinks={{}} />
+          <div class="contact-extras">
+            <div>
+              <h2
+                class="lab-heading"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem;"
+              >
+                Service Area
+              </h2>
+              <p
+                class="lab-text"
+                style="font-size:0.9rem; line-height:1.6; margin-bottom:0.6rem;"
+              >
+                We serve the greater Cincinnati metropolitan area, including
+                Cincinnati, Covington, Newport, and surrounding communities.
+              </p>
+              <p class="lab-text" style="font-size:0.9rem; line-height:1.6;">
+                Remote diagnostics and software support are available for
+                clients anywhere — we can diagnose and resolve many issues
+                without an in-person visit.
+              </p>
+            </div>
+            <div>
+              <h2
+                class="lab-heading"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem;"
+              >
+                Hours
+              </h2>
+              <dl style="margin:0; padding:0;">
+                <div
+                  style="display:flex; justify-content:space-between; padding:0.35rem 0; border-bottom:1px solid var(--lab-border); font-size:0.9rem;"
+                >
+                  <dt style="color:var(--lab-heading); font-weight:500;">
+                    Monday – Friday
+                  </dt>
+                  <dd style="color:var(--lab-text-muted); margin:0;">
+                    9:00 AM – 6:00 PM
+                  </dd>
+                </div>
+                <div
+                  style="display:flex; justify-content:space-between; padding:0.35rem 0; border-bottom:1px solid var(--lab-border); font-size:0.9rem;"
+                >
+                  <dt style="color:var(--lab-heading); font-weight:500;">
+                    Saturday
+                  </dt>
+                  <dd style="color:var(--lab-text-muted); margin:0;">
+                    10:00 AM – 4:00 PM
+                  </dd>
+                </div>
+                <div
+                  style="display:flex; justify-content:space-between; padding:0.35rem 0; font-size:0.9rem;"
+                >
+                  <dt style="color:var(--lab-heading); font-weight:500;">
+                    Sunday
+                  </dt>
+                  <dd style="color:var(--lab-text-muted); margin:0;">
+                    Closed
+                  </dd>
+                </div>
+              </dl>
+              <p
+                style="font-size:0.82rem; color:var(--lab-text-muted); margin-top:0.75rem;"
+              >
+                Hardware drop-offs by appointment only. Evening pickup available
+                upon request.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: tablet terminal -->
+        <div class="contact-tablet-col">
+          <!-- Mobile scroll cue -->
+          <p class="contact-scroll-cue" aria-hidden="true">
+            <span class="scroll-chevron"></span>
+            Scroll down to book a consultation or submit a repair ticket.
+            <span class="scroll-chevron"></span>
+          </p>
+
+          <ContactTablet />
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* ─── Two-column layout ─── */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .contact-layout {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .contact-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-extras {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* ─── Tablet column ─── */
+  .contact-tablet-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* ─── Mobile scroll cue ─── */
+  .contact-scroll-cue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--lab-text-muted);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .scroll-chevron {
+    display: inline-block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 2px solid var(--lab-accent);
+    border-bottom: 2px solid var(--lab-accent);
+    transform: rotate(45deg);
+    opacity: 0.6;
+  }
+
+  @media (min-width: 900px) {
+    .contact-scroll-cue {
+      display: none;
+    }
+
+    .contact-tablet-col {
+      justify-content: flex-start;
+      padding-top: 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-chevron {
+      animation: none;
+    }
+  }
+</style>
