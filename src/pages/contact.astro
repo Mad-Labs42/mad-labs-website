@@ -127,12 +127,11 @@ import ContactTablet from "../components/ContactTablet.astro";
         <!-- Right: tablet terminal -->
         <div class="contact-tablet-col">
           <!-- Tablet instruction (desktop only) -->
-          <p class="contact-tablet-instruction">
-            You may use this tablet to contact us online. Click <strong>Book a Consultation</strong> for
-            diagnostics, service planning, AI help, websites, or questions about what you need. Click
-            <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup,
-            network issues, or existing support requests.
-          </p>
+          <div class="contact-tablet-instruction">
+            <span>You may use this tablet to contact us online.</span>
+            <span>Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help, websites, or questions about what you need.</span>
+            <span>Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup, network issues, or existing support requests.</span>
+          </div>
 
           <!-- Mobile scroll cue -->
           <p class="contact-scroll-cue" aria-hidden="true">
@@ -277,11 +276,14 @@ import ContactTablet from "../components/ContactTablet.astro";
 
   /* ─── Tablet instruction text ─── */
   .contact-tablet-instruction {
-    margin: 0 0 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0 0 0.35rem;
     color: var(--lab-text-muted);
     font-family: "Jersey 25", "VT323", "Courier New", monospace;
-    font-size: 0.82rem;
-    line-height: 1.5;
+    font-size: 0.78rem;
+    line-height: 1.35;
     letter-spacing: 0.02em;
   }
 
@@ -328,7 +330,7 @@ import ContactTablet from "../components/ContactTablet.astro";
 
     .contact-tablet-col {
       justify-content: flex-start;
-      padding-top: 2rem;
+      padding-top: 0.5rem;
     }
   }
 

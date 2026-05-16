@@ -7,11 +7,6 @@
 <div class="contact-tablet" data-tablet-root aria-label="MAD LABS intake terminal">
   <!-- Tablet bezel -->
   <div class="tablet-bezel">
-    <div class="tablet-edge-seam" aria-hidden="true"></div>
-    <span class="tablet-screw tablet-screw--tl" aria-hidden="true"></span>
-    <span class="tablet-screw tablet-screw--tr" aria-hidden="true"></span>
-    <span class="tablet-screw tablet-screw--bl" aria-hidden="true"></span>
-    <span class="tablet-screw tablet-screw--br" aria-hidden="true"></span>
     <!-- Status bar -->
     <div class="tablet-status-bar">
       <span class="tablet-led" aria-hidden="true"></span>
@@ -156,18 +151,21 @@
   </div>
 
   <!-- Hardware details -->
-  <div class="tablet-feet" aria-hidden="true">
-    <span class="tablet-foot"></span>
-    <span class="tablet-foot"></span>
-    <span class="tablet-foot"></span>
-  </div>
-  <div class="tablet-speaker-grille" aria-hidden="true">
-    <span class="tablet-speaker-slot"></span>
-    <span class="tablet-speaker-slot"></span>
-    <span class="tablet-speaker-slot"></span>
-    <span class="tablet-speaker-slot"></span>
-    <span class="tablet-speaker-slot"></span>
-    <span class="tablet-speaker-slot"></span>
+  <div class="tablet-bottom-housing" aria-hidden="true">
+    <div class="tablet-speaker-grille">
+      <span class="tablet-speaker-slot"></span>
+      <span class="tablet-speaker-slot"></span>
+      <span class="tablet-speaker-slot"></span>
+      <span class="tablet-speaker-slot"></span>
+      <span class="tablet-speaker-slot"></span>
+      <span class="tablet-speaker-slot"></span>
+    </div>
+    <button class="tablet-power-btn" type="button" aria-label="Power indicator"></button>
+    <div class="tablet-feet">
+      <span class="tablet-foot"></span>
+      <span class="tablet-foot"></span>
+      <span class="tablet-foot"></span>
+    </div>
   </div>
 </div>
 
@@ -309,7 +307,7 @@
   /* ─── Outer container ─── */
   .contact-tablet {
     width: 100%;
-    max-width: 520px;
+    max-width: 600px;
     margin: 0 auto;
     font-family: "Jersey 25", "VT323", "Courier New", monospace;
   }
@@ -318,7 +316,7 @@
   .tablet-bezel {
     position: relative;
     border-radius: 18px;
-    padding: 12px;
+    padding: 12px 12px 32px;
     background: linear-gradient(180deg, #d7d0ca 0%, #c9c2bc 22%, #c3bcb6 56%, #b6b0ab 100%);
     box-shadow:
       inset 0 8px 12px rgba(255, 255, 255, 0.22),
@@ -353,8 +351,8 @@
   .tablet-bezel::after {
     content: "";
     position: absolute;
-    inset: 5px;
-    border-radius: 14px;
+    inset: 5px 5px 25px;
+    border-radius: 14px 14px 0 0;
     pointer-events: none;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -362,34 +360,76 @@
     opacity: 0.7;
   }
 
-  /* Edge groove seam around bezel */
-  .tablet-edge-seam {
-    position: absolute;
-    inset: 3px;
-    border-radius: 16px;
-    pointer-events: none;
-    border: 1px solid rgba(80, 72, 68, 0.15);
-    opacity: 0.5;
+  /* ─── Bottom housing — balances top bezel ─── */
+  .tablet-bottom-housing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: -1px;
+    padding: 0.5rem 0 0;
+    position: relative;
   }
 
-  /* Screw detail — top corners */
-  .tablet-screw {
-    position: absolute;
-    width: 7px;
-    height: 7px;
+  /* Speaker grille — recessed into bottom housing */
+  .tablet-speaker-grille {
+    display: flex;
+    gap: 3px;
+    opacity: 0.45;
+  }
+
+  .tablet-speaker-slot {
+    display: block;
+    width: 5px;
+    height: 8px;
+    border-radius: 1px;
+    background: rgba(60, 54, 50, 0.4);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
+  }
+
+  /* On/off power button — centered in bottom housing */
+  .tablet-power-btn {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, rgba(140, 130, 122, 0.5), rgba(60, 54, 50, 0.3));
+    border: none;
+    background: linear-gradient(145deg, #b8b0ab 0%, #9e968f 50%, #8a827c 100%);
     box-shadow:
-      inset 0 1px 1px rgba(255, 255, 255, 0.2),
-      0 1px 2px rgba(0, 0, 0, 0.1);
-    z-index: 4;
+      0 1px 3px rgba(0, 0, 0, 0.35),
+      inset 0 1px 1px rgba(255, 255, 255, 0.25),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+    cursor: default;
+    position: relative;
+    flex-shrink: 0;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .tablet-power-btn::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.08), transparent);
     pointer-events: none;
   }
 
-  .tablet-screw--tl { top: 6px; left: 6px; }
-  .tablet-screw--tr { top: 6px; right: 6px; }
-  .tablet-screw--bl { bottom: 80px; left: 6px; }
-  .tablet-screw--br { bottom: 80px; right: 6px; }
+  /* Rubber feet */
+  .tablet-feet {
+    display: flex;
+    gap: 1rem;
+    opacity: 0.45;
+  }
+
+  .tablet-foot {
+    display: block;
+    width: 12px;
+    height: 3px;
+    border-radius: 0 0 2px 2px;
+    background: rgba(40, 36, 34, 0.45);
+  }
 
   /* ─── Status bar ─── */
   .tablet-status-bar {
@@ -426,17 +466,16 @@
     text-overflow: ellipsis;
   }
 
-  /* ─── Screen — purple CRT, multi-layer depth ─── */
+  /* ─── Screen — purple CRT, landscape tablet ─── */
   .tablet-screen {
     position: relative;
-    min-height: 420px;
+    min-height: 360px;
     border-radius: 0 0 8px 8px;
     background: #362866;
     overflow: hidden;
     box-shadow:
-      inset 0 0 0 3px rgba(93, 72, 132, 0.4),
-      inset 0 0 0 6px rgba(22, 14, 38, 0.85),
-      inset 0 0 0 10px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 2px rgba(93, 72, 132, 0.4),
+      inset 0 0 0 4px rgba(22, 14, 38, 0.8),
       inset 2px 3px 8px rgba(0, 0, 0, 0.6),
       inset -1px -1px 6px rgba(0, 0, 0, 0.4),
       inset 0 0 20px rgba(0, 0, 0, 0.18),
@@ -500,7 +539,7 @@
     background-size: 3px 3px;
   }
 
-  /* Scan-line overlay — matches CRT quality */
+  /* Scan-line overlay */
   .tablet-scanlines {
     position: absolute;
     inset: 0;
@@ -543,56 +582,13 @@
       inset 0 -1px 0 rgba(0, 0, 0, 0.35);
   }
 
-  /* ─── Hardware detail: rubber feet ─── */
-  .tablet-feet {
-    position: absolute;
-    bottom: -6px;
-    left: 20%;
-    right: 20%;
-    height: 4px;
-    z-index: 5;
-    pointer-events: none;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .tablet-foot {
-    display: block;
-    width: 16px;
-    height: 4px;
-    border-radius: 0 0 3px 3px;
-    background: rgba(40, 36, 34, 0.5);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-  }
-
-  /* ─── Hardware detail: speaker grille slots ─── */
-  .tablet-speaker-grille {
-    position: absolute;
-    bottom: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 4;
-    pointer-events: none;
-    display: flex;
-    gap: 3px;
-  }
-
-  .tablet-speaker-slot {
-    display: block;
-    width: 6px;
-    height: 10px;
-    border-radius: 2px;
-    background: rgba(60, 54, 50, 0.35);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-  }
-
   /* ─── State containers ─── */
   .tablet-state {
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    min-height: 420px;
+    min-height: 360px;
   }
 
   /* ─── Menu state ─── */
@@ -603,7 +599,7 @@
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    padding: 2rem 1.25rem;
+    padding: 1.75rem 1.25rem;
   }
 
   .tablet-menu-label {
@@ -618,38 +614,39 @@
   .tablet-menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.85rem;
     width: 100%;
     max-width: 380px;
   }
 
-  /* ─── Terminal-style buttons with keycap affordance ─── */
+  /* ─── Improved terminal controls with hardware keycap feel ─── */
   .tablet-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.2rem;
     width: 100%;
-    padding: 1rem 1.25rem 0.9rem;
-    border: 1px solid rgba(255, 213, 164, 0.3);
+    padding: 0.85rem 1.25rem 0.75rem;
+    border: 1px solid rgba(255, 213, 164, 0.25);
     border-radius: 8px;
     background: linear-gradient(
       180deg,
-      rgba(40, 28, 60, 0.55) 0%,
-      rgba(20, 14, 32, 0.7) 100%
+      rgba(50, 36, 70, 0.65) 0%,
+      rgba(18, 12, 28, 0.75) 100%
     );
     color: var(--crt-text, #f0eaff);
     cursor: pointer;
     font-family: inherit;
     text-align: center;
     box-shadow:
-      0 2px 0 rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      0 3px 0 rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
     transition:
-      background 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.12s ease;
+      background 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.1s ease;
     transform: translateY(0);
     -webkit-tap-highlight-color: transparent;
   }
@@ -662,48 +659,52 @@
   .tablet-btn:hover {
     background: linear-gradient(
       180deg,
-      rgba(232, 144, 80, 0.14) 0%,
-      rgba(232, 144, 80, 0.07) 100%
+      rgba(232, 144, 80, 0.18) 0%,
+      rgba(232, 144, 80, 0.08) 100%
     );
     border-color: rgba(255, 213, 164, 0.5);
     box-shadow:
-      0 2px 0 rgba(0, 0, 0, 0.3),
-      0 0 16px rgba(232, 144, 80, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 3px 0 rgba(0, 0, 0, 0.35),
+      0 0 20px rgba(232, 144, 80, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
   }
 
   .tablet-btn:active {
-    transform: translateY(1px);
+    transform: translateY(2px);
     box-shadow:
-      0 0px 0 rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      0 1px 0 rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   }
 
   .tablet-btn-icon {
+    display: inline-block;
     font-family: "VT323", "Courier New", monospace;
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--lab-accent, #e89050);
-    padding: 0.15rem 0.5rem;
-    border: 1px solid rgba(232, 144, 80, 0.25);
+    padding: 0.1rem 0.5rem 0.05rem;
+    border: 1px solid rgba(232, 144, 80, 0.3);
     border-radius: 4px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
     text-shadow: 0 0 6px rgba(232, 144, 80, 0.2);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
   }
 
   .tablet-btn-label {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     line-height: 1.2;
   }
 
   .tablet-btn-hint {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--crt-text-muted, #d0bcf4);
-    opacity: 0.8;
-    line-height: 1.3;
+    opacity: 0.75;
+    line-height: 1.25;
   }
 
   /* ─── Iframe wrapper ─── */
@@ -718,7 +719,7 @@
     width: 100%;
     flex: 1;
     border: none;
-    min-height: 400px;
+    min-height: 340px;
   }
 
   /* ─── Placeholder panel ─── */
@@ -727,7 +728,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1.25rem;
+    padding: 1.5rem 1.25rem;
   }
 
   .placeholder-panel {
@@ -840,7 +841,8 @@
   /* ─── Reduced motion ─── */
   @media (prefers-reduced-motion: reduce) {
     .tablet-btn,
-    .tablet-back-btn {
+    .tablet-back-btn,
+    .tablet-power-btn {
       transition: none;
       transform: none;
     }
@@ -861,27 +863,27 @@
     }
 
     .tablet-screen {
-      min-height: 340px;
+      min-height: 300px;
     }
 
     .tablet-state {
-      min-height: 340px;
+      min-height: 300px;
     }
 
     .tablet-menu-content {
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 1rem;
     }
 
     .tablet-btn {
-      padding: 0.85rem 1rem;
+      padding: 0.75rem 1rem;
     }
 
     .tablet-btn-label {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .tablet-placeholder {
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 1rem;
     }
   }
 </style>
