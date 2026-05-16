@@ -960,6 +960,26 @@ const defaultsJson = JSON.stringify(getDefaultLayout());
     mix-blend-mode: screen;
   }
 
+  /* ─── Art Bell: "SPECIMEN" → "G.O.A.T." at +30% ─── */
+  .memento--card-artbell .specimen-type {
+    font-size: 0;
+    line-height: 0;
+  }
+  .memento--card-artbell .specimen-type::before {
+    content: "G.O.A.T.";
+    font-size: 0.91rem;
+    line-height: normal;
+    color: var(--lab-accent, #000000);
+    letter-spacing: 0.2em;
+    font-family: "VT323", "Courier New", monospace;
+  }
+
+  /* ─── Remove bottom orange dots from Art Bell & Sonic ─── */
+  .memento--card-artbell .specimen-pin,
+  .memento--card-sonic .specimen-pin {
+    display: none;
+  }
+
   /* ═══════════════════════════════════════
      BADGE
      ═══════════════════════════════════════ */
