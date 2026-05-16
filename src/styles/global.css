@@ -182,20 +182,20 @@ footer.site-footer {
    Lab utility classes
    ============================================ */
 .lab-section {
-  border-bottom: 1px solid var(--lab-border);
+  border-bottom: calc(1px * 1.05) solid var(--lab-border);
   background:
     radial-gradient(circle at 50% 0%, rgba(232, 144, 80, 0.04), transparent 38%), var(--lab-surface);
 }
 
 .lab-section-alt {
-  border-bottom: 1px solid var(--lab-border);
+  border-bottom: calc(1px * 1.05) solid var(--lab-border);
   background:
     radial-gradient(circle at 50% 0%, rgba(140, 80, 240, 0.08), transparent 42%),
     var(--lab-surface-alt);
 }
 
 .lab-section-dark {
-  border-bottom: 1px solid var(--lab-border);
+  border-bottom: calc(1px * 1.05) solid var(--lab-border);
   background: var(--lab-bg);
 }
 
