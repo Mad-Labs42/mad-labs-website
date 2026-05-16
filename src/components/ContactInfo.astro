@@ -15,10 +15,10 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   <div class="contact-item">
     <dt class="ci-dt">
       <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7"/>
-        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
-        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
-        <circle cx="10" cy="10" r="1.5" fill="#00e676" opacity="0.9"/>
+        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7"/>
+        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
+        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
+        <circle cx="10" cy="10" r="1.5" fill="#00b86e" opacity="0.9"/>
       </svg>
       Email
     </dt>
@@ -29,10 +29,10 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
       <div class="contact-item contact-phone">
         <dt class="ci-dt">
           <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7"/>
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
-            <circle cx="10" cy="10" r="1.5" fill="#00e676" opacity="0.9"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
+            <circle cx="10" cy="10" r="1.5" fill="#00b86e" opacity="0.9"/>
           </svg>
           Phone
         </dt>
@@ -47,10 +47,10 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
       <div class="contact-item">
         <dt class="ci-dt">
           <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7"/>
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
-            <circle cx="10" cy="10" r="1.5" fill="#00e676" opacity="0.9"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00b86e" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
+            <circle cx="10" cy="10" r="1.5" fill="#00b86e" opacity="0.9"/>
           </svg>
           Location
         </dt>
@@ -70,7 +70,18 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   .contact-item {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: 0.1rem;
+  }
+
+  .contact-item > .ci-dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #e89050;
+  }
+
+  .contact-item > dd {
+    padding-left: calc(0.9rem + 0.35rem); /* match icon width + gap */
   }
 
   dt {
@@ -82,10 +93,7 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   }
 
   .ci-dt {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: #00e676;
+    color: #e89050;
   }
 
   .ci-atom {
@@ -96,12 +104,12 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
 
   dd {
     font-size: clamp(1rem, 2vw, 1.15rem);
-    color: var(--lab-heading);
+    color: #ffffff;
     margin: 0;
   }
 
   dd a {
-    color: var(--lab-accent);
+    color: #00b86e;
     text-decoration: none;
     font-weight: 500;
   }
@@ -109,6 +117,7 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   .contact-phone a {
     font-family: "Jersey 25", "VT323", "Courier New", monospace;
     font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: #00b86e;
   }
 
   dd a:hover {
