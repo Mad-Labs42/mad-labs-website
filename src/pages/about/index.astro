@@ -40,10 +40,10 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
 
   <!-- ─── Approach / How We Work ─── -->
   <section class="about-approach lab-section">
-    <div class="lab-section-inner">
+    <div class="lab-section-inner-wide">
       <span class="lab-heading-accent">Approach</span>
       <h2 class="section-heading">How We Work</h2>
-      <div class="approach-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem">
+      <div class="approach-grid" style="display:grid;gap:1.25rem">
         <div class="approach-card">
           <span class="approach-step" aria-hidden="true">01</span>
           <h3 class="approach-card-title">Diagnose First</h3>
@@ -267,6 +267,12 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   }
 
   @media (min-width: 640px) {
+    .approach-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
     .approach-grid {
       grid-template-columns: 1fr 1fr 1fr;
     }
