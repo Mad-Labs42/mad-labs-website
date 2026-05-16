@@ -5,27 +5,31 @@ import ContactTablet from "../components/ContactTablet.astro";
 ---
 
 <BaseLayout title="Contact">
-  <!-- ─── Header + instruction ─── -->
+  <!-- ─── Hero: intro + instruction (2-col on desktop) ─── -->
   <section class="lab-section">
-    <div class="lab-section-inner contact-hero-inner">
-      <span class="lab-heading-accent">Reach the Lab</span>
-      <h1
-        class="lab-heading contact-hero-heading"
-      >
-        Get in Touch
-      </h1>
-      <p
-        class="contact-hero-text"
-      >
-        Tell us what's going on with your device. We'll follow up with next
-        steps and a rough timeline — no charge, no commitment.
-      </p>
-
-      <!-- Tablet instruction — with the intro, before the tablet -->
-      <div class="contact-tablet-instruction">
-        <span class="instruction-orange">You may use this tablet to contact us online.</span>
-        <span>— Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help, websites, or questions about what you need.</span>
-        <span>— Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup, network issues, or existing support requests.</span>
+    <div class="lab-section-inner-wide">
+      <div class="contact-hero-grid">
+        <div class="contact-hero-left">
+          <span class="lab-heading-accent">Reach the Lab</span>
+          <h1
+            class="lab-heading contact-hero-heading"
+          >
+            Get in Touch
+          </h1>
+          <p
+            class="contact-hero-text"
+          >
+            Tell us what's going on with your device. We'll follow up with next
+            steps and a rough timeline — no charge, no commitment.
+          </p>
+        </div>
+        <div class="contact-hero-right">
+          <div class="contact-tablet-instruction">
+            <span class="instruction-orange">You may use this tablet to contact us online.</span>
+            <span>— Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help, websites, or questions about what you need.</span>
+            <span>— Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup, network issues, or existing support requests.</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -156,18 +160,37 @@ import ContactTablet from "../components/ContactTablet.astro";
 </BaseLayout>
 
 <style>
-  /* ─── Hero: left-aligned on desktop ─── */
-  .contact-hero-inner {
-    max-width: 780px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2rem 1rem;
+  /* ─── Hero: 2-column grid (left=intro, right=instruction) ─── */
+  .contact-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 2rem 0;
   }
 
   @media (min-width: 900px) {
-    .contact-hero-inner {
-      margin-left: max(1rem, calc((100% - 1100px) / 2));
-      margin-right: 1rem;
+    .contact-hero-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .contact-hero-left {
+    display: flex;
+    flex-direction: column;
+    max-width: 460px;
+  }
+
+  .contact-hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 899px) {
+    .contact-hero-right {
+      display: none;
     }
   }
 
@@ -180,13 +203,6 @@ import ContactTablet from "../components/ContactTablet.astro";
     font-size: clamp(0.85rem, 1.6vw, 1rem);
     color: var(--lab-text);
     line-height: 1.5;
-    max-width: 460px;
-    margin-bottom: 0.75rem;
-  }
-
-  /* ─── Tablet instruction in hero section ─── */
-  .contact-hero-inner .contact-tablet-instruction {
-    margin: 0;
     max-width: 460px;
   }
 
