@@ -13,13 +13,29 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
 
 <dl class="contact-list">
   <div class="contact-item">
-    <dt>Email</dt>
+    <dt class="ci-dt">
+      <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7"/>
+        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
+        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
+        <circle cx="10" cy="10" r="1.5" fill="#00e676" opacity="0.9"/>
+      </svg>
+      Email
+    </dt>
     <dd><a href="mailto:{email}">{email}</a></dd>
   </div>
   {
     phone && (
       <div class="contact-item contact-phone">
-        <dt>Phone</dt>
+        <dt class="ci-dt">
+          <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
+            <circle cx="10" cy="10" r="1.5" fill="#00e676" opacity="0.9"/>
+          </svg>
+          Phone
+        </dt>
         <dd>
           <a href={telHref}>{phone}</a>
         </dd>
@@ -29,7 +45,15 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   {
     location && (
       <div class="contact-item">
-        <dt>Location</dt>
+        <dt class="ci-dt">
+          <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(60 10 10)"/>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#00e676" stroke-width="0.8" opacity="0.7" transform="rotate(-60 10 10)"/>
+            <circle cx="10" cy="10" r="1.5" fill="#00e676" opacity="0.9"/>
+          </svg>
+          Location
+        </dt>
         <dd>{location}</dd>
       </div>
     )
@@ -55,6 +79,19 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
     color: var(--lab-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+
+  .ci-dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #00e676;
+  }
+
+  .ci-atom {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
   }
 
   dd {

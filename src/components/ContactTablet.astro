@@ -5,7 +5,7 @@
 ---
 
 <div class="contact-tablet" data-tablet-root aria-label="MAD LABS intake terminal">
-  <!-- Tablet bezel -->
+  <!-- Tablet bezel with integrated bottom housing -->
   <div class="tablet-bezel">
     <!-- Status bar -->
     <div class="tablet-status-bar">
@@ -15,12 +15,10 @@
 
     <!-- Screen area -->
     <div class="tablet-screen" data-tablet-screen>
-      <!-- Screen CRT effects layers -->
       <div class="tablet-glare" aria-hidden="true"></div>
       <div class="tablet-tint" aria-hidden="true"></div>
       <div class="tablet-bands" aria-hidden="true"></div>
       <div class="tablet-phosphor-dots" aria-hidden="true"></div>
-      <!-- Scan-line overlay (decorative) -->
       <div class="tablet-scanlines" aria-hidden="true"></div>
       <div class="tablet-vignette" aria-hidden="true"></div>
       <div class="tablet-bevel-inner" aria-hidden="true"></div>
@@ -30,20 +28,12 @@
         <div class="tablet-menu-content">
           <p class="tablet-menu-label">Welcome!</p>
           <div class="tablet-menu-buttons">
-            <button
-              class="tablet-btn tablet-btn--primary"
-              data-tablet-action="booking"
-              type="button"
-            >
+            <button class="tablet-btn tablet-btn--primary" data-tablet-action="booking" type="button">
               <span class="tablet-btn-icon" aria-hidden="true">[BOOK]</span>
               <span class="tablet-btn-label">Book a Consultation</span>
               <span class="tablet-btn-hint">Diagnostics, service planning, AI help, websites, or questions</span>
             </button>
-            <button
-              class="tablet-btn tablet-btn--secondary"
-              data-tablet-action="ticket"
-              type="button"
-            >
+            <button class="tablet-btn tablet-btn--secondary" data-tablet-action="ticket" type="button">
               <span class="tablet-btn-icon" aria-hidden="true">[REPAIR]</span>
               <span class="tablet-btn-label">Submit a Repair Ticket</span>
               <span class="tablet-btn-hint">Computer repair, tuneups, malware, network, or existing requests</span>
@@ -57,47 +47,19 @@
         <div class="tablet-iframe-wrapper">
           <!--
             When BOOKING_EMBED_URL is set, uncomment:
-            <iframe
-              class="tablet-iframe"
-              src={BOOKING_EMBED_URL}
-              title="Book a consultation with MAD LABS"
-              sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
-              loading="lazy"
-            ></iframe>
+            <iframe class="tablet-iframe" src={BOOKING_EMBED_URL} title="Book a consultation with MAD LABS" sandbox="allow-forms allow-scripts allow-same-origin allow-popups" loading="lazy"></iframe>
           -->
-          <!-- Placeholder until Zoho Bookings embed URL is provided -->
           <div class="tablet-placeholder">
             <div class="placeholder-panel">
               <span class="placeholder-icon" aria-hidden="true">[B]</span>
               <h3 class="placeholder-heading">Booking Terminal Ready</h3>
-              <p class="placeholder-text">
-                The consultation booking system is configured and waiting for the
-                Zoho Bookings embed URL. Once connected, this panel will display
-                the live scheduling interface.
-              </p>
-              <div class="placeholder-status">
-                <span class="status-dot"></span>
-                Awaiting embed URL
-              </div>
-              <a
-                href="mailto:customer-service@madlabs.rocks?subject=Consultation%20Request"
-                class="placeholder-fallback"
-                data-analytics-event="contact_fallback_booking"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Book by Email instead →
-              </a>
+              <p class="placeholder-text">The consultation booking system is configured and waiting for the Zoho Bookings embed URL.</p>
+              <div class="placeholder-status"><span class="status-dot"></span>Awaiting embed URL</div>
+              <a href="mailto:customer-service@madlabs.rocks?subject=Consultation%20Request" class="placeholder-fallback" data-analytics-event="contact_fallback_booking" target="_blank" rel="noopener noreferrer">Book by Email instead →</a>
             </div>
           </div>
         </div>
-        <button
-          class="tablet-back-btn"
-          data-tablet-action="back"
-          type="button"
-        >
-          ← Back
-        </button>
+        <button class="tablet-back-btn" data-tablet-action="back" type="button">← Back</button>
       </div>
 
       <!-- ─── State: Ticket ─── -->
@@ -105,66 +67,35 @@
         <div class="tablet-iframe-wrapper">
           <!--
             When TICKET_EMBED_URL is set, uncomment:
-            <iframe
-              class="tablet-iframe"
-              src={TICKET_EMBED_URL}
-              title="Submit a repair ticket to MAD LABS"
-              sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
-              loading="lazy"
-            ></iframe>
+            <iframe class="tablet-iframe" src={TICKET_EMBED_URL} title="Submit a repair ticket to MAD LABS" sandbox="allow-forms allow-scripts allow-same-origin allow-popups" loading="lazy"></iframe>
           -->
-          <!-- Placeholder until Zoho Forms embed URL is provided -->
           <div class="tablet-placeholder">
             <div class="placeholder-panel">
               <span class="placeholder-icon" aria-hidden="true">[T]</span>
               <h3 class="placeholder-heading">Repair Ticket Terminal Ready</h3>
-              <p class="placeholder-text">
-                The repair ticket system is configured and waiting for the Zoho
-                Forms or Zoho Desk embed URL. Once connected, this panel will
-                display the intake form.
-              </p>
-              <div class="placeholder-status">
-                <span class="status-dot"></span>
-                Awaiting embed URL
-              </div>
-              <a
-                href="mailto:customer-service@madlabs.rocks?subject=Repair%20Ticket"
-                class="placeholder-fallback"
-                data-analytics-event="contact_fallback_ticket"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Submit by Email instead →
-              </a>
+              <p class="placeholder-text">The repair ticket system is configured and waiting for the Zoho Forms or Zoho Desk embed URL.</p>
+              <div class="placeholder-status"><span class="status-dot"></span>Awaiting embed URL</div>
+              <a href="mailto:customer-service@madlabs.rocks?subject=Repair%20Ticket" class="placeholder-fallback" data-analytics-event="contact_fallback_ticket" target="_blank" rel="noopener noreferrer">Submit by Email instead →</a>
             </div>
           </div>
         </div>
-        <button
-          class="tablet-back-btn"
-          data-tablet-action="back"
-          type="button"
-        >
-          ← Back
-        </button>
+        <button class="tablet-back-btn" data-tablet-action="back" type="button">← Back</button>
       </div>
     </div>
-  </div>
 
-  <!-- Hardware details -->
-  <div class="tablet-bottom-housing" aria-hidden="true">
-    <div class="tablet-speaker-grille">
-      <span class="tablet-speaker-slot"></span>
-      <span class="tablet-speaker-slot"></span>
-      <span class="tablet-speaker-slot"></span>
-      <span class="tablet-speaker-slot"></span>
-      <span class="tablet-speaker-slot"></span>
-      <span class="tablet-speaker-slot"></span>
-    </div>
-    <button class="tablet-power-btn" type="button" aria-label="Power indicator"></button>
-    <div class="tablet-feet">
-      <span class="tablet-foot"></span>
-      <span class="tablet-foot"></span>
-      <span class="tablet-foot"></span>
+    <!-- Bottom housing — speaker grille, power button integrated into bezel -->
+    <div class="tablet-bottom-housing" aria-hidden="true">
+      <div class="tablet-speaker-grille tablet-speaker-grille--left">
+        <span class="tablet-speaker-slot"></span>
+        <span class="tablet-speaker-slot"></span>
+        <span class="tablet-speaker-slot"></span>
+      </div>
+      <button class="tablet-power-btn" type="button" aria-label="Power indicator"></button>
+      <div class="tablet-speaker-grille tablet-speaker-grille--right">
+        <span class="tablet-speaker-slot"></span>
+        <span class="tablet-speaker-slot"></span>
+        <span class="tablet-speaker-slot"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -174,716 +105,112 @@
   // @ts-nocheck
   (function () {
     "use strict";
-
     const root = document.querySelector("[data-tablet-root]");
     if (!root) return;
-
     const screen = root.querySelector("[data-tablet-screen]");
     if (!screen) return;
-
     const states = {
       menu: screen.querySelector('[data-tablet-state="menu"]'),
       booking: screen.querySelector('[data-tablet-state="booking"]'),
       ticket: screen.querySelector('[data-tablet-state="ticket"]'),
     };
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    // Analytics wrapper (no-op until Clarity ID is provided)
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     function trackEvent(name) {
       // TODO: Wire Clarity project ID — uncomment after setup:
       // if (typeof clarity !== "undefined") { clarity("event", name); }
-      if (import.meta.env.DEV) {
-        console.log("[Analytics]", name);
-      }
+      if (import.meta.env.DEV) { console.log("[Analytics]", name); }
     }
-
-    // Focus back button helper
     function focusBackButton(target) {
       const stateEl = states[target];
       if (stateEl) {
         const backBtn = stateEl.querySelector(".tablet-back-btn");
-        if (backBtn && !prefersReducedMotion) {
-          window.setTimeout(function () {
-            backBtn.focus();
-          }, 50);
-        }
+        if (backBtn && !prefersReducedMotion) { window.setTimeout(function () { backBtn.focus(); }, 50); }
       }
     }
-
-    // State switching
     function switchState(target) {
-      Object.keys(states).forEach(function (key) {
-        const el = states[key];
-        if (el) el.hidden = true;
-      });
-
+      Object.keys(states).forEach(function (key) { const el = states[key]; if (el) el.hidden = true; });
       const targetEl = states[target];
       if (targetEl) targetEl.hidden = false;
-
-      if (target === "booking") {
-        trackEvent("contact_tablet_interact_booking");
-        focusBackButton("booking");
-      } else if (target === "ticket") {
-        trackEvent("contact_tablet_interact_ticket");
-        focusBackButton("ticket");
-      } else if (target === "menu") {
-        trackEvent("contact_back_to_menu");
-      }
+      if (target === "booking") { trackEvent("contact_tablet_interact_booking"); focusBackButton("booking"); }
+      else if (target === "ticket") { trackEvent("contact_tablet_interact_ticket"); focusBackButton("ticket"); }
+      else if (target === "menu") { trackEvent("contact_back_to_menu"); }
     }
-
     function handleAction(action) {
       if (!action) return;
-
       if (action === "booking" || action === "ticket") {
         switchState(action);
-        window.setTimeout(function () {
-          trackEvent("contact_" + action + "_iframe_load");
-        }, 500);
-      } else if (action === "back") {
-        switchState("menu");
-      }
+        window.setTimeout(function () { trackEvent("contact_" + action + "_iframe_load"); }, 500);
+      } else if (action === "back") { switchState("menu"); }
     }
-
     screen.addEventListener("click", function (e) {
       const target = e.target.closest("[data-tablet-action], [data-analytics-event]");
       if (!target) return;
-
       const action = target.getAttribute("data-tablet-action");
-      if (action) {
-        handleAction(action);
-      }
-
+      if (action) { handleAction(action); }
       const analyticsEvent = target.getAttribute("data-analytics-event");
-      if (analyticsEvent) {
-        trackEvent(analyticsEvent);
-      }
+      if (analyticsEvent) { trackEvent(analyticsEvent); }
     });
-
     root.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
         let currentKey = null;
         for (const key in states) {
-          if (states[key] && !states[key].hidden && key !== "menu") {
-            currentKey = key;
-            break;
-          }
+          if (states[key] && !states[key].hidden && key !== "menu") { currentKey = key; break; }
         }
-        if (currentKey) {
-          switchState("menu");
-        }
+        if (currentKey) { switchState("menu"); }
       }
     });
-
-    // Initialize
     switchState("menu");
-
     // === TODO: Add Zoho Forms postMessage listener when Zoho URLs are configured ===
-    // window.addEventListener("message", function (event) {
-    //   if (event.origin !== "https://forms.zoho.com") return;
-    //   try {
-    //     var payload = typeof event.data === "string"
-    //       ? JSON.parse(event.data)
-    //       : event.data;
-    //     if (payload.type === "FORM_SUBMITTED") {
-    //       trackEvent("contact_zoho_form_submitted");
-    //     }
-    //     if (payload.type === "FORM_COMPLETED") {
-    //       trackEvent("contact_zoho_form_completed");
-    //     }
-    //   } catch (e) { /* ignore */ }
-    // });
   })();
 </script>
 
 <style>
-  /* ═══════════════════════════════════════════════
-     Contact Tablet — CRT hardware terminal
-     Visual sibling of the homepage CRT monitor
-     ═══════════════════════════════════════════════ */
-
-  /* ─── Outer container ─── */
-  .contact-tablet {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    font-family: "Jersey 25", "VT323", "Courier New", monospace;
-  }
-
-  /* ─── Bezel — beige/cream CRT plastic with depth ─── */
-  .tablet-bezel {
-    position: relative;
-    border-radius: 18px;
-    padding: 12px 12px 32px;
-    background: linear-gradient(180deg, #d7d0ca 0%, #c9c2bc 22%, #c3bcb6 56%, #b6b0ab 100%);
-    box-shadow:
-      inset 0 8px 12px rgba(255, 255, 255, 0.22),
-      inset 6px 0 10px rgba(255, 255, 255, 0.1),
-      inset 0 -10px 12px rgba(94, 87, 82, 0.28),
-      inset -8px 0 10px rgba(118, 111, 105, 0.2),
-      0 0 0 1.5px rgba(98, 90, 86, 0.7),
-      0 0 0 5px rgba(47, 43, 41, 0.5),
-      0 16px 48px rgba(0, 0, 0, 0.6);
-    filter: brightness(0.95) saturate(0.95);
-  }
-
-  /* Bezel plastic texture — warm grain */
-  .tablet-bezel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 20%, transparent 100%),
-      repeating-linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.008) 0 2px,
-        rgba(0, 0, 0, 0.006) 2px 4px
-      ),
-      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.01) 0 1px, transparent 1px 3px);
-    opacity: 0.7;
-  }
-
-  /* Bezel rim inset — highlights/hardware seam */
-  .tablet-bezel::after {
-    content: "";
-    position: absolute;
-    inset: 5px 5px 25px;
-    border-radius: 14px 14px 0 0;
-    pointer-events: none;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      inset 0 -1px 0 rgba(58, 52, 49, 0.18);
-    opacity: 0.7;
-  }
-
-  /* ─── Bottom housing — balances top bezel ─── */
-  .tablet-bottom-housing {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: -1px;
-    padding: 0.5rem 0 0;
-    position: relative;
-  }
-
-  /* Speaker grille — recessed into bottom housing */
-  .tablet-speaker-grille {
-    display: flex;
-    gap: 3px;
-    opacity: 0.45;
-  }
-
-  .tablet-speaker-slot {
-    display: block;
-    width: 5px;
-    height: 8px;
-    border-radius: 1px;
-    background: rgba(60, 54, 50, 0.4);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
-  }
-
-  /* On/off power button — centered in bottom housing */
-  .tablet-power-btn {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: none;
-    background: linear-gradient(145deg, #b8b0ab 0%, #9e968f 50%, #8a827c 100%);
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.35),
-      inset 0 1px 1px rgba(255, 255, 255, 0.25),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.1);
-    cursor: default;
-    position: relative;
-    flex-shrink: 0;
-    transition: box-shadow 0.15s ease;
-  }
-
-  .tablet-power-btn::after {
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    bottom: 4px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.08), transparent);
-    pointer-events: none;
-  }
-
-  /* Rubber feet */
-  .tablet-feet {
-    display: flex;
-    gap: 1rem;
-    opacity: 0.45;
-  }
-
-  .tablet-foot {
-    display: block;
-    width: 12px;
-    height: 3px;
-    border-radius: 0 0 2px 2px;
-    background: rgba(40, 36, 34, 0.45);
-  }
-
-  /* ─── Status bar ─── */
-  .tablet-status-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.6rem 0.4rem;
-    background: rgba(98, 88, 94, 0.3);
-    border-radius: 8px 8px 0 0;
-    border-bottom: 1px solid rgba(98, 88, 94, 0.15);
-    z-index: 3;
-  }
-
-  .tablet-led {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #00e676;
-    box-shadow:
-      0 0 4px rgba(0, 230, 118, 0.8),
-      0 0 10px rgba(0, 230, 118, 0.4);
-    flex-shrink: 0;
-  }
-
-  .tablet-status-text {
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.65rem;
-    color: rgba(246, 239, 255, 0.7);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* ─── Screen — purple CRT, landscape tablet ─── */
-  .tablet-screen {
-    position: relative;
-    min-height: 360px;
-    border-radius: 0 0 8px 8px;
-    background: #362866;
-    overflow: hidden;
-    box-shadow:
-      inset 0 0 0 2px rgba(93, 72, 132, 0.4),
-      inset 0 0 0 4px rgba(22, 14, 38, 0.8),
-      inset 2px 3px 8px rgba(0, 0, 0, 0.6),
-      inset -1px -1px 6px rgba(0, 0, 0, 0.4),
-      inset 0 0 20px rgba(0, 0, 0, 0.18),
-      0 0 30px rgba(180, 126, 255, 0.12);
-  }
-
-  /* ─── Screen CRT effects layers ─── */
-  .tablet-glare {
-    position: absolute;
-    inset: 0;
-    z-index: 12;
-    pointer-events: none;
-    background: linear-gradient(
-      162deg,
-      rgba(255, 255, 255, 0.06) 0%,
-      rgba(255, 255, 255, 0.012) 32%,
-      transparent 58%,
-      transparent 100%
-    );
-    clip-path: polygon(6% 0%, 94% 0%, 86% 100%, 14% 100%);
-  }
-
-  .tablet-tint {
-    position: absolute;
-    inset: 0;
-    z-index: 13;
-    pointer-events: none;
-    mix-blend-mode: soft-light;
-    background: linear-gradient(
-      180deg,
-      rgba(60, 0, 80, 0.07) 0%,
-      rgba(20, 0, 60, 0.03) 50%,
-      rgba(60, 0, 80, 0.07) 100%
-    );
-  }
-
-  .tablet-bands {
-    position: absolute;
-    inset: 0;
-    z-index: 14;
-    pointer-events: none;
-    opacity: 0.6;
-    mix-blend-mode: screen;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 48px,
-      rgba(255, 255, 255, 0.01) 48px,
-      rgba(255, 255, 255, 0.01) 50px
-    );
-  }
-
-  /* Phosphor dot texture */
-  .tablet-phosphor-dots {
-    position: absolute;
-    inset: 0;
-    z-index: 15;
-    pointer-events: none;
-    mix-blend-mode: screen;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 3px 3px;
-  }
-
-  /* Scan-line overlay */
-  .tablet-scanlines {
-    position: absolute;
-    inset: 0;
-    z-index: 16;
-    pointer-events: none;
-    opacity: 0.65;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 2px,
-      rgba(0, 0, 0, 0.1) 2px,
-      rgba(0, 0, 0, 0.1) 3px
-    );
-  }
-
-  /* Vignette — corner shadow */
-  .tablet-vignette {
-    position: absolute;
-    inset: 0;
-    z-index: 17;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at top right, rgba(0, 0, 0, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom left, rgba(0, 0, 0, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(0, 0, 0, 0.15) 0%, transparent 50%);
-  }
-
-  /* Inner bevel on screen */
-  .tablet-bevel-inner {
-    position: absolute;
-    inset: 0;
-    z-index: 18;
-    pointer-events: none;
-    border-radius: 0 0 8px 8px;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      inset 1px 0 0 rgba(255, 255, 255, 0.04),
-      inset -1px 0 0 rgba(255, 255, 255, 0.04),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.35);
-  }
-
-  /* ─── State containers ─── */
-  .tablet-state {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    min-height: 360px;
-  }
-
-  /* ─── Menu state ─── */
-  .tablet-menu-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 1.75rem 1.25rem;
-  }
-
-  .tablet-menu-label {
-    margin: 0;
-    color: var(--lab-heading, #e0d0ff);
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 1.1rem;
-    letter-spacing: 0.08em;
-    text-shadow: 0 0 10px rgba(232, 144, 80, 0.3);
-  }
-
-  .tablet-menu-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    width: 100%;
-    max-width: 380px;
-  }
-
-  /* ─── Improved terminal controls with hardware keycap feel ─── */
-  .tablet-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.2rem;
-    width: 100%;
-    padding: 0.85rem 1.25rem 0.75rem;
-    border: 1px solid rgba(255, 213, 164, 0.25);
-    border-radius: 8px;
-    background: linear-gradient(
-      180deg,
-      rgba(50, 36, 70, 0.65) 0%,
-      rgba(18, 12, 28, 0.75) 100%
-    );
-    color: var(--crt-text, #f0eaff);
-    cursor: pointer;
-    font-family: inherit;
-    text-align: center;
-    box-shadow:
-      0 3px 0 rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
-    transition:
-      background 0.18s ease,
-      border-color 0.18s ease,
-      box-shadow 0.18s ease,
-      transform 0.1s ease;
-    transform: translateY(0);
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .tablet-btn:focus-visible {
-    outline: 2px solid var(--lab-accent, #e89050);
-    outline-offset: 3px;
-  }
-
-  .tablet-btn:hover {
-    background: linear-gradient(
-      180deg,
-      rgba(232, 144, 80, 0.18) 0%,
-      rgba(232, 144, 80, 0.08) 100%
-    );
-    border-color: rgba(255, 213, 164, 0.5);
-    box-shadow:
-      0 3px 0 rgba(0, 0, 0, 0.35),
-      0 0 20px rgba(232, 144, 80, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-  }
-
-  .tablet-btn:active {
-    transform: translateY(2px);
-    box-shadow:
-      0 1px 0 rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  .tablet-btn-icon {
-    display: inline-block;
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.85rem;
-    color: var(--lab-accent, #e89050);
-    padding: 0.1rem 0.5rem 0.05rem;
-    border: 1px solid rgba(232, 144, 80, 0.3);
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.25);
-    text-shadow: 0 0 6px rgba(232, 144, 80, 0.2);
-    letter-spacing: 0.06em;
-    line-height: 1.3;
-  }
-
-  .tablet-btn-label {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-  }
-
-  .tablet-btn-hint {
-    font-size: 0.72rem;
-    color: var(--crt-text-muted, #d0bcf4);
-    opacity: 0.75;
-    line-height: 1.25;
-  }
-
-  /* ─── Iframe wrapper ─── */
-  .tablet-iframe-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  .tablet-iframe {
-    width: 100%;
-    flex: 1;
-    border: none;
-    min-height: 340px;
-  }
-
-  /* ─── Placeholder panel ─── */
-  .tablet-placeholder {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem 1.25rem;
-  }
-
-  .placeholder-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    max-width: 340px;
-    text-align: center;
-  }
-
-  .placeholder-icon {
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 1.8rem;
-    color: var(--lab-accent, #e89050);
-    text-shadow: 0 0 12px rgba(232, 144, 80, 0.3);
-  }
-
-  .placeholder-heading {
-    margin: 0;
-    color: var(--lab-heading, #e0d0ff);
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.06em;
-  }
-
-  .placeholder-text {
-    margin: 0;
-    color: var(--crt-text-muted, #d0bcf4);
-    font-family: "Jersey 25", "VT323", monospace;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    opacity: 0.85;
-  }
-
-  .placeholder-status {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.25rem;
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.72rem;
-    color: var(--lab-accent-dim, rgba(232, 144, 80, 0.6));
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .status-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--lab-accent, #e89050);
-    box-shadow: 0 0 4px rgba(232, 144, 80, 0.5);
-  }
-
-  .placeholder-fallback {
-    margin-top: 0.5rem;
-    color: var(--lab-accent, #e89050);
-    font-family: "Jersey 25", "VT323", monospace;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .placeholder-fallback:hover {
-    color: #fff;
-    text-decoration: underline;
-  }
-
-  .placeholder-fallback:focus-visible {
-    outline: 2px solid var(--lab-accent, #e89050);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-
-  /* ─── Back button ─── */
-  .tablet-back-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    margin: 0.75rem;
-    padding: 0.45rem 1rem;
-    border: 1px solid rgba(255, 213, 164, 0.3);
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.25);
-    color: var(--crt-text, #f0eaff);
-    cursor: pointer;
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition:
-      background 0.2s ease,
-      border-color 0.2s ease;
-    align-self: flex-start;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .tablet-back-btn:hover {
-    background: rgba(232, 144, 80, 0.12);
-    border-color: rgba(255, 213, 164, 0.5);
-  }
-
-  .tablet-back-btn:focus-visible {
-    outline: 2px solid var(--lab-accent, #e89050);
-    outline-offset: 3px;
-  }
-
-  /* ─── Reduced motion ─── */
-  @media (prefers-reduced-motion: reduce) {
-    .tablet-btn,
-    .tablet-back-btn,
-    .tablet-power-btn {
-      transition: none;
-      transform: none;
-    }
-
-    .tablet-btn:hover {
-      transform: none;
-    }
-
-    .tablet-btn:active {
-      transform: none;
-    }
-  }
-
-  /* ─── Mobile adjustments ─── */
-  @media (max-width: 480px) {
-    .contact-tablet {
-      max-width: 100%;
-    }
-
-    .tablet-screen {
-      min-height: 300px;
-    }
-
-    .tablet-state {
-      min-height: 300px;
-    }
-
-    .tablet-menu-content {
-      padding: 1.25rem 1rem;
-    }
-
-    .tablet-btn {
-      padding: 0.75rem 1rem;
-    }
-
-    .tablet-btn-label {
-      font-size: 0.9rem;
-    }
-
-    .tablet-placeholder {
-      padding: 1.25rem 1rem;
-    }
-  }
+  .contact-tablet { width: 100%; max-width: 640px; margin: 0 auto; font-family: "Jersey 25", "VT323", "Courier New", monospace; }
+  .tablet-bezel { position: relative; border-radius: 18px; padding: 12px 12px 32px; background: linear-gradient(180deg, #d7d0ca 0%, #c9c2bc 22%, #c3bcb6 56%, #b6b0ab 100%); box-shadow: inset 0 8px 12px rgba(255,255,255,0.22), inset 6px 0 10px rgba(255,255,255,0.1), inset 0 -10px 12px rgba(94,87,82,0.28), inset -8px 0 10px rgba(118,111,105,0.2), 0 0 0 1.5px rgba(98,90,86,0.7), 0 0 0 5px rgba(47,43,41,0.5), 0 16px 48px rgba(0,0,0,0.6); filter: brightness(0.95) saturate(0.95); }
+  .tablet-bezel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 20%, transparent 100%), repeating-linear-gradient(135deg, rgba(255,255,255,0.008) 0 2px, rgba(0,0,0,0.006) 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,0.01) 0 1px, transparent 1px 3px); opacity: 0.7; }
+  .tablet-bezel::after { content: ""; position: absolute; inset: 5px 5px 25px; border-radius: 14px 14px 0 0; pointer-events: none; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(58,52,49,0.18); opacity: 0.7; }
+  .tablet-status-bar { position: relative; display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.6rem 0.4rem; background: rgba(98,88,94,0.3); border-radius: 8px 8px 0 0; border-bottom: 1px solid rgba(98,88,94,0.15); z-index: 3; }
+  .tablet-led { width: 7px; height: 7px; border-radius: 50%; background: #00e676; box-shadow: 0 0 4px rgba(0,230,118,0.8), 0 0 10px rgba(0,230,118,0.4); flex-shrink: 0; }
+  .tablet-status-text { font-family: "VT323","Courier New",monospace; font-size: 0.65rem; color: rgba(246,239,255,0.7); letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tablet-screen { position: relative; min-height: 340px; border-radius: 0 0 8px 8px; background: #362866; overflow: hidden; box-shadow: inset 0 0 0 2px rgba(93,72,132,0.4), inset 0 0 0 4px rgba(22,14,38,0.8), inset 2px 3px 8px rgba(0,0,0,0.6), inset -1px -1px 6px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,0,0,0.18), 0 0 30px rgba(180,126,255,0.12); }
+  .tablet-glare { position: absolute; inset: 0; z-index: 12; pointer-events: none; background: linear-gradient(162deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.012) 32%, transparent 58%, transparent 100%); clip-path: polygon(6% 0%, 94% 0%, 86% 100%, 14% 100%); }
+  .tablet-tint { position: absolute; inset: 0; z-index: 13; pointer-events: none; mix-blend-mode: soft-light; background: linear-gradient(180deg, rgba(60,0,80,0.07) 0%, rgba(20,0,60,0.03) 50%, rgba(60,0,80,0.07) 100%); }
+  .tablet-bands { position: absolute; inset: 0; z-index: 14; pointer-events: none; opacity: 0.6; mix-blend-mode: screen; background: repeating-linear-gradient(180deg, transparent 0, transparent 48px, rgba(255,255,255,0.01) 48px, rgba(255,255,255,0.01) 50px); }
+  .tablet-phosphor-dots { position: absolute; inset: 0; z-index: 15; pointer-events: none; mix-blend-mode: screen; background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 3px 3px; }
+  .tablet-scanlines { position: absolute; inset: 0; z-index: 16; pointer-events: none; opacity: 0.65; background: repeating-linear-gradient(180deg, transparent 0, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 3px); }
+  .tablet-vignette { position: absolute; inset: 0; z-index: 17; pointer-events: none; background: radial-gradient(ellipse at top left, rgba(0,0,0,0.15) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(0,0,0,0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom left, rgba(0,0,0,0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(0,0,0,0.15) 0%, transparent 50%); }
+  .tablet-bevel-inner { position: absolute; inset: 0; z-index: 18; pointer-events: none; border-radius: 0 0 8px 8px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 1px 0 0 rgba(255,255,255,0.04), inset -1px 0 0 rgba(255,255,255,0.04), inset 0 -1px 0 rgba(0,0,0,0.35); }
+  .tablet-bottom-housing { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: -1px; padding: 0.5rem 0 0; position: relative; }
+  .tablet-speaker-grille { display: flex; gap: 3px; opacity: 0.45; }
+  .tablet-speaker-slot { display: block; width: 5px; height: 8px; border-radius: 1px; background: rgba(60,54,50,0.4); box-shadow: inset 0 1px 1px rgba(0,0,0,0.08); }
+  .tablet-power-btn { width: 20px; height: 20px; border-radius: 50%; border: none; background: linear-gradient(145deg, #b8b0ab 0%, #9e968f 50%, #8a827c 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255,255,255,0.25), inset 0 -1px 1px rgba(0,0,0,0.1); cursor: default; position: relative; flex-shrink: 0; }
+  .tablet-power-btn::after { content: ""; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.08), transparent); pointer-events: none; }
+  .tablet-state { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 340px; }
+  .tablet-menu-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.75rem 1.25rem; }
+  .tablet-menu-label { margin: 0; color: var(--lab-heading,#e0d0ff); font-family: "VT323","Courier New",monospace; font-size: 1.1rem; letter-spacing: 0.08em; text-shadow: 0 0 10px rgba(232,144,80,0.3); }
+  .tablet-menu-buttons { display: flex; flex-direction: column; gap: 0.85rem; width: 100%; max-width: 380px; }
+  .tablet-btn { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; width: 100%; padding: 0.85rem 1.25rem 0.75rem; border: 1px solid rgba(255,213,164,0.25); border-radius: 8px; background: linear-gradient(180deg, rgba(50,36,70,0.65) 0%, rgba(18,12,28,0.75) 100%); color: var(--crt-text,#f0eaff); cursor: pointer; font-family: inherit; text-align: center; box-shadow: 0 3px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -2px 0 rgba(0,0,0,0.15); transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.1s ease; transform: translateY(0); -webkit-tap-highlight-color: transparent; }
+  .tablet-btn:focus-visible { outline: 2px solid var(--lab-accent,#e89050); outline-offset: 3px; }
+  .tablet-btn:hover { background: linear-gradient(180deg, rgba(232,144,80,0.18) 0%, rgba(232,144,80,0.08) 100%); border-color: rgba(255,213,164,0.5); box-shadow: 0 3px 0 rgba(0,0,0,0.35), 0 0 20px rgba(232,144,80,0.12), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -2px 0 rgba(0,0,0,0.15); transform: translateY(-2px); }
+  .tablet-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.1); }
+  .tablet-btn-icon { display: inline-block; font-family: "VT323","Courier New",monospace; font-size: 0.85rem; color: var(--lab-accent,#e89050); padding: 0.1rem 0.5rem 0.05rem; border: 1px solid rgba(232,144,80,0.3); border-radius: 4px; background: rgba(0,0,0,0.25); text-shadow: 0 0 6px rgba(232,144,80,0.2); letter-spacing: 0.06em; line-height: 1.3; }
+  .tablet-btn-label { font-size: 1rem; font-weight: 600; letter-spacing: 0.04em; line-height: 1.2; }
+  .tablet-btn-hint { font-size: 0.72rem; color: var(--crt-text-muted,#d0bcf4); opacity: 0.75; line-height: 1.25; }
+  .tablet-iframe-wrapper { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .tablet-iframe { width: 100%; flex: 1; border: none; min-height: 320px; }
+  .tablet-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem 1.25rem; }
+  .placeholder-panel { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; max-width: 340px; text-align: center; }
+  .placeholder-icon { font-family: "VT323","Courier New",monospace; font-size: 1.8rem; color: var(--lab-accent,#e89050); text-shadow: 0 0 12px rgba(232,144,80,0.3); }
+  .placeholder-heading { margin: 0; color: var(--lab-heading,#e0d0ff); font-size: 1rem; font-weight: 400; letter-spacing: 0.06em; }
+  .placeholder-text { margin: 0; color: var(--crt-text-muted,#d0bcf4); font-family: "Jersey 25","VT323",monospace; font-size: 0.82rem; line-height: 1.5; opacity: 0.85; }
+  .placeholder-status { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.25rem; font-family: "VT323","Courier New",monospace; font-size: 0.72rem; color: var(--lab-accent-dim,rgba(232,144,80,0.6)); text-transform: uppercase; letter-spacing: 0.08em; }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lab-accent,#e89050); box-shadow: 0 0 4px rgba(232,144,80,0.5); }
+  .placeholder-fallback { margin-top: 0.5rem; color: var(--lab-accent,#e89050); font-family: "Jersey 25","VT323",monospace; font-size: 0.85rem; text-decoration: none; transition: color 0.2s ease; }
+  .placeholder-fallback:hover { color: #fff; text-decoration: underline; }
+  .placeholder-fallback:focus-visible { outline: 2px solid var(--lab-accent,#e89050); outline-offset: 3px; border-radius: 2px; }
+  .tablet-back-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; margin: 0.75rem; padding: 0.45rem 1rem; border: 1px solid rgba(255,213,164,0.3); border-radius: 4px; background: rgba(0,0,0,0.25); color: var(--crt-text,#f0eaff); cursor: pointer; font-family: "VT323","Courier New",monospace; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s ease, border-color 0.2s ease; align-self: flex-start; -webkit-tap-highlight-color: transparent; }
+  .tablet-back-btn:hover { background: rgba(232,144,80,0.12); border-color: rgba(255,213,164,0.5); }
+  .tablet-back-btn:focus-visible { outline: 2px solid var(--lab-accent,#e89050); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .tablet-btn,.tablet-back-btn,.tablet-power-btn { transition: none; transform: none; } .tablet-btn:hover { transform: none; } .tablet-btn:active { transform: none; } }
+  @media (max-width: 480px) { .contact-tablet { max-width: 100%; } .tablet-screen { min-height: 280px; } .tablet-state { min-height: 280px; } .tablet-menu-content { padding: 1.25rem 1rem; } .tablet-btn { padding: 0.75rem 1rem; } .tablet-btn-label { font-size: 0.9rem; } .tablet-placeholder { padding: 1.25rem 1rem; } }
 </style>
