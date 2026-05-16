@@ -7,7 +7,7 @@ import ContactTablet from "../components/ContactTablet.astro";
 <BaseLayout title="Contact">
   <!-- ─── Header ─── -->
   <section class="lab-section">
-    <div class="lab-section-inner">
+    <div class="lab-section-inner contact-hero-inner">
       <span class="lab-heading-accent">Reach the Lab</span>
       <h1
         class="lab-heading"
@@ -32,7 +32,7 @@ import ContactTablet from "../components/ContactTablet.astro";
         <div class="contact-info-col">
           <span class="lab-heading-accent">Contact</span>
           <h2
-            class="lab-heading"
+            class="lab-heading reach-us-heading"
             style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-bottom:1.25rem;"
           >
             Reach Us
@@ -44,7 +44,7 @@ import ContactTablet from "../components/ContactTablet.astro";
               location="Greater Cincinnati Area"
             />
             <div
-              style="background:var(--lab-card); border:1px solid var(--lab-border); border-radius:8px; padding:1.25rem;"
+              class="contact-response-card"
             >
               <p style="font-size:0.9rem; color:var(--lab-text); line-height:1.6;">
                 We typically respond within
@@ -142,6 +142,17 @@ import ContactTablet from "../components/ContactTablet.astro";
 </BaseLayout>
 
 <style>
+  /* ─── Hero: left-aligned on desktop ─── */
+  .contact-hero-inner {
+    max-width: 1100px;
+  }
+
+  @media (min-width: 900px) {
+    .contact-hero-inner {
+      padding-left: calc((100% - 1100px) / 2 + 1rem);
+    }
+  }
+
   /* ─── Two-column layout ─── */
   .contact-layout {
     display: grid;
@@ -152,7 +163,14 @@ import ContactTablet from "../components/ContactTablet.astro";
 
   @media (min-width: 900px) {
     .contact-layout {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3rem;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .contact-layout {
+      gap: 4rem;
     }
   }
 
@@ -166,6 +184,65 @@ import ContactTablet from "../components/ContactTablet.astro";
     display: flex;
     flex-direction: column;
     gap: 2rem;
+  }
+
+  /* ─── Typography: "Reach Us" and phone number in Jersey 25 ─── */
+  .reach-us-heading {
+    font-family: "Jersey 25", "VT323", "Courier New", monospace !important;
+  }
+
+  /* ─── Response-time card with service-card-style effects ─── */
+  .contact-response-card {
+    position: relative;
+    isolation: isolate;
+    background: var(--lab-card);
+    border: calc(1px * 1.05) solid var(--lab-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow: hidden;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+    transform: translateY(0);
+  }
+
+  .contact-response-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(232, 144, 80, 0.35);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 0 24px rgba(232, 144, 80, 0.08);
+  }
+
+  .contact-response-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(232, 144, 80, 0.035) 48%,
+      rgba(232, 144, 80, 0.07) 50%,
+      rgba(232, 144, 80, 0.035) 52%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .contact-response-card:hover::after {
+    opacity: 1;
+    animation: response-shimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes response-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 
   /* ─── Tablet column ─── */
@@ -212,6 +289,15 @@ import ContactTablet from "../components/ContactTablet.astro";
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .contact-response-card {
+      transition: none;
+      transform: none;
+    }
+
+    .contact-response-card::after {
+      display: none;
+    }
+
     .scroll-chevron {
       animation: none;
     }

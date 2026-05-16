@@ -22,8 +22,15 @@
 
     <!-- Screen area -->
     <div class="tablet-screen" data-tablet-screen>
+      <!-- Screen CRT effects layers -->
+      <div class="tablet-glare" aria-hidden="true"></div>
+      <div class="tablet-tint" aria-hidden="true"></div>
+      <div class="tablet-bands" aria-hidden="true"></div>
+      <div class="tablet-phosphor-dots" aria-hidden="true"></div>
       <!-- Scan-line overlay (decorative) -->
       <div class="tablet-scanlines" aria-hidden="true"></div>
+      <div class="tablet-vignette" aria-hidden="true"></div>
+      <div class="tablet-bevel-inner" aria-hidden="true"></div>
 
       <!-- ─── State: Menu ─── -->
       <div class="tablet-state" data-tablet-state="menu">
@@ -148,6 +155,21 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Hardware details -->
+  <div class="tablet-feet" aria-hidden="true">
+    <span class="tablet-foot"></span>
+    <span class="tablet-foot"></span>
+    <span class="tablet-foot"></span>
+  </div>
+  <div class="tablet-speaker-grille" aria-hidden="true">
+    <span class="tablet-speaker-slot"></span>
+    <span class="tablet-speaker-slot"></span>
+    <span class="tablet-speaker-slot"></span>
+    <span class="tablet-speaker-slot"></span>
+    <span class="tablet-speaker-slot"></span>
+    <span class="tablet-speaker-slot"></span>
   </div>
 </div>
 
@@ -283,6 +305,7 @@
 <style>
   /* ═══════════════════════════════════════════════
      Contact Tablet — CRT hardware terminal
+     Visual sibling of the homepage CRT monitor
      ═══════════════════════════════════════════════ */
 
   /* ─── Outer container ─── */
@@ -293,33 +316,65 @@
     font-family: "Jersey 25", "VT323", "Courier New", monospace;
   }
 
-  /* ─── Bezel (beige/cream = CRT sibling) ─── */
+  /* ─── Bezel — beige/cream CRT plastic with depth ─── */
   .tablet-bezel {
-    border-radius: 16px;
-    padding: 10px;
-    background:
-      linear-gradient(
-        160deg,
-        #e8e4e2 0%,
-        #d0ccc9 35%,
-        #c8c2c0 65%,
-        #b8b0ab 100%
-      );
+    position: relative;
+    border-radius: 18px;
+    padding: 12px;
+    background: linear-gradient(180deg, #d7d0ca 0%, #c9c2bc 22%, #c3bcb6 56%, #b6b0ab 100%);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+      inset 0 8px 12px rgba(255, 255, 255, 0.22),
+      inset 6px 0 10px rgba(255, 255, 255, 0.1),
+      inset 0 -10px 12px rgba(94, 87, 82, 0.28),
+      inset -8px 0 10px rgba(118, 111, 105, 0.2),
+      0 0 0 1.5px rgba(98, 90, 86, 0.7),
+      0 0 0 5px rgba(47, 43, 41, 0.5),
+      0 16px 48px rgba(0, 0, 0, 0.6);
+    filter: brightness(0.95) saturate(0.95);
+  }
+
+  /* Bezel plastic texture */
+  .tablet-bezel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 20%, transparent 100%),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.008) 0 2px,
+        rgba(0, 0, 0, 0.006) 2px 4px
+      ),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.01) 0 1px, transparent 1px 3px);
+    opacity: 0.7;
+  }
+
+  /* Bezel rim inset */
+  .tablet-bezel::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: 14px;
+    pointer-events: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(58, 52, 49, 0.18);
+    opacity: 0.7;
   }
 
   /* ─── Status bar ─── */
   .tablet-status-bar {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.35rem 0.6rem 0.4rem;
-    background: rgba(98, 88, 94, 0.35);
+    background: rgba(98, 88, 94, 0.3);
     border-radius: 8px 8px 0 0;
-    border-bottom: 1px solid rgba(98, 88, 94, 0.2);
+    border-bottom: 1px solid rgba(98, 88, 94, 0.15);
+    z-index: 3;
   }
 
   .tablet-led {
@@ -344,31 +399,164 @@
     text-overflow: ellipsis;
   }
 
-  /* ─── Screen (purple CRT) ─── */
+  /* ─── Screen — purple CRT, multi-layer depth ─── */
   .tablet-screen {
     position: relative;
     min-height: 460px;
     border-radius: 0 0 8px 8px;
-    background: var(--crt-screen-bg, #362866);
+    background: #362866;
     overflow: hidden;
     box-shadow:
-      inset 0 0 60px rgba(0, 0, 0, 0.35),
-      inset 0 0 20px rgba(140, 80, 240, 0.12);
+      inset 0 0 0 3px rgba(93, 72, 132, 0.4),
+      inset 0 0 0 6px rgba(22, 14, 38, 0.85),
+      inset 0 0 0 10px rgba(0, 0, 0, 0.5),
+      inset 2px 3px 8px rgba(0, 0, 0, 0.6),
+      inset -1px -1px 6px rgba(0, 0, 0, 0.4),
+      inset 0 0 20px rgba(0, 0, 0, 0.18),
+      0 0 30px rgba(180, 126, 255, 0.12);
   }
 
-  /* ─── Scan-line overlay ─── */
+  /* ─── Screen CRT effects layers ─── */
+  .tablet-glare {
+    position: absolute;
+    inset: 0;
+    z-index: 12;
+    pointer-events: none;
+    background: linear-gradient(
+      162deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.012) 32%,
+      transparent 58%,
+      transparent 100%
+    );
+    clip-path: polygon(6% 0%, 94% 0%, 86% 100%, 14% 100%);
+  }
+
+  .tablet-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 13;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    background: linear-gradient(
+      180deg,
+      rgba(60, 0, 80, 0.07) 0%,
+      rgba(20, 0, 60, 0.03) 50%,
+      rgba(60, 0, 80, 0.07) 100%
+    );
+  }
+
+  .tablet-bands {
+    position: absolute;
+    inset: 0;
+    z-index: 14;
+    pointer-events: none;
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 48px,
+      rgba(255, 255, 255, 0.01) 48px,
+      rgba(255, 255, 255, 0.01) 50px
+    );
+  }
+
+  /* Phosphor dot texture */
+  .tablet-phosphor-dots {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  /* Scan-line overlay — matches CRT quality */
   .tablet-scanlines {
     position: absolute;
     inset: 0;
+    z-index: 16;
     pointer-events: none;
-    z-index: 1;
+    opacity: 0.65;
     background: repeating-linear-gradient(
-      0deg,
-      transparent,
+      180deg,
+      transparent 0,
       transparent 2px,
-      rgba(0, 0, 0, 0.08) 2px,
-      rgba(0, 0, 0, 0.08) 4px
+      rgba(0, 0, 0, 0.1) 2px,
+      rgba(0, 0, 0, 0.1) 3px
     );
+  }
+
+  /* Vignette — corner shadow */
+  .tablet-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at top right, rgba(0, 0, 0, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(0, 0, 0, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(0, 0, 0, 0.15) 0%, transparent 50%);
+  }
+
+  /* Inner bevel on screen */
+  .tablet-bevel-inner {
+    position: absolute;
+    inset: 0;
+    z-index: 18;
+    pointer-events: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 1px 0 0 rgba(255, 255, 255, 0.04),
+      inset -1px 0 0 rgba(255, 255, 255, 0.04),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  }
+
+  /* ─── Hardware detail: rubber feet ─── */
+  .tablet-feet {
+    position: absolute;
+    bottom: -6px;
+    left: 20%;
+    right: 20%;
+    height: 4px;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .tablet-foot {
+    display: block;
+    width: 16px;
+    height: 4px;
+    border-radius: 0 0 3px 3px;
+    background: rgba(40, 36, 34, 0.5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ─── Hardware detail: speaker grille slots ─── */
+  .tablet-speaker-grille {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    pointer-events: none;
+    display: flex;
+    gap: 3px;
+  }
+
+  .tablet-speaker-slot {
+    display: block;
+    width: 6px;
+    height: 10px;
+    border-radius: 2px;
+    background: rgba(60, 54, 50, 0.35);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   }
 
   /* ─── State containers ─── */
@@ -445,7 +633,7 @@
   }
 
   .tablet-btn:active {
-    transform: translateY(0);
+    transform: translateY(1px);
   }
 
   .tablet-btn-icon {

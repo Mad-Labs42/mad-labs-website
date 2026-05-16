@@ -18,7 +18,7 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   </div>
   {
     phone && (
-      <div class="contact-item">
+      <div class="contact-item contact-phone">
         <dt>Phone</dt>
         <dd>
           <a href={telHref}>{phone}</a>
@@ -67,6 +67,11 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
     color: var(--lab-accent);
     text-decoration: none;
     font-weight: 500;
+  }
+
+  .contact-phone a {
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
   }
 
   dd a:hover {
