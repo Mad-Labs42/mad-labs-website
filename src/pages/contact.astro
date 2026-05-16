@@ -10,13 +10,12 @@ import ContactTablet from "../components/ContactTablet.astro";
     <div class="lab-section-inner contact-hero-inner">
       <span class="lab-heading-accent">Reach the Lab</span>
       <h1
-        class="lab-heading"
-        style="font-size:clamp(1.75rem,4vw,2.75rem); margin-bottom:0.75rem;"
+        class="lab-heading contact-hero-heading"
       >
         Get in Touch
       </h1>
       <p
-        style="font-size:clamp(1rem,2vw,1.2rem); color:var(--lab-text); line-height:1.6; max-width:550px;"
+        class="contact-hero-text"
       >
         Tell us what's going on with your device. We'll follow up with next
         steps and a rough timeline — no charge, no commitment.
@@ -127,6 +126,14 @@ import ContactTablet from "../components/ContactTablet.astro";
 
         <!-- Right: tablet terminal -->
         <div class="contact-tablet-col">
+          <!-- Tablet instruction (desktop only) -->
+          <p class="contact-tablet-instruction">
+            You may use this tablet to contact us online. Click <strong>Book a Consultation</strong> for
+            diagnostics, service planning, AI help, websites, or questions about what you need. Click
+            <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup,
+            network issues, or existing support requests.
+          </p>
+
           <!-- Mobile scroll cue -->
           <p class="contact-scroll-cue" aria-hidden="true">
             <span class="scroll-chevron"></span>
@@ -144,13 +151,29 @@ import ContactTablet from "../components/ContactTablet.astro";
 <style>
   /* ─── Hero: left-aligned on desktop ─── */
   .contact-hero-inner {
-    max-width: 1100px;
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1rem;
   }
 
   @media (min-width: 900px) {
     .contact-hero-inner {
-      padding-left: calc((100% - 1100px) / 2 + 1rem);
+      margin-left: max(1rem, calc((100% - 1100px) / 2));
+      margin-right: 1rem;
     }
+  }
+
+  .contact-hero-heading {
+    font-size: clamp(1.35rem, 3.2vw, 2.15rem) !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-hero-text {
+    font-size: clamp(0.85rem, 1.6vw, 1rem);
+    color: var(--lab-text);
+    line-height: 1.5;
+    max-width: 460px;
   }
 
   /* ─── Two-column layout ─── */
@@ -250,6 +273,27 @@ import ContactTablet from "../components/ContactTablet.astro";
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+  }
+
+  /* ─── Tablet instruction text ─── */
+  .contact-tablet-instruction {
+    margin: 0 0 0.25rem;
+    color: var(--lab-text-muted);
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .contact-tablet-instruction strong {
+    color: var(--lab-accent);
+    font-weight: 600;
+  }
+
+  @media (max-width: 899px) {
+    .contact-tablet-instruction {
+      display: none;
+    }
   }
 
   /* ─── Mobile scroll cue ─── */

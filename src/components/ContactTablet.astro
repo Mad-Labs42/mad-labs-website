@@ -4,16 +4,14 @@
 // Placeholder-safe — replace realEmbedUrl values when Zoho snippets are provided.
 ---
 
-<!-- Configure these when Zoho embed URLs are available -->
-<!--
-  const BOOKING_EMBED_URL = "https://book.zoho.com/...";
-  const TICKET_EMBED_URL = "https://forms.zoho.com/...";
--->
----
-
 <div class="contact-tablet" data-tablet-root aria-label="MAD LABS intake terminal">
   <!-- Tablet bezel -->
   <div class="tablet-bezel">
+    <div class="tablet-edge-seam" aria-hidden="true"></div>
+    <span class="tablet-screw tablet-screw--tl" aria-hidden="true"></span>
+    <span class="tablet-screw tablet-screw--tr" aria-hidden="true"></span>
+    <span class="tablet-screw tablet-screw--bl" aria-hidden="true"></span>
+    <span class="tablet-screw tablet-screw--br" aria-hidden="true"></span>
     <!-- Status bar -->
     <div class="tablet-status-bar">
       <span class="tablet-led" aria-hidden="true"></span>
@@ -35,25 +33,25 @@
       <!-- ─── State: Menu ─── -->
       <div class="tablet-state" data-tablet-state="menu">
         <div class="tablet-menu-content">
-          <p class="tablet-menu-label">SELECT OPERATION</p>
+          <p class="tablet-menu-label">Welcome!</p>
           <div class="tablet-menu-buttons">
             <button
               class="tablet-btn tablet-btn--primary"
               data-tablet-action="booking"
               type="button"
             >
-              <span class="tablet-btn-icon" aria-hidden="true">[B]</span>
+              <span class="tablet-btn-icon" aria-hidden="true">[BOOK]</span>
               <span class="tablet-btn-label">Book a Consultation</span>
-              <span class="tablet-btn-hint">Schedule a diagnostic or service visit</span>
+              <span class="tablet-btn-hint">Diagnostics, service planning, AI help, websites, or questions</span>
             </button>
             <button
               class="tablet-btn tablet-btn--secondary"
               data-tablet-action="ticket"
               type="button"
             >
-              <span class="tablet-btn-icon" aria-hidden="true">[T]</span>
+              <span class="tablet-btn-icon" aria-hidden="true">[REPAIR]</span>
               <span class="tablet-btn-label">Submit a Repair Ticket</span>
-              <span class="tablet-btn-hint">Describe your issue and we'll take it from there</span>
+              <span class="tablet-btn-hint">Computer repair, tuneups, malware, network, or existing requests</span>
             </button>
           </div>
         </div>
@@ -333,7 +331,7 @@
     filter: brightness(0.95) saturate(0.95);
   }
 
-  /* Bezel plastic texture */
+  /* Bezel plastic texture — warm grain */
   .tablet-bezel::before {
     content: "";
     position: absolute;
@@ -351,7 +349,7 @@
     opacity: 0.7;
   }
 
-  /* Bezel rim inset */
+  /* Bezel rim inset — highlights/hardware seam */
   .tablet-bezel::after {
     content: "";
     position: absolute;
@@ -363,6 +361,35 @@
       inset 0 -1px 0 rgba(58, 52, 49, 0.18);
     opacity: 0.7;
   }
+
+  /* Edge groove seam around bezel */
+  .tablet-edge-seam {
+    position: absolute;
+    inset: 3px;
+    border-radius: 16px;
+    pointer-events: none;
+    border: 1px solid rgba(80, 72, 68, 0.15);
+    opacity: 0.5;
+  }
+
+  /* Screw detail — top corners */
+  .tablet-screw {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(140, 130, 122, 0.5), rgba(60, 54, 50, 0.3));
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.2),
+      0 1px 2px rgba(0, 0, 0, 0.1);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .tablet-screw--tl { top: 6px; left: 6px; }
+  .tablet-screw--tr { top: 6px; right: 6px; }
+  .tablet-screw--bl { bottom: 80px; left: 6px; }
+  .tablet-screw--br { bottom: 80px; right: 6px; }
 
   /* ─── Status bar ─── */
   .tablet-status-bar {
@@ -402,7 +429,7 @@
   /* ─── Screen — purple CRT, multi-layer depth ─── */
   .tablet-screen {
     position: relative;
-    min-height: 460px;
+    min-height: 420px;
     border-radius: 0 0 8px 8px;
     background: #362866;
     overflow: hidden;
@@ -469,7 +496,7 @@
     z-index: 15;
     pointer-events: none;
     mix-blend-mode: screen;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 3px 3px;
   }
 
@@ -565,7 +592,7 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    min-height: 460px;
+    min-height: 420px;
   }
 
   /* ─── Menu state ─── */
@@ -581,12 +608,11 @@
 
   .tablet-menu-label {
     margin: 0;
-    color: var(--lab-accent, #e89050);
+    color: var(--lab-heading, #e0d0ff);
     font-family: "VT323", "Courier New", monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-shadow: 0 0 8px rgba(232, 144, 80, 0.3);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 10px rgba(232, 144, 80, 0.3);
   }
 
   .tablet-menu-buttons {
@@ -597,26 +623,33 @@
     max-width: 380px;
   }
 
-  /* ─── Terminal-style buttons ─── */
+  /* ─── Terminal-style buttons with keycap affordance ─── */
   .tablet-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.2rem;
+    gap: 0.25rem;
     width: 100%;
-    padding: 1rem 1.25rem;
-    border: 1px solid rgba(255, 213, 164, 0.35);
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.25rem 0.9rem;
+    border: 1px solid rgba(255, 213, 164, 0.3);
+    border-radius: 8px;
+    background: linear-gradient(
+      180deg,
+      rgba(40, 28, 60, 0.55) 0%,
+      rgba(20, 14, 32, 0.7) 100%
+    );
     color: var(--crt-text, #f0eaff);
     cursor: pointer;
     font-family: inherit;
     text-align: center;
+    box-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
     transition:
       background 0.2s ease,
       border-color 0.2s ease,
       box-shadow 0.2s ease,
-      transform 0.15s ease;
+      transform 0.12s ease;
     transform: translateY(0);
     -webkit-tap-highlight-color: transparent;
   }
@@ -627,20 +660,36 @@
   }
 
   .tablet-btn:hover {
-    background: rgba(232, 144, 80, 0.12);
-    border-color: rgba(255, 213, 164, 0.55);
+    background: linear-gradient(
+      180deg,
+      rgba(232, 144, 80, 0.14) 0%,
+      rgba(232, 144, 80, 0.07) 100%
+    );
+    border-color: rgba(255, 213, 164, 0.5);
+    box-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.3),
+      0 0 16px rgba(232, 144, 80, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
     transform: translateY(-2px);
   }
 
   .tablet-btn:active {
     transform: translateY(1px);
+    box-shadow:
+      0 0px 0 rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .tablet-btn-icon {
     font-family: "VT323", "Courier New", monospace;
-    font-size: 1.4rem;
+    font-size: 1rem;
     color: var(--lab-accent, #e89050);
-    text-shadow: 0 0 8px rgba(232, 144, 80, 0.25);
+    padding: 0.15rem 0.5rem;
+    border: 1px solid rgba(232, 144, 80, 0.25);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    text-shadow: 0 0 6px rgba(232, 144, 80, 0.2);
+    letter-spacing: 0.08em;
   }
 
   .tablet-btn-label {
@@ -812,11 +861,11 @@
     }
 
     .tablet-screen {
-      min-height: 380px;
+      min-height: 340px;
     }
 
     .tablet-state {
-      min-height: 380px;
+      min-height: 340px;
     }
 
     .tablet-menu-content {
