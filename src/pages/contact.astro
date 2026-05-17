@@ -43,23 +43,46 @@ import ContactTablet from "../components/ContactTablet.astro";
           <span class="lab-heading-accent contact-accent-wrap">
             <svg
               class="contact-accent-icon"
-              viewBox="0 0 24 24"
+              viewBox="0 0 64 64"
               aria-hidden="true"
               fill="none"
               stroke="#e89050"
-              stroke-width="1.4"
+              stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Antenna mast -->
-              <line x1="12" y1="20" x2="12" y2="10"></line>
-              <!-- Antenna top -->
-              <circle cx="12" cy="8" r="2" fill="#e89050"></circle>
-              <!-- Signal arcs — symmetric, fully inside viewBox -->
-              <path d="M6.5 13.5a5 5 0 0 1 11 0"></path>
-              <path d="M4 16a8 8 0 0 1 16 0"></path>
-              <!-- Base -->
-              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <!-- Monitor outline + base line -->
+              <path
+                d="M37 2.7H4.2C2.4 2.7 1 4.2 1 6v41c0 1.8 1.4 3.2 3.2 3.2h55.6c1.8 0 3.2-1.4 3.2-3.2V6c0-1.8-1.4-3.2-3.2-3.2L37 2.7h0zM5 40.5h58"
+              ></path>
+              <!-- CPU center -->
+              <circle cx="33.7" cy="19.9" r="4.1"></circle>
+              <!-- CPU pin down -->
+              <path d="m33.7 24-2 5.3"></path>
+              <!-- Lower node -->
+              <circle cx="30.7" cy="31.7" r="2.6"></circle>
+              <!-- CPU pin left -->
+              <path d="M29.6 19.9h-5.1"></path>
+              <!-- Left node -->
+              <circle cx="21.9" cy="19.9" r="2.6"></circle>
+              <!-- CPU pin up-right -->
+              <path d="m36.7 17 3.5-3.6"></path>
+              <!-- Top-right node -->
+              <circle cx="42.1" cy="11.5" r="2.6" transform="rotate(-45.001 42.086 11.513)"
+              ></circle>
+              <!-- CPU pin down-right -->
+              <path d="m36.7 22.8 3.5 3.6"></path>
+              <!-- Bottom-right node -->
+              <circle cx="42.1" cy="28.3" r="2.6" transform="rotate(-45.001 42.123 28.297)"
+              ></circle>
+              <!-- CPU pin up-left -->
+              <path d="m30.8 17-3.6-3.6"></path>
+              <!-- Top-left node -->
+              <circle cx="25.4" cy="11.5" r="2.6" transform="rotate(-45.001 25.373 11.48)"></circle>
+              <!-- Stand + base -->
+              <path
+                d="m42.3 57.1-.9-.6c-.2-.2-.5-.4-.6-.7H23.2c-.2.3-.4.5-.6.7l-.9.6c-.6.4-.9 1.1-.9 1.9v.9c0 .8.6 1.4 1.4 1.4h19.7c.8 0 1.4-.6 1.4-1.4V59c0-.8-.4-1.5-1-1.9zM40.4 55l-2-4.8H25.5l-2 4.8c-.1.3-.2.6-.4.8h17.6c0-.3-.2-.5-.3-.8zM29.4 45.4h5.2"
+              ></path>
             </svg>
             Contact Us
           </span>
