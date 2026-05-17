@@ -47,46 +47,35 @@ import ContactTablet from "../components/ContactTablet.astro";
               aria-hidden="true"
               fill="none"
               stroke="#e89050"
-              stroke-width="1.5"
+              stroke-width="1.4"
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- CPU / chip body -->
-              <rect x="6" y="6" width="12" height="12" rx="2"></rect>
-              <!-- Center die -->
-              <rect x="9" y="9" width="6" height="6" rx="0.5" fill="#e89050" fill-opacity="0.15"
-              ></rect>
-              <!-- Top pin -->
-              <line x1="12" y1="2" x2="12" y2="6"></line>
-              <!-- Bottom pin -->
-              <line x1="12" y1="18" x2="12" y2="22"></line>
-              <!-- Left pin -->
-              <line x1="2" y1="12" x2="6" y2="12"></line>
-              <!-- Right pin -->
-              <line x1="18" y1="12" x2="22" y2="12"></line>
-              <!-- Corner pins -->
-              <line x1="3" y1="3" x2="6" y2="6"></line>
-              <line x1="21" y1="3" x2="18" y2="6"></line>
-              <line x1="3" y1="21" x2="6" y2="18"></line>
-              <line x1="21" y1="21" x2="18" y2="18"></line>
-              <!-- Signal arcs -->
-              <path d="M3 12a9 9 0 0 1 9-9" opacity="0.4"></path>
-              <path d="M21 12a9 9 0 0 0-9-9" opacity="0.4"></path>
+              <!-- Center dot -->
+              <circle cx="12" cy="12" r="2" fill="#e89050"></circle>
+              <!-- Inner arc -->
+              <path d="M7.5 7.5a6 6 0 0 1 9 9"></path>
+              <!-- Middle arc -->
+              <path d="M5 5a9.5 9.5 0 0 1 14 14"></path>
+              <!-- Outer arc -->
+              <path d="M2.5 2a13 13 0 0 1 19 19"></path>
             </svg>
             Contact Us
           </span>
           <h2
             class="lab-heading reach-us-heading"
-            style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-bottom:1.25rem;"
+            style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-top:0.25rem; margin-bottom:0.75rem;"
           >
             We'd love to hear from you!
           </h2>
-          <div style="display:flex; flex-direction:column; gap:1.5rem;">
-            <ContactInfo
-              email="customer-service@madlabs.rocks"
-              phone="(513) 306-5331"
-              location="Greater Cincinnati Area"
-            />
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div class="contact-info-card">
+              <ContactInfo
+                email="customer-service@madlabs.rocks"
+                phone="(513) 306-5331"
+                location="Greater Cincinnati Area"
+              />
+            </div>
             <div class="contact-response-card">
               <p style="font-size:0.9rem; color:var(--lab-text); line-height:1.6;">
                 We typically respond within
@@ -248,18 +237,56 @@ import ContactTablet from "../components/ContactTablet.astro";
   .contact-info-col {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.25rem;
   }
 
   .contact-extras {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.25rem;
   }
 
   /* ─── Typography: "Reach Us" and phone number in Jersey 25 ─── */
   .reach-us-heading {
     font-family: "Jersey 25", "VT323", "Courier New", monospace !important;
+  }
+
+  /* ─── Contact info card (Email/Phone/Location) ─── */
+  .contact-info-card {
+    position: relative;
+    background: rgba(30, 26, 50, 0.6);
+    border: 1px solid rgba(232, 144, 80, 0.1);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .contact-info-card::before,
+  .contact-info-card::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: rgba(232, 144, 80, 0.35);
+    pointer-events: none;
+    transition: background 0.25s ease;
+  }
+  .contact-info-card::before {
+    left: 0;
+  }
+  .contact-info-card::after {
+    right: 0;
+  }
+  .contact-info-card:hover {
+    border-color: rgba(232, 144, 80, 0.2);
+    box-shadow: 0 0 20px rgba(232, 144, 80, 0.04);
+  }
+  .contact-info-card:hover::before,
+  .contact-info-card:hover::after {
+    background: rgba(232, 144, 80, 0.6);
   }
 
   /* ─── Response-time card with service-card-style effects ─── */
@@ -276,6 +303,29 @@ import ContactTablet from "../components/ContactTablet.astro";
       box-shadow 0.25s ease,
       transform 0.25s ease;
     transform: translateY(0);
+  }
+  .contact-response-card::before,
+  .contact-response-card::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: rgba(232, 144, 80, 0.25);
+    pointer-events: none;
+    z-index: 1;
+    transition: background 0.25s ease;
+  }
+  .contact-response-card::before {
+    left: 0;
+  }
+  .contact-response-card::after {
+    right: 0;
+  }
+  .contact-response-card:hover::before,
+  .contact-response-card:hover::after {
+    background: rgba(232, 144, 80, 0.55);
   }
 
   .contact-response-card:hover {
@@ -364,8 +414,8 @@ import ContactTablet from "../components/ContactTablet.astro";
   }
 
   .contact-accent-icon {
-    width: 1em;
-    height: 1em;
+    width: 1.5em;
+    height: 1.5em;
     flex-shrink: 0;
   }
 
