@@ -31,7 +31,41 @@
       <!-- ─── State: Menu ─── -->
       <div class="tablet-state" data-tablet-state="menu">
         <div class="tablet-menu-content">
-          <p class="tablet-logo">MAD LABS</p>
+          <p class="tablet-logo">
+            MAD<span class="tablet-logo-atom" aria-hidden="true"
+              ><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                ><ellipse
+                  cx="10"
+                  cy="10"
+                  rx="7"
+                  ry="2.5"
+                  stroke="#ffffff"
+                  stroke-width="0.8"
+                  opacity="0.7"></ellipse><ellipse
+                  cx="10"
+                  cy="10"
+                  rx="7"
+                  ry="2.5"
+                  stroke="#ffffff"
+                  stroke-width="0.8"
+                  opacity="0.7"
+                  transform="rotate(60 10 10)"></ellipse><ellipse
+                  cx="10"
+                  cy="10"
+                  rx="7"
+                  ry="2.5"
+                  stroke="#ffffff"
+                  stroke-width="0.8"
+                  opacity="0.7"
+                  transform="rotate(-60 10 10)"></ellipse><circle
+                  cx="10"
+                  cy="10"
+                  r="1.5"
+                  fill="#ffffff"
+                  opacity="0.9"></circle></svg
+              ></span
+            >LABS
+          </p>
           <p class="tablet-menu-label">
             Welcome!<span class="tablet-cursor" aria-hidden="true">_</span>
           </p>
@@ -498,11 +532,27 @@
   .tablet-logo {
     margin: 0 0 0.25rem;
     font-family: "Monofett", "VT323", monospace;
-    font-size: 1.4rem;
+    font-size: 2.1rem;
     color: #e89050;
     letter-spacing: 0.12em;
     text-shadow: 0 0 12px rgba(232, 144, 80, 0.5);
     line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+  }
+  .tablet-logo-atom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 0.7em;
+    height: 0.7em;
+    flex-shrink: 0;
+  }
+  .tablet-logo-atom svg {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
   .tablet-menu-label {
     margin: 0;

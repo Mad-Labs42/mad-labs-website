@@ -155,24 +155,25 @@ import { services } from "../data/services";
     z-index: 0;
     background:
       /* Faint grid lines — diagnostic equipment feel */
-      linear-gradient(rgba(232, 144, 80, 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.025) 1px, transparent 1px);
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
-  /* Subtle radial overlay — CRT/oscilloscope vignette */
   .services-grid-section::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    background: radial-gradient(
-      ellipse at 50% 30%,
-      transparent 30%,
-      rgba(232, 144, 80, 0.025) 60%,
-      transparent 80%
-    );
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(232, 144, 80, 0.04) 0%, transparent 70%),
+      radial-gradient(
+        ellipse at 50% 30%,
+        transparent 30%,
+        rgba(232, 144, 80, 0.035) 60%,
+        transparent 80%
+      );
   }
 
   .services-grid {

@@ -236,6 +236,35 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   }
 
   /* ─── Story section ─── */
+  .about-story {
+    position: relative;
+  }
+  .about-story::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .about-story > * {
+    position: relative;
+    z-index: 1;
+  }
+  .about-story::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232, 144, 80, 0.04) 0%, transparent 70%);
+  }
   .about-story .lab-heading-accent {
     font-size: 1.2rem;
     margin-bottom: 0.75rem;
@@ -367,6 +396,35 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   }
 
   /* ─── Trust grid ─── */
+  .about-trust {
+    position: relative;
+  }
+  .about-trust::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .about-trust > * {
+    position: relative;
+    z-index: 1;
+  }
+  .about-trust::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232, 144, 80, 0.04) 0%, transparent 70%);
+  }
   .trust-grid {
     display: flex;
     flex-direction: column;
@@ -456,6 +514,35 @@ import AboutMementoWall from "../../components/AboutMementoWall.astro";
   }
 
   /* ─── CTA ─── */
+  .about-cta {
+    position: relative;
+  }
+  .about-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .about-cta > * {
+    position: relative;
+    z-index: 1;
+  }
+  .about-cta::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232, 144, 80, 0.04) 0%, transparent 70%);
+  }
   .cta-inner {
     text-align: center;
   }

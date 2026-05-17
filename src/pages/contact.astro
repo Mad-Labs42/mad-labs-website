@@ -35,7 +35,7 @@ import ContactTablet from "../components/ContactTablet.astro";
   </section>
 
   <!-- ─── Contact Info + Tablet (side-by-side on desktop) ─── -->
-  <section class="lab-section-alt">
+  <section class="lab-section-alt contact-layout-section">
     <div class="lab-section-inner-wide">
       <div class="contact-layout">
         <!-- Left: contact details, service area, hours -->
@@ -237,6 +237,26 @@ import ContactTablet from "../components/ContactTablet.astro";
     max-width: 460px;
   }
 
+  /* ─── Contact Us + Tablet section ─── */
+  .contact-layout-section {
+    position: relative;
+  }
+  .contact-layout-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .contact-layout-section > * {
+    position: relative;
+    z-index: 1;
+  }
+
   /* ─── Two-column layout ─── */
   .contact-layout {
     display: grid;
@@ -292,12 +312,25 @@ import ContactTablet from "../components/ContactTablet.astro";
   }
   .contact-info-card:hover {
     box-shadow:
-      0 0 20px rgba(232, 144, 80, 0.06),
+      0 0 24px rgba(232, 144, 80, 0.08),
       inset 0 0 0 1px rgba(232, 144, 80, 0.35),
       inset 0 3px 0 rgba(232, 144, 80, 0.55),
       inset 0 -3px 0 rgba(232, 144, 80, 0.55),
       inset 3px 0 0 rgba(232, 144, 80, 0.55),
       inset -3px 0 0 rgba(232, 144, 80, 0.55);
+  }
+
+  /* ─── Section top-edge glow ─── */
+  .contact-layout-section::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232, 144, 80, 0.04) 0%, transparent 70%);
   }
 
   /* ─── Dropoff text card ─── */
