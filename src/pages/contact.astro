@@ -11,7 +11,7 @@ import ContactTablet from "../components/ContactTablet.astro";
       <div class="contact-hero-grid">
         <div class="contact-hero-left">
           <span class="lab-heading-accent">Reach the Lab</span>
-          <h1 class="lab-heading contact-hero-heading">Get in Touch</h1>
+          <h1 class="lab-heading contact-hero-heading">CONTACT</h1>
           <p class="contact-hero-text">
             Tell us what's going on with your device. We'll follow up with next steps and a rough
             timeline — no charge, no commitment.
@@ -226,8 +226,13 @@ import ContactTablet from "../components/ContactTablet.astro";
   }
 
   .contact-hero-heading {
-    font-size: clamp(1.35rem, 3.2vw, 2.15rem) !important;
+    font-family: "Monofett", monospace;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 400;
+    color: var(--lab-heading);
     margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
   }
 
   .contact-hero-text {
