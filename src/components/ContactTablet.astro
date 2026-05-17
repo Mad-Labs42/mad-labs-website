@@ -31,6 +31,7 @@
       <!-- ─── State: Menu ─── -->
       <div class="tablet-state" data-tablet-state="menu">
         <div class="tablet-menu-content">
+          <p class="tablet-logo">MAD LABS</p>
           <p class="tablet-menu-label">
             Welcome!<span class="tablet-cursor" aria-hidden="true">_</span>
           </p>
@@ -305,7 +306,7 @@
   /* ─── Screen: uniform small radius, thin gasket ─── */
   .tablet-screen {
     position: relative;
-    min-height: 320px;
+    min-height: 310px;
     border-radius: 4px;
     background: #362866;
     overflow: hidden;
@@ -483,22 +484,31 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    min-height: 320px;
+    min-height: 310px;
   }
   .tablet-menu-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1.25rem 1.25rem;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+  .tablet-logo {
+    margin: 0 0 0.25rem;
+    font-family: "Monofett", "VT323", monospace;
+    font-size: 1.4rem;
+    color: #e89050;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 12px rgba(232, 144, 80, 0.5);
+    line-height: 1;
   }
   .tablet-menu-label {
     margin: 0;
     color: var(--lab-heading, #e0d0ff);
     font-family: "VT323", "Courier New", monospace;
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 0.08em;
     text-shadow: 0 0 10px rgba(232, 144, 80, 0.3);
     animation: welcome-glow 2s ease-out forwards;
@@ -516,9 +526,9 @@
   .tablet-menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0.75rem;
     width: 100%;
-    max-width: 380px;
+    max-width: 340px;
   }
   .tablet-btn {
     position: relative;
@@ -528,7 +538,7 @@
     align-items: center;
     gap: 0.2rem;
     width: 100%;
-    padding: 0.85rem 1.25rem 0.75rem;
+    padding: 0.75rem 1rem 0.65rem;
     border: 1px solid rgba(255, 213, 164, 0.25);
     border-radius: 8px;
     background: linear-gradient(180deg, rgba(50, 36, 70, 0.65) 0%, rgba(18, 12, 28, 0.75) 100%);
@@ -797,8 +807,8 @@
     background: rgba(232, 144, 80, 0.15);
   }
   .tablet-corner--tl {
-    top: 8px;
-    left: 8px;
+    top: 10px;
+    left: 10px;
   }
   .tablet-corner--tl::before {
     top: 0;
@@ -813,8 +823,8 @@
     height: 14px;
   }
   .tablet-corner--tr {
-    top: 8px;
-    right: 8px;
+    top: 10px;
+    right: 10px;
   }
   .tablet-corner--tr::before {
     top: 0;
@@ -829,8 +839,8 @@
     height: 14px;
   }
   .tablet-corner--bl {
-    bottom: 8px;
-    left: 8px;
+    bottom: 10px;
+    left: 10px;
   }
   .tablet-corner--bl::before {
     bottom: 0;
@@ -845,8 +855,8 @@
     height: 14px;
   }
   .tablet-corner--br {
-    bottom: 8px;
-    right: 8px;
+    bottom: 10px;
+    right: 10px;
   }
   .tablet-corner--br::before {
     bottom: 0;
