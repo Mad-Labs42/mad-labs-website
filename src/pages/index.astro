@@ -142,6 +142,25 @@ import SocialLinks from "../components/SocialLinks.astro";
       0 0 18px rgba(147, 51, 234, 0.18);
   }
 
+  .what-we-do {
+    position: relative;
+  }
+  .what-we-do::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .what-we-do > * {
+    position: relative;
+    z-index: 1;
+  }
+
   .what-we-do h2,
   .trust h2,
   .cta h2 {
@@ -173,6 +192,25 @@ import SocialLinks from "../components/SocialLinks.astro";
 
   .cta-inner {
     text-align: center;
+  }
+
+  .cta {
+    position: relative;
+  }
+  .cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .cta > * {
+    position: relative;
+    z-index: 1;
   }
 
   .cta .lab-button {

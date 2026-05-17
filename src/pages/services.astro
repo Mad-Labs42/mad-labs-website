@@ -196,7 +196,24 @@ import { services } from "../data/services";
     }
   }
 
-  /* ─── Trust strip ─── */
+  .cta-section {
+    position: relative;
+  }
+  .cta-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .cta-section > * {
+    position: relative;
+    z-index: 1;
+  }
   .trust-strip {
     position: relative;
     z-index: 1;
