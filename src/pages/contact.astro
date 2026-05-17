@@ -51,20 +51,21 @@ import ContactTablet from "../components/ContactTablet.astro";
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Center dot -->
-              <circle cx="12" cy="12" r="2" fill="#e89050"></circle>
-              <!-- Inner arc -->
-              <path d="M7.5 7.5a6 6 0 0 1 9 9"></path>
-              <!-- Middle arc -->
-              <path d="M5 5a9.5 9.5 0 0 1 14 14"></path>
-              <!-- Outer arc -->
-              <path d="M2.5 2a13 13 0 0 1 19 19"></path>
+              <!-- Antenna mast -->
+              <line x1="12" y1="20" x2="12" y2="10"></line>
+              <!-- Antenna top -->
+              <circle cx="12" cy="8" r="2" fill="#e89050"></circle>
+              <!-- Signal arcs — symmetric, fully inside viewBox -->
+              <path d="M6.5 13.5a5 5 0 0 1 11 0"></path>
+              <path d="M4 16a8 8 0 0 1 16 0"></path>
+              <!-- Base -->
+              <line x1="8" y1="21" x2="16" y2="21"></line>
             </svg>
             Contact Us
           </span>
           <h2
             class="lab-heading reach-us-heading"
-            style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-top:0.25rem; margin-bottom:0.75rem;"
+            style="font-size:clamp(1.1rem,2.5vw,1.5rem); margin-top:0; margin-bottom:0.5rem;"
           >
             We'd love to hear from you!
           </h2>
@@ -90,7 +91,7 @@ import ContactTablet from "../components/ContactTablet.astro";
             <div>
               <h2
                 class="lab-heading"
-                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem;"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:#e89050;"
               >
                 Service Area
               </h2>
@@ -106,7 +107,7 @@ import ContactTablet from "../components/ContactTablet.astro";
             <div>
               <h2
                 class="lab-heading"
-                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem;"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:#e89050;"
               >
                 Hours
               </h2>
@@ -130,7 +131,7 @@ import ContactTablet from "../components/ContactTablet.astro";
                   <dd style="color:var(--lab-text-muted); margin:0;">Closed</dd>
                 </div>
               </dl>
-              <p style="font-size:0.82rem; color:var(--lab-text-muted); margin-top:0.75rem;">
+              <p class="contact-dropoff-text">
                 Hardware drop-offs by appointment only. Evening pickup available upon request.
               </p>
             </div>
@@ -255,38 +256,46 @@ import ContactTablet from "../components/ContactTablet.astro";
   .contact-info-card {
     position: relative;
     background: rgba(30, 26, 50, 0.6);
-    border: 1px solid rgba(232, 144, 80, 0.1);
     border-radius: 8px;
     padding: 1rem 1.25rem;
+    transition: box-shadow 0.25s ease;
+    /* Continuous orange border all around */
+    box-shadow:
+      inset 0 0 0 1px rgba(232, 144, 80, 0.25),
+      inset 0 2px 0 rgba(232, 144, 80, 0.35),
+      inset 0 -2px 0 rgba(232, 144, 80, 0.35),
+      inset 2px 0 0 rgba(232, 144, 80, 0.35),
+      inset -2px 0 0 rgba(232, 144, 80, 0.35);
+  }
+  .contact-info-card:hover {
+    box-shadow:
+      0 0 20px rgba(232, 144, 80, 0.06),
+      inset 0 0 0 1px rgba(232, 144, 80, 0.35),
+      inset 0 3px 0 rgba(232, 144, 80, 0.55),
+      inset 0 -3px 0 rgba(232, 144, 80, 0.55),
+      inset 3px 0 0 rgba(232, 144, 80, 0.55),
+      inset -3px 0 0 rgba(232, 144, 80, 0.55);
+  }
+
+  /* ─── Dropoff text card ─── */
+  .contact-dropoff-text {
+    font-size: 0.82rem;
+    color: var(--lab-text-muted);
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--lab-card);
+    border: calc(1px * 1.05) solid var(--lab-border);
+    border-radius: 8px;
+    line-height: 1.5;
     transition:
       border-color 0.25s ease,
       box-shadow 0.25s ease;
   }
-  .contact-info-card::before,
-  .contact-info-card::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    bottom: 6px;
-    width: 3px;
-    border-radius: 2px;
-    background: rgba(232, 144, 80, 0.35);
-    pointer-events: none;
-    transition: background 0.25s ease;
-  }
-  .contact-info-card::before {
-    left: 0;
-  }
-  .contact-info-card::after {
-    right: 0;
-  }
-  .contact-info-card:hover {
-    border-color: rgba(232, 144, 80, 0.2);
-    box-shadow: 0 0 20px rgba(232, 144, 80, 0.04);
-  }
-  .contact-info-card:hover::before,
-  .contact-info-card:hover::after {
-    background: rgba(232, 144, 80, 0.6);
+  .contact-dropoff-text:hover {
+    border-color: rgba(232, 144, 80, 0.35);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 0 24px rgba(232, 144, 80, 0.08);
   }
 
   /* ─── Response-time card with service-card-style effects ─── */
@@ -300,9 +309,7 @@ import ContactTablet from "../components/ContactTablet.astro";
     overflow: hidden;
     transition:
       border-color 0.25s ease,
-      box-shadow 0.25s ease,
-      transform 0.25s ease;
-    transform: translateY(0);
+      box-shadow 0.25s ease;
   }
   .contact-response-card::before,
   .contact-response-card::after {
@@ -329,7 +336,6 @@ import ContactTablet from "../components/ContactTablet.astro";
   }
 
   .contact-response-card:hover {
-    transform: translateY(-3px);
     border-color: rgba(232, 144, 80, 0.35);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.45),
@@ -458,7 +464,6 @@ import ContactTablet from "../components/ContactTablet.astro";
   @media (prefers-reduced-motion: reduce) {
     .contact-response-card {
       transition: none;
-      transform: none;
     }
 
     .contact-response-card::after {
