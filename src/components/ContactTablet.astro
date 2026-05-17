@@ -22,10 +22,18 @@
       <div class="tablet-vignette" aria-hidden="true"></div>
       <div class="tablet-bevel-inner" aria-hidden="true"></div>
 
+      <!-- Corner brackets — lab equipment detail -->
+      <div class="tablet-corner tablet-corner--tl" aria-hidden="true"></div>
+      <div class="tablet-corner tablet-corner--tr" aria-hidden="true"></div>
+      <div class="tablet-corner tablet-corner--bl" aria-hidden="true"></div>
+      <div class="tablet-corner tablet-corner--br" aria-hidden="true"></div>
+
       <!-- ─── State: Menu ─── -->
       <div class="tablet-state" data-tablet-state="menu">
         <div class="tablet-menu-content">
-          <p class="tablet-menu-label">Welcome!</p>
+          <p class="tablet-menu-label">
+            Welcome!<span class="tablet-cursor" aria-hidden="true">_</span>
+          </p>
           <div class="tablet-menu-buttons">
             <button
               class="tablet-btn tablet-btn--primary"
@@ -269,9 +277,11 @@
     border-radius: 11px;
     pointer-events: none;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.15),
-      inset 0 -1px 0 rgba(58, 52, 49, 0.12);
-    opacity: 0.6;
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -1px 0 rgba(58, 52, 49, 0.2),
+      inset 1px 0 0 rgba(255, 255, 255, 0.1),
+      inset -1px 0 0 rgba(58, 52, 49, 0.1);
+    opacity: 1;
   }
 
   /* ─── Top bar: minimal LED indicator ─── */
@@ -481,6 +491,8 @@
     max-width: 380px;
   }
   .tablet-btn {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -505,6 +517,20 @@
       transform 0.1s ease;
     transform: translateY(0);
     -webkit-tap-highlight-color: transparent;
+  }
+  .tablet-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: rgba(232, 144, 80, 0.35);
+    transition: background 0.18s ease;
+  }
+  .tablet-btn:hover::before {
+    background: rgba(232, 144, 80, 0.7);
   }
   .tablet-btn:focus-visible {
     outline: 2px solid var(--lab-accent, #e89050);
@@ -531,14 +557,20 @@
     display: inline-block;
     font-family: "VT323", "Courier New", monospace;
     font-size: 0.85rem;
-    color: var(--lab-accent, #e89050);
-    padding: 0.1rem 0.5rem 0.05rem;
-    border: 1px solid rgba(232, 144, 80, 0.3);
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.25);
-    text-shadow: 0 0 6px rgba(232, 144, 80, 0.2);
-    letter-spacing: 0.06em;
+    color: #ffffff;
+    padding: 0.15rem 0.6rem 0.1rem;
+    border: 1px solid rgba(232, 144, 80, 0.5);
+    border-radius: 6px;
+    background: rgba(232, 144, 80, 0.2);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    text-shadow: 0 0 8px rgba(232, 144, 80, 0.4);
+    letter-spacing: 0.08em;
     line-height: 1.3;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+      0 2px 4px rgba(0, 0, 0, 0.3);
   }
   .tablet-btn-label {
     font-size: 1rem;
@@ -702,6 +734,135 @@
     }
     .tablet-placeholder {
       padding: 1.25rem 1rem;
+    }
+  }
+
+  /* ─── Blinking cursor ─── */
+  .tablet-cursor {
+    display: inline-block;
+    margin-left: 0.15em;
+    color: #e89050;
+    animation: cursor-blink 1s step-end infinite;
+  }
+  @keyframes cursor-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* ─── Corner brackets ─── */
+  .tablet-corner {
+    position: absolute;
+    z-index: 20;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+  }
+  .tablet-corner::before,
+  .tablet-corner::after {
+    content: "";
+    position: absolute;
+    background: rgba(232, 144, 80, 0.5);
+  }
+  .tablet-corner--tl {
+    top: 8px;
+    left: 8px;
+  }
+  .tablet-corner--tl::before {
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 2px;
+  }
+  .tablet-corner--tl::after {
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 14px;
+  }
+  .tablet-corner--tr {
+    top: 8px;
+    right: 8px;
+  }
+  .tablet-corner--tr::before {
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 2px;
+  }
+  .tablet-corner--tr::after {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 14px;
+  }
+  .tablet-corner--bl {
+    bottom: 8px;
+    left: 8px;
+  }
+  .tablet-corner--bl::before {
+    bottom: 0;
+    left: 0;
+    width: 14px;
+    height: 2px;
+  }
+  .tablet-corner--bl::after {
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 14px;
+  }
+  .tablet-corner--br {
+    bottom: 8px;
+    right: 8px;
+  }
+  .tablet-corner--br::before {
+    bottom: 0;
+    right: 0;
+    width: 14px;
+    height: 2px;
+  }
+  .tablet-corner--br::after {
+    bottom: 0;
+    right: 0;
+    width: 2px;
+    height: 14px;
+  }
+
+  /* ─── Scanning line on placeholder ─── */
+  .placeholder-status {
+    position: relative;
+    overflow: hidden;
+  }
+  .placeholder-status::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(232, 144, 80, 0.4), transparent);
+    animation: status-scan 2.5s ease-in-out infinite;
+  }
+  @keyframes status-scan {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tablet-cursor {
+      animation: none;
+    }
+    .placeholder-status::after {
+      animation: none;
     }
   }
 </style>
