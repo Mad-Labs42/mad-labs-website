@@ -75,7 +75,7 @@
   --lab-accent-dim: rgba(232, 144, 80, 0.6);
   --lab-heading: #e0d0ff;
   --lab-text: #b0a8c8;
-  --lab-text-muted: #706888;
+  --lab-text-muted: #8880a8; /* 4.97:1 on --lab-bg (#131325) — passes WCAG AA */
 }
 
 /* ============================================

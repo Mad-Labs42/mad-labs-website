@@ -78,7 +78,7 @@ import CrtDivider from "./CrtDivider.astro";
       <div class="crt-vignette" aria-hidden="true"></div>
       <div class="crt-bevel-inner" aria-hidden="true"></div>
 
-      <!-- Ambient floating particles inside CRT screen -->
+      
       <div class="crt-particles" aria-hidden="true">
         <span
           class="crt-particle"
@@ -208,7 +208,7 @@ import CrtDivider from "./CrtDivider.astro";
         <CrtTaskbar />
       </div>
 
-      <!-- ARE YOU SURE? confirmation overlay -->
+      
       <div class="crt-confirm-overlay" aria-hidden="true">
         <p class="crt-confirm-message">We're sorry to see you go! &mdash; ARE YOU SURE?</p>
         <div class="crt-confirm-buttons">
@@ -226,7 +226,7 @@ import CrtDivider from "./CrtDivider.astro";
       data-crt-power-button></button>
     <div class="crt-power-led" aria-hidden="true"></div>
 
-    <!-- Audio mute button on monitor housing -->
+    
     <button
       class="crt-mute-btn"
       type="button"
@@ -237,7 +237,6 @@ import CrtDivider from "./CrtDivider.astro";
   </div>
 </section>
 
-<!-- Scroll-down indicator below CRT bezel -->
 <div class="crt-scroll-indicator" aria-hidden="true" data-scroll-indicator>
   <span class="crt-scroll-chevron"></span>
 </div>
@@ -991,6 +990,10 @@ import CrtDivider from "./CrtDivider.astro";
 
   .crt-bezel {
     position: relative;
+    --pb-right: clamp(106px, 12.2vw, 160px);
+    --pb-bottom: clamp(20px, 2.2vw, 39px);
+    --mb-left: clamp(106px, 12.2vw, 160px);
+    --mb-bottom: clamp(20px, 2.2vw, 39px);
     z-index: 2;
     width: 100%;
     max-width: clamp(380px, 90vw, 1280px);
@@ -1698,8 +1701,8 @@ import CrtDivider from "./CrtDivider.astro";
   .crt-corner {
     position: absolute;
     z-index: 30;
-    width: 22px;
-    height: 22px;
+    width: 19px;
+    height: 19px;
     pointer-events: none;
     border-color: #9333ea;
     border-style: solid;
@@ -1734,14 +1737,14 @@ import CrtDivider from "./CrtDivider.astro";
   }
 
   .crt-corner--bl {
-    bottom: 56px;
-    left: 16px;
+    bottom: 12px;
+    left: 14px;
     border-width: 0 0 2px 2px;
   }
 
   .crt-corner--br {
-    right: 16px;
-    bottom: 56px;
+    right: 14px;
+    bottom: 12px;
     border-width: 0 2px 2px 0;
   }
 
@@ -1924,8 +1927,8 @@ import CrtDivider from "./CrtDivider.astro";
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    right: clamp(106px, 12.2vw, 160px);
-    bottom: clamp(23px, 2.6vw, 46px);
+    right: var(--pb-right);
+    bottom: var(--pb-bottom);
     border: 1px solid rgba(104, 97, 92, 0.92);
     background: linear-gradient(180deg, #b5aea8 0%, #a59d97 100%);
     box-shadow:
@@ -1968,8 +1971,8 @@ import CrtDivider from "./CrtDivider.astro";
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    right: clamp(82px, 9.8vw, 128px);
-    bottom: clamp(27px, 3vw, 50px);
+    right: calc(var(--pb-right) - 28px);
+    bottom: calc(var(--pb-bottom) + 4px);
     background: radial-gradient(circle at 40% 35%, #8cff94 0%, #35e35a 45%, #12952a 100%);
     box-shadow:
       0 0 4px rgba(55, 227, 90, 0.65),
@@ -1983,8 +1986,8 @@ import CrtDivider from "./CrtDivider.astro";
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    left: clamp(106px, 12.2vw, 160px);
-    bottom: clamp(23px, 2.6vw, 46px);
+    left: var(--mb-left);
+    bottom: var(--mb-bottom);
     border: 1px solid rgba(104, 97, 92, 0.92);
     background: linear-gradient(180deg, #b5aea8 0%, #a59d97 100%);
     box-shadow:
@@ -2057,8 +2060,8 @@ import CrtDivider from "./CrtDivider.astro";
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    left: clamp(132px, 14.1vw, 184px);
-    bottom: clamp(27px, 3vw, 50px);
+    left: calc(var(--mb-left) + 28px);
+    bottom: calc(var(--mb-bottom) + 4px);
     background: radial-gradient(circle at 40% 35%, #fcd34d 0%, #f59e0b 45%, #b45309 100%);
     box-shadow:
       0 0 4px rgba(245, 158, 11, 0.55),
@@ -2716,6 +2719,10 @@ import CrtDivider from "./CrtDivider.astro";
     }
 
     .crt-bezel {
+      --pb-right: 78px;
+      --pb-bottom: 13px;
+      --mb-left: 78px;
+      --mb-bottom: 13px;
       max-width: 96vw;
       padding: clamp(18px, 3.5vw, 28px) clamp(16px, 4.4vw, 24px) clamp(42px, 8vw, 58px);
       border-radius: 14px;
@@ -2735,8 +2742,8 @@ import CrtDivider from "./CrtDivider.astro";
     }
 
     .crt-atom {
-      width: clamp(68px, 22vw, 116px);
-      height: clamp(68px, 22vw, 116px);
+      width: clamp(48px, 18vw, 116px);
+      height: clamp(48px, 18vw, 116px);
       margin-bottom: 6px;
     }
 
@@ -2750,35 +2757,35 @@ import CrtDivider from "./CrtDivider.astro";
     }
 
     .crt-corner {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
 
     .crt-corner--tl {
-      top: 11px;
-      left: 11px;
+      top: 8px;
+      left: 8px;
     }
 
     .crt-corner--tr {
-      top: 11px;
-      right: 11px;
+      top: 8px;
+      right: 8px;
     }
 
     .crt-corner--bl {
-      bottom: 48px;
-      left: 11px;
+      bottom: 8px;
+      left: 10px;
     }
 
     .crt-corner--br {
-      right: 11px;
-      bottom: 48px;
+      right: 10px;
+      bottom: 8px;
     }
 
     .crt-power-btn {
       width: 20px;
       height: 20px;
-      right: 78px;
-      bottom: 15px;
+      right: var(--pb-right);
+      bottom: var(--pb-bottom);
     }
 
     .crt-power-btn::before {
@@ -2792,15 +2799,15 @@ import CrtDivider from "./CrtDivider.astro";
     .crt-power-led {
       width: 8px;
       height: 8px;
-      right: 60px;
-      bottom: 20px;
+      right: calc(var(--pb-right) - 28px);
+      bottom: calc(var(--pb-bottom) + 4px);
     }
 
     .crt-mute-btn {
       width: 18px;
       height: 18px;
-      left: 78px;
-      bottom: 15px;
+      left: var(--mb-left);
+      bottom: var(--mb-bottom);
     }
 
     .crt-mute-btn::before {
@@ -2814,8 +2821,8 @@ import CrtDivider from "./CrtDivider.astro";
     .crt-mute-led {
       width: 5px;
       height: 5px;
-      left: 100px;
-      bottom: 20px;
+      left: calc(var(--mb-left) + 28px);
+      bottom: calc(var(--mb-bottom) + 4px);
     }
 
     .crt-loading-icon {

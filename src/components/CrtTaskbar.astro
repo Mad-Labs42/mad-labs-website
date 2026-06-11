@@ -163,8 +163,8 @@ const navItems = [
     }
 
     .crt-taskbar-link {
-      min-height: 42px;
-      padding: 0.48rem 0.2rem;
+      min-height: 34px;
+      padding: 0.38rem 0.15rem;
       font-size: clamp(0.74rem, 3vw, 0.9rem);
       letter-spacing: 0.062em;
       -webkit-text-stroke: 0.18px currentColor;
@@ -178,6 +178,12 @@ const navItems = [
     .crt-taskbar-link:hover,
     .crt-taskbar-link:focus-visible {
       transform: translateY(-2px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crt-taskbar-link::after {
+      animation: none !important;
     }
   }
 </style>

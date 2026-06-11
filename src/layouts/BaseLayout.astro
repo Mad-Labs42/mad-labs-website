@@ -6,10 +6,17 @@ import "../styles/global.css";
 export interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description = "MAD LABS computer repair and mobile IT solutions." } = Astro.props;
+const {
+  title,
+  description = "MAD LABS computer repair and mobile IT solutions.",
+  image = "/favicon.svg",
+} = Astro.props;
 const pageTitle = title === "MAD LABS" ? "MAD LABS" : `${title} — MAD LABS`;
+const clarityId = import.meta.env.PUBLIC_CLARITY_ID || "x4385g64yq";
+const ga4MeasurementId = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID || "";
 ---
 
 <!doctype html>
@@ -20,10 +27,60 @@ const pageTitle = title === "MAD LABS" ? "MAD LABS" : `${title} — MAD LABS`;
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
+
+    <!-- Preload critical above-fold fonts -->
+    <link rel="preload" href="/fonts/monofett-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jersey-25-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`https://madlabs.rocks${Astro.url.pathname}`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={`https://madlabs.rocks${image}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`https://madlabs.rocks${image}`} />
+
+    <!-- Google Analytics 4 -->
+    {
+      ga4MeasurementId ? (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4MeasurementId}`} />
+          <script is:inline define:vars={{ ga4MeasurementId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", ga4MeasurementId);
+          </script>
+        </>
+      ) : null
+    }
+
+    <!-- Microsoft Clarity — analytics -->
+    <script is:inline define:vars={{ clarityId }}>
+      /* eslint-disable prefer-rest-params */
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", clarityId);
+      /* eslint-enable prefer-rest-params */
+    </script>
   </head>
 
   <body>
-    <!-- Skip to main content — momentum-accelerated for CRT intro -->
+    
     <a class="skip-link" href="#main-content" data-skip-link> Skip to main content </a>
 
     <main id="main-content">
@@ -34,7 +91,7 @@ const pageTitle = title === "MAD LABS" ? "MAD LABS" : `${title} — MAD LABS`;
       <p>&copy; {new Date().getFullYear()} MAD LABS. All rights reserved.</p>
     </footer>
 
-    <!-- Back-to-top button (CRT-themed) -->
+    
     <button class="back-to-top" type="button" aria-label="Back to top" data-back-to-top>
       <span class="back-to-top-chevron" aria-hidden="true"></span>
     </button>
@@ -137,13 +194,19 @@ const pageTitle = title === "MAD LABS" ? "MAD LABS" : `${title} — MAD LABS`;
 
       if (backToTop) {
         let visible = false;
+        let ticking = false;
 
         const updateBackToTop = (): void => {
-          const shouldShow = window.scrollY > window.innerHeight;
-          if (shouldShow !== visible) {
-            visible = shouldShow;
-            backToTop.classList.toggle("is-visible", visible);
-          }
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const shouldShow = window.scrollY > window.innerHeight;
+            if (shouldShow !== visible) {
+              visible = shouldShow;
+              backToTop.classList.toggle("is-visible", visible);
+            }
+            ticking = false;
+          });
         };
 
         window.addEventListener("scroll", updateBackToTop, { passive: true });
