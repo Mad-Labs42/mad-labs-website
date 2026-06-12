@@ -2,9 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactInfo from "../components/ContactInfo.astro";
 import ContactTablet from "../components/ContactTablet.astro";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
 ---
 
-<BaseLayout title="Contact">
+<BaseLayout title="Book Computer Repair in Cincinnati" description={`Book a free 20-minute computer triage or 60-minute consultation with MAD LABS in Cincinnati. Same-day responses. Call ${CONTACT_PHONE} or book online.`} jsonLdType="contact">
   
   <section class="lab-section">
     <div class="lab-section-inner-wide">
@@ -19,14 +20,14 @@ import ContactTablet from "../components/ContactTablet.astro";
         </div>
         <div class="contact-hero-right">
           <div class="contact-tablet-instruction">
-            <span class="instruction-orange">You may use this tablet to contact us online.</span>
+            <span class="instruction-orange">Book your free call directly here.</span>
             <span
-              >— Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help,
-              websites, or questions about what you need.</span
+              >Click <strong>Book a Free Tech Call</strong> to grab a 20-minute slot — we'll figure out
+              what's wrong and what to do next. No charge, no commitment.</span
             >
             <span
-              >— Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup,
-              network issues, or existing support requests.</span
+              >For complex jobs (repairs, tuneups, malware cleanup, networks, custom builds), we'll
+              quote and schedule after the call.</span
             >
           </div>
         </div>
@@ -95,8 +96,8 @@ import ContactTablet from "../components/ContactTablet.astro";
           <div style="display:flex; flex-direction:column; gap:0.75rem;">
             <div class="contact-info-card">
               <ContactInfo
-                email="customer-service@madlabs.rocks"
-                phone="(513) 306-5331"
+                email={CONTACT_EMAIL}
+                phone={CONTACT_PHONE}
                 location="Greater Cincinnati Area"
               />
             </div>
@@ -165,14 +166,14 @@ import ContactTablet from "../components/ContactTablet.astro";
         <div class="contact-tablet-col">
           
           <div class="contact-tablet-instruction">
-            <span class="instruction-orange">You may use this tablet to contact us online.</span>
+            <span class="instruction-orange">Book your free call directly here.</span>
             <span
-              >— Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help,
-              websites, or questions about what you need.</span
+              >Click <strong>Book a Free Tech Call</strong> to grab a 20-minute slot — we'll figure out
+              what's wrong and what to do next. No charge, no commitment.</span
             >
             <span
-              >— Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup,
-              network issues, or existing support requests.</span
+              >For complex jobs (repairs, tuneups, malware cleanup, networks, custom builds), we'll
+              quote and schedule after the call.</span
             >
           </div>
 

@@ -89,14 +89,13 @@ const FALLBACK_EMBED_URL = import.meta.env.PUBLIC_BOOKING_EMBED_URL || "";
             >LABS
           </p>
           <p class="tablet-menu-label">
-            Need help? Pick your path.<span class="tablet-cursor" aria-hidden="true">_</span>
+            Ready to get started?<span class="tablet-cursor" aria-hidden="true">_</span>
           </p>
           <p class="tablet-menu-subtext">
-            HELP DESK is the quick call. CONSULTATION is the deep dive.
+            One click. Twenty minutes. We'll figure out what's going on.
           </p>
           <div class="tablet-menu-buttons">
-            <TabletServiceCard variant="primary" action="triage" badge="HELP DESK" hint="20-minute call. Figure out what&apos;s wrong and what to do next." />
-            <TabletServiceCard variant="secondary" action="consult" badge="CONSULTATION" hint="60-minute session. Get deeper planning, advice, and direction." />
+            <TabletServiceCard variant="primary" action="triage" badge="FREE TECH CALL" hint="20-minute call. No charge, no commitment." />
           </div>
         </div>
       </div>
@@ -111,29 +110,37 @@ const FALLBACK_EMBED_URL = import.meta.env.PUBLIC_BOOKING_EMBED_URL || "";
             sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-same-origin"
             data-iframe-type="booking"
           />
-          
+
           <div class="booking-scroll-hint" id="booking-scroll-hint" aria-hidden="true">
             <span class="scroll-hint-text">Scroll to book</span>
             <span class="scroll-hint-chevron"></span>
           </div>
-          
+
+          <!-- Subtle loading status line (shown only while iframe is loading). -->
+          <div class="booking-loading-status" id="booking-loading-status" hidden>
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="booking-loading-status-text">Connecting to booking system…</span>
+          </div>
+
+          <!-- Full error panel: only shown when Zoho fails (12s timeout or onerror). -->
           <div class="tablet-placeholder" id="booking-placeholder" hidden>
             <div class="placeholder-panel">
-              <span class="placeholder-icon" aria-hidden="true" id="booking-placeholder-icon">[@]</span>
-              <h3 class="placeholder-heading" id="booking-placeholder-heading">Booking Not Configured</h3>
+              <span class="placeholder-icon" aria-hidden="true">[!]</span>
+              <h3 class="placeholder-heading" id="booking-placeholder-heading">Booking Unavailable</h3>
               <p class="placeholder-text" id="booking-placeholder-text">
-                This booking option isn't available yet. Reach out directly and we'll get you sorted.
+                The booking system is having trouble. Please call us or use the email link below.
               </p>
-              <div class="placeholder-status" id="booking-placeholder-status" hidden>
-                <span class="status-dot" aria-hidden="true"></span>
-                <span id="booking-placeholder-status-text">Connecting…</span>
-              </div>
+              <a
+                href={`tel:${CONTACT_PHONE.replace(/[\s()-]/g, "")}`}
+                class="placeholder-fallback"
+              >
+                Call {CONTACT_PHONE} →
+              </a>
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
                 class="placeholder-fallback"
-                id="booking-placeholder-link"
               >
-                Email us →
+                Email {CONTACT_EMAIL} →
               </a>
             </div>
           </div>
@@ -771,7 +778,24 @@ const FALLBACK_EMBED_URL = import.meta.env.PUBLIC_BOOKING_EMBED_URL || "";
     flex-direction: column;
     gap: 1.7rem;
     width: 100%;
-    max-width: 340px;
+    max-width: 380px;
+  }
+  /* Single CTA: when there's only one button, make it the hero of the menu. */
+  .tablet-menu-buttons > .tablet-btn:only-child {
+    padding: 1.4rem 1.5rem 1.25rem;
+    background: linear-gradient(160deg, rgba(232, 144, 80, 0.22) 0%, rgba(80, 40, 140, 0.92) 60%, rgba(28, 12, 60, 0.95) 100%);
+    border: 2px solid rgba(232, 144, 80, 0.7);
+    box-shadow:
+      0 4px 0 rgba(0, 0, 0, 0.4),
+      0 12px 32px rgba(232, 144, 80, 0.32),
+      inset 0 1px 0 rgba(255, 200, 140, 0.28);
+  }
+  .tablet-menu-buttons > .tablet-btn:only-child .tablet-btn-badge {
+    font-size: 0.9rem;
+    padding: 0.15rem 0.7rem 0.12rem;
+  }
+  .tablet-menu-buttons > .tablet-btn:only-child .tablet-btn-hint {
+    font-size: 1.05rem;
   }
   .tablet-btn {
     position: relative;
@@ -980,6 +1004,34 @@ const FALLBACK_EMBED_URL = import.meta.env.PUBLIC_BOOKING_EMBED_URL || "";
     font-size: 0.85rem;
     line-height: 1.55;
   }
+  /* Subtle status pill at the bottom of the iframe area — shown while booking loads. */
+  .booking-loading-status {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: rgba(18, 8, 40, 0.88);
+    border: 1px solid rgba(232, 144, 80, 0.4);
+    border-radius: 999px;
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.82rem;
+    color: #e89050;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    z-index: 4;
+    animation: loading-status-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes loading-status-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
   .placeholder-status {
     display: flex;
     align-items: center;

@@ -80,57 +80,56 @@
   }
 
   function showBookingLoading() {
-    var placeholder = document.getElementById("booking-placeholder");
-    var status = document.getElementById("booking-placeholder-status");
-    var statusText = document.getElementById("booking-placeholder-status-text");
-    var heading = document.getElementById("booking-placeholder-heading");
-    var text = document.getElementById("booking-placeholder-text");
-    var link = document.getElementById("booking-placeholder-link");
-    if (!placeholder || !status || !statusText || !heading || !text) return;
-
-    heading.textContent = "Connecting to booking system…";
-    text.textContent =
-      "This usually takes a few seconds. If it takes longer than 30 seconds, please use the email link below.";
-    statusText.textContent = "Connecting…";
+    // Subtle loading indicator — just a status line at the bottom.
+    // Does NOT replace the iframe area (that would cause a "flash" when the
+    // iframe loads quickly). The user sees the Zoho widget render into
+    // the same area; only the status line tells them something is happening.
+    var status = document.getElementById("booking-loading-status");
+    if (!status) return;
     status.hidden = false;
-    if (link) link.textContent = "Email us instead →";
-    placeholder.hidden = false;
   }
 
   function showBookingError(message) {
+    // Only called when Zoho actually fails (12s timeout, or onerror).
+    // At this point the iframe has been hidden — we replace it with the
+    // full error panel including a phone fallback.
+    var iframe = document.getElementById("booking-iframe");
     var placeholder = document.getElementById("booking-placeholder");
-    var status = document.getElementById("booking-placeholder-status");
-    var statusText = document.getElementById("booking-placeholder-status-text");
+    var loadingStatus = document.getElementById("booking-loading-status");
     var heading = document.getElementById("booking-placeholder-heading");
     var text = document.getElementById("booking-placeholder-text");
-    if (!placeholder || !status || !statusText || !heading || !text) return;
+    if (!iframe || !placeholder || !heading || !text) return;
 
+    iframe.hidden = true;
+    iframe.setAttribute("src", "");
+    if (loadingStatus) loadingStatus.hidden = true;
     heading.textContent = "Booking Unavailable";
     text.textContent = message;
-    statusText.textContent = "Error — try email below";
-    status.hidden = false;
     placeholder.hidden = false;
   }
 
   function handleAction(action) {
     if (!action) return;
-    if (action === "triage" || action === "consult") {
-      var url = resolveBookingUrl(action);
-      var eventName = action === "triage" ? "contact_tablet_interact_triage" : "contact_tablet_interact_consult";
-      trackEvent(eventName);
+    if (action === "triage") {
+      var url = resolveBookingUrl("triage");
+      trackEvent("contact_tablet_interact_triage");
 
       var iframe = document.getElementById("booking-iframe");
       var placeholder = document.getElementById("booking-placeholder");
       if (iframe && placeholder) {
         if (url) {
-          // Show loading state immediately so the user knows something is happening.
-          // Zoho can take 10-30 seconds to load the booking widget.
-          iframe.hidden = true;
+          // Show a SUBTLE loading hint (status line at bottom only).
+          // The iframe area is kept empty/loading — Zoho's content
+          // will paint directly into the iframe as it loads, with no
+          // visual flash on fast loads.
+          iframe.hidden = false;
           showBookingLoading();
 
           iframe.setAttribute("src", url);
 
-          // Add a 12s fallback in case Zoho never loads (e.g., service is paused).
+          // Add a 12s fallback in case Zoho never loads (e.g., service is paused,
+          // or Zoho server is slow). Only THEN do we replace the iframe area
+          // with the full error placeholder.
           var loadTimeout = window.setTimeout(function () {
             var stillLoading =
               iframe.getAttribute("src") === url && iframe.dataset.loaded !== "true";
@@ -138,7 +137,7 @@
               showBookingError(
                 "The booking system is taking longer than expected (Zoho may be temporarily unavailable). Please call " +
                   (config && config.contactPhone ? config.contactPhone : "") +
-                  " or email us below to schedule directly.",
+                  " or email us below to schedule directamente.",
               );
             }
           }, 12000);
@@ -146,12 +145,14 @@
           iframe.onload = function () {
             window.clearTimeout(loadTimeout);
             iframe.dataset.loaded = "true";
-            iframe.hidden = false;
+            // Hide the subtle status line — booking is ready.
+            var loadingStatus = document.getElementById("booking-loading-status");
+            if (loadingStatus) loadingStatus.hidden = true;
             placeholder.hidden = true;
           };
 
           // If iframe errors (e.g., Zoho service paused, refusing connections),
-          // show a helpful fallback rather than a blank iframe.
+          // show the full fallback panel.
           iframe.onerror = function () {
             window.clearTimeout(loadTimeout);
             showBookingError(
