@@ -571,12 +571,27 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   /* The MAD LABS nameplate loading cover.
      WIDE OVAL PILL, 20% BIGGER than the original. Sits dead-center of the
      iframe area so it covers any Zoho loading text ("Mad Labs...") the
-     user might see. Slides up + scan line tracer when Zoho finishes. */
+     user might see. Slides up + scan line tracer when Zoho finishes.
+
+     CRITICAL: We use margin-based centering (-50% of self width/height)
+     instead of CSS transform translate() because the `transform` property
+     creates a new stacking context per MDN/web.dev. With a stacking
+     context on the nameplate, the z-index 6 only competes within the
+     nameplate's own context, not against the beaker's z-index 5 in the
+     root context. The beaker would then render ON TOP of the nameplate.
+     By using margin for centering, the nameplate stays in the root
+     stacking context and its z-index 6 properly beats the beaker's 5.
+
+     See: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Positioned_layout/Stacking_context
+     "An element's stacking context is layered based on the comparison
+     of its containing context's z-index versus the child context's z-index." */
   .booking-nameplate {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    /* Margin-based centering (half the height/width of the nameplate) */
+    margin-top: -32px;  /* Half the nameplate's height (64px / 2) */
+    margin-left: -143px; /* Half the nameplate's width (286px / 2) */
     z-index: 6;
     display: flex;
     flex-direction: row;
@@ -602,6 +617,8 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
       inset 0 -1px 0 rgba(0, 0, 0, 0.3);
     transition:
       transform 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+      top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+      margin-top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
       opacity 0.7s ease;
   }
 
@@ -703,7 +720,11 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   }
   .booking-nameplate.is-loaded,
   .booking-nameplate.is-error {
-    transform: translate(-50%, -180%);
+    /* Slide the nameplate up out of view by animating its top property
+       and negative margin-top. No transform used (would create a new
+       stacking context — see the booking-nameplate base rule comment). */
+    top: -200px;
+    margin-top: 0;
     opacity: 0;
     pointer-events: none;
   }
@@ -870,7 +891,8 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     }
     .booking-nameplate.is-loaded,
     .booking-nameplate.is-error {
-      transform: translate(-50%, -50%) !important;
+      top: -200px !important;
+      margin-top: 0 !important;
       opacity: 0 !important;
     }
     .tablet-bands,
