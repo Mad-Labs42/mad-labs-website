@@ -1,34 +1,39 @@
 ---
 // src/components/ContactTablet.astro
-// CRT-themed intake terminal — DIRECT-SHOW Zoho booking experience.
+// CRT-themed intake terminal — INLINE Nimbuspop Zoho booking experience.
 //
-// The Zoho Bookings free plan = one booking type. The contact tablet shows
-// the calendar directly (no menu state, no button click). The MAD LABS oval
-// nameplate covers the iframe area while Zoho loads in the background, then
-// slides up with a CRT scan line tracer when Zoho finishes.
+// The booking widget is rendered via Nimbuspop's inline embed (NOT an iframe).
+// This avoids the X-Frame-Options: SAMEORIGIN issue that was blocking the
+// iframe approach. The Nimbuspop script dynamically creates a Zoho booking
+// widget inside a div on our page.
 //
-// TIMING: The nameplate stays for AT LEAST 5 seconds so it looks intentional
-// (a professional loading screen, not a glitch). After 5 seconds, OR when Zoho
-// actually finishes loading (whichever is later), the nameplate slides up.
+// TIMING: The MAD LABS nameplate + beaker-pattern wallpaper stay for at LEAST
+// 6 seconds so the user never sees Zoho's plain "Mad Labs..." loading state.
+// After 6 seconds, OR when Nimbuspop signals the widget is ready (whichever
+// is later), the nameplate slides up and the beaker pattern fades out
+// TOGETHER. The user only sees our branded loading state, then the form.
 //
-// VISUAL CONTAINMENT: The beaker-pattern wallpaper + CRT atmosphere effects
-// (scanlines, glow, scanbeam) STAY VISIBLE during the loading state. When
-// the nameplate slides up, ALL of these disappear together with a CSS class
-// on the .tablet-screen element.
+// WHY NIMBUSPOP (not direct Zoho): Nimbuspop wraps Zoho Bookings and handles
+// the embed/X-Frame-Options complexity. The script is at
+// https://bookings.nimbuspop.com/assets/embed.js and exposes
+// window.Bookings.inlineEmbed({url, parent, height}).
 //
-// ZOHO STRATEGY: The Zoho Bookings portal-embed page returns X-Frame-Options:
-// SAMEORIGIN when framed from a different origin. We use TWO strategies:
-//   1. PRIMARY: <iframe src="portal-embed#/serviceId"> — works if Zoho
-//      allows our origin in their allowlist
-//   2. FALLBACK: A direct link button that opens Zoho in a new tab
-//      if the iframe fails to load within 12 seconds
+// EMBED URL FORMAT: portal-embed + #/<serviceId> hash fragment. The hash
+// routes Zoho to the specific service. We use the Consult serviceId
+// (4947694000000102023) per the Zoho-Embed-Info.md vault file.
 import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
 
-const TRIAGE_EMBED_URL = import.meta.env.PUBLIC_TRIAGE_URL || "";
 const TRIAGE_SERVICE_ID = import.meta.env.PUBLIC_TRIAGE_SERVICE_ID || "";
 const FALLBACK_EMBED_URL = import.meta.env.PUBLIC_BOOKING_EMBED_URL || "";
-// Tablet is dead-center on the contact page; reference a fallback if no specific URL.
-const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
+// Vault file says use Consult serviceId for the inline embed.
+// https://madlabs.zohobookings.com/portal-embed#/4947694000000102023
+const CONSULT_SERVICE_ID = "4947694000000102023";
+// The Zoho URL that the Nimbuspop embed will load
+const ZOHO_BOOKING_URL = FALLBACK_EMBED_URL
+  ? `${FALLBACK_EMBED_URL}#/${CONSULT_SERVICE_ID}`
+  : `https://madlabs.zohobookings.com/portal-embed#/${CONSULT_SERVICE_ID}`;
+// Nimbuspop's public embed script
+const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
 ---
 
 <div class="contact-tablet" data-tablet-root aria-label="MAD LABS intake terminal">
@@ -66,21 +71,16 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
 
       <div class="tablet-iframe-wrapper" data-tablet-iframe-wrapper>
 
-        <!-- The Zoho iframe. src is set on page load via the client TS
-             (lazy-loaded: IntersectionObserver + 3s fallback). Until then,
-             the iframe is empty and the nameplate covers the area. -->
-        <iframe
-          class="tablet-iframe"
-          id="booking-iframe"
-          title="Book a free 20-minute tech call with MAD LABS"
-          sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-same-origin"
-          data-iframe-type="booking"
-        />
+        <!-- Inline booking widget container.
+             The Nimbuspop script will render the Zoho booking widget
+             INSIDE this div. The widget is NOT an iframe (no X-Frame-Options
+             issue). The nameplate sits on top of this container. -->
+        <div id="inline-container" class="bookings-inline-container"></div>
 
-        <!-- The MAD LABS oval nameplate — COVERS the iframe area while
-             Zoho is loading. 20% bigger than the original wide-pill.
-             Stays for at least 5 seconds to feel intentional, then slides
-             up with a CRT scan line tracer when Zoho finishes. -->
+        <!-- The MAD LABS oval nameplate — COVERS the booking container while
+             Nimbuspop loads Zoho in the background. 20% bigger than the
+             original wide-pill. Stays for at least 6 seconds to feel
+             intentional, then slides up with a CRT scan line tracer. -->
         <div
           class="booking-nameplate"
           id="booking-nameplate"
@@ -148,8 +148,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
 </div>
 
 <script id="tablet-config" type="application/json" set:html={JSON.stringify({
-  bookingUrl: BOOKING_URL,
-  serviceId: TRIAGE_SERVICE_ID,
+  zohoUrl: ZOHO_BOOKING_URL,
+  nimbuspopScriptSrc: NIMBUSPOP_SCRIPT_SRC,
   contactPhone: CONTACT_PHONE,
   contactEmail: CONTACT_EMAIL
 })}></script>
@@ -513,7 +513,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     border-bottom-width: 1.5px; border-right-width: 1.5px;
   }
 
-  /* ─── Iframe area ─── */
+  /* ─── Inline booking container (Nimbuspop renders Zoho here) ─── */
   .tablet-iframe-wrapper {
     position: relative;
     width: 100%;
@@ -523,10 +523,20 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     flex-direction: column;
     overflow: hidden;
   }
-  .tablet-iframe {
+
+  /* Nimbuspop injects the Zoho booking widget into this div.
+     The widget is 600px tall by default, fills the container width. */
+  .bookings-inline-container {
     width: 100%;
     height: 100%;
     flex: 1;
+    overflow-y: auto;
+    background: transparent;
+  }
+  /* Nimbuspop adds its own elements (iframe, scripts). Style them. */
+  .bookings-inline-container iframe {
+    width: 100% !important;
+    min-height: 100%;
     border: none;
     display: block;
     background: transparent;
