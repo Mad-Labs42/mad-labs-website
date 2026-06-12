@@ -304,6 +304,11 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
      the nameplate (z-index 6). */
   .is-loaded-tablet {
     opacity: 0 !important;
+    /* Also drop the beaker/atmosphere out of the rendering tree once
+       faded, so they cannot accidentally render above the nameplate
+       in any browser edge case. visibility:hidden keeps the layout
+       intact (no reflow); it just stops painting. */
+    visibility: hidden !important;
   }
   /* Special case: scanlines stay at 0.3 opacity (intentional CRT look)
      even after the nameplate + beaker fade. The JS adds .is-loaded-tablet
