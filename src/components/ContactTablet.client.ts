@@ -2,13 +2,18 @@
 // Direct-show Zoho booking for the contact page.
 //
 // The Zoho Bookings free plan = one booking type. The contact tablet shows
-// the calendar directly (no menu state, no button click). The MAD LABS oval
-// nameplate covers the iframe area while Zoho loads; when it finishes, the
-// nameplate slides up with a CRT scan line tracer and Zoho's calendar appears.
+// the calendar directamente (no menu state, no button click). The MAD LABS oval
+// nameplate covers the iframe area while Zoho loads in the background, then
+// slides up with a CRT scan line tracer when Zoho finishes.
 //
-// Lazy-loading: src is set on first-of (IntersectionObserver triggers when
-// the tablet is within 300px of viewport) OR after a 3-second fallback
-// timer. This prevents a 30-second blank iframe on initial page load.
+// TIMING: The nameplate stays for AT LEAST 5 seconds so it looks like a
+// professional loading screen, not a glitch. After 5 seconds, OR when Zoho
+// actually finishes loading (whichever is later), the nameplate slides up.
+//
+// LAZY-LOAD: Removed. The iframe src is set on page load (Zoho loads in
+// the background). The user sees the nameplate covering the iframe area the
+// whole time. If the user scrolls past the tablet quickly, Zoho still loads
+// (no perf cost because it loads off-screen anyway).
 
 (function () {
   "use strict";
@@ -22,100 +27,50 @@
   // ─── Element refs ───
   var iframe = document.getElementById("booking-iframe");
   var nameplate = document.getElementById("booking-nameplate");
-  var statusLine = document.getElementById("booking-status-line");
-  var statusText = document.getElementById("booking-status-text");
   var placeholder = document.getElementById("booking-placeholder");
-  if (!iframe || !nameplate || !statusLine || !statusText || !placeholder) return;
+  if (!iframe || !nameplate || !placeholder) return;
 
   var prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
+  // ─── Timing constants ───
+  // The nameplate is the loading screen. It must look intentional.
+  // MIN_VISIBLE_MS = minimum time the nameplate stays on screen.
+  // This is the user-perceived "loading" duration, regardless of how
+  // fast Zoho actually loads.
+  var MIN_VISIBLE_MS = 5000;
+
+  // If Zoho hasn't loaded by this point, show the network gremlin panel.
+  var FAILURE_TIMEOUT_MS = 15000;
+
   // ─── State ───
-  var iframeLoaded = false;
-  var iframeSrcSet = false;
-  var fallbackTimer = null;
-  var statusTextTimer = null;
-  var slowLoadTimer = null;
-  var twelveSecondTimer = null;
+  var iframeLoadFiredAt = 0;
+  var minVisibleTimerExpired = false;
+  var failureTimer = null;
+  var startedAt = 0;
 
   /**
-   * Start loading the Zoho iframe. Idempotent — safe to call multiple times.
+   * Slide the nameplate up + scan line tracer. Called when BOTH:
+   *   1. Zoho has loaded (or failed), AND
+   *   2. The minimum-visible timer has expired.
    *
-   * - Adds the loading class to the nameplate (triggers scan line tracer)
-   * - Shows the status line
-   * - Sets the iframe src (triggers Zoho load)
-   * - Starts the 12-second timeout (catches the failure case)
+   * If the minimum-visible timer hasn't expired when Zoho loads, we wait
+   * for it. This guarantees the nameplate looks intentional.
    */
-  function startZohoLoad() {
-    if (iframeSrcSet) return;
-    iframeSrcSet = true;
-
-    // Cancel the 3-second fallback timer if it was still running
-    if (fallbackTimer !== null) {
-      window.clearTimeout(fallbackTimer);
-      fallbackTimer = null;
-    }
-
-    // Mark the nameplate as loading (scan line tracer appears)
-    if (!prefersReducedMotion) {
-      nameplate.classList.add("is-loading");
-    }
-
-    // Show the status line
-    statusLine.hidden = false;
-    statusText.textContent = "TUNING BOOKING SIGNAL…";
-
-    // After 6 seconds without loading, change the status to a
-    // "still working" message (reassures the user that things are happening).
-    slowLoadTimer = window.setTimeout(function () {
-      if (!iframeLoaded) {
-        statusText.textContent = "STILL TUNING… ALMOST THERE";
-      }
-    }, 6000);
-
-    // Set the iframe src. The sandbox attribute on the iframe element
-    // already includes allow-same-origin, which Zoho requires for its
-    // portal-embed to make cross-origin API calls.
-    iframe.setAttribute("src", config.bookingUrl);
-
-    // 12-second timeout: if iframe still hasn't loaded by now, show
-    // the network gremlin error panel.
-    twelveSecondTimer = window.setTimeout(function () {
-      if (!iframeLoaded) {
-        showError();
-      }
-    }, 12000);
+  function tryRevealNameplate() {
+    if (!iframeLoadFiredAt) return;  // Zoho hasn't finished yet
+    if (!minVisibleTimerExpired) return;  // Still in minimum-visible window
+    revealNameplate();
   }
 
-  /**
-   * Called when the Zoho iframe finishes loading. Slides the nameplate up
-   * and reveals the calendar.
-   */
-  function onIframeLoaded() {
-    iframeLoaded = true;
-    iframe.dataset.loaded = "true";
-    window.clearTimeout(twelveSecondTimer);
-    window.clearTimeout(slowLoadTimer);
-    if (statusTextTimer !== null) {
-      window.clearTimeout(statusTextTimer);
-    }
-
-    // Update status to "ready" then fade out
-    statusText.textContent = "READY";
-    statusTextTimer = window.setTimeout(function () {
-      statusLine.hidden = true;
-    }, 500);
-
-    // Slide the nameplate up and out. With reduced motion, just hide it.
+  function revealNameplate() {
     if (prefersReducedMotion) {
       nameplate.style.display = "none";
     } else {
       nameplate.classList.remove("is-loading");
       nameplate.classList.add("is-loaded");
     }
-
-    // Make sure the error panel is hidden
     placeholder.hidden = true;
 
     // Show the scroll hint briefly so the user knows they can scroll
@@ -129,41 +84,36 @@
         hint.classList.add("hint-hidden");
       }, 5000);
     }
-
-    // Track the success
-    try {
-      document.dispatchEvent(
-        new CustomEvent("madlabs:analytics", {
-          detail: { event: "contact_booking_iframe_loaded" },
-        })
-      );
-    } catch {}
   }
 
   /**
-   * Called when Zoho fails (onerror or 12s timeout). Shows the network
-   * gremlin error panel.
+   * Called when Zoho finishes loading. Triggers the reveal IF the
+   * minimum-visible timer has expired. Otherwise waits for the timer.
+   */
+  function onIframeLoaded() {
+    iframeLoadFiredAt = Date.now();
+    iframe.dataset.loaded = "true";
+    if (failureTimer !== null) {
+      window.clearTimeout(failureTimer);
+      failureTimer = null;
+    }
+    tryRevealNameplate();
+  }
+
+  /**
+   * Called when Zoho fails (onerror or FAILURE_TIMEOUT_MS timeout).
+   * Shows the network gremlin error panel.
    */
   function showError() {
-    window.clearTimeout(slowLoadTimer);
-
-    // Hide the nameplate so the error panel is visible
     if (prefersReducedMotion) {
       nameplate.style.display = "none";
     } else {
       nameplate.classList.remove("is-loading");
       nameplate.classList.add("is-error");
     }
-
-    // Hide the iframe and the status line
     iframe.hidden = true;
     iframe.setAttribute("src", "");
-    statusLine.hidden = true;
-
-    // Show the error panel
     placeholder.hidden = false;
-
-    // Track the error
     try {
       document.dispatchEvent(
         new CustomEvent("madlabs:analytics", {
@@ -176,40 +126,58 @@
   // ─── Wire up the iframe events ───
   iframe.addEventListener("load", onIframeLoaded);
   iframe.addEventListener("error", function () {
-    window.clearTimeout(twelveSecondTimer);
-    window.clearTimeout(slowLoadTimer);
-    showError();
+    if (failureTimer !== null) {
+      window.clearTimeout(failureTimer);
+      failureTimer = null;
+    }
+    // Still respect the min-visible window — but show the error panel
+    // underneath the nameplate
+    iframeLoadFiredAt = Date.now();
+    iframe.dataset.errored = "true";
+    if (minVisibleTimerExpired) {
+      showError();
+    } else {
+      window.setTimeout(showError, Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt)));
+    }
   });
 
-  // ─── Trigger Zoho load on first-of ───
+  // ─── Start loading Zoho immediately on page load ───
+  // The nameplate covers the iframe area, so the user sees a clean
+  // loading screen while Zoho loads in the background.
+  startedAt = Date.now();
+  iframe.setAttribute("src", config.bookingUrl);
 
-  // 1. 3-second fallback timer (covers users who don't scroll)
-  fallbackTimer = window.setTimeout(function () {
-    startZohoLoad();
-  }, 3000);
-
-  // 2. IntersectionObserver: trigger when the tablet is near the viewport.
-  //    If the user scrolls within 300px of the tablet, start loading.
-  if (typeof IntersectionObserver !== "undefined") {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-          if (entries[i].isIntersecting) {
-            startZohoLoad();
-            observer.disconnect();
-            break;
-          }
-        }
-      },
-      {
-        // 300px root margin = "fire when tablet is 300px below the bottom
-        // of the viewport" (catches scroll-toward case before user sees tablet)
-        rootMargin: "0px 0px 300px 0px",
-        threshold: 0,
-      }
-    );
-    // Observe the tablet root (the .contact-tablet element)
-    var root = document.querySelector("[data-tablet-root]");
-    if (root) observer.observe(root);
+  // Mark the nameplate as loading (triggers scan line tracer)
+  if (!prefersReducedMotion) {
+    nameplate.classList.add("is-loading");
   }
+
+  // ─── Minimum-visible timer: nameplate must stay for at least 5 seconds ───
+  window.setTimeout(function () {
+    minVisibleTimerExpired = true;
+    tryRevealNameplate();
+  }, MIN_VISIBLE_MS);
+
+  // ─── Failure timer: if Zoho doesn't load in 15s, show error panel ───
+  // The nameplate stays on screen the whole time (we don't show error
+  // until min-visible is also up).
+  failureTimer = window.setTimeout(function () {
+    if (!iframe.dataset.loaded && !iframe.dataset.errored) {
+      iframe.dataset.errored = "true";
+      iframeLoadFiredAt = Date.now();
+      // Don't show the error yet — wait for min-visible
+      if (minVisibleTimerExpired) {
+        showError();
+      } else {
+        window.setTimeout(
+          showError,
+          Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt))
+        );
+      }
+    }
+  }, FAILURE_TIMEOUT_MS);
+
+  // ─── Track the success event for analytics ───
+  // (The actual analytics fire happens when Zoho loads, tracked via the
+  // iframe's load event above.)
 })();
