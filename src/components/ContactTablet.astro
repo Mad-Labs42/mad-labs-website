@@ -262,27 +262,27 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   /* When the iframe is loaded, fade out the beaker wallpaper so Zoho's
      content shows through cleanly. The nameplate and wallpaper disappear
      TOGETHER as a unified transition. */
-  .tablet-screen.is-loaded .tablet-desktop-bg {
+  .tablet-screen[data-tablet-state="loaded"] .tablet-desktop-bg {
     opacity: 0;
   }
-  .tablet-screen.is-loaded .tablet-backlight,
-  .tablet-screen.is-loaded .tablet-ips-glow,
-  .tablet-screen.is-loaded .tablet-aberration,
-  .tablet-screen.is-loaded .tablet-glare,
-  .tablet-screen.is-loaded .tablet-tint,
-  .tablet-screen.is-loaded .tablet-bands,
-  .tablet-screen.is-loaded .tablet-phosphor-dots,
-  .tablet-screen.is-loaded .tablet-pixel-grid,
-  .tablet-screen.is-loaded .tablet-grain,
-  .tablet-screen.is-loaded .tablet-vignette,
-  .tablet-screen.is-loaded .tablet-bevel-inner,
-  .tablet-screen.is-loaded .tablet-scanbeam,
-  .tablet-screen.is-loaded .tablet-flicker {
+  .tablet-screen[data-tablet-state="loaded"] .tablet-backlight,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-ips-glow,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-aberration,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-glare,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-tint,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-bands,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-phosphor-dots,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-pixel-grid,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-grain,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-vignette,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-bevel-inner,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-scanbeam,
+  .tablet-screen[data-tablet-state="loaded"] .tablet-flicker {
     opacity: 0;
     transition: opacity 0.7s ease;
   }
   /* Keep scanlines visible even after load — they look intentional */
-  .tablet-screen.is-loaded .tablet-scanlines {
+  .tablet-screen[data-tablet-state="loaded"] .tablet-scanlines {
     opacity: 0.3;
   }
 

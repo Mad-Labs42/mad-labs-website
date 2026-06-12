@@ -57,6 +57,28 @@
   var startedAt = 0;
 
   /**
+   * Called when the minimum-visible timer (6s) has expired. This is the
+   * ONLY thing that fades the beaker pattern + atmosphere effects.
+   * The widget being ready is NOT what fades the screen — that's the
+   * nameplate's job. This way the beaker pattern stays visible alongside
+   * the nameplate for the full 6 seconds, even if the widget has been
+   * rendered into the inline container for a while.
+   */
+  function onMinVisibleExpired() {
+    minVisibleTimerExpired = true;
+    // Flip the screen's data-tablet-state so the atmosphere layers
+    // (beaker pattern, scanlines, glow, etc.) fade out together with the
+    // nameplate. The user sees the beaker background + nameplate as a
+    // unified loading state that disappears together.
+    var screen = document.querySelector("[data-tablet-screen]");
+    if (screen) {
+      screen.setAttribute("data-tablet-state", "loaded");
+    }
+    // Now check if the widget is also ready — if so, reveal the nameplate.
+    tryRevealNameplate();
+  }
+
+  /**
    * Slide the nameplate up + CRT scan line tracer. Called when BOTH:
    *   1. The Nimbuspop widget has rendered (or failed), AND
    *   2. The minimum-visible timer has expired (6 seconds).
@@ -76,14 +98,6 @@
     } else {
       nameplate.classList.remove("is-loading");
       nameplate.classList.add("is-loaded");
-    }
-    // Also flip the screen's data-tablet-state so the atmosphere layers
-    // (beaker pattern, scanlines, glow, etc.) fade out together with the
-    // nameplate. The user sees the beaker background + nameplate as a
-    // unified loading state that disappears together.
-    var screen = document.querySelector("[data-tablet-screen]");
-    if (screen) {
-      screen.setAttribute("data-tablet-state", "loaded");
     }
     placeholder.hidden = true;
 
@@ -228,12 +242,10 @@
   document.head.appendChild(npScript);
 
   // ─── Minimum-visible timer: nameplate + beaker pattern must stay
-  // for at least 6 seconds. After this, if the widget is ready,
-  // reveal. If not, wait for the widget. ───
-  window.setTimeout(function () {
-    minVisibleTimerExpired = true;
-    tryRevealNameplate();
-  }, MIN_VISIBLE_MS);
+  // for at least 6 seconds. After this, flip the screen state (fades
+  // out the beaker + atmosphere effects) and check if the widget is
+  // ready — if so, reveal the nameplate. ───
+  window.setTimeout(onMinVisibleExpired, MIN_VISIBLE_MS);
 
   // ─── Failure timer: if the widget hasn't rendered by now, show error.
   // The nameplate stays on screen until min-visible is also up. ───
