@@ -1,0 +1,105 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CrtAtomLogo from "../components/CrtAtomLogo.astro";
+import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
+---
+
+<BaseLayout
+  title="404 — Lost in the Datastream"
+  description="The page you requested doesn't exist. Return to MAD LABS home or contact us for help."
+  noindex
+>
+  <section class="lab-section notfound-section">
+    <div class="lab-section-inner notfound-inner">
+      <div class="notfound-atom" aria-hidden="true">
+        <CrtAtomLogo />
+      </div>
+      <span class="lab-heading-accent notfound-eyebrow">Error 404</span>
+      <h1 class="notfound-heading">Lost in the datastream</h1>
+      <p class="notfound-text">
+        The page you are looking for may have been moved, deleted, or quantum teleported to an
+        alternate dimension in an unfortunate but exciting lab accident 🧪
+      </p>
+      <div class="notfound-actions">
+        <a href="/" class="lab-button lab-button--primary">Back to Home</a>
+        <a href="/contact/" class="lab-button">Contact MAD LABS</a>
+      </div>
+      <p class="notfound-direct">
+        Or you can contact us directly at
+        <span class="notfound-contact-line">Phone: {CONTACT_PHONE.replace(/[()]/g, "")} &middot; Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></span>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound-section {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+  }
+  .notfound-inner {
+    text-align: center;
+    max-width: 720px;
+  }
+  .notfound-atom {
+    width: clamp(140px, 28vw, 280px);
+    margin: 0 auto 2.5rem;
+    opacity: 0.85;
+    animation: notfound-pulse 3s ease-in-out infinite;
+  }
+  @keyframes notfound-pulse {
+    0%, 100% { opacity: 0.4; transform: rotate(0deg); }
+    50% { opacity: 0.95; transform: rotate(180deg); }
+  }
+  .notfound-eyebrow {
+    font-size: 1.1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .notfound-heading {
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--lab-heading, #e0d0ff);
+    margin: 0.75rem 0 1.5rem;
+    letter-spacing: 0.02em;
+    line-height: 1.05;
+    text-shadow: 0 0 24px rgba(140, 80, 240, 0.5);
+  }
+  .notfound-text {
+    color: var(--lab-text, #b0a8c8);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height: 1.6;
+    margin: 0 auto 2.5rem;
+    max-width: 600px;
+  }
+  .notfound-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .notfound-actions .lab-button {
+    font-size: 1.1rem;
+    padding: 0.85rem 1.75rem;
+  }
+  .notfound-direct {
+    color: var(--lab-text-muted, #8880a8);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-top: 1rem;
+  }
+  .notfound-contact-line {
+    display: block;
+    margin-top: 0.4rem;
+  }
+  .notfound-direct a {
+    color: var(--lab-accent, #e89050);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .notfound-atom { animation: none; opacity: 0.85; }
+  }
+</style>
