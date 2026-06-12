@@ -77,29 +77,6 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
              issue). The nameplate sits on top of this container. -->
         <div id="inline-container" class="bookings-inline-container"></div>
 
-        <!-- The MAD LABS oval nameplate — COVERS the booking container while
-             Nimbuspop loads Zoho in the background. 20% bigger than the
-             original wide-pill. Stays for at least 6 seconds to feel
-             intentional, then slides up with a CRT scan line tracer. -->
-        <div
-          class="booking-nameplate"
-          id="booking-nameplate"
-          data-tablet-nameplate
-          aria-hidden="true"
-        >
-          <span class="nameplate-mad">MAD</span>
-          <span class="nameplate-atom" aria-hidden="true">
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9"></ellipse>
-              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(60 10 10)"></ellipse>
-              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(-60 10 10)"></ellipse>
-              <circle cx="10" cy="10" r="1.35" fill="#ffffff" opacity="1"></circle>
-            </svg>
-          </span>
-          <span class="nameplate-labs">LABS</span>
-          <span class="nameplate-loader" aria-hidden="true">LOADING…</span>
-        </div>
-
         <!-- Scroll hint that appears briefly when the user enters booking mode. -->
         <div class="booking-scroll-hint" id="booking-scroll-hint" aria-hidden="true">
           <span class="scroll-hint-text">Scroll to book</span>
@@ -130,6 +107,40 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
             </a>
           </div>
         </div>
+      </div>
+
+      <!-- The MAD LABS oval nameplate — COVERS the booking container while
+           Nimbuspop loads Zoho in the background. 20% bigger than the
+           original wide-pill. Stays for at least 6 seconds to feel
+           intentional, then slides up with a CRT scan line tracer.
+
+           IMPORTANT: The nameplate is now a SIBLING of .tablet-iframe-wrapper
+           (not a child). If the nameplate is INSIDE the iframe-wrapper,
+           the iframe-wrapper's z-index (4) becomes the effective z-index
+           for the nameplate in the root context — which is LOWER than
+           the beaker's z-index (5). That means the beaker would render
+           on top of the nameplate. By moving the nameplate to be a
+           sibling at the root level, its z-index 6 properly stacks above
+           the beaker's z-index 5. (CSS stacking context rule: child
+           z-indexes are only compared within the parent's context —
+           see https://web.dev/learn/css/z-index/) -->
+      <div
+        class="booking-nameplate"
+        id="booking-nameplate"
+        data-tablet-nameplate
+        aria-hidden="true"
+      >
+        <span class="nameplate-mad">MAD</span>
+        <span class="nameplate-atom" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9"></ellipse>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(60 10 10)"></ellipse>
+            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(-60 10 10)"></ellipse>
+            <circle cx="10" cy="10" r="1.35" fill="#ffffff" opacity="1"></circle>
+          </svg>
+        </span>
+        <span class="nameplate-labs">LABS</span>
+        <span class="nameplate-loader" aria-hidden="true">LOADING…</span>
       </div>
     </div>
 
