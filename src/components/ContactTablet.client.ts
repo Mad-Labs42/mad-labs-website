@@ -104,7 +104,6 @@
     // The class name 'is-loaded-tablet' is single-word+hyphen; safe from
     // the minifier bug that was breaking '.is loaded' selectors.
     var fadeTargets = [
-      ".tablet-screen",  // fades the ::before pseudo-element (purple gradient)
       ".tablet-desktop-bg",
       ".tablet-backlight",
       ".tablet-ips-glow",

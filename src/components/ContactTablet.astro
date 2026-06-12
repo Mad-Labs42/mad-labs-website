@@ -311,20 +311,29 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   /* The beaker + CRT atmosphere effects fade out together with the
      nameplate. Triggered by the .is-loaded-tablet class which the JS
      adds to each element directly via .forEach() in revealNameplate().
-     This bypasses the CSS minifier breaking compound selectors and the
-     general sibling combinator (~) not matching because the nameplate
-     is nested inside .tablet-iframe-wrapper (NOT a sibling of the
-     beaker). We just iterate and add the class to all known targets.
 
-     Z-index 5 puts the beaker ABOVE the form (z-index 0) but BELOW
-     the nameplate (z-index 6). */
+     opacity:0 hides the element visually. NOTE: .tablet-screen is NOT
+     given opacity:0 here — that would cascade to all children at the
+     rendering level and hide the Zoho iframe. Instead, its ::before
+     pseudo-element (purple gradient) fades via :has() below. */
   .is-loaded-tablet {
     opacity: 0 !important;
-    /* Also drop the beaker/atmosphere out of the rendering tree once
-       faded, so they cannot accidentally render above the nameplate
-       in any browser edge case. visibility:hidden keeps the layout
-       intact (no reflow); it just stops painting. */
-    visibility: hidden !important;
+  }
+  /* The purple gradient (::before) fades when the beaker gets
+     .is-loaded-tablet. We use :has() to detect this relationship
+     without setting opacity on .tablet-screen itself (which would
+     cascade to all children including the iframe). */
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet)::before {
+    opacity: 0 !important;
+  }
+  /* When the tablet is loaded, the iframe wrapper and its contents
+     (the Zoho form) MUST be visible despite any parent inheriting
+     from is-loaded-tablet rules. */
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet) .tablet-iframe-wrapper,
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet) .bookings-inline-container,
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet) iframe {
+    visibility: visible !important;
+    opacity: 1 !important;
   }
   /* Special case: scanlines stay at 0.3 opacity (intentional CRT look)
      even after the nameplate + beaker fade. The JS adds .is-loaded-tablet
