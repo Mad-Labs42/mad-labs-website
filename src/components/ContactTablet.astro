@@ -124,23 +124,24 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
            the beaker's z-index 5. (CSS stacking context rule: child
            z-indexes are only compared within the parent's context —
            see https://web.dev/learn/css/z-index/) -->
-      <div
-        class="booking-nameplate"
-        id="booking-nameplate"
-        data-tablet-nameplate
-        aria-hidden="true"
-      >
-        <span class="nameplate-mad">MAD</span>
-        <span class="nameplate-atom" aria-hidden="true">
-          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9"></ellipse>
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(60 10 10)"></ellipse>
-            <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(-60 10 10)"></ellipse>
-            <circle cx="10" cy="10" r="1.35" fill="#ffffff" opacity="1"></circle>
-          </svg>
-        </span>
-        <span class="nameplate-labs">LABS</span>
-        <span class="nameplate-loader" aria-hidden="true">LOADING…</span>
+      <div class="nameplate-positioner" data-tablet-nameplate>
+        <div
+          class="booking-nameplate"
+          id="booking-nameplate"
+          aria-hidden="true"
+        >
+          <span class="nameplate-mad">MAD</span>
+          <span class="nameplate-atom" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9"></ellipse>
+              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(60 10 10)"></ellipse>
+              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(-60 10 10)"></ellipse>
+              <circle cx="10" cy="10" r="1.35" fill="#ffffff" opacity="1"></circle>
+            </svg>
+          </span>
+          <span class="nameplate-labs">LABS</span>
+          <span class="nameplate-loader" aria-hidden="true">LOADING…</span>
+        </div>
       </div>
     </div>
 
@@ -578,32 +579,50 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
      iframe area so it covers any Zoho loading text ("Mad Labs...") the
      user might see. Slides up + scan line tracer when Zoho finishes.
 
-     CRITICAL: We use margin-based centering (-50% of self width/height)
-     instead of CSS transform translate() because the `transform` property
-     creates a new stacking context per MDN/web.dev. With a stacking
-     context on the nameplate, the z-index 6 only competes within the
-     nameplate's own context, not against the beaker's z-index 5 in the
-     root context. The beaker would then render ON TOP of the nameplate.
-     By using margin for centering, the nameplate stays in the root
-     stacking context and its z-index 6 properly beats the beaker's 5.
+     NAVIGATING CSS STACKING CONTEXTS:
+     The beaker (.tablet-desktop-bg) has opacity:0.6 which creates a
+     stacking context at z-index 5. The nameplate needs to render ABOVE
+     the beaker. If the nameplate itself has a transform (for centering),
+     it ALSO creates a stacking context — and with two sibling contexts,
+     ordering depends on z-index comparison at the parent level.
 
-     See: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Positioned_layout/Stacking_context
-     "An element's stacking context is layered based on the comparison
-     of its containing context's z-index versus the child context's z-index." */
-  .booking-nameplate {
+     To make this reliable, we use a TWO-LAYER approach:
+     Layer 1 — .nameplate-positioner (outer, absolute): handles centering
+     via transform:translate(-50%,-50%) AND carries the z-index 6. This
+     is the atomic unit in the root stacking context.
+     Layer 2 — .booking-nameplate (inner, relative): carries the visual
+     content (gradient, text, border) but NO transform and NO explicit
+     z-index. It's just a child of the positioner's stacking context.
+
+     In the root stacking context:
+       beaker: opacity-based context at z-index 5
+       nameplate-positioner: transform-based context at z-index 6
+       5 < 6 → positioner (and its children) render above the beaker. */
+  .nameplate-positioner {
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Margin-based centering (half the height/width of the nameplate) */
-    margin-top: -32px;  /* Half the nameplate's height (64px / 2) */
-    margin-left: -143px; /* Half the nameplate's width (286px / 2) */
+    transform: translate(-50%, -50%);
     z-index: 6;
+    pointer-events: none;
+    transition:
+      top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.7s ease;
+  }
+  .nameplate-positioner.is-loaded,
+  .nameplate-positioner.is-error {
+    /* Slide the positioner up out of view. The inner nameplate
+       follows because it's a child. */
+    top: -200px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .booking-nameplate {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    /* 20% larger padding than the original wide-pill */
     padding: 1.1rem 3.6rem;
     background: linear-gradient(
       160deg,
@@ -620,11 +639,6 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
       0 8px 24px rgba(0, 0, 0, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
       inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-    transition:
-      transform 0.7s cubic-bezier(0.65, 0, 0.35, 1),
-      top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
-      margin-top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
-      opacity 0.7s ease;
   }
 
   /* 20% larger text */
@@ -715,7 +729,7 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     opacity: 0;
     pointer-events: none;
   }
-  .booking-nameplate.is-loading::after {
+  .nameplate-positioner.is-loading .booking-nameplate::after {
     opacity: 1;
     animation: nameplate-tracer 1.4s ease-in-out infinite;
   }
@@ -723,13 +737,9 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     0% { transform: translateY(0); opacity: 0.9; }
     100% { transform: translateY(120px); opacity: 0.3; }
   }
-  .booking-nameplate.is-loaded,
-  .booking-nameplate.is-error {
-    /* Slide the nameplate up out of view by animating its top property
-       and negative margin-top. No transform used (would create a new
-       stacking context — see the booking-nameplate base rule comment). */
+  .nameplate-positioner.is-loaded,
+  .nameplate-positioner.is-error {
     top: -200px;
-    margin-top: 0;
     opacity: 0;
     pointer-events: none;
   }
@@ -889,15 +899,14 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .booking-nameplate,
-    .booking-nameplate::after {
+    .nameplate-positioner,
+    .nameplate-positioner .booking-nameplate::after {
       animation: none !important;
       transition: none !important;
     }
-    .booking-nameplate.is-loaded,
-    .booking-nameplate.is-error {
+    .nameplate-positioner.is-loaded,
+    .nameplate-positioner.is-error {
       top: -200px !important;
-      margin-top: 0 !important;
       opacity: 0 !important;
     }
     .tablet-bands,

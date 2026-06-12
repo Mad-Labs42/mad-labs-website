@@ -29,10 +29,13 @@
   if (!config.zohoUrl || !config.nimbuspopScriptSrc) return;
 
   // ─── Element refs ───
+  // booking-nameplate (inner div, visual content) and
+  // nameplate-positioner (outer div, handles stacking + centering)
   var nameplate = document.getElementById("booking-nameplate");
+  var nameplatePos = document.querySelector("[data-tablet-nameplate]");
   var placeholder = document.getElementById("booking-placeholder");
   var container = document.getElementById("inline-container");
-  if (!nameplate || !placeholder || !container) return;
+  if (!nameplate || !nameplatePos || !placeholder || !container) return;
 
   var prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -85,10 +88,10 @@
 
   function revealNameplate() {
     if (prefersReducedMotion) {
-      nameplate.style.display = "none";
+      nameplatePos.style.display = "none";
     } else {
-      nameplate.classList.remove("is-loading");
-      nameplate.classList.add("is-loaded");
+      nameplatePos.classList.remove("is-loading");
+      nameplatePos.classList.add("is-loaded");
     }
 
     // Add the .is-loaded-tablet class to the beaker + atmosphere elements
@@ -181,10 +184,10 @@
    */
   function showError() {
     if (prefersReducedMotion) {
-      nameplate.style.display = "none";
+      nameplatePos.style.display = "none";
     } else {
-      nameplate.classList.remove("is-loading");
-      nameplate.classList.add("is-error");
+      nameplatePos.classList.remove("is-loading");
+      nameplatePos.classList.add("is-error");
     }
     if (pollTimer !== null) {
       window.clearInterval(pollTimer);
@@ -230,7 +233,7 @@
 
   // Mark the nameplate as loading (triggers scan line tracer)
   if (!prefersReducedMotion) {
-    nameplate.classList.add("is-loading");
+    nameplatePos.classList.add("is-loading");
   }
 
   // ─── Load the Nimbuspop script dynamically ───
