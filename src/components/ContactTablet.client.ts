@@ -91,20 +91,44 @@
       nameplate.classList.add("is-loaded");
     }
 
-    // ALSO flip the screen's class so the beaker pattern + atmosphere
-    // effects fade out TOGETHER with the nameplate. This is in the SAME
-    // function as the nameplate slide-up, so they're guaranteed to be
-    // in sync — no separate "later of" state machine needed.
+    // Add the .is-loaded-tablet class to the beaker + atmosphere elements
+    // so they fade out together with the nameplate. The general sibling
+    // combinator (~) doesn't work because the nameplate is nested inside
+    // .tablet-iframe-wrapper (NOT a sibling of the beaker). So we
+    // iterate the known target elements directly. This is the most
+    // reliable approach across browsers and CSS minifiers.
     //
-    // The class name is 'loaded' (single word) not 'is-loaded' (with
-    // hyphen) because the CSS minifier was breaking the compound
-    // selector '.tablet-screen.is-loaded' into '.is.loaded' (treating
-    // 'is' and 'loaded' as separate class names). 'loaded' on its own
-    // is unambiguous and minifier-safe.
-    var screen = document.querySelector("[data-tablet-screen]");
-    if (screen) {
-      screen.classList.add("loaded");
+    // The class name 'is-loaded-tablet' is single-word+hyphen; safe from
+    // the minifier bug that was breaking '.is loaded' selectors.
+    var fadeTargets = [
+      ".tablet-desktop-bg",
+      ".tablet-backlight",
+      ".tablet-ips-glow",
+      ".tablet-aberration",
+      ".tablet-glare",
+      ".tablet-tint",
+      ".tablet-bands",
+      ".tablet-phosphor-dots",
+      ".tablet-pixel-grid",
+      ".tablet-grain",
+      ".tablet-vignette",
+      ".tablet-bevel-inner",
+      ".tablet-scanbeam",
+      ".tablet-flicker",
+    ];
+    fadeTargets.forEach(function (selector) {
+      var els = document.querySelectorAll(selector);
+      for (var i = 0; i < els.length; i++) {
+        els[i].classList.add("is-loaded-tablet");
+      }
+    });
+    // Scanlines: special case — keep them at 0.3 opacity after fade
+    // so the CRT aesthetic stays intact even when the beaker is gone.
+    var scanlines = document.querySelectorAll(".tablet-scanlines");
+    for (var j = 0; j < scanlines.length; j++) {
+      scanlines[j].classList.add("is-loaded-tablet");
     }
+
     placeholder.hidden = true;
 
     // Show the scroll hint briefly so the user knows they can scroll
