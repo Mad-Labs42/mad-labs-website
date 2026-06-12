@@ -206,18 +206,36 @@
 
   /**
    * Poll the inline container for the Nimbuspop iframe. Once we see an
-   * iframe with non-zero dimensions, the widget is ready.
+   * iframe, we wait for its 'load' event (meaning the Zoho page has
+   * actually loaded, not just that the iframe DOM element exists).
+   * The iframe's non-zero dimensions are not enough — Nimbuspop sets
+   * width/height immediately, but Zoho's content takes time to load.
    */
   function pollForWidget() {
     var iframe = container.querySelector("iframe");
     if (iframe) {
-      // Wait for the iframe to have a non-zero size
-      var rect = iframe.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        // Give it another 500ms to ensure the content is fully painted
-        window.setTimeout(onWidgetReady, 500);
-        return;
+      // Check if the iframe has already loaded
+      try {
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (doc && doc.readyState === "complete") {
+          window.setTimeout(onWidgetReady, 500);
+          return;
+        }
+      } catch (e) {
+        // Cross-origin error — we can't access the iframe's document.
+        // Fall back to the load event.
       }
+      // Attach a one-time load event if not already attached
+      if (!iframe.hasAttribute("data-nimbuspop-listener")) {
+        iframe.setAttribute("data-nimbuspop-listener", "true");
+        iframe.addEventListener("load", function () {
+          window.setTimeout(onWidgetReady, 500);
+        });
+      }
+      // Keep polling to catch the load event in case addEventListener
+      // was called after the iframe already loaded
+      pollTimer = window.setTimeout(pollForWidget, 500);
+      return;
     }
     // Also check for direct DOM injection (some Nimbuspop versions do this)
     if (container.children.length > 0 && !container.querySelector("script")) {
