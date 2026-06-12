@@ -144,8 +144,17 @@
   // ─── Start loading Zoho immediately on page load ───
   // The nameplate covers the iframe area, so the user sees a clean
   // loading screen while Zoho loads in the background.
+  //
+  // URL format: portal-embed + #/<serviceId> hash fragment.
+  // The hash routes Zoho to the specific service and skips the workspace
+  // service-picker. (Vite/Astro strip # fragments at build time, so the
+  // full URL is constructed here at runtime from the base URL + serviceId.)
   startedAt = Date.now();
-  iframe.setAttribute("src", config.bookingUrl);
+  var fullBookingUrl = config.bookingUrl;
+  if (config.serviceId && fullBookingUrl.indexOf("#/") === -1) {
+    fullBookingUrl = fullBookingUrl + "#/" + config.serviceId;
+  }
+  iframe.setAttribute("src", fullBookingUrl);
 
   // Mark the nameplate as loading (triggers scan line tracer)
   if (!prefersReducedMotion) {

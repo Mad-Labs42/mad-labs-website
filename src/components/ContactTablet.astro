@@ -540,7 +540,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
   }
 
   /* The MAD LABS nameplate loading cover. Sits dead-center of the
-     iframe area. Slides up + scan line tracer when Zoho finishes loading. */
+     iframe area. Slides up + scan line tracer when Zoho finishes loading.
+     Wide oval pill shape — keeps the retro lab-equipment-badge look. */
   .booking-nameplate {
     position: absolute;
     top: 50%;
@@ -548,11 +549,11 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     transform: translate(-50%, -50%);
     z-index: 6;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 1.1rem 3.2rem 0.9rem;
+    padding: 0.9rem 3rem;
     background: linear-gradient(
       160deg,
       #4a2d7a 0%,
@@ -593,7 +594,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     width: 0.85em;
     height: 0.85em;
     color: #e89050;
-    margin: 0 0.15em -0.05em;
+    margin: 0 0.1em -0.05em;
   }
   .booking-nameplate .nameplate-atom svg {
     width: 100%;
@@ -601,21 +602,42 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     overflow: visible;
   }
 
-  /* "LOADING..." text inside the nameplate — makes the loading state
-     feel intentional. The text is small and minimal so it doesn't
-     compete with the brand mark. */
+  /* "LOADING..." text — placed OUTSIDE the nameplate (below it) so the
+     pill stays its original wide oval shape. Connected to the nameplate
+     via a subtle vertical line for visual continuity. */
   .booking-nameplate .nameplate-loader {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(18, 8, 40, 0.88);
+    border: 1px solid rgba(232, 144, 80, 0.4);
+    border-radius: 999px;
     font-family: "VT323", "Courier New", monospace;
-    font-size: 0.7rem;
-    color: rgba(232, 144, 80, 0.85);
+    font-size: 0.78rem;
+    color: rgba(232, 144, 80, 0.95);
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    margin-top: 0.4rem;
+    white-space: nowrap;
     animation: nameplate-loader-blink 1.2s ease-in-out infinite;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   }
   @keyframes nameplate-loader-blink {
-    0%, 100% { opacity: 0.5; }
+    0%, 100% { opacity: 0.55; }
     50% { opacity: 1; }
+  }
+  .booking-nameplate .nameplate-loader::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #e89050;
+    box-shadow: 0 0 5px rgba(232, 144, 80, 0.7);
   }
 
   /* CRT scan line tracer that appears as the nameplate is "swept up". */
