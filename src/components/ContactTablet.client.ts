@@ -71,6 +71,14 @@
       nameplate.classList.remove("is-loading");
       nameplate.classList.add("is-loaded");
     }
+    // Also flip the screen's data-tablet-state so the atmosphere layers
+    // (beaker pattern, scanlines, glow, etc.) fade out together with the
+    // nameplate. The user sees the beaker background + nameplate as a
+    // unified loading state that disappears together.
+    var screen = document.querySelector("[data-tablet-screen]");
+    if (screen) {
+      screen.setAttribute("data-tablet-state", "loaded");
+    }
     placeholder.hidden = true;
 
     // Show the scroll hint briefly so the user knows they can scroll

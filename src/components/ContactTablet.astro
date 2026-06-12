@@ -1,16 +1,27 @@
 ---
 // src/components/ContactTablet.astro
-// CRT-themed intake terminal — DIRECT-SHOW booking experience.
+// CRT-themed intake terminal — DIRECT-SHOW Zoho booking experience.
 //
-// The Zoho Bookings free plan = one booking type. The two-button menu state
-// was removed in favor of showing the calendar immediately. The MAD LABS oval
-// nameplate sits in the center of the screen as a loading cover, then slides
-// up (with a CRT scan line tracer) when Zoho finishes loading. If Zoho fails,
-// the network gremlin fallback panel appears with phone + email.
+// The Zoho Bookings free plan = one booking type. The contact tablet shows
+// the calendar directly (no menu state, no button click). The MAD LABS oval
+// nameplate covers the iframe area while Zoho loads in the background, then
+// slides up with a CRT scan line tracer when Zoho finishes.
 //
-// Lazy-loading: the iframe src is set on first-of (IntersectionObserver
-// triggers when the tablet is within 300px of viewport) OR after a 3-second
-// fallback timer. This prevents a 30-second blank on page load.
+// TIMING: The nameplate stays for AT LEAST 5 seconds so it looks intentional
+// (a professional loading screen, not a glitch). After 5 seconds, OR when Zoho
+// actually finishes loading (whichever is later), the nameplate slides up.
+//
+// VISUAL CONTAINMENT: The beaker-pattern wallpaper + CRT atmosphere effects
+// (scanlines, glow, scanbeam) STAY VISIBLE during the loading state. When
+// the nameplate slides up, ALL of these disappear together with a CSS class
+// on the .tablet-screen element.
+//
+// ZOHO STRATEGY: The Zoho Bookings portal-embed page returns X-Frame-Options:
+// SAMEORIGIN when framed from a different origin. We use TWO strategies:
+//   1. PRIMARY: <iframe src="portal-embed#/serviceId"> — works if Zoho
+//      allows our origin in their allowlist
+//   2. FALLBACK: A direct link button that opens Zoho in a new tab
+//      if the iframe fails to load within 12 seconds
 import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
 
 const TRIAGE_EMBED_URL = import.meta.env.PUBLIC_TRIAGE_URL || "";
@@ -28,7 +39,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       <span class="tablet-led"></span>
     </div>
 
-    <div class="tablet-screen" data-tablet-screen>
+    <div class="tablet-screen" data-tablet-screen data-tablet-state="loading">
 
       <div class="tablet-desktop-bg" aria-hidden="true"></div>
 
@@ -53,7 +64,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       <div class="tablet-corner tablet-corner--bl" aria-hidden="true"></div>
       <div class="tablet-corner tablet-corner--br" aria-hidden="true"></div>
 
-      <!-- The default state: booking is always visible (no menu). -->
       <div class="tablet-iframe-wrapper" data-tablet-iframe-wrapper>
 
         <!-- The Zoho iframe. src is set on page load via the client TS
@@ -68,9 +78,9 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
         />
 
         <!-- The MAD LABS oval nameplate — COVERS the iframe area while
-             Zoho is loading. Stays for at least 5 seconds to feel intentional
-             (a professional loading screen, not a glitch), then slides up
-             with a CRT scan line tracer when Zoho finishes. -->
+             Zoho is loading. 20% bigger than the original wide-pill.
+             Stays for at least 5 seconds to feel intentional, then slides
+             up with a CRT scan line tracer when Zoho finishes. -->
         <div
           class="booking-nameplate"
           id="booking-nameplate"
@@ -88,13 +98,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
           </span>
           <span class="nameplate-labs">LABS</span>
           <span class="nameplate-loader" aria-hidden="true">LOADING…</span>
-        </div>
-
-        <!-- Subtle status line at the bottom of the iframe area. Shows
-             while loading or on error. Hidden when Zoho successfully loads. -->
-        <div class="booking-status-line" id="booking-status-line" aria-live="polite" hidden>
-          <span class="status-dot" aria-hidden="true"></span>
-          <span id="booking-status-text">TUNING BOOKING SIGNAL…</span>
         </div>
 
         <!-- Scroll hint that appears briefly when the user enters booking mode. -->
@@ -172,24 +175,22 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     padding: 8px;
     background: linear-gradient(180deg, #d8d0e0 0%, #c8c0d0 22%, #bfb8c8 56%, #b8b0c0 100%);
     box-shadow:
-      /* Directional rim highlight — 1px sharp bright on top and left (light source above-left) */
       inset 0 1px 0 rgba(255, 255, 255, 0.6),
       inset 1px 0 0 rgba(255, 255, 255, 0.3),
-      /* Directional rim shadow — 1px dark on bottom and right */ inset 0 -1px 0
-        rgba(18, 12, 8, 0.55),
+      inset 0 -1px 0 rgba(18, 12, 8, 0.55),
       inset -1px 0 0 rgba(18, 12, 8, 0.28),
-      /* Molded body: fill light from above-left */ inset 0 5px 14px rgba(255, 255, 255, 0.18),
+      inset 0 5px 14px rgba(255, 255, 255, 0.18),
       inset 3px 0 8px rgba(255, 255, 255, 0.07),
-      /* Molded body: weight shadow from bottom and right */ inset 0 -8px 14px rgba(0, 0, 0, 0.22),
+      inset 0 -8px 14px rgba(0, 0, 0, 0.22),
       inset -5px 0 10px rgba(0, 0, 0, 0.11),
-      /* Outer edge rings */ 0 0 0 1px rgba(72, 65, 61, 0.9),
+      0 0 0 1px rgba(72, 65, 61, 0.9),
       0 0 0 3.5px rgba(36, 30, 28, 0.62),
-      /* Heavy layered drop shadow — elevates unit off background */ 0 5px 14px rgba(0, 0, 0, 0.48),
+      0 5px 14px rgba(0, 0, 0, 0.48),
       0 14px 38px rgba(0, 0, 0, 0.56),
       0 30px 68px rgba(0, 0, 0, 0.4);
   }
 
-  /* ─── Top bar: LED indicator + (small room) ─── */
+  /* ─── Top bar ─── */
   .tablet-top-bar {
     position: absolute;
     top: 0;
@@ -216,7 +217,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     50% { opacity: 1; }
   }
 
-  /* ─── Screen: the actual visible display area ─── */
+  /* ─── Screen ─── */
   .tablet-screen {
     position: relative;
     height: 560px;
@@ -230,7 +231,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     );
     overflow: hidden;
   }
-  /* Lavender-tint CRT phosphor — base color for the entire screen */
   .tablet-screen::before {
     content: "";
     position: absolute;
@@ -244,8 +244,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     z-index: 2;
   }
 
-  /* Desktop wallpaper — tiled mad-science beaker icons w/ lightning bolts.
-     The user sees ~10 vertical rows of these purple beakers above the fold. */
+  /* Desktop wallpaper — tiled mad-science beaker icons. Z-INDEX 1, sits
+     behind all other content layers. */
   .tablet-desktop-bg {
     position: absolute;
     inset: 0;
@@ -256,9 +256,36 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     background-size: 40px 40px;
     background-repeat: repeat;
     mix-blend-mode: screen;
+    transition: opacity 0.7s ease;
   }
 
-  /* Backlight — lavender glow from center, mimics LCD backlight bleed. */
+  /* When the iframe is loaded, fade out the beaker wallpaper so Zoho's
+     content shows through cleanly. The nameplate and wallpaper disappear
+     TOGETHER as a unified transition. */
+  .tablet-screen.is-loaded .tablet-desktop-bg {
+    opacity: 0;
+  }
+  .tablet-screen.is-loaded .tablet-backlight,
+  .tablet-screen.is-loaded .tablet-ips-glow,
+  .tablet-screen.is-loaded .tablet-aberration,
+  .tablet-screen.is-loaded .tablet-glare,
+  .tablet-screen.is-loaded .tablet-tint,
+  .tablet-screen.is-loaded .tablet-bands,
+  .tablet-screen.is-loaded .tablet-phosphor-dots,
+  .tablet-screen.is-loaded .tablet-pixel-grid,
+  .tablet-screen.is-loaded .tablet-grain,
+  .tablet-screen.is-loaded .tablet-vignette,
+  .tablet-screen.is-loaded .tablet-bevel-inner,
+  .tablet-screen.is-loaded .tablet-scanbeam,
+  .tablet-screen.is-loaded .tablet-flicker {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  /* Keep scanlines visible even after load — they look intentional */
+  .tablet-screen.is-loaded .tablet-scanlines {
+    opacity: 0.3;
+  }
+
   .tablet-backlight {
     position: absolute;
     inset: 0;
@@ -271,8 +298,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       rgba(18, 12, 28, 0.4) 100%
     );
   }
-
-  /* IPS glow — subtle outer light leak at screen edges (LCD backlight bleed). */
   .tablet-ips-glow {
     position: absolute;
     inset: 0;
@@ -282,8 +307,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       inset 0 0 0 1px rgba(180, 160, 230, 0.18),
       inset 0 0 18px rgba(180, 160, 230, 0.08);
   }
-
-  /* Chromatic aberration — very subtle RGB shift at screen edges. */
   .tablet-aberration {
     position: absolute;
     inset: 0;
@@ -304,8 +327,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       transparent 100%
     );
   }
-
-  /* Glare — diagonal highlight across screen (light source above-left). */
   .tablet-glare {
     position: absolute;
     inset: 0;
@@ -319,8 +340,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       transparent 100%
     );
   }
-
-  /* Tint — warm/cool color shift at edges (CRT phosphor aging simulation). */
   .tablet-tint {
     position: absolute;
     inset: 0;
@@ -338,8 +357,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     );
     mix-blend-mode: screen;
   }
-
-  /* Bands — slow horizontal scrolling bands (CRT signal interference). */
   .tablet-bands {
     position: absolute;
     inset: 0;
@@ -359,8 +376,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     0% { background-position: 0 0; }
     100% { background-position: 0 64px; }
   }
-
-  /* Phosphor dot grid — very fine dot pattern, gives the screen that LCD look. */
   .tablet-phosphor-dots {
     position: absolute;
     inset: 0;
@@ -370,8 +385,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     background-size: 3px 3px;
   }
-
-  /* Pixel grid — very subtle pixel-grid pattern. */
   .tablet-pixel-grid {
     position: absolute;
     inset: 0;
@@ -393,8 +406,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       rgba(0, 0, 0, 0.04) 2px
     );
   }
-
-  /* Scanlines — visible character without crushing brightness. */
   .tablet-scanlines {
     position: absolute;
     inset: 0;
@@ -408,9 +419,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       rgba(0, 0, 0, 0.12) 2px,
       rgba(0, 0, 0, 0.12) 3px
     );
+    transition: opacity 0.7s ease;
   }
-
-  /* Grain — fine noise overlay for analog feel. */
   .tablet-grain {
     position: absolute;
     inset: 0;
@@ -421,8 +431,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     background-size: 200px 200px;
     mix-blend-mode: overlay;
   }
-
-  /* Vignette — soft dark edges to keep focus on the center. */
   .tablet-vignette {
     position: absolute;
     inset: 0;
@@ -434,8 +442,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       rgba(0, 0, 0, 0.4) 100%
     );
   }
-
-  /* Bevel inner — inner highlight on the screen frame edge (light source above-left). */
   .tablet-bevel-inner {
     position: absolute;
     inset: 0;
@@ -447,8 +453,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       inset 0 -1px 0 rgba(0, 0, 0, 0.3),
       inset -1px 0 0 rgba(0, 0, 0, 0.18);
   }
-
-  /* Scan beam — slow horizontal scan line that travels down the screen. */
   .tablet-scanbeam {
     position: absolute;
     left: 0;
@@ -468,8 +472,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     0% { top: -50px; }
     100% { top: 560px; }
   }
-
-  /* Flicker — subtle brightness flicker. */
   .tablet-flicker {
     position: absolute;
     inset: 0;
@@ -483,7 +485,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     50% { opacity: 1; }
   }
 
-  /* Corner brackets — 4 small L-shaped overlays in each corner of the screen. */
+  /* Corner brackets */
   .tablet-corner {
     position: absolute;
     width: 14px;
@@ -495,31 +497,23 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     z-index: 24;
   }
   .tablet-corner--tl {
-    top: 12px;
-    left: 12px;
-    border-top-width: 1.5px;
-    border-left-width: 1.5px;
+    top: 12px; left: 12px;
+    border-top-width: 1.5px; border-left-width: 1.5px;
   }
   .tablet-corner--tr {
-    top: 12px;
-    right: 12px;
-    border-top-width: 1.5px;
-    border-right-width: 1.5px;
+    top: 12px; right: 12px;
+    border-top-width: 1.5px; border-right-width: 1.5px;
   }
   .tablet-corner--bl {
-    bottom: 12px;
-    left: 12px;
-    border-bottom-width: 1.5px;
-    border-left-width: 1.5px;
+    bottom: 12px; left: 12px;
+    border-bottom-width: 1.5px; border-left-width: 1.5px;
   }
   .tablet-corner--br {
-    bottom: 12px;
-    right: 12px;
-    border-bottom-width: 1.5px;
-    border-right-width: 1.5px;
+    bottom: 12px; right: 12px;
+    border-bottom-width: 1.5px; border-right-width: 1.5px;
   }
 
-  /* ─── Iframe area (the new direct-show booking state) ─── */
+  /* ─── Iframe area ─── */
   .tablet-iframe-wrapper {
     position: relative;
     width: 100%;
@@ -529,7 +523,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     flex-direction: column;
     overflow: hidden;
   }
-
   .tablet-iframe {
     width: 100%;
     height: 100%;
@@ -539,9 +532,10 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     background: transparent;
   }
 
-  /* The MAD LABS nameplate loading cover. Sits dead-center of the
-     iframe area. Slides up + scan line tracer when Zoho finishes loading.
-     Wide oval pill shape — keeps the retro lab-equipment-badge look. */
+  /* The MAD LABS nameplate loading cover.
+     WIDE OVAL PILL, 20% BIGGER than the original. Sits dead-center of the
+     iframe area so it covers any Zoho loading text ("Mad Labs...") the
+     user might see. Slides up + scan line tracer when Zoho finishes. */
   .booking-nameplate {
     position: absolute;
     top: 50%;
@@ -553,7 +547,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.9rem 3rem;
+    /* 20% larger padding than the original wide-pill */
+    padding: 1.1rem 3.6rem;
     background: linear-gradient(
       160deg,
       #4a2d7a 0%,
@@ -572,13 +567,13 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     transition:
       transform 0.7s cubic-bezier(0.65, 0, 0.35, 1),
       opacity 0.7s ease;
-    z-index: 6;
   }
 
+  /* 20% larger text */
   .booking-nameplate .nameplate-mad,
   .booking-nameplate .nameplate-labs {
     font-family: "Monofett", "VT323", monospace;
-    font-size: clamp(1.5rem, 4.2vw, 2.6rem);
+    font-size: clamp(1.8rem, 5vw, 3.1rem);
     color: #ffffff;
     letter-spacing: 0.1em;
     paint-order: stroke fill;
@@ -602,9 +597,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     overflow: visible;
   }
 
-  /* "LOADING..." text — placed OUTSIDE the nameplate (below it) so the
-     pill stays its original wide oval shape. Connected to the nameplate
-     via a subtle vertical line for visual continuity. */
+  /* "LOADING..." text — placed BELOW the nameplate so the pill stays its
+     original wide oval shape. Connected to the nameplate visually. */
   .booking-nameplate .nameplate-loader {
     position: absolute;
     top: calc(100% + 0.6rem);
@@ -663,8 +657,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     opacity: 0;
     pointer-events: none;
   }
-
-  /* When Zoho is loading, the tracer appears and sweeps. */
   .booking-nameplate.is-loading::after {
     opacity: 1;
     animation: nameplate-tracer 1.4s ease-in-out infinite;
@@ -673,57 +665,14 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     0% { transform: translateY(0); opacity: 0.9; }
     100% { transform: translateY(120px); opacity: 0.3; }
   }
-
-  /* When Zoho is loaded, slide the nameplate up and out of view. */
-  .booking-nameplate.is-loaded {
-    transform: translate(-50%, -180%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* When Zoho fails, hide the nameplate (show the error panel underneath). */
+  .booking-nameplate.is-loaded,
   .booking-nameplate.is-error {
     transform: translate(-50%, -180%);
     opacity: 0;
     pointer-events: none;
   }
 
-  /* Subtle status line at the bottom of the iframe area. */
-  .booking-status-line {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 7;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.9rem;
-    background: rgba(18, 8, 40, 0.88);
-    border: 1px solid rgba(232, 144, 80, 0.4);
-    border-radius: 999px;
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.82rem;
-    color: #e89050;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-    animation: status-pulse 1.6s ease-in-out infinite;
-  }
-  @keyframes status-pulse {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-  }
-  .booking-status-line .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #e89050;
-    box-shadow: 0 0 5px rgba(232, 144, 80, 0.6);
-    flex-shrink: 0;
-  }
-
-  /* Scroll hint that appears briefly when the user enters booking mode. */
+  /* Scroll hint */
   .booking-scroll-hint {
     position: absolute;
     bottom: 0;
@@ -740,12 +689,8 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     background: linear-gradient(transparent, rgba(18, 8, 40, 0.7) 50%, rgba(18, 8, 40, 0.85));
     transition: opacity 0.8s ease;
   }
-  .booking-scroll-hint.hint-visible {
-    opacity: 1;
-  }
-  .booking-scroll-hint.hint-hidden {
-    opacity: 0;
-  }
+  .booking-scroll-hint.hint-visible { opacity: 1; }
+  .booking-scroll-hint.hint-hidden { opacity: 0; }
   .scroll-hint-text {
     font-family: "VT323", "Courier New", monospace;
     font-size: 1rem;
@@ -774,7 +719,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     }
   }
 
-  /* Network gremlin error panel: shown only on Zoho failure. */
+  /* Network gremlin error panel */
   .tablet-placeholder {
     position: absolute;
     inset: 0;
@@ -841,7 +786,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     outline-offset: 2px;
   }
 
-  /* ─── Bottom housing: speakers + power button ─── */
+  /* Bottom housing */
   .tablet-bottom-housing {
     position: absolute;
     bottom: 0;
@@ -862,9 +807,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     gap: 3px;
     width: 30px;
   }
-  .tablet-speaker-grille--right {
-    align-items: flex-end;
-  }
+  .tablet-speaker-grille--right { align-items: flex-end; }
   .tablet-speaker-slot {
     width: 22px;
     height: 2px;
@@ -882,7 +825,7 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
       0 0 4px rgba(0, 0, 0, 0.4);
   }
 
-  /* ─── Reduced motion: kill the animations ─── */
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .booking-nameplate,
     .booking-nameplate::after {
@@ -893,9 +836,6 @@ const BOOKING_URL = TRIAGE_EMBED_URL || FALLBACK_EMBED_URL;
     .booking-nameplate.is-error {
       transform: translate(-50%, -50%) !important;
       opacity: 0 !important;
-    }
-    .booking-status-line {
-      animation: none !important;
     }
     .tablet-bands,
     .tablet-scanbeam,
