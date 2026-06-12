@@ -1,6 +1,7 @@
 ---
-import AtomIcon from "./AtomIcon.astro";
 // ContactInfo — structured contact details using a semantic <dl>.
+import AtomIcon from "./AtomIcon.astro";
+
 export interface Props {
   email: string;
   phone?: string;
@@ -11,7 +12,6 @@ const { email, phone, location } = Astro.props;
 
 const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
 ---
-import AtomIcon from "./AtomIcon.astro";
 
 <dl class="contact-list">
   <div class="contact-item">
@@ -19,7 +19,7 @@ import AtomIcon from "./AtomIcon.astro";
       <AtomIcon class="ci-atom" />
       Email
     </dt>
-    <dd><a href="mailto:{email}">{email}</a></dd>
+    <dd><a href={`mailto:${email}`}>{email}</a></dd>
   </div>
   {
     phone && (
@@ -68,7 +68,7 @@ import AtomIcon from "./AtomIcon.astro";
   }
 
   .contact-item > dd {
-    padding-left: calc(1.35rem + 0.35rem); /* match icon width + gap */
+    padding-left: calc(1.35rem + 0.35rem);
   }
 
   dt {

@@ -31,7 +31,7 @@
     } catch { /* never throw */ }
     try { if (typeof clarity !== "undefined") clarity("event", name); } catch { /* never throw */ }
     try { if (typeof gtag === "function") gtag("event", name); } catch { /* never throw */ }
-    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    if (import.meta.env.DEV) {
       console.log("[Analytics]", name);
     }
   }
@@ -79,6 +79,39 @@
     return "";
   }
 
+  function showBookingLoading() {
+    var placeholder = document.getElementById("booking-placeholder");
+    var status = document.getElementById("booking-placeholder-status");
+    var statusText = document.getElementById("booking-placeholder-status-text");
+    var heading = document.getElementById("booking-placeholder-heading");
+    var text = document.getElementById("booking-placeholder-text");
+    var link = document.getElementById("booking-placeholder-link");
+    if (!placeholder || !status || !statusText || !heading || !text) return;
+
+    heading.textContent = "Connecting to booking system…";
+    text.textContent =
+      "This usually takes a few seconds. If it takes longer than 30 seconds, please use the email link below.";
+    statusText.textContent = "Connecting…";
+    status.hidden = false;
+    if (link) link.textContent = "Email us instead →";
+    placeholder.hidden = false;
+  }
+
+  function showBookingError(message) {
+    var placeholder = document.getElementById("booking-placeholder");
+    var status = document.getElementById("booking-placeholder-status");
+    var statusText = document.getElementById("booking-placeholder-status-text");
+    var heading = document.getElementById("booking-placeholder-heading");
+    var text = document.getElementById("booking-placeholder-text");
+    if (!placeholder || !status || !statusText || !heading || !text) return;
+
+    heading.textContent = "Booking Unavailable";
+    text.textContent = message;
+    statusText.textContent = "Error — try email below";
+    status.hidden = false;
+    placeholder.hidden = false;
+  }
+
   function handleAction(action) {
     if (!action) return;
     if (action === "triage" || action === "consult") {
@@ -90,9 +123,43 @@
       var placeholder = document.getElementById("booking-placeholder");
       if (iframe && placeholder) {
         if (url) {
-          iframe.hidden = false;
-          placeholder.hidden = true;
+          // Show loading state immediately so the user knows something is happening.
+          // Zoho can take 10-30 seconds to load the booking widget.
+          iframe.hidden = true;
+          showBookingLoading();
+
           iframe.setAttribute("src", url);
+
+          // Add a 12s fallback in case Zoho never loads (e.g., service is paused).
+          var loadTimeout = window.setTimeout(function () {
+            var stillLoading =
+              iframe.getAttribute("src") === url && iframe.dataset.loaded !== "true";
+            if (stillLoading) {
+              showBookingError(
+                "The booking system is taking longer than expected (Zoho may be temporarily unavailable). Please call " +
+                  (config && config.contactPhone ? config.contactPhone : "") +
+                  " or email us below to schedule directly.",
+              );
+            }
+          }, 12000);
+
+          iframe.onload = function () {
+            window.clearTimeout(loadTimeout);
+            iframe.dataset.loaded = "true";
+            iframe.hidden = false;
+            placeholder.hidden = true;
+          };
+
+          // If iframe errors (e.g., Zoho service paused, refusing connections),
+          // show a helpful fallback rather than a blank iframe.
+          iframe.onerror = function () {
+            window.clearTimeout(loadTimeout);
+            showBookingError(
+              "The booking system rejected the request. This usually means the service is paused. Please call " +
+                (config && config.contactPhone ? config.contactPhone : "") +
+                " or email us below.",
+            );
+          };
         } else {
           iframe.hidden = true;
           placeholder.hidden = false;
@@ -102,7 +169,10 @@
     } else if (action === "back") {
       switchState("menu");
       var iframe = document.getElementById("booking-iframe");
-      if (iframe) iframe.setAttribute("src", "");
+      if (iframe) {
+        iframe.setAttribute("src", "");
+        iframe.dataset.loaded = "";
+      }
     }
   }
 

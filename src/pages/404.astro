@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CrtAtomLogo from "../components/CrtAtomLogo.astro";
 import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
 ---
 
@@ -9,97 +8,275 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
   description="The page you requested doesn't exist. Return to MAD LABS home or contact us for help."
   noindex
 >
-  <section class="lab-section notfound-section">
-    <div class="lab-section-inner notfound-inner">
-      <div class="notfound-atom" aria-hidden="true">
-        <CrtAtomLogo />
+  <section class="notfound-hero" aria-labelledby="notfound-title">
+    <div class="notfound-bg" aria-hidden="true"></div>
+    <div class="notfound-glow" aria-hidden="true"></div>
+
+    <div class="notfound-content">
+      <div class="notfound-eyebrow-row">
+        <span class="notfound-eyebrow-line" aria-hidden="true"></span>
+        <span class="notfound-eyebrow">Error 404 · Signal Lost</span>
+        <span class="notfound-eyebrow-line" aria-hidden="true"></span>
       </div>
-      <span class="lab-heading-accent notfound-eyebrow">Error 404</span>
-      <h1 class="notfound-heading">Lost in the datastream</h1>
+
+      <h1 id="notfound-title" class="notfound-title">
+        Lost in the<br />
+        <span class="notfound-title-accent">Datastream</span>
+      </h1>
+
       <p class="notfound-text">
         The page you are looking for may have been moved, deleted, or quantum teleported to an
         alternate dimension in an unfortunate but exciting lab accident 🧪
       </p>
-      <div class="notfound-actions">
-        <a href="/" class="lab-button lab-button--primary">Back to Home</a>
-        <a href="/contact/" class="lab-button">Contact MAD LABS</a>
+
+      <div class="notfound-cta">
+        <a href="/" class="notfound-btn notfound-btn--primary">← Back to Home</a>
+        <a href="/contact/" class="notfound-btn notfound-btn--secondary">Contact MAD LABS</a>
       </div>
-      <p class="notfound-direct">
-        Or you can contact us directly at
-        <span class="notfound-contact-line">Phone: {CONTACT_PHONE.replace(/[()]/g, "")} &middot; Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></span>
-      </p>
+
+      <div class="notfound-divider" aria-hidden="true"></div>
+
+      <p class="notfound-direct-label">Or reach us directly:</p>
+      <ul class="notfound-direct-list">
+        <li class="notfound-direct-item">
+          <span class="notfound-direct-label-inline">Phone</span>
+          <a href={`tel:${CONTACT_PHONE.replace(/[\s()-]/g, "")}`} class="notfound-direct-link">
+            {CONTACT_PHONE}
+          </a>
+        </li>
+        <li class="notfound-direct-item">
+          <span class="notfound-direct-label-inline">Email</span>
+          <a href={`mailto:${CONTACT_EMAIL}`} class="notfound-direct-link">
+            {CONTACT_EMAIL}
+          </a>
+        </li>
+      </ul>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .notfound-section {
+  .notfound-hero {
+    position: relative;
     min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: clamp(2rem, 6vw, 5rem) 1.5rem;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(140, 80, 240, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 80%, rgba(232, 144, 80, 0.08) 0%, transparent 50%),
+      linear-gradient(180deg, #040208 0%, #0a0618 50%, #040208 100%);
+  }
+
+  .notfound-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(140, 80, 240, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(140, 80, 240, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    pointer-events: none;
+  }
+
+  .notfound-glow {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(280px, 50vw, 540px);
+    height: clamp(280px, 50vw, 540px);
+    background: radial-gradient(
+      circle at center,
+      rgba(140, 80, 240, 0.18) 0%,
+      rgba(232, 144, 80, 0.05) 35%,
+      transparent 65%
+    );
+    pointer-events: none;
+    animation: notfound-glow-pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes notfound-glow-pulse {
+    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+  }
+
+  .notfound-content {
+    position: relative;
+    text-align: center;
+    max-width: 640px;
+    z-index: 1;
+  }
+
+  .notfound-eyebrow-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem 1rem;
+    gap: 0.9rem;
+    margin-bottom: 2rem;
   }
-  .notfound-inner {
-    text-align: center;
-    max-width: 720px;
+
+  .notfound-eyebrow-line {
+    height: 1px;
+    width: clamp(28px, 6vw, 64px);
+    background: linear-gradient(90deg, transparent, #e89050, transparent);
   }
-  .notfound-atom {
-    width: clamp(140px, 28vw, 280px);
-    margin: 0 auto 2.5rem;
-    opacity: 0.85;
-    animation: notfound-pulse 3s ease-in-out infinite;
-  }
-  @keyframes notfound-pulse {
-    0%, 100% { opacity: 0.4; transform: rotate(0deg); }
-    50% { opacity: 0.95; transform: rotate(180deg); }
-  }
+
   .notfound-eyebrow {
-    font-size: 1.1rem;
-    letter-spacing: 0.18em;
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.95rem;
+    color: #e89050;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(232, 144, 80, 0.5);
   }
-  .notfound-heading {
+
+  .notfound-title {
     font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
-    font-size: clamp(3rem, 8vw, 6rem);
+    font-size: clamp(3.5rem, 11vw, 8rem);
+    line-height: 0.95;
     color: var(--lab-heading, #e0d0ff);
-    margin: 0.75rem 0 1.5rem;
-    letter-spacing: 0.02em;
-    line-height: 1.05;
-    text-shadow: 0 0 24px rgba(140, 80, 240, 0.5);
+    margin: 0 0 1.75rem;
+    letter-spacing: 0.01em;
+    text-shadow:
+      0 0 40px rgba(140, 80, 240, 0.4),
+      0 0 80px rgba(140, 80, 240, 0.2);
   }
+
+  .notfound-title-accent {
+    background: linear-gradient(180deg, #f0eaff 0%, #c89fff 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: drop-shadow(0 0 16px rgba(140, 80, 240, 0.5));
+  }
+
   .notfound-text {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.65;
     color: var(--lab-text, #b0a8c8);
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    line-height: 1.6;
+    max-width: 520px;
     margin: 0 auto 2.5rem;
-    max-width: 600px;
   }
-  .notfound-actions {
+
+  .notfound-cta {
     display: flex;
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
-  .notfound-actions .lab-button {
+
+  .notfound-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.75rem;
+    border-radius: 6px;
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
     font-size: 1.1rem;
-    padding: 0.85rem 1.75rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   }
-  .notfound-direct {
+
+  .notfound-btn--primary {
+    background: linear-gradient(180deg, #f5a358 0%, #e89050 100%);
+    color: #1a0a28;
+    border: 1px solid rgba(255, 200, 140, 0.7);
+    box-shadow:
+      0 4px 0 #b86a28,
+      0 8px 24px rgba(232, 144, 80, 0.35),
+      inset 0 1px 0 rgba(255, 230, 200, 0.4);
+    font-weight: 700;
+  }
+
+  .notfound-btn--primary:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 5px 0 #b86a28,
+      0 10px 30px rgba(232, 144, 80, 0.5),
+      inset 0 1px 0 rgba(255, 230, 200, 0.4);
+  }
+
+  .notfound-btn--secondary {
+    background: transparent;
+    color: var(--lab-heading, #e0d0ff);
+    border: 1px solid rgba(180, 140, 255, 0.4);
+  }
+
+  .notfound-btn--secondary:hover {
+    background: rgba(140, 80, 240, 0.12);
+    border-color: rgba(180, 140, 255, 0.7);
+  }
+
+  .notfound-divider {
+    width: clamp(80px, 16vw, 160px);
+    height: 1px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(90deg, transparent, rgba(180, 140, 255, 0.4), transparent);
+  }
+
+  .notfound-direct-label {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.85rem;
     color: var(--lab-text-muted, #8880a8);
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin-top: 1rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
   }
-  .notfound-contact-line {
-    display: block;
-    margin-top: 0.4rem;
+
+  .notfound-direct-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: center;
   }
-  .notfound-direct a {
-    color: var(--lab-accent, #e89050);
+
+  .notfound-direct-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
   }
+
+  .notfound-direct-label-inline {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.78rem;
+    color: var(--lab-text-muted, #8880a8);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    min-width: 4.5rem;
+    text-align: right;
+  }
+
+  .notfound-direct-link {
+    color: #f0eaff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232, 144, 80, 0.4);
+    padding-bottom: 1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .notfound-direct-link:hover {
+    color: #e89050;
+    border-color: #e89050;
+  }
+
+  .notfound-direct-link:focus-visible {
+    outline: 2px solid #e89050;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .notfound-atom { animation: none; opacity: 0.85; }
+    .notfound-glow { animation: none; }
   }
 </style>
