@@ -234,26 +234,40 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     position: relative;
     height: 560px;
     border-radius: 4px;
+    overflow: hidden;
+  }
+  /* Purple gradient background — now on a POSITIONED pseudo-element at
+     z-index 5 so it renders ABOVE the Zoho form (z-index 4). The form's
+     opaque white background was covering this gradient on the base
+     .tablet-screen (which is at z-index auto). The ::before at z-index 5
+     sits above the form, below the beaker (z-index 6). The user sees
+     the purple + beaker + nameplate as a unified loading state.
+     When the .is-loaded-tablet class is added (at 6s), this fades
+     together with the beaker and atmosphere effects. */
+  .tablet-screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
     background: radial-gradient(
       ellipse at center,
       #3a2e5c 0%,
       #2c234a 35%,
       #1c1638 75%,
       #0c0820 100%
-    );
-    overflow: hidden;
-  }
-  .tablet-screen::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
+    ),
+    linear-gradient(
       180deg,
       rgba(200, 180, 240, 0.08) 0%,
       rgba(180, 160, 230, 0.05) 100%
     );
     pointer-events: none;
-    z-index: 2;
+    transition: opacity 0.7s ease;
+  }
+  /* Fade the purple gradient together with the beaker + atmosphere.
+     Triggered by JS adding .is-loaded-tablet to .tablet-screen. */
+  .tablet-screen.is-loaded-tablet::before {
+    opacity: 0 !important;
   }
 
   /* Desktop wallpaper — tiled mad-science beaker icons. Z-INDEX 1, sits
@@ -261,11 +275,12 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   .tablet-desktop-bg {
     position: absolute;
     inset: 0;
-    /* Z-index 5: positioned ABOVE the inline form container (default 0)
-       but BELOW the nameplate (z-index 6). This lets the beaker pattern
-       stay visible on top of the Zoho widget for the 6-second loading
-       window, then fade out together with the nameplate. */
-    z-index: 5;
+    /* Z-index 6: positioned ABOVE the purple gradient (z-index 5)
+       and the iframe-wrapper (z-index 4). The beaker sits on top
+       of the purple gradient, which covers the opaque Zoho form
+       background. The nameplate-positioner (z-index 7) is above
+       everything. */
+    z-index: 6;
     pointer-events: none;
     opacity: 1;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M28 24 L28 48 L18 65 L62 65 L52 48 L52 24 Z' fill='none' stroke='rgba(170,145,215,0.45)' stroke-width='1.5' stroke-linejoin='round'/%3E%3Crect x='25' y='18' width='30' height='7' rx='2' fill='none' stroke='rgba(170,145,215,0.45)' stroke-width='1.5'/%3E%3Cpath d='M20 55 L60 55' stroke='rgba(170,145,215,0.32)' stroke-width='1'/%3E%3Ccircle cx='34' cy='60' r='4' fill='none' stroke='rgba(170,145,215,0.38)' stroke-width='1'/%3E%3Ccircle cx='46' cy='58' r='3' fill='none' stroke='rgba(170,145,215,0.35)' stroke-width='1'/%3E%3Ccircle cx='40' cy='54' r='2.5' fill='none' stroke='rgba(170,145,215,0.32)' stroke-width='1'/%3E%3Ccircle cx='37' cy='46' r='2' fill='none' stroke='rgba(170,145,215,0.30)' stroke-width='0.8'/%3E%3Ccircle cx='43' cy='40' r='1.5' fill='none' stroke='rgba(170,145,215,0.27)' stroke-width='0.8'/%3E%3Ccircle cx='38' cy='33' r='1.2' fill='none' stroke='rgba(170,145,215,0.22)' stroke-width='0.8'/%3E%3Ccircle cx='35' cy='15' r='1.5' fill='none' stroke='rgba(170,145,215,0.27)' stroke-width='0.7'/%3E%3Ccircle cx='43' cy='12' r='1' fill='none' stroke='rgba(170,145,215,0.22)' stroke-width='0.7'/%3E%3Ccircle cx='39' cy='8' r='0.8' fill='none' stroke='rgba(170,145,215,0.19)' stroke-width='0.6'/%3E%3Cpath d='M68 6 L62 18 L67 18 L61 30' fill='none' stroke='rgba(170,145,215,0.35)' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10 40 L14 46 L11 46 L15 52' fill='none' stroke='rgba(170,145,215,0.25)' stroke-width='0.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -603,7 +618,7 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 6;
+    z-index: 7;
     pointer-events: none;
     transition:
       top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
