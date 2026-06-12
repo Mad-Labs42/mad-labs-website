@@ -249,40 +249,49 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   .tablet-desktop-bg {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    /* Z-index 5: positioned ABOVE the inline form container (default 0)
+       but BELOW the nameplate (z-index 6). This lets the beaker pattern
+       stay visible on top of the Zoho widget for the 6-second loading
+       window, then fade out together with the nameplate. */
+    z-index: 5;
     pointer-events: none;
     opacity: 0.6;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M28 24 L28 48 L18 65 L62 65 L52 48 L52 24 Z' fill='none' stroke='rgba(170,145,215,0.45)' stroke-width='1.5' stroke-linejoin='round'/%3E%3Crect x='25' y='18' width='30' height='7' rx='2' fill='none' stroke='rgba(170,145,215,0.45)' stroke-width='1.5'/%3E%3Cpath d='M20 55 L60 55' stroke='rgba(170,145,215,0.32)' stroke-width='1'/%3E%3Ccircle cx='34' cy='60' r='4' fill='none' stroke='rgba(170,145,215,0.38)' stroke-width='1'/%3E%3Ccircle cx='46' cy='58' r='3' fill='none' stroke='rgba(170,145,215,0.35)' stroke-width='1'/%3E%3Ccircle cx='40' cy='54' r='2.5' fill='none' stroke='rgba(170,145,215,0.32)' stroke-width='1'/%3E%3Ccircle cx='37' cy='46' r='2' fill='none' stroke='rgba(170,145,215,0.30)' stroke-width='0.8'/%3E%3Ccircle cx='43' cy='40' r='1.5' fill='none' stroke='rgba(170,145,215,0.27)' stroke-width='0.8'/%3E%3Ccircle cx='38' cy='33' r='1.2' fill='none' stroke='rgba(170,145,215,0.22)' stroke-width='0.8'/%3E%3Ccircle cx='35' cy='15' r='1.5' fill='none' stroke='rgba(170,145,215,0.27)' stroke-width='0.7'/%3E%3Ccircle cx='43' cy='12' r='1' fill='none' stroke='rgba(170,145,215,0.22)' stroke-width='0.7'/%3E%3Ccircle cx='39' cy='8' r='0.8' fill='none' stroke='rgba(170,145,215,0.19)' stroke-width='0.6'/%3E%3Cpath d='M68 6 L62 18 L67 18 L61 30' fill='none' stroke='rgba(170,145,215,0.35)' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10 40 L14 46 L11 46 L15 52' fill='none' stroke='rgba(170,145,215,0.25)' stroke-width='0.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-size: 40px 40px;
     background-repeat: repeat;
-    mix-blend-mode: screen;
+    /* mix-blend-mode removed: now layered ABOVE the form (was BELOW).
+       With screen blend mode above the form, the form would lighten
+       during the loading window. The beaker is now just opaque tiles. */
     transition: opacity 0.7s ease;
   }
 
-  /* When the iframe is loaded, fade out the beaker wallpaper so Zoho's
-     content shows through cleanly. The nameplate and wallpaper disappear
-     TOGETHER as a unified transition. */
-  .tablet-screen[data-tablet-state="loaded"] .tablet-desktop-bg {
+  /* The beaker + CRT atmosphere effects are GUARANTEED to be in sync with
+     the nameplate because they share the same JS toggle (.loaded on
+     .tablet-screen). The beaker stays visible alongside the nameplate
+     for the full 6-second loading window, then they fade out together.
+     Z-index 5 puts the beaker ABOVE the form (z-index 0) but BELOW
+     the nameplate (z-index 6). */
+  .tablet-screen.loaded .tablet-desktop-bg {
     opacity: 0;
   }
-  .tablet-screen[data-tablet-state="loaded"] .tablet-backlight,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-ips-glow,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-aberration,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-glare,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-tint,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-bands,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-phosphor-dots,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-pixel-grid,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-grain,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-vignette,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-bevel-inner,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-scanbeam,
-  .tablet-screen[data-tablet-state="loaded"] .tablet-flicker {
+  .tablet-screen.loaded .tablet-backlight,
+  .tablet-screen.loaded .tablet-ips-glow,
+  .tablet-screen.loaded .tablet-aberration,
+  .tablet-screen.loaded .tablet-glare,
+  .tablet-screen.loaded .tablet-tint,
+  .tablet-screen.loaded .tablet-bands,
+  .tablet-screen.loaded .tablet-phosphor-dots,
+  .tablet-screen.loaded .tablet-pixel-grid,
+  .tablet-screen.loaded .tablet-grain,
+  .tablet-screen.loaded .tablet-vignette,
+  .tablet-screen.loaded .tablet-bevel-inner,
+  .tablet-screen.loaded .tablet-scanbeam,
+  .tablet-screen.loaded .tablet-flicker {
     opacity: 0;
     transition: opacity 0.7s ease;
   }
   /* Keep scanlines visible even after load — they look intentional */
-  .tablet-screen[data-tablet-state="loaded"] .tablet-scanlines {
+  .tablet-screen.loaded .tablet-scanlines {
     opacity: 0.3;
   }
 

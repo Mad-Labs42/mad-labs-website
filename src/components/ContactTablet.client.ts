@@ -57,24 +57,15 @@
   var startedAt = 0;
 
   /**
-   * Called when the minimum-visible timer (6s) has expired. This is the
-   * ONLY thing that fades the beaker pattern + atmosphere effects.
-   * The widget being ready is NOT what fades the screen — that's the
-   * nameplate's job. This way the beaker pattern stays visible alongside
-   * the nameplate for the full 6 seconds, even if the widget has been
-   * rendered into the inline container for a while.
+   * Called when the minimum-visible timer (6s) has expired. This signals
+   * that the loading window is over. The actual fade of the beaker +
+   * nameplate happens in revealNameplate() once the widget is also ready
+   * (the "later of" pattern — see revealNameplate). The beaker is now
+   * tied to the nameplate via the screen's .is-loaded class, which
+   * BOTH of them flip together in revealNameplate().
    */
   function onMinVisibleExpired() {
     minVisibleTimerExpired = true;
-    // Flip the screen's data-tablet-state so the atmosphere layers
-    // (beaker pattern, scanlines, glow, etc.) fade out together with the
-    // nameplate. The user sees the beaker background + nameplate as a
-    // unified loading state that disappears together.
-    var screen = document.querySelector("[data-tablet-screen]");
-    if (screen) {
-      screen.setAttribute("data-tablet-state", "loaded");
-    }
-    // Now check if the widget is also ready — if so, reveal the nameplate.
     tryRevealNameplate();
   }
 
@@ -98,6 +89,21 @@
     } else {
       nameplate.classList.remove("is-loading");
       nameplate.classList.add("is-loaded");
+    }
+
+    // ALSO flip the screen's class so the beaker pattern + atmosphere
+    // effects fade out TOGETHER with the nameplate. This is in the SAME
+    // function as the nameplate slide-up, so they're guaranteed to be
+    // in sync — no separate "later of" state machine needed.
+    //
+    // The class name is 'loaded' (single word) not 'is-loaded' (with
+    // hyphen) because the CSS minifier was breaking the compound
+    // selector '.tablet-screen.is-loaded' into '.is.loaded' (treating
+    // 'is' and 'loaded' as separate class names). 'loaded' on its own
+    // is unambiguous and minifier-safe.
+    var screen = document.querySelector("[data-tablet-screen]");
+    if (screen) {
+      screen.classList.add("loaded");
     }
     placeholder.hidden = true;
 
