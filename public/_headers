@@ -25,5 +25,3 @@
 /contact/thank-you
   X-Robots-Tag: noindex
 
-/about/admin/
-  X-Robots-Tag: noindex

@@ -112,7 +112,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
             <div>
               <h2
                 class="lab-heading"
-                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:#e89050;"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:var(--lab-accent);"
               >
                 Service Area
               </h2>
@@ -128,7 +128,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
             <div>
               <h2
                 class="lab-heading"
-                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:#e89050;"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:var(--lab-accent);"
               >
                 Hours
               </h2>
@@ -240,17 +240,6 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
   /* ─── Contact Us + Tablet section ─── */
   .contact-layout-section {
     position: relative;
-  }
-  .contact-layout-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
   }
   .contact-layout-section > * {
     position: relative;
@@ -418,18 +407,10 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
     z-index: -1;
   }
 
-  .contact-response-card:hover::after {
+  .contact-response-card:hover::after,
+  .contact-response-card:focus-visible::after {
     opacity: 1;
-    animation: response-shimmer 2s ease-in-out infinite;
-  }
-
-  @keyframes response-shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
+    animation: shimmer 2s ease-in-out infinite;
   }
 
   /* ─── Tablet column ─── */

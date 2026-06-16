@@ -3,42 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import CrtHero from "../components/CrtHero.astro";
 import ReviewShower from "../components/ReviewShower.astro";
 import SocialLinks from "../components/SocialLinks.astro";
-
-const SITE_URL = Astro.site?.origin || "https://madlabs.rocks";
 ---
 
-<BaseLayout
-  title="MAD LABS"
-  description="MAD LABS — diagnostics, computer repair, AI automation, and IT support in Greater Cincinnati."
->
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      name: "MAD LABS",
-      description:
-        "Computer repair, diagnostics, IT support, and AI automation in the Greater Cincinnati area.",
-      url: SITE_URL,
-      telephone: "(513) 306-5331",
-      email: "customer-service@madlabs.rocks",
-      areaServed: "Greater Cincinnati Area",
-      openingHoursSpecification: [
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          opens: "09:00",
-          closes: "18:00",
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: "Saturday",
-          opens: "10:00",
-          closes: "16:00",
-        },
-      ],
-    })}
-  />
+<BaseLayout title="MAD LABS">
   <CrtHero />
 
   <section class="hero-sub lab-section" aria-labelledby="home-tagline">

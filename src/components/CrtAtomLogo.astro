@@ -1,0 +1,289 @@
+---
+// CrtAtomLogo — the animated MAD LABS atom: wireframe orbits, glowing nucleus,
+// and three traveling glow highlights (orange / pink / green).
+//
+// Decorative (aria-hidden); the brand name is carried by the wordmark <h1>.
+// State coupling: parent CrtHero sets is-atom-revealing → is-stable phase
+// classes and is-shutting-down / is-powered-off on [data-crt-hero]; the
+// :global() rules below drive reveal, neon flicker, and power-off hiding.
+//
+// NOTE: the SVG gradient id (nucleus-grad) is document-global. This
+// component must only be rendered once per page (it is — by CrtHero).
+---
+
+<svg class="crt-atom" viewBox="0 0 176 176" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="nucleus-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"></stop>
+      <stop offset="45%" stop-color="#d8b4fe"></stop>
+      <stop offset="100%" stop-color="#9333ea"></stop>
+    </radialGradient>
+  </defs>
+
+  <g class="atom-orbits">
+    <ellipse
+      class="atom-orbit atom-orbit--one"
+      cx="88"
+      cy="88"
+      rx="82"
+      ry="31"
+      fill="none"
+      transform="rotate(0 88 88)"></ellipse>
+    <ellipse
+      class="atom-orbit atom-orbit--two"
+      cx="88"
+      cy="88"
+      rx="82"
+      ry="31"
+      fill="none"
+      transform="rotate(60 88 88)"></ellipse>
+    <ellipse
+      class="atom-orbit atom-orbit--three"
+      cx="88"
+      cy="88"
+      rx="82"
+      ry="31"
+      fill="none"
+      transform="rotate(-60 88 88)"></ellipse>
+
+    <ellipse
+      class="atom-orbit-highlight atom-orbit-highlight--one"
+      cx="88"
+      cy="88"
+      rx="82"
+      ry="31"
+      fill="none"
+      transform="rotate(0 88 88)"></ellipse>
+    <ellipse
+      class="atom-orbit-highlight atom-orbit-highlight--two"
+      cx="88"
+      cy="88"
+      rx="82"
+      ry="31"
+      fill="none"
+      transform="rotate(60 88 88)"></ellipse>
+    <ellipse
+      class="atom-orbit-highlight atom-orbit-highlight--three"
+      cx="88"
+      cy="88"
+      rx="82"
+      ry="31"
+      fill="none"
+      transform="rotate(-60 88 88)"></ellipse>
+  </g>
+
+  <circle class="atom-nucleus-halo" cx="88" cy="88" r="14" fill="url(#nucleus-grad)"></circle>
+  <circle class="atom-nucleus-core" cx="88" cy="88" r="7" fill="#f8f0ff"></circle>
+</svg>
+
+<style>
+  .crt-atom {
+    width: clamp(96px, 15vw, 206px);
+    height: clamp(96px, 15vw, 206px);
+    margin-bottom: clamp(8px, 1.4vw, 16px);
+    overflow: visible;
+    transform: translateY(10px) scale(0.88);
+    transform-origin: center center;
+    opacity: 0;
+    transition:
+      opacity 0.95s ease-out,
+      transform 0.95s cubic-bezier(0.18, 0.84, 0.24, 1);
+  }
+
+  :global(.is-atom-revealing) .crt-atom,
+  :global(.is-title-sequencing) .crt-atom,
+  :global(.is-title-glowing) .crt-atom,
+  :global(.is-divider-opening) .crt-atom,
+  :global(.is-restoring) .crt-atom,
+  :global(.is-stable) .crt-atom {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    animation: crtHeroNeonFlicker 6s infinite;
+  }
+
+  :global(.is-shutting-down) .crt-atom,
+  :global(.is-powered-off) .crt-atom {
+    opacity: 0 !important;
+    transform: translateY(10px) scale(0.88) !important;
+    transition: none !important;
+  }
+
+  .atom-orbits {
+    --atom-ring-white: #fbf8ff;
+    --atom-glow-orange: #ff9d3d;
+    --atom-glow-pink: #ff4fd8;
+    --atom-glow-green: #00f07a;
+
+    overflow: visible;
+    transform-origin: 88px 88px;
+    animation: atomWireframeSpin 18s linear infinite;
+    filter: drop-shadow(0 0 2px rgba(251, 248, 255, 0.2))
+      drop-shadow(0 0 6px rgba(251, 248, 255, 0.12));
+  }
+
+  .atom-orbit {
+    stroke: var(--atom-ring-white);
+    stroke-width: 2.9;
+    opacity: 0.84;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.15));
+  }
+
+  .atom-orbit--two {
+    opacity: 0.76;
+  }
+
+  .atom-orbit--three {
+    opacity: 0.8;
+  }
+
+  .atom-nucleus-halo {
+    transform-origin: 88px 88px;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 5px rgba(216, 180, 254, 0.72))
+      drop-shadow(0 0 15px rgba(147, 51, 234, 0.42));
+    animation: atomNucleusShimmer 2.8s ease-in-out infinite;
+  }
+
+  .atom-nucleus-core {
+    transform-origin: 88px 88px;
+    opacity: 0.96;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.78))
+      drop-shadow(0 0 10px rgba(216, 180, 254, 0.58));
+    animation: atomCoreShimmer 2.8s ease-in-out infinite;
+  }
+
+  .atom-orbit-highlight {
+    fill: none;
+    stroke-width: 4.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 1;
+    stroke-dasharray: 6 372;
+    stroke-dashoffset: 0;
+    animation:
+      atomOrbitGlowFlow 5.2s linear infinite,
+      atomGlowPulse 1.9s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+
+  .atom-orbit-highlight--one {
+    stroke: var(--atom-glow-orange);
+    filter: drop-shadow(0 0 1px rgba(255, 185, 110, 1))
+      drop-shadow(0 0 3px rgba(255, 157, 61, 0.95)) drop-shadow(0 0 7px rgba(255, 157, 61, 0.75))
+      drop-shadow(0 0 14px rgba(255, 157, 61, 0.42)) drop-shadow(0 0 22px rgba(255, 157, 61, 0.18));
+    animation-duration: 4.6s, 1.7s;
+    animation-delay: -0.35s, 0s;
+  }
+
+  .atom-orbit-highlight--two {
+    stroke: var(--atom-glow-pink);
+    filter: drop-shadow(0 0 1px rgba(255, 210, 245, 1))
+      drop-shadow(0 0 3px rgba(255, 79, 216, 0.98)) drop-shadow(0 0 7px rgba(255, 79, 216, 0.78))
+      drop-shadow(0 0 14px rgba(255, 79, 216, 0.44)) drop-shadow(0 0 22px rgba(255, 79, 216, 0.2));
+    animation-duration: 5.5s, 1.95s;
+    animation-delay:
+      -1.4s,
+      -0.3s;
+  }
+
+  .atom-orbit-highlight--three {
+    stroke: var(--atom-glow-green);
+    filter: drop-shadow(0 0 1px rgba(205, 255, 228, 1)) drop-shadow(0 0 3px rgba(0, 240, 122, 0.98))
+      drop-shadow(0 0 7px rgba(0, 240, 122, 0.78)) drop-shadow(0 0 14px rgba(0, 240, 122, 0.44))
+      drop-shadow(0 0 22px rgba(0, 240, 122, 0.2));
+    animation-duration: 6.1s, 2.05s;
+    animation-delay:
+      -2.45s,
+      -0.55s;
+  }
+
+  @keyframes atomOrbitGlowFlow {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: -378;
+    }
+  }
+
+  @keyframes atomGlowPulse {
+    0%,
+    100% {
+      opacity: 0.82;
+      stroke-width: 4;
+    }
+    50% {
+      opacity: 1;
+      stroke-width: 5.2;
+    }
+  }
+
+  @keyframes atomNucleusShimmer {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 5px rgba(216, 180, 254, 0.72))
+        drop-shadow(0 0 15px rgba(147, 51, 234, 0.42));
+    }
+    50% {
+      filter: drop-shadow(0 0 8px rgba(216, 180, 254, 0.88))
+        drop-shadow(0 0 22px rgba(147, 51, 234, 0.62));
+    }
+  }
+
+  @keyframes atomCoreShimmer {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.78))
+        drop-shadow(0 0 10px rgba(216, 180, 254, 0.58));
+    }
+    50% {
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.92))
+        drop-shadow(0 0 14px rgba(216, 180, 254, 0.74));
+    }
+  }
+
+  @keyframes atomWireframeSpin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes crtHeroNeonFlicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    93% {
+      opacity: 0.85;
+    }
+    94% {
+      opacity: 0.96;
+    }
+    96% {
+      opacity: 0.92;
+    }
+    98% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .crt-atom {
+      width: clamp(68px, 22vw, 116px);
+      height: clamp(68px, 22vw, 116px);
+      margin-bottom: 6px;
+    }
+
+    .atom-orbit-highlight--one,
+    .atom-orbit-highlight--two,
+    .atom-orbit-highlight--three {
+      animation-duration: 8s, 2.5s;
+    }
+  }
+</style>

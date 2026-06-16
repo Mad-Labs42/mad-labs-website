@@ -34,7 +34,7 @@
    ============================================ */
 @font-face {
   font-family: "Early GameBoy";
-  src: url("/fonts/Early GameBoy.ttf") format("truetype");
+  src: url("/fonts/early-gameboy.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -64,18 +64,35 @@
   --crt-separator: #e89050;
   --crt-led-on: #00e676;
   --crt-wordmark-glow: rgba(200, 160, 255, 0.55);
+  --neon-purple: #ce47ff;
+  --divider-orange: #f79e55;
   --taskbar-line: #e89050;
 
   --lab-bg: #000000;
   --lab-surface: #1a0e30;
   --lab-surface-alt: #28184c;
-  --lab-card: #1e1a32;
+  --lab-card: #131325;
   --lab-border: rgba(232, 144, 80, 0.12);
   --lab-accent: #e89050;
   --lab-accent-dim: rgba(232, 144, 80, 0.6);
   --lab-heading: #e0d0ff;
   --lab-text: #b0a8c8;
-  --lab-text-muted: #8880a8; /* 4.97:1 on --lab-bg (#131325) — passes WCAG AA */
+  --lab-text-muted: #a8a0c8; /* 5.8:1 on --lab-surface (#1a0e30) — passes WCAG AA */
+
+  /* Z-index scale (ITCSS). Use these instead of raw numbers. */
+  --z-base: 1;            /* Default — content layers */
+  --z-content: 10;        /* Screen content, particles */
+  --z-overlay: 50;        /* Hover overlays, scroll hints */
+  --z-modal: 100;         /* Modals, menus, tooltips */
+  --z-sticky: 200;        /* Sticky headers */
+  --z-toast: 500;         /* Notifications */
+  --z-editor: 9999;       /* Editor overlays (admin) — escape hatch */
+
+  /* Breakpoint tokens (CSS vars for documentation — use raw values in @media queries
+     since var() is not supported in @media in all browsers). */
+  --bp-sm: 40rem;   /* 640px — mobile */
+  --bp-md: 64rem;   /* 1024px — tablet */
+  --bp-lg: 80rem;   /* 1280px — desktop */
 }
 
 /* ============================================
@@ -113,32 +130,9 @@ main {
   color: #fff6ec;
 }
 
-/* Accessible, hidden unless keyboard-focused. */
-.skip-link {
-  position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 9999;
-  transform: translateY(-220%);
-  border: 1px solid rgba(255, 213, 164, 0.8);
-  border-radius: 999px;
-  background: #050208;
-  color: rgba(255, 239, 214, 1);
-  padding: 0.65rem 0.9rem;
-  font-family: "VT323", "Courier New", monospace;
-  font-size: 1rem;
-  text-decoration: none;
-  box-shadow: 0 0 18px rgba(232, 144, 80, 0.35);
-  transition: transform 150ms ease;
-}
-
-.skip-link:focus:not(:focus-visible) {
-  transform: translateY(-220%);
-}
-
-.skip-link:focus-visible {
-  transform: translateY(0);
-}
+/* Skip-link is implemented inline in BaseLayout.astro.
+   Removed from global.css 2026-06-15 — BaseLayout inline styles
+   are the canonical implementation (self-contained in the layout). */
 
 .site-footer,
 footer.site-footer {
@@ -155,6 +149,61 @@ footer.site-footer {
   padding: 1.5rem 1rem;
   font-size: 0.85rem;
   text-align: center;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (min-width: 640px) {
+  .footer-inner {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+}
+
+.footer-copyright {
+  margin: 0;
+}
+
+.site-footer .footer-links {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.site-footer .footer-links a {
+  color: var(--lab-accent, #e89050);
+  text-decoration: none;
+  font-family: "Jersey 25", "VT323", monospace;
+  font-size: 0.8rem;
+  transition: color 0.2s ease;
+}
+
+.footer-email {
+  /* Regular content — email address stands on its own */
+}
+
+.footer-sitemap-link {
+  /* Separated subtly from the email */
+}
+
+.footer-sitemap-link::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 1px;
+  height: 0.7rem;
+  background: rgba(232, 144, 80, 0.2);
+  margin-right: 0.9rem;
+}
+
+.site-footer .footer-links a:hover {
+  color: rgba(232, 144, 80, 0.7);
 }
 
 /* ─── Ambient CRT glow spill below hero ─── */
@@ -184,19 +233,42 @@ footer.site-footer {
 .lab-section {
   border-bottom: calc(1px * 1.05) solid var(--lab-border);
   background:
-    radial-gradient(circle at 50% 0%, rgba(232, 144, 80, 0.04), transparent 38%), var(--lab-surface);
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 2px,
+      rgba(200, 180, 230, 0.04) 2px,
+      rgba(200, 180, 230, 0.04) 3px
+    ),
+    radial-gradient(circle at 50% 0%, rgba(232, 144, 80, 0.04), transparent 38%),
+    var(--lab-surface);
 }
 
 .lab-section-alt {
   border-bottom: calc(1px * 1.05) solid var(--lab-border);
   background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 2px,
+      rgba(200, 180, 230, 0.04) 2px,
+      rgba(200, 180, 230, 0.04) 3px
+    ),
     radial-gradient(circle at 50% 0%, rgba(140, 80, 240, 0.08), transparent 42%),
     var(--lab-surface-alt);
 }
 
 .lab-section-dark {
   border-bottom: calc(1px * 1.05) solid var(--lab-border);
-  background: var(--lab-bg);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 2px,
+      rgba(200, 180, 230, 0.03) 2px,
+      rgba(200, 180, 230, 0.03) 3px
+    ),
+    var(--lab-bg);
 }
 
 .lab-section-inner {
@@ -245,7 +317,7 @@ footer.site-footer {
 }
 
 .lab-link:hover {
-  color: #fff;
+  color: #fff6ec;
   text-decoration: underline;
 }
 
@@ -340,15 +412,15 @@ footer.site-footer {
   .crt-glitch-tear,
   .crt-glitch-slices,
   .lab-section,
-  .lab-section-alt {
+  .lab-section-alt,
+  .review-shower-track {
     animation: none !important;
   }
 
   /* --- Disable transitions --- */
   .crt-taskbar-link,
   .crt-taskbar-link::after,
-  .back-to-top,
-  .skip-link {
+  .back-to-top {
     transition: none;
   }
 
@@ -431,4 +503,31 @@ footer.site-footer {
   .crt-metal {
     background: linear-gradient(145deg, #4a3880 0%, #362866 50%, #362866 100%);
   }
+}
+
+/* ============================================
+   Forced Colors Mode (Windows High Contrast)
+   Per WCAG 2.4.7 + WAI-ARIA AP C40: ensure focus
+   indicators remain visible when the OS forces
+   a high-contrast palette.
+   ============================================ */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid CanvasText !important;
+    outline-offset: 2px !important;
+  }
+  .lab-link:focus-visible,
+  .lab-button:focus-visible,
+  .crt-taskbar-link:focus-visible {
+    outline: 3px solid CanvasText !important;
+    outline-offset: 3px !important;
+  }
+}
+
+/* ============================================
+   Shared Keyframes
+   ============================================ */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

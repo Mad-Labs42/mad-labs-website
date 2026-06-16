@@ -1,0 +1,4 @@
+- generic [ref=e1]:
+  - img "Loading ..." [ref=e2]
+  - paragraph [ref=e3]: Hang tight while we prepare your MCP experience!
+  - heading "Loading your console" [level=3] [ref=e5]

@@ -110,11 +110,17 @@ function buildJsonLd(type: string): Record<string, unknown> {
     <!-- Canonical: absolute URL, strip query params -->
     <link rel="canonical" href={`${Astro.site?.origin || "https://madlabs.rocks"}${Astro.url.pathname}`} />
 
+    <!-- hreflang: primary (en) + x-default for language fallback -->
+    <link rel="alternate" hreflang="en" href={`https://madlabs.rocks${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="x-default" href={`https://madlabs.rocks${Astro.url.pathname}`} />
+
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Preload critical above-fold fonts -->
     <link rel="preload" href="/fonts/monofett-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/jersey-25-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/early-gameboy.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/vt323-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Open Graph / Social -->
     <meta property="og:title" content={pageTitle} />
@@ -182,7 +188,13 @@ function buildJsonLd(type: string): Record<string, unknown> {
     </main>
 
     <footer class="site-footer">
-      <p>&copy; {new Date().getFullYear()} MAD LABS. All rights reserved.</p>
+      <div class="footer-inner">
+        <p class="footer-copyright">&copy; {new Date().getFullYear()} MAD LABS. All rights reserved.</p>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="mailto:customer-service@madlabs.rocks" class="footer-email">customer-service@madlabs.rocks</a>
+          <a href="/sitemap-index.xml" class="footer-sitemap-link">Sitemap</a>
+        </nav>
+      </div>
     </footer>
 
     
@@ -222,8 +234,8 @@ function buildJsonLd(type: string): Record<string, unknown> {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border: 1px solid rgba(247, 158, 85, 0.5);
         border-radius: 50%;
         background: rgba(20, 10, 32, 0.88);

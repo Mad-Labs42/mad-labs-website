@@ -1,0 +1,316 @@
+---
+// src/pages/contact/thank-you.astro
+// Confirmation page for Zoho Bookings redirects AND legacy ticket form submissions.
+// Bookings params are extracted client-side (static build can't read URL params).
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Thank You" description="Your message has been received. MAD LABS will follow up within 2–4 hours during business hours." noindex>
+  <section class="lab-section thankyou-section">
+    <div class="lab-section-inner thankyou-inner">
+      <!-- CRT terminal chrome -->
+      <div class="ty-terminal" aria-label="Confirmed">
+        <div class="ty-topbar" aria-hidden="true">
+          <span class="ty-led"></span>
+          <span class="ty-led ty-led--amber"></span>
+        </div>
+
+        <div class="ty-screen" aria-live="polite" aria-atomic="true">
+          <!-- Static default (ticket/fallback view) -->
+          <div id="ty-default-view">
+            <p class="ty-label" aria-hidden="true">[OK] MESSAGE_RECEIVED</p>
+            <h1 class="ty-heading">We Got Your Message</h1>
+            <p class="ty-body">
+              Your message has been received. We'll follow up within
+              <strong> 2–4 hours</strong> during business hours.
+            </p>
+            <p class="ty-body ty-body--muted">
+              If your issue is urgent, reply to our email and we'll prioritize your request.
+            </p>
+          </div>
+
+          <!-- Booking confirmation view (hidden until JS reads URL params) -->
+          <div id="ty-booking-view" hidden>
+            <p class="ty-label" aria-hidden="true">[OK] BOOKING_CONFIRMED</p>
+            <h1 class="ty-heading">Booking Confirmed</h1>
+            <p class="ty-body ty-body--greeting" id="ty-greeting"></p>
+            <p class="ty-body" id="ty-booking-text"></p>
+            <div class="ty-details" id="ty-details" hidden>
+              <div class="ty-detail-row">
+                <span class="ty-detail-label">Date</span>
+                <span class="ty-detail-value" id="ty-date"></span>
+              </div>
+              <div class="ty-detail-row">
+                <span class="ty-detail-label">Time</span>
+                <span class="ty-detail-value" id="ty-time"></span>
+              </div>
+            </div>
+            <p class="ty-body ty-body--muted">
+              A calendar invitation and reminder will be sent to your email. If anything changes,
+              you'll hear from us directly.
+            </p>
+          </div>
+
+          <div class="ty-actions">
+            <a href="/contact/" class="ty-btn">← Back to Contact</a>
+            <a href="/" class="ty-btn ty-btn--ghost">Return to Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    "use strict";
+    var params = new URLSearchParams(window.location.search);
+    var isBooking = params.has("booking_id") || params.has("service_name");
+    if (!isBooking) return;
+
+    var defaultView = document.getElementById("ty-default-view");
+    var bookingView = document.getElementById("ty-booking-view");
+    if (defaultView) defaultView.hidden = true;
+    if (bookingView) bookingView.hidden = false;
+
+    var serviceName = params.get("service_name") || "appointment";
+    var customerName = params.get("customer_name") || "";
+    var startTime = params.get("booking_start_time") || "";
+
+    var greeting = document.getElementById("ty-greeting");
+    if (greeting && customerName) {
+      greeting.textContent = "Thanks, " + customerName + ".";
+    }
+
+    var text = document.getElementById("ty-booking-text");
+    if (text) {
+      text.innerHTML = 'Your <strong>' + serviceName + '</strong> has been booked. We\'re looking forward to speaking with you.';
+    }
+
+    if (startTime) {
+      try {
+        var dt = new Date(startTime);
+        var dateStr = dt.toLocaleDateString("en-US", {
+          weekday: "long", year: "numeric", month: "long", day: "numeric"
+        });
+        var timeStr = dt.toLocaleTimeString("en-US", {
+          hour: "numeric", minute: "2-digit", timeZoneName: "short"
+        });
+        document.getElementById("ty-date").textContent = dateStr;
+        document.getElementById("ty-time").textContent = timeStr;
+        var details = document.getElementById("ty-details");
+        if (details) details.hidden = false;
+      } catch (e) {
+        // ignore date parse errors
+      }
+    }
+
+    // Update page title
+    document.title = "Booking Confirmed — MAD LABS";
+
+    // Update meta description
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute("content", "Your " + serviceName + " has been booked. MAD LABS will be ready for you.");
+    }
+  })();
+</script>
+
+<style>
+  .thankyou-section {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+  }
+
+  .thankyou-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .ty-terminal {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #1a1228;
+    box-shadow:
+      inset 0 0 0 1.5px rgba(232, 144, 80, 0.2),
+      0 0 40px rgba(140, 80, 240, 0.12),
+      0 16px 48px rgba(0, 0, 0, 0.6);
+  }
+
+  .ty-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.85rem;
+    background: rgba(10, 6, 20, 0.6);
+    border-bottom: 1px solid rgba(232, 144, 80, 0.12);
+  }
+
+  .ty-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00e676;
+    box-shadow: 0 0 4px rgba(0, 230, 118, 0.6);
+    flex-shrink: 0;
+  }
+
+  .ty-led--amber {
+    background: var(--lab-accent);
+    box-shadow: 0 0 4px rgba(232, 144, 80, 0.5);
+    animation: led-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes led-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .ty-screen {
+    padding: 1.75rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    position: relative;
+    background-image: repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 2px,
+      rgba(0, 0, 0, 0.055) 2px,
+      rgba(0, 0, 0, 0.055) 3px
+    );
+  }
+
+  .ty-label {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.72rem;
+    color: rgba(232, 144, 80, 0.55);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: -0.2rem;
+  }
+
+  .ty-heading {
+    font-family: "Monofett", "VT323", monospace;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 400;
+    color: var(--lab-accent);
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    text-shadow: 0 0 16px rgba(232, 144, 80, 0.35);
+  }
+
+  .ty-body {
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: 0.9rem;
+    color: var(--lab-text, #b0a8c8);
+    line-height: 1.6;
+  }
+
+  .ty-body strong {
+    color: var(--lab-heading, #e0d0ff);
+  }
+
+  .ty-body--muted {
+    color: var(--lab-text-muted, #706888);
+    font-size: 0.82rem;
+  }
+
+  .ty-body--greeting {
+    font-size: 1rem;
+    color: var(--lab-accent);
+  }
+
+  .ty-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.85rem 1rem;
+    background: rgba(232, 144, 80, 0.06);
+    border: 1px solid rgba(232, 144, 80, 0.18);
+    border-radius: 6px;
+  }
+
+  .ty-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.85rem;
+  }
+
+  .ty-detail-label {
+    color: var(--lab-text-muted, #706888);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .ty-detail-value {
+    color: #e0d0ff;
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .ty-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 0.4rem;
+  }
+
+  .ty-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.45rem 1.1rem;
+    border: 1px solid rgba(232, 144, 80, 0.45);
+    border-radius: 4px;
+    background: rgba(232, 144, 80, 0.1);
+    color: var(--lab-accent);
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease;
+  }
+
+  .ty-btn:hover {
+    background: rgba(232, 144, 80, 0.2);
+    border-color: rgba(232, 144, 80, 0.7);
+  }
+
+  .ty-btn:focus-visible {
+    outline: 2px solid var(--lab-accent);
+    outline-offset: 3px;
+  }
+
+  .ty-btn--ghost {
+    background: transparent;
+    border-color: rgba(232, 144, 80, 0.2);
+    color: var(--lab-text-muted, #706888);
+  }
+
+  .ty-btn--ghost:hover {
+    background: rgba(232, 144, 80, 0.06);
+    border-color: rgba(232, 144, 80, 0.35);
+    color: var(--lab-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ty-led--amber {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+[
+  {
+    "timestamp": "2026-05-29T20:26:12.848Z",
+    "score": 92,
+    "grade": "A",
+    "dimensions": [
+      {
+        "name": "Coupling",
+        "score": 100,
+        "grade": "A"
+      },
+      {
+        "name": "Cohesion",
+        "score": 100,
+        "grade": "A"
+      },
+      {
+        "name": "Circular Dependencies",
+        "score": 100,
+        "grade": "A"
+      },
+      {
+        "name": "God Files",
+        "score": 100,
+        "grade": "A"
+      },
+      {
+        "name": "Orphans & Dead Code",
+        "score": 23,
+        "grade": "F"
+      },
+      {
+        "name": "Dependency Depth",
+        "score": 100,
+        "grade": "A"
+      }
+    ]
+  }
+]

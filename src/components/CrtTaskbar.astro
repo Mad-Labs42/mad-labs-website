@@ -1,4 +1,10 @@
 ---
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props as Props;
+
 const navItems = [
   { label: "Services", href: "/services/" },
   { label: "About", href: "/about/" },
@@ -9,13 +15,21 @@ const navItems = [
 <nav class="crt-taskbar-nav" aria-label="Primary">
   <ul class="crt-taskbar-list">
     {
-      navItems.map((item) => (
-        <li class="crt-taskbar-item">
-          <a href={item.href} class="crt-taskbar-link">
-            {item.label}
-          </a>
-        </li>
-      ))
+      navItems.map((item) => {
+        const isCurrent = currentPath === item.href ||
+          (currentPath.startsWith(item.href.slice(0, -1)) && item.href !== "/services/");
+        return (
+          <li class="crt-taskbar-item">
+            <a
+              href={item.href}
+              class="crt-taskbar-link"
+              {...(isCurrent ? { "aria-current": "page" } : {})}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })
     }
   </ul>
 </nav>
@@ -151,6 +165,17 @@ const navItems = [
   .crt-taskbar-link:active {
     transform: translateY(-1px);
     filter: brightness(0.98);
+  }
+
+  /* Active/current page indicator */
+  .crt-taskbar-link[aria-current="page"] {
+    color: rgba(255, 250, 255, 1);
+    text-shadow:
+      -0.34px 0 currentColor,
+      0.34px 0 currentColor,
+      0 0 12px rgba(247, 158, 85, 0.5),
+      0 0 28px rgba(247, 158, 85, 0.27);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   @media (max-width: 640px) {

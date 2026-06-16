@@ -2,6 +2,10 @@
 import CrtTaskbar from "./CrtTaskbar.astro";
 import CrtTypingLabel from "./CrtTypingLabel.astro";
 import CrtDivider from "./CrtDivider.astro";
+import CrtScreenOverlays from "./CrtScreenOverlays.astro";
+import CrtParticles from "./CrtParticles.astro";
+import CrtCornerBrackets from "./CrtCornerBrackets.astro";
+import CrtAtomLogo from "./CrtAtomLogo.astro";
 ---
 
 <section class="crt-hero" aria-label="MAD LABS homepage hero" data-crt-hero>
@@ -65,131 +69,17 @@ import CrtDivider from "./CrtDivider.astro";
         <p class="crt-goodbye-message">GOODBYE, HUMAN.</p>
       </div>
 
-      <div class="crt-glitch-chroma" aria-hidden="true"></div>
-      <div class="crt-glitch-static" aria-hidden="true"></div>
-      <div class="crt-glitch-tear" aria-hidden="true"></div>
-      <div class="crt-glitch-slices" aria-hidden="true"></div>
-
+      <!-- Atmosphere + glitch overlays (extracted components) -->
+      <CrtScreenOverlays />
+      <!-- .crt-glare kept in CrtHero — JS queries and mutates it for mouse-responsive glare -->
       <div class="crt-glare" aria-hidden="true"></div>
-      <div class="crt-tint" aria-hidden="true"></div>
-      <div class="crt-bands" aria-hidden="true"></div>
-      <div class="crt-phosphor-dots" aria-hidden="true"></div>
-      <div class="crt-scanlines" aria-hidden="true"></div>
-      <div class="crt-vignette" aria-hidden="true"></div>
-      <div class="crt-bevel-inner" aria-hidden="true"></div>
 
-      
-      <div class="crt-particles" aria-hidden="true">
-        <span
-          class="crt-particle"
-          style="--drift-x: 18px; --drift-y: -14px; --drift-dur: 12s; --drift-delay: 0s; left: 12%; top: 22%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: -22px; --drift-y: 10px; --drift-dur: 15s; --drift-delay: 1.8s; left: 28%; top: 65%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: 14px; --drift-y: -20px; --drift-dur: 18s; --drift-delay: 3.2s; left: 45%; top: 38%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: -16px; --drift-y: -8px; --drift-dur: 13s; --drift-delay: 5s; left: 62%; top: 72%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: 20px; --drift-y: 16px; --drift-dur: 16s; --drift-delay: 0.6s; left: 78%; top: 18%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: -10px; --drift-y: 22px; --drift-dur: 20s; --drift-delay: 7s; left: 88%; top: 52%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: 24px; --drift-y: -6px; --drift-dur: 14s; --drift-delay: 2.4s; left: 8%; top: 80%;"
-        ></span>
-        <span
-          class="crt-particle"
-          style="--drift-x: -18px; --drift-y: -16px; --drift-dur: 17s; --drift-delay: 4.6s; left: 55%; top: 8%;"
-        ></span>
-      </div>
+      <CrtParticles />
 
-      <div class="crt-corner crt-corner--tl" aria-hidden="true"></div>
-      <div class="crt-corner crt-corner--tr" aria-hidden="true"></div>
-      <div class="crt-corner crt-corner--bl" aria-hidden="true"></div>
-      <div class="crt-corner crt-corner--br" aria-hidden="true"></div>
+      <CrtCornerBrackets />
 
       <div class="crt-content">
-        <svg
-          class="crt-atom"
-          viewBox="0 0 176 176"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <radialGradient id="nucleus-grad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#ffffff"></stop>
-              <stop offset="45%" stop-color="#d8b4fe"></stop>
-              <stop offset="100%" stop-color="#9333ea"></stop>
-            </radialGradient>
-          </defs>
-
-          <g class="atom-orbits">
-            <ellipse
-              class="atom-orbit atom-orbit--one"
-              cx="88"
-              cy="88"
-              rx="82"
-              ry="31"
-              fill="none"
-              transform="rotate(0 88 88)"></ellipse>
-            <ellipse
-              class="atom-orbit atom-orbit--two"
-              cx="88"
-              cy="88"
-              rx="82"
-              ry="31"
-              fill="none"
-              transform="rotate(60 88 88)"></ellipse>
-            <ellipse
-              class="atom-orbit atom-orbit--three"
-              cx="88"
-              cy="88"
-              rx="82"
-              ry="31"
-              fill="none"
-              transform="rotate(-60 88 88)"></ellipse>
-
-            <ellipse
-              class="atom-orbit-highlight atom-orbit-highlight--one"
-              cx="88"
-              cy="88"
-              rx="82"
-              ry="31"
-              fill="none"
-              transform="rotate(0 88 88)"></ellipse>
-            <ellipse
-              class="atom-orbit-highlight atom-orbit-highlight--two"
-              cx="88"
-              cy="88"
-              rx="82"
-              ry="31"
-              fill="none"
-              transform="rotate(60 88 88)"></ellipse>
-            <ellipse
-              class="atom-orbit-highlight atom-orbit-highlight--three"
-              cx="88"
-              cy="88"
-              rx="82"
-              ry="31"
-              fill="none"
-              transform="rotate(-60 88 88)"></ellipse>
-          </g>
-
-          <circle class="atom-nucleus-halo" cx="88" cy="88" r="14" fill="url(#nucleus-grad)"
-          ></circle>
-          <circle class="atom-nucleus-core" cx="88" cy="88" r="7" fill="#f8f0ff"></circle>
-        </svg>
+        <CrtAtomLogo />
 
         <div class="crt-bloom" aria-hidden="true"></div>
 
@@ -205,7 +95,7 @@ import CrtDivider from "./CrtDivider.astro";
       </div>
 
       <div class="crt-taskbar-area">
-        <CrtTaskbar />
+        <CrtTaskbar currentPath={Astro.url.pathname} />
       </div>
 
       
@@ -451,7 +341,17 @@ import CrtDivider from "./CrtDivider.astro";
           14000,
           () => {
             addHeroPhase("is-final-glow");
-            restartTimedClass(crtScreen, "is-crt-proud-glow", 980);
+            // Use animationend (not timer) so JS stays in sync with CSS duration automatically.
+            crtScreen.classList.remove("is-crt-proud-glow");
+            void crtScreen.offsetWidth;
+            crtScreen.classList.add("is-crt-proud-glow");
+            const onGlowEnd = (e: AnimationEvent): void => {
+              if (e.animationName === "crtProudGlow") {
+                crtScreen.classList.remove("is-crt-proud-glow");
+                crtScreen.removeEventListener("animationend", onGlowEnd);
+              }
+            };
+            crtScreen.addEventListener("animationend", onGlowEnd);
           },
         ],
         [
@@ -603,11 +503,8 @@ import CrtDivider from "./CrtDivider.astro";
 
     const MUTE_STORAGE_KEY = "madlabs:crt-mute";
 
-    try {
-      audioCtx = new AudioContext();
-    } catch {
-      // Web Audio API not available — audio calls become no-ops
-    }
+    /* AudioContext created lazily on first user gesture (browser autoplay policy).
+       See initAudioCtx() below — registered on click/keydown/touchstart. */
 
     const loadMutePreference = (): void => {
       try {
@@ -818,16 +715,28 @@ import CrtDivider from "./CrtDivider.astro";
       });
     }
 
-    // Resume AudioContext on first user interaction (browser autoplay policy)
-    const autoResumeAudio = (): void => {
+    // Init AudioContext on first user interaction (browser autoplay policy).
+    // Creates the context lazily to avoid the "not allowed to start" warning.
+    const initAudioCtx = (): void => {
+      if (!audioCtx) {
+        try {
+          audioCtx = new AudioContext();
+          // If we're still in a boot phase, start the CRT hum now
+          if (!crtHero.classList.contains("is-stable")) {
+            startCrtHum();
+          }
+        } catch {
+          // Web Audio API not available
+        }
+      }
       if (audioCtx && audioCtx.state === "suspended") {
         audioCtx.resume().catch(() => {});
       }
     };
 
-    document.addEventListener("click", autoResumeAudio, { once: true });
-    document.addEventListener("keydown", autoResumeAudio, { once: true });
-    document.addEventListener("touchstart", autoResumeAudio, { once: true, passive: true });
+    document.addEventListener("click", initAudioCtx, { once: true });
+    document.addEventListener("keydown", initAudioCtx, { once: true });
+    document.addEventListener("touchstart", initAudioCtx, { once: true, passive: true });
 
     // ─── Mouse-Responsive Screen Glare ─────────────────────
     const glare = crtScreen.querySelector<HTMLElement>(".crt-glare");
@@ -952,6 +861,9 @@ import CrtDivider from "./CrtDivider.astro";
     min-height: 100svh;
     padding: clamp(1rem, 3vw, 2.5rem) 1rem;
     background: linear-gradient(180deg, #020305 0%, #04060a 35%, #06080d 100%);
+    /* Isolate layout/style recalc to the hero subtree so the 14-phase
+       intro animation doesn't push surrounding content (see web.dev CLS). */
+    contain: layout style;
   }
 
   .hero-glow {
@@ -1283,6 +1195,15 @@ import CrtDivider from "./CrtDivider.astro";
 
   .crt-power-btn {
     cursor: pointer;
+    /* WCAG 2.5.5: expand touch area to 44×44 without changing visual size.
+       The visible button stays 24×24, the click/touch area is 44×44 via pseudo-element. */
+    position: relative;
+  }
+  .crt-power-btn::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    /* Invisible — just expands the clickable area */
   }
 
   .crt-power-btn:focus-visible {

@@ -1,0 +1,14 @@
+- generic [active] [ref=e1]:
+  - img
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - text: This website uses first-party and third-party cookies to enhance navigation, analyze traffic, and personalize content. You can accept all, reject them, or customize their use.
+      - link "Cookie Policy" [ref=e6] [cursor=pointer]:
+        - /url: https://penpot.app/cookie
+      - text: .
+    - generic [ref=e7]:
+      - button "Accept all" [ref=e8]
+      - button "Reject all" [ref=e9]
+      - button "Customize cookies" [ref=e10]
+  - img
+  - img

@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="About">
+<BaseLayout title="Cincinnati's Trusted Computer Repair Experts" description="Learn about MAD LABS — a Cincinnati-based computer repair and IT support team helping homeowners and small businesses since 2020. Local, trusted, transparent." jsonLdType="about">
   <!-- ─── Hero / The Lab ─── -->
   <section class="about-hero lab-section">
     <div class="lab-section-inner-wide">
@@ -83,7 +83,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="none"
-              stroke="#00e676"
+              stroke="currentColor"
               stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -104,7 +104,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="none"
-              stroke="#00e676"
+              stroke="currentColor"
               stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -124,7 +124,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="none"
-              stroke="#00e676"
+              stroke="currentColor"
               stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"><path d="M3 10h14"></path><path d="M10 3v14"></path></svg
@@ -143,7 +143,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="none"
-              stroke="#00e676"
+              stroke="currentColor"
               stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -163,7 +163,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="none"
-              stroke="#00e676"
+              stroke="currentColor"
               stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -237,17 +237,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .about-story {
     position: relative;
   }
-  .about-story::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
   .about-story > * {
     position: relative;
     z-index: 1;
@@ -308,7 +297,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .approach-card {
     background: var(--lab-card, #131325);
     border: calc(1px * 1.05) solid var(--lab-border, rgba(232, 144, 80, 0.12));
-    border-left: calc(3px * 1.05) solid #f79e55;
+    border-left: calc(3px * 1.05) solid var(--divider-orange);
     border-radius: 8px;
     padding: 1.5rem;
     display: flex;
@@ -317,18 +306,26 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
     transition:
       border-color 0.25s ease,
-      box-shadow 0.25s ease,
-      transform 0.25s ease;
-    transform: translateY(0);
+      box-shadow 0.25s ease;
     isolation: isolate;
+    position: relative;
   }
   .approach-card:hover {
-    transform: translateY(-3px);
     border-color: rgba(232, 144, 80, 0.35);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.45),
-      0 0 24px rgba(232, 144, 80, 0.08);
+      0 4px 24px rgba(0, 0, 0, 0.35),
+      0 0 40px rgba(232, 144, 80, 0.04);
   }
+
+  .approach-card:focus-visible {
+    border-color: rgba(232, 144, 80, 0.35);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.35),
+      0 0 40px rgba(232, 144, 80, 0.04);
+    outline: 2px solid rgba(232, 144, 80, 0.5);
+    outline-offset: 2px;
+  }
+
   .approach-card::after {
     content: "";
     position: absolute;
@@ -348,9 +345,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     pointer-events: none;
     z-index: -1;
   }
-  .approach-card:hover::after {
+  .approach-card:hover::after,
+  .approach-card:focus-visible::after {
     opacity: 1;
-    animation: about-shimmer 2s ease-in-out infinite;
+    animation: shimmer 2s ease-in-out infinite;
   }
   .approach-step {
     display: inline-flex;
@@ -358,11 +356,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     justify-content: center;
     align-self: flex-start;
     padding: 5px;
-    border: 2px solid #f79e55;
+    border: 2px solid var(--divider-orange);
     border-radius: 6px;
     font-family: "Monofett", monospace;
     font-size: 1.6rem;
-    color: #f79e55;
+    color: var(--divider-orange);
     opacity: 0.85;
     line-height: 1;
   }
@@ -380,7 +378,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     display: block;
     width: 100%;
     height: 3px;
-    background: #f79e55;
+    background: var(--divider-orange);
     border-radius: 2px;
     margin-top: 0.2rem;
   }
@@ -396,17 +394,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   /* ─── Trust grid ─── */
   .about-trust {
     position: relative;
-  }
-  .about-trust::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
   }
   .about-trust > * {
     position: relative;
@@ -439,18 +426,26 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     padding: 1rem 1.25rem;
     transition:
       border-color 0.25s ease,
-      box-shadow 0.25s ease,
-      transform 0.25s ease;
-    transform: translateY(0);
+      box-shadow 0.25s ease;
     isolation: isolate;
+    position: relative;
   }
   .trust-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(0, 230, 118, 0.3);
+    border-color: rgba(232, 144, 80, 0.3);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.45),
-      0 0 24px rgba(0, 230, 118, 0.08);
+      0 4px 24px rgba(0, 0, 0, 0.35),
+      0 0 40px rgba(232, 144, 80, 0.04);
   }
+
+  .trust-card:focus-visible {
+    border-color: rgba(232, 144, 80, 0.3);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.35),
+      0 0 40px rgba(232, 144, 80, 0.04);
+    outline: 2px solid rgba(232, 144, 80, 0.5);
+    outline-offset: 2px;
+  }
+
   .trust-card::after {
     content: "";
     position: absolute;
@@ -459,9 +454,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     background: linear-gradient(
       110deg,
       transparent 25%,
-      rgba(0, 230, 118, 0.035) 48%,
-      rgba(0, 230, 118, 0.07) 50%,
-      rgba(0, 230, 118, 0.035) 52%,
+      rgba(232, 144, 80, 0.035) 48%,
+      rgba(232, 144, 80, 0.07) 50%,
+      rgba(232, 144, 80, 0.035) 52%,
       transparent 75%
     );
     background-size: 200% 100%;
@@ -470,11 +465,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     pointer-events: none;
     z-index: -1;
   }
-  .trust-card:hover::after {
+  .trust-card:hover::after,
+  .trust-card:focus-visible::after {
     opacity: 1;
-    animation: about-shimmer 2s ease-in-out infinite;
+    animation: shimmer 2s ease-in-out infinite;
   }
-  .trust-card:hover .trust-icon {
+  .trust-card:hover .trust-icon,
+  .trust-card:focus-visible .trust-icon {
     filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.35));
   }
 
@@ -486,6 +483,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--crt-led-on, #00e676);
   }
 
   .trust-icon :global(svg) {
@@ -514,17 +512,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   /* ─── CTA ─── */
   .about-cta {
     position: relative;
-  }
-  .about-cta::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
   }
   .about-cta > * {
     position: relative;
@@ -560,15 +547,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     max-width: 450px;
     margin: 0 auto 1.5rem;
     line-height: 1.5;
-  }
-
-  @keyframes about-shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

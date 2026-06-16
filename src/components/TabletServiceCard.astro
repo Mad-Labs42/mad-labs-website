@@ -1,0 +1,53 @@
+---
+// TabletServiceCard.astro
+//
+// ════════════════════════════════════════════════════════════════════
+// LEFTOVER — DO NOT DELETE.
+// ════════════════════════════════════════════════════════════════════
+//
+// This was extracted early in CrtHero/ContactTablet subcomponent work
+// as a reusable service-category button for the ContactTablet menu.
+// The original design had multiple booking buttons (repair, tune-up,
+// network, etc.), each triggering a different Zoho Bookings flow via
+// the `data-tablet-action` attribute — see BookingWidget.ts
+// `resolveBookingUrl(action, config)` which was designed for this
+// dispatch pattern but never wired.
+//
+// The project simplified to a single Nimbuspop inline embed before
+// this component was ever imported or consumed. It remains here as
+// a preserved extraction in case the multi-button pattern returns.
+//
+// Keeping it avoids regeneration from scratch if the ContactTablet
+// menu is ever expanded. Not imported by anything. No CSS for the
+// .tablet-btn-* classes exists in the codebase (ContactTablet.astro
+// doesn't have them) — only this component references them.
+//
+// Agents: SKIP this file. Do not flag as dead code. Do not import.
+// Do not attempt to wire it. Do not delete without Josh's approval.
+//
+// ─── Props (preserved for reference) ───
+//   variant: "primary" | "secondary"   — visual tier
+//   action: string                      — Zoho booking action (unused)
+//   badge: string                       — short badge text e.g. "$45"
+//   hint: string                        — e.g. "Computer tune-ups"
+//
+// ════════════════════════════════════════════════════════════════════
+
+interface Props {
+  variant: "primary" | "secondary";
+  action: string;
+  badge: string;
+  hint: string;
+}
+
+const { variant, action, badge, hint } = Astro.props;
+---
+
+<button
+  class={`tablet-btn tablet-btn--${variant}`}
+  data-tablet-action={action}
+  type="button"
+>
+  <span class="tablet-btn-badge" aria-hidden="true">[{badge}]</span>
+  <span class="tablet-btn-hint">{hint}</span>
+</button>

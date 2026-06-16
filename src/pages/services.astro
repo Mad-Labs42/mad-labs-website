@@ -5,7 +5,11 @@ import ProcessSteps from "../components/ProcessSteps.astro";
 import { services } from "../data/services";
 ---
 
-<BaseLayout title="Services">
+<BaseLayout
+  title="IT Services & Computer Repair"
+  description="Computer repair, tuneups, malware removal, network setup, and AI automation services from MAD LABS in Cincinnati. Free 20-minute triage for new customers."
+  jsonLdType="services"
+>
   <section class="page-header lab-section">
     <div class="lab-section-inner-wide">
       <span class="lab-heading-accent">What We Do</span>
@@ -28,73 +32,39 @@ import { services } from "../data/services";
               bullets={s.bullets}
               icon={s.icon}
               pricing={s.pricing}
+              category={s.category}
             />
           ))
         }
       </div>
 
-      <!-- Trust strip -->
-      <div class="trust-strip" aria-label="Our service promise">
-        <p class="trust-item">
+      <!-- Trust strip — semantic list per WCAG 1.3.1 -->
+      <ul class="trust-strip" aria-label="Our service promise">
+        <li class="trust-item">
           <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3.5l2 1.5"></path></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3.5l2 1.5"></path></svg>
           </span>
           Full diagnostic first
-        </p>
-        <p class="trust-item">
+        </li>
+        <li class="trust-item">
           <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"><path d="M4 8.5 6.5 11 12 5.5"></path></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5 6.5 11 12 5.5"></path></svg>
           </span>
           Clear quote before work
-        </p>
-        <p class="trust-item">
+        </li>
+        <li class="trust-item">
           <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"></line></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"></line></svg>
           </span>
           No upsells — just what you need
-        </p>
-        <p class="trust-item">
+        </li>
+        <li class="trust-item">
           <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><path d="M8 2.5 2 5.5v3c0 4.2 2.5 7.5 6 8.5 3.5-1 6-4.3 6-8.5v-3L8 2.5Z"></path><path
-                d="m6 8 1.5 1.5 3-3"></path></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="#e89050" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5 2 5.5v3c0 4.2 2.5 7.5 6 8.5 3.5-1 6-4.3 6-8.5v-3L8 2.5Z"></path><path d="m6 8 1.5 1.5 3-3"></path></svg>
           </span>
           Senior &amp; veteran discount
-        </p>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -147,19 +117,6 @@ import { services } from "../data/services";
     overflow: hidden;
   }
 
-  .services-grid-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      /* Faint grid lines — diagnostic equipment feel */
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-
   .services-grid-section::after {
     content: "";
     position: absolute;
@@ -181,34 +138,25 @@ import { services } from "../data/services";
     z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   @media (min-width: 640px) {
     .services-grid {
       grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
   }
 
   @media (min-width: 1024px) {
     .services-grid {
       grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 2.5rem;
     }
   }
 
   .cta-section {
     position: relative;
-  }
-  .cta-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
   }
   .cta-section > * {
     position: relative;
@@ -216,10 +164,13 @@ import { services } from "../data/services";
   }
   .trust-strip {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-base);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     gap: 0.75rem 1.5rem;
     margin-top: 2rem;
     padding: 1.25rem 1rem;
@@ -232,13 +183,6 @@ import { services } from "../data/services";
     transition:
       border-color 0.25s ease,
       box-shadow 0.25s ease;
-  }
-  .trust-strip:hover {
-    border-color: rgba(232, 144, 80, 0.3);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 6px 24px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(232, 144, 80, 0.04);
   }
 
   .trust-item {
@@ -259,14 +203,14 @@ import { services } from "../data/services";
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #e89050;
+    color: var(--lab-accent);
   }
 
   .trust-icon :global(svg) {
     width: 100%;
     height: 100%;
     display: block;
-    stroke: #e89050;
+    stroke: var(--lab-accent);
     stroke-width: 1.5;
   }
 

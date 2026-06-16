@@ -1,0 +1,174 @@
+- generic [active] [ref=e7]:
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - img [ref=e11]
+      - img [ref=e26]
+      - img [ref=e30]
+      - img [ref=e33]
+      - img [ref=e36]
+      - img [ref=e38]
+      - img [ref=e42]
+      - img [ref=e48]
+      - img [ref=e51]
+      - img [ref=e54]
+      - img [ref=e56]
+      - img [ref=e58]
+      - img [ref=e69]
+      - img [ref=e71]
+      - img [ref=e75]
+      - img [ref=e82]
+      - img [ref=e92]
+      - img [ref=e96]
+      - img [ref=e99]
+      - img [ref=e102]
+      - img [ref=e105]
+      - img [ref=e113]
+      - img [ref=e127]
+      - img [ref=e134]
+      - img [ref=e136]
+      - img [ref=e142]
+      - img [ref=e146]
+      - img [ref=e150]
+      - img [ref=e171]
+      - img [ref=e176]
+      - img [ref=e180]
+      - img [ref=e183]
+      - img [ref=e187]
+      - img [ref=e193]
+      - img [ref=e202]
+      - img [ref=e210]
+      - img [ref=e212]
+      - img [ref=e226]
+      - img [ref=e231]
+      - img [ref=e236]
+      - img [ref=e248]
+      - img [ref=e253]
+      - img [ref=e256]
+      - img [ref=e266]
+      - img [ref=e272]
+      - img [ref=e275]
+      - img [ref=e278]
+      - img [ref=e285]
+      - img [ref=e290]
+      - img [ref=e293]
+      - img [ref=e295]
+      - img [ref=e298]
+      - img [ref=e303]
+      - img [ref=e307]
+      - img [ref=e309]
+      - img [ref=e311]
+      - img [ref=e314]
+      - img "Assist" [ref=e316]
+      - img "Lens" [ref=e320]
+      - img [ref=e331]
+      - img [ref=e336]
+      - img [ref=e345]
+      - img "Repo-icon-24px" [ref=e365]
+      - img [ref=e372]
+      - img [ref=e377]
+      - img "Directory" [ref=e388]
+      - img [ref=e396]
+      - img [ref=e405]
+      - img [ref=e408]
+      - img [ref=e409]
+      - img [ref=e410]
+      - img [ref=e415]
+      - img [ref=e424]
+      - img [ref=e434]
+      - img [ref=e441]
+      - img [ref=e446]
+      - img [ref=e451]
+      - img [ref=e459]
+      - img [ref=e467]
+      - img [ref=e475]
+      - img [ref=e483]
+      - img "Solo-20x20" [ref=e489]
+      - img [ref=e497]
+      - img [ref=e510]
+    - generic [ref=e596]:
+      - generic [ref=e597]:
+        - generic [ref=e598]:
+          - img [ref=e599]
+          - img [ref=e604]
+          - img [ref=e606]
+          - img [ref=e610]
+          - img [ref=e613]
+          - img [ref=e618]
+          - img [ref=e620]
+        - generic [ref=e622]:
+          - generic [ref=e623]:
+            - generic [ref=e624] [cursor=pointer]:
+              - img [ref=e626]
+              - paragraph [ref=e628]: Zoho MCP
+            - combobox [ref=e630]:
+              - generic [ref=e633] [cursor=pointer]: CRM-Automation-Workflow
+          - generic [ref=e635]:
+            - generic [ref=e636] [cursor=pointer]:
+              - img "MCP Service image" [ref=e637]
+              - paragraph [ref=e638]: Tools
+            - generic [ref=e639] [cursor=pointer]:
+              - img "MCP Service image" [ref=e640]
+              - paragraph [ref=e641]: Connect
+            - generic [ref=e642] [cursor=pointer]:
+              - img "MCP Service image" [ref=e643]
+              - paragraph [ref=e644]: Connection
+            - generic [ref=e645] [cursor=pointer]:
+              - img "MCP Service image" [ref=e646]
+              - paragraph [ref=e647]: Logs
+          - generic [ref=e649] [cursor=pointer]:
+            - generic [ref=e650]: J
+            - paragraph [ref=e651]: Joshua
+            - img [ref=e653]
+      - generic [ref=e865]:
+        - img "background" [ref=e866]
+        - generic [ref=e867]:
+          - generic [ref=e868]:
+            - img "home" [ref=e869]
+            - heading "Connect to Your Zoho MCP Server" [level=2] [ref=e870]
+            - paragraph [ref=e871]: Configure your Zoho MCP server across all available MCP clients.
+          - generic [ref=e872]:
+            - generic [ref=e873]:
+              - generic [ref=e874]:
+                - heading "Server URL" [level=2] [ref=e875]
+                - paragraph [ref=e876]: The URL to connect this Zoho MCP server
+              - button "Regenerate API Key" [ref=e879] [cursor=pointer]:
+                - generic [ref=e881]:
+                  - img [ref=e883]
+                  - paragraph [ref=e885]: Regenerate API Key
+            - generic [ref=e887]:
+              - generic [ref=e888]: https://crm-automation-workflow-925690913.zohomcp.com/mcp/****************/message
+              - img [ref=e891] [cursor=pointer]
+          - generic [ref=e893]:
+            - generic [ref=e894]:
+              - heading "MCP Clients" [level=2] [ref=e895]
+              - paragraph [ref=e896]: Popular AI agents that can connect to your Zoho MCP server
+            - generic [ref=e898]:
+              - tablist [ref=e899]:
+                - tab "Claude" [selected] [ref=e900] [cursor=pointer]
+                - tab "Cursor" [ref=e901] [cursor=pointer]
+                - tab "Windsurf" [ref=e902] [cursor=pointer]
+                - tab "VS Code" [ref=e903] [cursor=pointer]
+                - tab "Any Other MCP Client" [ref=e904] [cursor=pointer]
+              - tabpanel [ref=e906]:
+                - generic [ref=e907]:
+                  - heading "Connect Zoho MCP to Claude" [level=2] [ref=e908]
+                  - paragraph [ref=e909]: Link Claude with Zoho MCP, allowing it to handle real-world workflows through a secure, straightforward setup - all within your conversation window.
+                  - heading "Setting Up Zoho MCP in Claude" [level=2] [ref=e910]
+                  - paragraph [ref=e911]: "Note: Only a Claude organization admin can complete these steps. Once connected, the integration will be accessible to everyone in your Claude organization, but only you can manage the tools linked to this Zoho MCP instance."
+                  - list [ref=e912]:
+                    - listitem [ref=e913]:
+                      - text: Navigate to
+                      - link "claude.ai/settings/integrations" [ref=e915] [cursor=pointer]:
+                        - /url: https://claude.ai/settings/connectors
+                    - listitem [ref=e916]: Click on Organization integrations
+                    - listitem [ref=e917]: Select Add integration
+                    - listitem [ref=e918]: Enter a name and paste the Integration URL provided from above
+                    - listitem [ref=e919]: Click Add
+                  - heading "Accessing Zoho MCP Tools in Claude" [level=2] [ref=e921]
+                  - list [ref=e922]:
+                    - listitem [ref=e923]: Open a new chat
+                    - listitem [ref=e924]: Choose Search and tools
+                    - listitem [ref=e925]: Pick the Zoho MCP connection
+                    - listitem [ref=e926]: Select the tools you’d like to use in the chat
+                    - listitem [ref=e927]: Ask Claude to perform actions using them!
+  - generic [ref=e929]: Copied

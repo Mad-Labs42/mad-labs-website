@@ -5,6 +5,7 @@ export interface Service {
   bullets: string[];
   icon: string;
   pricing: string;
+  category: string;
 }
 
 export const services: Service[] = [
@@ -21,6 +22,7 @@ export const services: Service[] = [
     ],
     icon: "monitor",
     pricing: "Diagnostics start at $45",
+    category: "Repair",
   },
   {
     id: "small-business-websites",
@@ -36,6 +38,7 @@ export const services: Service[] = [
     ],
     icon: "globe",
     pricing: "Websites start at $1,500",
+    category: "Web",
   },
   {
     id: "wifi-network-setup",
@@ -50,6 +53,7 @@ export const services: Service[] = [
     ],
     icon: "signal",
     pricing: "Wi-Fi help starts at $105",
+    category: "Network",
   },
   {
     id: "hardware-upgrades",
@@ -63,7 +67,8 @@ export const services: Service[] = [
       "Thermal repaste, fan upgrades, and deep cleaning",
     ],
     icon: "chip",
-    pricing: "Contact us for a quote",
+    pricing: "Contact us for quote",
+    category: "Hardware",
   },
   {
     id: "security-backup",
@@ -78,6 +83,7 @@ export const services: Service[] = [
     ],
     icon: "shield",
     pricing: "Security checkups start at $95",
+    category: "Security",
   },
   {
     id: "ai-smart-tech",
@@ -92,5 +98,6 @@ export const services: Service[] = [
     ],
     icon: "bot",
     pricing: "Consultations start at $95",
+    category: "AI & Smart",
   },
 ];

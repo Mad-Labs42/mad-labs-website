@@ -1,178 +1,69 @@
-# AGENTS.md
+# AGENTS.md — MAD LABS Workspace Context
 
-## Purpose
+## About This File
 
-Maintain rigor, correctness, reproducibility, and low-risk change.
-Never trade trustworthiness for convenience.
+This file is AUTOMATICALLY LOADED by Hermes Agent at session start. It shapes how I behave in this workspace. Keep it focused on facts, conventions, and constraints.
 
-## Default Behavior
+## Memory Protocol
 
-Read this file first.
-Read `.agent/README.md` for agent-surface map and script-placement rules.
+**MEMORY.md is for LONG-TERM DURABLE FACTS ONLY:**
+- User preferences and corrections
+- Tool quirks and environment facts
+- Stable conventions and decisions
+- Paths, ports, project identity
 
-Read only:
+**DO NOT write to MEMORY.md:**
+- Session outcomes or task results
+- Temporary decisions
+- What was discussed in the last session
+- PR numbers, commit SHAs, file counts
 
-- the source files directly relevant to the task
-- the single `.agent/instructions/*` file that matches the task mode, if needed
+**Write session details to:** `Operations/Sessions/YYYY-MM-DD-HHMM-topic.md`
 
-Do not preload all instructions, policy files, or README/docs.
-Do not read session logs, task trackers, or continuity artifacts unless the user explicitly asks to read or update them.
+## Safety Rules
 
-## Automation Boundaries
+1. **NEVER delete information** — condense, combine, preserve
+2. **NEVER modify another profile's files** without explicit direction
+3. **NEVER commit secrets** to git
+4. **ALWAYS use `patch()` for targeted edits** — never `write_file()` on existing files unless replacing entirely
+5. **ALWAYS verify tool arguments** against source-of-truth before invoking
 
-- Automate low-risk, repetitive tasks when it improves reliability or token efficiency.
-- Put agent-authored helper scripts under `.agent/scripts/helpers/`.
-- Do not place project runtime or user-facing feature scripts under `.agent/scripts/helpers/`.
-- Do not place ad hoc token-saving helper scripts under `src/`, root, or other project runtime paths.
-- Keep repository-maintained agent governance scripts under `.agent/scripts/` only.
-- Before creating a new `.agent/scripts/*` file, require: concrete problem, immediate value, low blast radius, clear failure mode, and user approval.
+## Recovery Protocol (SISIC Guardrails)
 
-## When to Stop and Ask
+When a tool call fails:
 
-Stop and ask before proceeding if:
+1. **CLASSIFY**: connection error / auth error / data error / timeout / unknown
+2. **CHECK BOUNDARIES**:
+   - About to delete something you didn't create? → DON'T. Retry instead.
+   - About to modify config files? → DON'T. Retry instead.
+   - About to kill something you didn't spawn? → DON'T. Retry instead.
+   - About to reinstall packages? → DON'T. Retry instead.
+3. **RETRY**: For MCP failures, simply retry the tool call (Hermes lazy-spawns)
+4. **ESCALATE**: After 3 failures, log to Obsidian Error-Logs and STOP
+5. **NEVER "burn down the house"** to fix a blocked pipe
 
-- instructions conflict in a load-bearing way
-- the task may change methodology, architecture, or trust semantics
-- the correct behavior is unclear
-- the change may require broad refactoring not explicitly requested
-- project docs and code disagree on an important behavior
+Hard limits:
+- Max 3 recovery attempts per failure
+- Never modify .env or config.yaml as recovery
+- Never delete files not created this session
+- Never kill PIDs not spawned by this session
 
-Do not resolve major ambiguity unilaterally.
+## FROM THE BOSS MAN
 
-Escalate and ask when:
+Josh adds "FROM THE BOSS MAN" sections to memory.md files across the Obsidian vault. These are **IMMUTABLE instructions** that override any conflicting agent guidance. When agent instructions differ from BOSS MAN, the discrepancy MUST be flagged to Josh — do NOT silently choose one.
 
-- a required step would deviate from the user plan or implementation contract
-- a choice may impact architecture, cross-module behavior, or major systems
-- the request is ambiguous enough that multiple materially different implementations are possible
-- executing safely requires irreversible, destructive, or high-blast-radius actions
-- dependencies, schema, interfaces, or public behavior would change beyond requested scope
+## Project Context
 
-## Conflict Handling
+- **Workspace:** `/mnt/d/Workspaces/mad-labs-website`
+- **Stack:** Astro 5 + TypeScript strict + Tailwind v4 (CSS @import) + pnpm 10
+- **Deployment:** Cloudflare Pages (static)
+- **Visual:** CRT/neon retro — beige CRT bezel, purple screen, warm amber, green LED
+- **GitHub:** `Mad-Labs42/mad-labs-website` (remote TBD)
 
-If instructions appear to conflict:
+## LFCM (Lifecycle Manager)
 
-1. identify the conflict clearly
-2. inspect only the most relevant source and instruction file
-3. if the conflict affects important project behavior, stop and ask
-
-Do not invent policy.
-Do not force a resolution silently.
-
-## Code Style Expectations
-
-Write the smallest code that preserves:
-
-- correctness
-- clarity
-- maintainability
-- stability
-
-Required execution behavior:
-
-- Run `pnpm check` and `pnpm build` after each edit batch on touched files before claiming success.
-- Run a correctness check appropriate to each changed path before claiming success.
-- Update logically affected call sites, tests, docs, and configuration when edits change behavior or interfaces.
-- Do not leave known lint or correctness failures unaddressed without explicitly reporting them.
-
-Avoid unnecessary abstraction, wrappers, indirection, and ceremony.
-
-## Working Style
-
-- Prefer narrow, targeted reads.
-- Prefer small, auditable patches.
-- Avoid cosmetic churn.
-- Verify before claiming success.
-- State uncertainty explicitly.
-- Treat linting and correctness checks as required work, not optional follow-up.
-
-## Response Token Discipline
-
-- Use the fewest words that still preserve full meaning and required detail.
-- Remove filler, repetition, and restatement.
-- Never omit critical facts, risks, assumptions, blockers, or required user questions to save tokens.
-- If brevity conflicts with completeness, keep completeness and be concise elsewhere.
-
-## `.agent/instructions` Dispatch
-
-Read `.agent/instructions/<file>` matching the current session mode:
-
-- `agent_session_bootstrap.md` — executed at session start for all modes
-- `implementation_mode_harness.md` — loaded when implementation is approved
-- `investigation_only_harness.md` — loaded when in investigate/plan-only mode
-
-Do not read all `.agent/instructions/*` files for a normal task — read only the mode-appropriate harness.
-
-## Output
-
-Report briefly:
-
-- what changed
-- what was verified
-- what remains uncertain
-
-Use only needed sections from: Outcome, Changes, Verification, Risks, Questions, Next Step.
-If blocked only by user input, respond with Questions only.
-Include Questions whenever answers are required to proceed; use `NA` when no questions are needed but the section is required.
-
-Optional footer rule:
-
-- If and only if the agent created or edited user-benefit planning/support files (for example pre-implementation plans, implementation plans, validations, walkthroughs, task lists, or TODOs), append one final bottom-only section named `Files Created/Edited for You`.
-- That section must appear at the very end of the response and nowhere else.
-- Do not include that section when no such files were created or edited.
-
-When blocked and asking Questions, include concise context for each question:
-
-- what is blocked and why it blocks progress now
-- immediate concerns the user should know
-- impact level (`low|medium|high|major`) if the answer could change scope or implementation
-- impact summary when relevant (major rewrite, architecture change, destructive action, file deletion, or cross-system effects)
-
-## Key Project Facts
-
-### Stack
-- **Framework:** Astro + TypeScript
-- **Package manager:** pnpm
-- **Styling:** Tailwind CSS v4 via `@tailwindcss/vite` plugin + CSS `@import` only
-- **No:** `@astrojs/tailwind`, `tailwind.config.*`, or React-first patterns
-- **Deployment target:** Cloudflare Pages (static)
-- **`/functions` at root:** reserved for future Cloudflare Pages Functions — do not touch
-
-### Repo Paths
-- **WSL:** `/mnt/d/Workspaces/mad-labs-website`
-- **Windows:** `D:\Workspaces\mad-labs-website`
-
-### Important Source Files
-- `src/pages/index.astro` — homepage
-- `src/pages/services.astro` — services page
-- `src/pages/about.astro` — about page
-- `src/pages/contact.astro` — contact page
-- `src/layouts/BaseLayout.astro` — base layout wrapper
-- `src/components/CrtHero.astro` — CRT hero section
-- `src/components/CrtTypingLabel.astro` — CRT typing animation label
-- `src/components/CrtDivider.astro` — CRT divider component
-- `src/components/CrtTaskbar.astro` — CRT taskbar component
-- `src/styles/global.css` — global styles and design tokens
-- `astro.config.mjs` — Astro configuration
-
-### Design Tokens & Styling
-- Global styles and design tokens live in `src/styles/global.css`
-- CRT hero styling is component-local in `CrtHero.astro`
-- Tailwind comes through Vite plugin plus CSS import only — no config file
-- Fonts: Jersey 25, Monofett, VT323, local Early GameBoy
-
-### Dev Server
-- `pnpm dev --host 0.0.0.0`
-
-### MCP Availability
-- **Figma MCP:** available but gated — only activate when user says **"FIGMA is a GO!"**
-- **Cloudflare API MCP:** disabled unless user explicitly approves
-- **Figma-Desktop MCP:** available when Figma Desktop app is running on Windows (reachable from WSL)
-- **Playwright MCP:** available for browser checks
-- **Cloudflare Docs MCP:** available for reference
-
-### What This Project Is NOT
-- Not Next.js
-- Not React-first
-- Not database-backed
-- Not Vercel/Netlify targeted
-- No legacy Tailwind config style
+- **NOT a daemon.** Event-driven post-cron sweeper.
+- Triggered 2 min after every cron job exits.
+- Sweeps for 5 minutes, then exits.
+- 7-condition safety check before any kill.
+- See: `Stack-Docs/LFCM/` for full documentation.

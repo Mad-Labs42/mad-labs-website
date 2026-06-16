@@ -1,0 +1,336 @@
+---
+// CrtScreenOverlays — passive atmosphere + glitch overlay layers for the CRT screen.
+//
+// Layers (bottom → top): bevel-inner(17) < scanlines(19) < vignette(20) <
+// phosphor-dots(21) < tint(22) < bands(23) < glitch-chroma(31) <
+// glitch-static(32) < glitch-tear(33) < glitch-slices(34).
+//
+// All elements are decorative (aria-hidden) and pointer-transparent.
+// State coupling: parent CrtHero's state machine toggles classes on
+// [data-crt-hero] / .crt-screen (is-stable, is-crt-glitch-minor,
+// is-crt-glitch-major). Those live outside this component's scope, so the
+// activation rules below use :global() for the ancestor part — the same
+// pattern used by CrtParticles / CrtCornerBrackets / CrtAtomLogo.
+//
+// NOT included here: .crt-glare (CrtHero's JS queries and mutates it for the
+// mouse-responsive glare effect) and the jolt animations on .crt-content /
+// .crt-taskbar-area (they target elements that remain in CrtHero).
+---
+
+<div class="crt-glitch-chroma" aria-hidden="true"></div>
+<div class="crt-glitch-static" aria-hidden="true"></div>
+<div class="crt-glitch-tear" aria-hidden="true"></div>
+<div class="crt-glitch-slices" aria-hidden="true"></div>
+
+<div class="crt-tint" aria-hidden="true"></div>
+<div class="crt-bands" aria-hidden="true"></div>
+<div class="crt-phosphor-dots" aria-hidden="true"></div>
+<div class="crt-scanlines" aria-hidden="true"></div>
+<div class="crt-vignette" aria-hidden="true"></div>
+<div class="crt-bevel-inner" aria-hidden="true"></div>
+
+<style>
+  /* ─── Glitch Overlay Layers ─────────────────────────────── */
+  .crt-glitch-chroma,
+  .crt-glitch-static,
+  .crt-glitch-tear,
+  .crt-glitch-slices {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .crt-glitch-chroma {
+    z-index: 31;
+    mix-blend-mode: screen;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 30, 120, 0.15) 0%,
+      transparent 20%,
+      transparent 80%,
+      rgba(0, 255, 170, 0.15) 100%
+    );
+  }
+
+  .crt-glitch-static {
+    z-index: 32;
+    background-image:
+      linear-gradient(transparent, transparent),
+      repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 1px, rgba(0, 0, 0, 0.04) 1px 3px);
+    mix-blend-mode: screen;
+  }
+
+  .crt-glitch-tear {
+    z-index: 33;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 24%,
+      rgba(255, 255, 255, 0.14) 26%,
+      transparent 28%,
+      transparent 54%,
+      rgba(255, 255, 255, 0.1) 56%,
+      transparent 58%,
+      transparent 100%
+    );
+  }
+
+  .crt-glitch-slices {
+    z-index: 34;
+    background: linear-gradient(
+      180deg,
+      transparent 0 12%,
+      rgba(255, 255, 255, 0.08) 12% 14%,
+      transparent 14% 38%,
+      rgba(255, 255, 255, 0.06) 38% 40%,
+      transparent 40% 67%,
+      rgba(255, 255, 255, 0.08) 67% 69%,
+      transparent 69% 100%
+    );
+  }
+
+  /* ─── Glitch Activation (state classes set on .crt-screen by parent JS) ─── */
+  :global(.is-crt-glitch-minor) .crt-glitch-chroma,
+  :global(.is-crt-glitch-minor) .crt-glitch-static,
+  :global(.is-crt-glitch-minor) .crt-glitch-tear,
+  :global(.is-crt-glitch-minor) .crt-glitch-slices {
+    opacity: 1;
+  }
+
+  :global(.is-crt-glitch-minor) .crt-glitch-chroma {
+    animation: crtChromaSmall 0.16s steps(2, end) infinite;
+  }
+
+  :global(.is-crt-glitch-minor) .crt-glitch-static {
+    animation: crtStaticFuzz 0.1s steps(2, end) infinite;
+  }
+
+  :global(.is-crt-glitch-minor) .crt-glitch-tear {
+    animation: crtTearScan 0.16s linear infinite;
+  }
+
+  :global(.is-crt-glitch-major) .crt-glitch-chroma,
+  :global(.is-crt-glitch-major) .crt-glitch-static,
+  :global(.is-crt-glitch-major) .crt-glitch-tear,
+  :global(.is-crt-glitch-major) .crt-glitch-slices {
+    opacity: 1;
+  }
+
+  :global(.is-crt-glitch-major) .crt-glitch-chroma {
+    animation: crtChromaHard 0.08s steps(2, end) infinite;
+  }
+
+  :global(.is-crt-glitch-major) .crt-glitch-static {
+    animation: crtStaticHard 0.05s steps(2, end) infinite;
+  }
+
+  :global(.is-crt-glitch-major) .crt-glitch-tear {
+    animation: crtTearHard 0.08s linear infinite;
+  }
+
+  :global(.is-crt-glitch-major) .crt-glitch-slices {
+    animation: crtSliceJump 0.08s steps(2, end) infinite;
+  }
+
+  /* ─── Passive Atmosphere Layers ─────────────────────────── */
+  .crt-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 22;
+    pointer-events: none;
+    border-radius: 30px;
+    mix-blend-mode: soft-light;
+    background: linear-gradient(
+      180deg,
+      rgba(60, 0, 80, 0.08) 0%,
+      rgba(20, 0, 60, 0.04) 50%,
+      rgba(60, 0, 80, 0.08) 100%
+    );
+  }
+
+  .crt-bands {
+    position: absolute;
+    inset: 0;
+    z-index: 23;
+    pointer-events: none;
+    opacity: 0.78;
+    mix-blend-mode: screen;
+    will-change: background-position;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 48px,
+      rgba(255, 255, 255, 0.012) 48px,
+      rgba(255, 255, 255, 0.012) 50px
+    );
+    animation: crtHeroRoll 10.7s linear infinite;
+  }
+
+  .crt-phosphor-dots {
+    position: absolute;
+    inset: 0;
+    z-index: 21;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  .crt-scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    opacity: 0.72;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 2px,
+      rgba(0, 0, 0, 0.12) 2px,
+      rgba(0, 0, 0, 0.12) 3px
+    );
+  }
+
+  .crt-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at top right, rgba(0, 0, 0, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(0, 0, 0, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(0, 0, 0, 0.18) 0%, transparent 50%);
+  }
+
+  .crt-bevel-inner {
+    position: absolute;
+    inset: 0;
+    z-index: 17;
+    pointer-events: none;
+    border-radius: 30px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 1px 0 0 rgba(255, 255, 255, 0.05),
+      inset -1px 0 0 rgba(255, 255, 255, 0.05),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+  }
+
+  /* ─── Stable-State Enhancements (parent sets is-stable on [data-crt-hero]) ─── */
+  :global(.is-stable) .crt-bands {
+    animation-duration: 10.7s;
+    opacity: 0.92;
+  }
+
+  :global(.is-stable) .crt-scanlines {
+    opacity: 0.82;
+  }
+
+  :global(.is-stable .crt-screen) .crt-bands {
+    animation-duration: 10.7s;
+    opacity: 1;
+  }
+
+  :global(.is-stable .crt-screen) .crt-scanlines {
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 2px,
+      rgba(0, 0, 0, 0.2) 2px,
+      rgba(0, 0, 0, 0.2) 3px
+    );
+  }
+
+  :global(.is-stable .crt-screen) .crt-phosphor-dots {
+    opacity: 1;
+    filter: brightness(1.14);
+  }
+
+  /* ─── Keyframes (only those used by layers in this component) ─── */
+  @keyframes crtHeroRoll {
+    0% {
+      background-position: 0 0;
+    }
+
+    100% {
+      background-position: 0 300px;
+    }
+  }
+
+  @keyframes crtChromaSmall {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    50% {
+      transform: translateX(1px);
+    }
+  }
+
+  @keyframes crtChromaHard {
+    0%,
+    100% {
+      transform: translateX(-3px);
+    }
+
+    50% {
+      transform: translateX(4px);
+    }
+  }
+
+  @keyframes crtStaticFuzz {
+    0%,
+    100% {
+      opacity: 0.18;
+    }
+
+    50% {
+      opacity: 0.38;
+    }
+  }
+
+  @keyframes crtStaticHard {
+    0%,
+    100% {
+      opacity: 0.32;
+    }
+
+    50% {
+      opacity: 0.66;
+    }
+  }
+
+  @keyframes crtTearScan {
+    0% {
+      transform: translateY(-8px);
+    }
+
+    100% {
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes crtTearHard {
+    0% {
+      transform: translateY(-18px);
+    }
+
+    100% {
+      transform: translateY(18px);
+    }
+  }
+
+  @keyframes crtSliceJump {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    50% {
+      transform: translateX(-4px);
+    }
+  }
+</style>

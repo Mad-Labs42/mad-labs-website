@@ -1,0 +1,17 @@
+{
+  "name": "MAD LABS",
+  "short_name": "MAD LABS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0618",
+  "theme_color": "#e89050",
+  "description": "Computer repair, diagnostics, IT support, and AI automation in Greater Cincinnati.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
