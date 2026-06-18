@@ -1,0 +1,21 @@
+---
+export interface Props {
+  name: 'clock' | 'check' | 'shield' | 'users';
+  class?: string;
+}
+
+const { name, class: className = '' } = Astro.props;
+
+const icons: Record<string, string> = {
+  clock: `<circle cx="8" cy="8" r="6"/><path d="M8 5v3.5l2 1.5"/>`,
+  check: `<path d="M4 8.5 6.5 11 12 5.5"/>`,
+  shield: `<path d="M8 2.5 2 5.5v3c0 4.2 2.5 7.5 6 8.5 3.5-1 6-4.3 6-8.5v-3L8 2.5Z"/><path d="m6 8 1.5 1.5 3-3"/>`,
+  users: `<path d="M3 10h14"/><path d="M10 3v14"/>`,
+};
+---
+
+<span class={`trust-icon ${className}`} aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <g set:html={icons[name] || ''}></g>
+  </svg>
+</span>

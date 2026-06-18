@@ -2,18 +2,17 @@
 // CrtAtomLogo — the animated MAD LABS atom: wireframe orbits, glowing nucleus,
 // and three traveling glow highlights (orange / pink / green).
 //
-// Decorative (aria-hidden); the brand name is carried by the wordmark <h1>.
+// Decorative (aria-hidden); the brand name is carried by the active hero heading.
 // State coupling: parent CrtHero sets is-atom-revealing → is-stable phase
 // classes and is-shutting-down / is-powered-off on [data-crt-hero]; the
 // :global() rules below drive reveal, neon flicker, and power-off hiding.
 //
-// NOTE: the SVG gradient id (nucleus-grad) is document-global. This
-// component must only be rendered once per page (it is — by CrtHero).
+const { gradientId = "nucleus-grad" } = Astro.props;
 ---
 
 <svg class="crt-atom" viewBox="0 0 176 176" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="nucleus-grad" cx="50%" cy="50%" r="50%">
+    <radialGradient id={gradientId} cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#ffffff"></stop>
       <stop offset="45%" stop-color="#d8b4fe"></stop>
       <stop offset="100%" stop-color="#9333ea"></stop>
@@ -72,7 +71,7 @@
       transform="rotate(-60 88 88)"></ellipse>
   </g>
 
-  <circle class="atom-nucleus-halo" cx="88" cy="88" r="14" fill="url(#nucleus-grad)"></circle>
+  <circle class="atom-nucleus-halo" cx="88" cy="88" r="14" fill={`url(#${gradientId})`}></circle>
   <circle class="atom-nucleus-core" cx="88" cy="88" r="7" fill="#f8f0ff"></circle>
 </svg>
 
@@ -110,7 +109,7 @@
 
   .atom-orbits {
     --atom-ring-white: #fbf8ff;
-    --atom-glow-orange: #ff9d3d;
+    --atom-glow-blue: #4de7ff;
     --atom-glow-pink: #ff4fd8;
     --atom-glow-green: #00f07a;
 
@@ -167,10 +166,10 @@
   }
 
   .atom-orbit-highlight--one {
-    stroke: var(--atom-glow-orange);
-    filter: drop-shadow(0 0 1px rgba(255, 185, 110, 1))
-      drop-shadow(0 0 3px rgba(255, 157, 61, 0.95)) drop-shadow(0 0 7px rgba(255, 157, 61, 0.75))
-      drop-shadow(0 0 14px rgba(255, 157, 61, 0.42)) drop-shadow(0 0 22px rgba(255, 157, 61, 0.18));
+    stroke: var(--atom-glow-blue);
+    filter: drop-shadow(0 0 1px rgba(160, 240, 255, 1))
+      drop-shadow(0 0 3px rgba(77, 231, 255, 0.95)) drop-shadow(0 0 7px rgba(77, 231, 255, 0.75))
+      drop-shadow(0 0 14px rgba(77, 231, 255, 0.42)) drop-shadow(0 0 22px rgba(77, 231, 255, 0.18));
     animation-duration: 4.6s, 1.7s;
     animation-delay: -0.35s, 0s;
   }

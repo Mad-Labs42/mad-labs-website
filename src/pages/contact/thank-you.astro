@@ -314,3 +314,27 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     }
   }
 </style>
+
+<script>
+  // Reduce hydration mismatch noise by ensuring initial state matches server render
+  document.addEventListener('DOMContentLoaded', () => {
+    const bookingView = document.getElementById('ty-booking-view');
+    if (bookingView) {
+      // Only show if URL params indicate booking (client-side enhancement)
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('start_time')) {
+        bookingView.setAttribute('hidden', '');
+      }
+    }
+  });
+</script>
+
+<script>
+  // Enhance aria-live for better screen reader support (per audit)
+  document.addEventListener('DOMContentLoaded', () => {
+    const screen = document.querySelector('.ty-screen');
+    if (screen) {
+      screen.setAttribute('aria-live', 'polite');
+    }
+  });
+</script>

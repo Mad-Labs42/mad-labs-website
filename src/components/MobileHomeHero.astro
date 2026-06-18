@@ -1,0 +1,247 @@
+---
+// Mobile-only homepage hero for phones (< 768px).
+// Reuses the exact MAD LABS atom symbol. Content is intentionally minimal so it
+// does not duplicate the CTAs and copy that appear further down the page.
+import CrtAtomLogo from "./CrtAtomLogo.astro";
+import MadLabsGlassNav from "./MadLabsGlassNav.astro";
+---
+
+<section class="mobile-hero" aria-label="MAD LABS homepage">
+  <div class="mobile-hero-inner">
+    <!-- Exact MAD LABS atom from CrtHero (unique gradientId avoids duplicate IDs) -->
+    <div class="mobile-atom-slot">
+      <CrtAtomLogo gradientId="nucleus-grad-mobile" />
+    </div>
+
+    <!-- Wordmark -->
+    <h1 class="mobile-wordmark">MAD LABS</h1>
+
+    <!-- Brand divider: > \ < -->
+    <div class="mobile-divider" aria-hidden="true">
+      <span class="mobile-divider-line mobile-divider-line--left"></span>
+      <span class="mobile-divider-mark">&gt; \ &lt;</span>
+      <span class="mobile-divider-line mobile-divider-line--right"></span>
+    </div>
+
+    <!-- Exact tagline from CrtHero.astro -->
+    <p class="mobile-tagline">Computer Repair, Tech Support, &amp; AI Solutions</p>
+
+    <!-- Primary mobile navigation -->
+    <div class="mobile-hero-nav-slot">
+      <MadLabsGlassNav context="mobile-hero" />
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="mobile-scroll-indicator" aria-hidden="true">
+      <svg class="mobile-scroll-indicator__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+      <span class="mobile-scroll-indicator__text">Scroll</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mobile-hero {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #3a2e5c 0%, #2c234a 35%, #1c1638 75%, #0c0820 100%);
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .mobile-hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* Atom */
+  .mobile-atom-slot {
+    width: clamp(120px, 38vw, 160px);
+    height: clamp(120px, 38vw, 160px);
+    margin: 0 auto 1.25rem;
+  }
+
+  .mobile-atom-slot :global(.crt-atom) {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    animation: crtHeroNeonFlicker 6s infinite;
+  }
+
+  /* Boost atom orbit highlights for mobile visibility and true button colors */
+  .mobile-hero-inner .mobile-atom-slot :global(.atom-orbit-highlight) {
+    stroke-width: 5.5;
+    mix-blend-mode: normal;
+  }
+
+  .mobile-hero-inner .mobile-atom-slot :global(.atom-orbit-highlight--one) {
+    filter:
+      drop-shadow(0 0 1px rgba(160, 240, 255, 1))
+      drop-shadow(0 0 3px rgba(77, 231, 255, 0.98))
+      drop-shadow(0 0 7px rgba(77, 231, 255, 0.85))
+      drop-shadow(0 0 14px rgba(77, 231, 255, 0.55))
+      drop-shadow(0 0 24px rgba(77, 231, 255, 0.28));
+  }
+
+  .mobile-hero-inner .mobile-atom-slot :global(.atom-orbit-highlight--two) {
+    filter:
+      drop-shadow(0 0 1px rgba(255, 210, 245, 1))
+      drop-shadow(0 0 3px rgba(255, 79, 216, 0.98))
+      drop-shadow(0 0 7px rgba(255, 79, 216, 0.85))
+      drop-shadow(0 0 14px rgba(255, 79, 216, 0.55))
+      drop-shadow(0 0 24px rgba(255, 79, 216, 0.28));
+  }
+
+  .mobile-hero-inner .mobile-atom-slot :global(.atom-orbit-highlight--three) {
+    filter:
+      drop-shadow(0 0 1px rgba(205, 255, 228, 1))
+      drop-shadow(0 0 3px rgba(0, 240, 122, 0.98))
+      drop-shadow(0 0 7px rgba(0, 240, 122, 0.85))
+      drop-shadow(0 0 14px rgba(0, 240, 122, 0.55))
+      drop-shadow(0 0 24px rgba(0, 240, 122, 0.28));
+  }
+
+  /* Wordmark */
+  .mobile-wordmark {
+    margin: 0 0 0.75rem;
+    color: #ffffff;
+    font-family: "Monofett", "Jersey 25", monospace;
+    font-size: clamp(2.8rem, 12vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow:
+      0 0 20px rgba(232, 144, 80, 0.5),
+      0 0 40px rgba(147, 51, 234, 0.4);
+  }
+
+  /* Divider: > \ < */
+  .mobile-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(90%, 340px);
+    gap: 0.5rem;
+    margin: 0 auto 1rem;
+  }
+
+  .mobile-divider-line {
+    display: block;
+    flex: 1 1 0;
+    height: 2px;
+    border-radius: 999px;
+    background: #f79e55;
+    box-shadow:
+      0 0 4px rgba(247, 158, 85, 0.52),
+      0 0 10px rgba(247, 158, 85, 0.24);
+  }
+
+  .mobile-divider-mark {
+    flex: 0 0 auto;
+    color: #f79e55;
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
+    font-size: clamp(0.9rem, 3.4vw, 1.1rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.075em;
+    text-shadow:
+      0 0 4px rgba(247, 158, 85, 0.46),
+      0 0 9px rgba(247, 158, 85, 0.22);
+  }
+
+  /* Tagline */
+  .mobile-tagline {
+    margin: 0 0 1.5rem;
+    color: #c8b8e0;
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
+    font-size: clamp(0.95rem, 4vw, 1.15rem);
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  /* Mobile nav slot */
+  .mobile-hero-nav-slot {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  /* Scroll indicator */
+  .mobile-scroll-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-top: 2rem;
+    color: rgba(247, 158, 85, 0.72);
+    opacity: 0.85;
+  }
+
+  .mobile-scroll-indicator__chevron {
+    width: 22px;
+    height: 22px;
+    animation: mobileScrollBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(247, 158, 85, 0.35));
+  }
+
+  .mobile-scroll-indicator__text {
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  @keyframes mobileScrollBounce {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+
+    50% {
+      transform: translateY(5px);
+      opacity: 1;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-atom-slot :global(.crt-atom) {
+      animation: none;
+    }
+
+    .mobile-scroll-indicator__chevron {
+      animation: none;
+    }
+  }
+
+  @keyframes crtHeroNeonFlicker {
+    0%,
+    89%,
+    92%,
+    95%,
+    100% {
+      opacity: 1;
+    }
+
+    90%,
+    93%,
+    96% {
+      opacity: 0.9;
+    }
+  }
+</style>

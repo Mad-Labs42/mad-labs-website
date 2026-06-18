@@ -86,18 +86,18 @@ export const services: Service[] = [
     category: "Security",
   },
   {
-    id: "ai-smart-tech",
-    name: "AI & Smart Tech Help",
+    id: "ai-agents-local-ai",
+    name: "Custom Agents & Local AI Setup",
     shortDescription:
-      "Practical AI setup and smart-home configuration for homeowners and very small businesses.",
+      "Custom AI systems built for you — agents that run locally, models you own, workflows that actually work.",
     bullets: [
-      "AI assistant setup — ChatGPT, voice assistants, and automation tools",
-      "Smart-home device installation and integration",
-      "Light workflow automation for repetitive tasks",
-      "Website chatbot setup for customer inquiries",
+      "Custom AI agents — Hermes, OpenClaw, AgentZero; orchestration, MCP servers, tool ecosystems",
+      "Local LLM infrastructure — llama.cpp, Ollama, vLLM; model selection, quantization, GPU/CPU tuning, full privacy",
+      "Vibe coding setup — Claude Code, Cursor, Windsurf; skills authoring, MCP integration, background agent workflows",
+      "AI workflow automation — custom integrations, agent pipelines, and tooling tailored to your stack",
     ],
     icon: "bot",
-    pricing: "Consultations start at $95",
-    category: "AI & Smart",
+    pricing: "Consultation $95",
+    category: "AI",
   },
 ];

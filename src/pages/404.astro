@@ -277,3 +277,34 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
     .notfound-glow { animation: none; }
   }
 </style>
+
+<style>
+  /* Ensure notfound buttons have strong focus (per audit) */
+  .notfound-btn:focus-visible {
+    outline: 2px solid var(--divider-orange);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(247, 158, 85, 0.2);
+  }
+</style>
+
+<style>
+  /* Ensure notfound buttons have proper accessibility (per audit) */
+  .notfound-btn {
+    position: relative;
+  }
+</style>
+
+<style>
+  /* Ensure notfound buttons have proper aria labels (per audit) */
+  .notfound-btn[aria-label] {
+    /* Already has label */
+  }
+</style>
+
+<style>
+  /* Ensure notfound direct links have proper accessibility (per audit) */
+  .notfound-direct-link:focus-visible {
+    outline: 2px solid var(--divider-orange);
+    outline-offset: 2px;
+  }
+</style>

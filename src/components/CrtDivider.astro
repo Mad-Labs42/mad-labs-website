@@ -9,6 +9,9 @@
 </div>
 
 <script>
+  if (document.documentElement.dataset.homeHero !== "crt") {
+    // Mobile-safe homepage selection: keep CRT divider listeners inert unless CRT is selected.
+  } else {
   const dividerCandidate = document.querySelector("[data-crt-divider]");
 
   if (dividerCandidate instanceof HTMLElement) {
@@ -61,6 +64,7 @@
       },
       { once: true },
     );
+  }
   }
 </script>
 

@@ -1,0 +1,382 @@
+---
+export interface Props {
+  context?: 'mobile-hero' | 'crt-taskbar';
+  currentPath?: string;
+}
+
+const { context = 'mobile-hero', currentPath = Astro.url.pathname } = Astro.props as Props;
+
+const navItems = [
+  {
+    label: 'Services',
+    href: '/services/',
+    colorClass: 'services',
+    icon: 'chip',
+  },
+  {
+    label: 'About',
+    href: '/about/',
+    colorClass: 'about',
+    icon: 'profile',
+  },
+  {
+    label: 'Contact',
+    href: '/contact/',
+    colorClass: 'contact',
+    icon: 'message',
+  },
+];
+
+const isActive = (href: string) =>
+  currentPath === href ||
+  (currentPath.startsWith(href.slice(0, -1)) && href !== '/services/');
+---
+
+<nav
+  class="madlabs-glass-nav"
+  class:list={[
+    { 'is-crt-taskbar': context === 'crt-taskbar' },
+    { 'is-mobile-hero': context === 'mobile-hero' },
+  ]}
+  aria-label="Primary navigation"
+>
+  {
+    navItems.map((item) => {
+      const active = isActive(item.href);
+      return (
+        <a
+          href={item.href}
+          class:list={[
+            'madlabs-glass-nav__item',
+            `madlabs-glass-nav__item--${item.colorClass}`,
+            { 'is-active': active },
+          ]}
+          {...(active ? { 'aria-current': 'page' } : {})}
+        >
+          <span class="madlabs-glass-nav__icon" aria-hidden="true">
+            {item.icon === 'chip' && (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 12h.01M12 12h.01M18 12h.01M8 16h8a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2z" />
+                <path d="M9 6V4M15 6V4M9 20v-2M15 20v-2M20 9h2M20 15h2M2 9h2M2 15h2" />
+              </svg>
+            )}
+            {item.icon === 'profile' && (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            )}
+            {item.icon === 'message' && (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            )}
+          </span>
+          <span class="madlabs-glass-nav__label">{item.label}</span>
+        </a>
+      );
+    })
+  }
+</nav>
+
+<style>
+  .madlabs-glass-nav {
+    /* Mobile defaults (full density) */
+    --ml-nav-width: min(100%, 360px);
+    --ml-nav-item-min-height: 78px;
+    --ml-nav-icon-size: 26px;
+    --ml-nav-label-size: clamp(0.72rem, 3vw, 0.82rem);
+    --ml-nav-padding-y: 0.65rem;
+    --ml-nav-padding-x: 0.25rem;
+    --ml-nav-radius: 18px;
+    --ml-nav-gap: 0.35rem;
+    --ml-nav-glow-strength: 1;
+    --ml-nav-divider-opacity: 0.38;
+
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    width: var(--ml-nav-width);
+    border-radius: var(--ml-nav-radius);
+    background:
+      linear-gradient(180deg, rgba(76, 54, 124, 0.42) 0%, rgba(18, 13, 42, 0.78) 100%),
+      radial-gradient(circle at 50% 0%, rgba(190, 130, 255, 0.22) 0%, transparent 58%);
+    border: 1px solid rgba(205, 155, 255, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(168, 85, 247, 0.22),
+      0 0 22px rgba(168, 85, 247, 0.34),
+      0 16px 38px rgba(5, 0, 20, 0.48),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 0 -1px 0 rgba(255, 150, 80, 0.12);
+    overflow: hidden;
+    transition: box-shadow 0.18s ease-out, transform 0.18s ease-out;
+    will-change: transform;
+  }
+
+  .madlabs-glass-nav::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 34%),
+      radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 42%);
+    opacity: 0.75;
+  }
+
+  @supports (backdrop-filter: blur(12px)) {
+    .madlabs-glass-nav {
+      backdrop-filter: blur(12px) saturate(1.15);
+    }
+  }
+
+  .madlabs-glass-nav__item {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ml-nav-gap);
+    min-height: var(--ml-nav-item-min-height);
+    padding: var(--ml-nav-padding-y) var(--ml-nav-padding-x);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.16s ease-out, transform 0.16s cubic-bezier(0.18, 0.84, 0.24, 1);
+    outline: none;
+    min-width: 0;
+  }
+
+  .madlabs-glass-nav__item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 18%;
+    height: 64%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(205, 155, 255, var(--ml-nav-divider-opacity)), transparent);
+    pointer-events: none;
+  }
+
+  .madlabs-glass-nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ml-nav-icon-size);
+    height: var(--ml-nav-icon-size);
+    transition: transform 0.16s ease-out, filter 0.16s ease-out;
+  }
+
+  .madlabs-glass-nav__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .madlabs-glass-nav__label {
+    font-family: 'Jersey 25', 'Arial Rounded MT Bold', 'Trebuchet MS', monospace;
+    font-size: var(--ml-nav-label-size);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+    transition: color 0.16s ease-out, text-shadow 0.16s ease-out;
+  }
+
+  /* Color system */
+  .madlabs-glass-nav__item--services { color: #4de7ff; }
+  .madlabs-glass-nav__item--about { color: #ff4fd8; }
+  .madlabs-glass-nav__item--contact { color: #00f07a; }
+
+  .madlabs-glass-nav__item--services .madlabs-glass-nav__icon {
+    filter: drop-shadow(0 0 3px rgba(77, 231, 255, calc(0.45 * var(--ml-nav-glow-strength))))
+            drop-shadow(0 0 7px rgba(77, 231, 255, calc(0.22 * var(--ml-nav-glow-strength))));
+  }
+  .madlabs-glass-nav__item--about .madlabs-glass-nav__icon {
+    filter: drop-shadow(0 0 3px rgba(255, 79, 216, calc(0.45 * var(--ml-nav-glow-strength))))
+            drop-shadow(0 0 7px rgba(255, 79, 216, calc(0.22 * var(--ml-nav-glow-strength))));
+  }
+  .madlabs-glass-nav__item--contact .madlabs-glass-nav__icon {
+    filter: drop-shadow(0 0 3px rgba(0, 240, 122, calc(0.45 * var(--ml-nav-glow-strength))))
+            drop-shadow(0 0 7px rgba(0, 240, 122, calc(0.22 * var(--ml-nav-glow-strength))));
+  }
+
+  .madlabs-glass-nav__item--services .madlabs-glass-nav__label { text-shadow: 0 0 5px rgba(77, 231, 255, calc(0.35 * var(--ml-nav-glow-strength))); }
+  .madlabs-glass-nav__item--about .madlabs-glass-nav__label { text-shadow: 0 0 5px rgba(255, 79, 216, calc(0.35 * var(--ml-nav-glow-strength))); }
+  .madlabs-glass-nav__item--contact .madlabs-glass-nav__label { text-shadow: 0 0 5px rgba(0, 240, 122, calc(0.35 * var(--ml-nav-glow-strength))); }
+
+  /* Interactions */
+  .madlabs-glass-nav__item:hover,
+  .madlabs-glass-nav__item:focus-visible {
+    transform: scale(1.03);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .madlabs-glass-nav__item:hover .madlabs-glass-nav__icon,
+  .madlabs-glass-nav__item:focus-visible .madlabs-glass-nav__icon {
+    transform: translateY(-1px) scale(1.08);
+    filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 10px currentColor);
+  }
+
+  .madlabs-glass-nav__item:hover .madlabs-glass-nav__label,
+  .madlabs-glass-nav__item:focus-visible .madlabs-glass-nav__label {
+    text-shadow:
+      0 0 6px currentColor,
+      0 0 14px currentColor,
+      0 0 22px currentColor;
+  }
+
+  .madlabs-glass-nav__item:active {
+    transform: scale(0.985);
+    transition-duration: 0.08s;
+  }
+
+  .madlabs-glass-nav:has(.madlabs-glass-nav__item:focus-visible) {
+    box-shadow:
+      0 0 0 2px #4de7ff,
+      0 0 22px rgba(168, 85, 247, 0.42),
+      0 16px 38px rgba(5, 0, 20, 0.48),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 0 -1px 0 rgba(255, 150, 80, 0.12);
+  }
+
+  /* ============================================
+     CRT Taskbar Context — Premium Frosted Lavender Glass
+     ============================================ */
+  .madlabs-glass-nav.is-crt-taskbar {
+    /* CRT sizing tokens — viewport-width based so the taskbar scales
+       proportionally with the CRT housing as it resizes.
+       Restored to a readable, visually present baseline. */
+    --ml-nav-item-min-height: clamp(30px, 3.1vw, 40px);
+    --ml-nav-icon-size: clamp(16px, 1.55vw, 20px);
+    --ml-nav-label-size: clamp(0.78rem, 0.95vw, 0.9rem);
+    --ml-nav-label-letter-spacing: 0.12em;
+    --ml-nav-label-weight: 700;
+    --ml-nav-padding-y: clamp(4px, 0.55vw, 7px);
+    --ml-nav-padding-x: clamp(4px, 0.5vw, 8px);
+    --ml-nav-radius: clamp(4px, 0.6vw, 8px);
+    --ml-nav-gap: clamp(3px, 0.35vw, 5px);
+    --ml-nav-glow-strength: 0.94;
+    --ml-nav-divider-opacity: 0.88;
+
+    /* Frosted Lavender Glass Surface */
+    background:
+      linear-gradient(
+        180deg,
+        var(--ml-nav-crt-surface-top) 0%,
+        var(--ml-nav-crt-surface-mid) 48%,
+        var(--ml-nav-crt-surface-bottom) 100%
+      ),
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(200, 160, 255, 0.18) 0%,
+        transparent 65%
+      );
+
+    border: 1px solid var(--ml-nav-crt-border);
+    box-shadow:
+      0 0 0 1px rgba(200, 160, 255, 0.25),
+      0 0 18px var(--ml-nav-crt-neon-glow),
+      0 12px 32px rgba(20, 8, 48, 0.55),
+      inset 0 1px 0 var(--ml-nav-crt-inner-shine),
+      inset 0 -1px 0 rgba(120, 80, 200, 0.25);
+
+    margin-top: 0;
+    width: 100%;
+  }
+
+  /* Neon Border Enhancement */
+  .madlabs-glass-nav.is-crt-taskbar::before {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.28) 0%, transparent 38%),
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.18) 0%, transparent 55%);
+    opacity: 0.85;
+  }
+
+  /* Static premium top-edge highlight (chase removed for recovery pass) */
+  .madlabs-glass-nav.is-crt-taskbar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 70%;
+    height: 1px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 100%
+    );
+    filter:
+      drop-shadow(0 0 4px rgba(225, 197, 255, 0.8))
+      drop-shadow(0 0 10px rgba(200, 160, 255, 0.45));
+    z-index: 2;
+  }
+
+  /* Improved Separators */
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:not(:last-child)::after {
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(235, 216, 255, 0.82),
+      rgba(139, 92, 246, 0.48),
+      transparent
+    );
+    box-shadow:
+      0 0 5px rgba(205, 155, 255, 0.55),
+      0 0 11px rgba(77, 231, 255, 0.18);
+    opacity: 0.95;
+  }
+
+  /* CRT Label Sizing (larger text, icons unchanged) */
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__label {
+    font-size: var(--ml-nav-label-size);
+    letter-spacing: var(--ml-nav-label-letter-spacing);
+    font-weight: var(--ml-nav-label-weight);
+  }
+
+  /* Restrained CRT Interactions (no layout shift) */
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:hover,
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:focus-visible {
+    transform: none;
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:hover .madlabs-glass-nav__icon,
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:focus-visible .madlabs-glass-nav__icon {
+    transform: translateY(-0.5px);
+    filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);
+  }
+
+  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:active {
+    transform: none;
+  }
+</style>

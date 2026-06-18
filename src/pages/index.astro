@@ -1,12 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CrtHero from "../components/CrtHero.astro";
+import MobileHomeHero from "../components/MobileHomeHero.astro";
 import ReviewShower from "../components/ReviewShower.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 ---
 
-<BaseLayout title="MAD LABS">
-  <CrtHero />
+<BaseLayout title="MAD LABS" homeHeroClassifier={true}>
+  <div class="mobile-hero-wrapper">
+    <MobileHomeHero />
+  </div>
+
+  <div class="desktop-crt-wrapper">
+    <CrtHero />
+  </div>
 
   <section class="hero-sub lab-section" aria-labelledby="home-tagline">
     <div class="lab-section-inner-wide">
@@ -68,6 +75,30 @@ import SocialLinks from "../components/SocialLinks.astro";
 </BaseLayout>
 
 <style>
+  .mobile-hero-wrapper {
+    display: block;
+  }
+
+  .desktop-crt-wrapper {
+    display: none;
+  }
+
+  :global(html[data-home-hero="crt"]) .mobile-hero-wrapper {
+    display: none;
+  }
+
+  :global(html[data-home-hero="crt"]) .desktop-crt-wrapper {
+    display: block;
+  }
+
+  :global(html[data-home-hero="mobile"]) .mobile-hero-wrapper {
+    display: block;
+  }
+
+  :global(html[data-home-hero="mobile"]) .desktop-crt-wrapper {
+    display: none;
+  }
+
   .cta-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

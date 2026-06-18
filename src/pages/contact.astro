@@ -35,6 +35,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
   
   <section class="lab-section-alt contact-layout-section">
     <div class="lab-section-inner-wide">
+          <a href="#contact-info-col" class="skip-to-info sr-only-focusable">Skip to contact information</a>
       <div class="contact-layout">
         
         <div class="contact-info-col">
@@ -530,5 +531,35 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
   .hours-time {
     color: var(--lab-text-muted);
     margin: 0;
+  }
+</style>
+
+<style>
+</style>
+
+<style>
+  .skip-to-info.sr-only-focusable {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .skip-to-info.sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    background: var(--lab-card);
+    color: var(--lab-accent);
+    border: 1px solid var(--divider-orange);
+    border-radius: 4px;
+    font-family: "Jersey 25", monospace;
+    font-size: 0.85rem;
+    z-index: 100;
+    margin-bottom: 1rem;
+    display: inline-block;
   }
 </style>

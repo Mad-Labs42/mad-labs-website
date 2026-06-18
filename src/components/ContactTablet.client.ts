@@ -225,7 +225,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
     var iframe = container.querySelector("iframe");
     if (iframe) {
       // Ensure the iframe has a title for accessibility (Nimbuspop doesn't set one)
-      if (!iframe.hasAttribute("title")) {
+      if (!iframe.hasAttribute("title") || iframe.getAttribute("title") === "") {
         iframe.setAttribute("title", "Book a free 20-minute tech call with MAD LABS");
       }
       // Check if the iframe has already loaded

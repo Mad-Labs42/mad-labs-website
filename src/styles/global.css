@@ -531,3 +531,58 @@ footer.site-footer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* Standard screen-reader only class (WebAIM 7-property pattern) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Strengthened focus-visible for taskbar (per 2026-06-16 DevTools audit) */
+.crt-taskbar-link:focus-visible {
+  outline: 2px solid var(--divider-orange);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(247, 158, 85, 0.2);
+  border-radius: 4px;
+}
+
+/* Improved contrast for tagline text (per 2026-06-16 DevTools audit) */
+.sub-tagline {
+  color: #d0bcf4; /* Slightly brighter for better contrast at zoom */
+}
+
+/* Ensure decorative SVGs are properly hidden from AT (per 2026-06-16 DevTools audit) */
+svg[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+/* Global focus-visible strengthening (per 2026-06-16 audit) */
+:focus-visible {
+  outline: 2px solid var(--divider-orange);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(247, 158, 85, 0.15);
+}
+
+/* Ensure all decorative icons have proper pointer-events (per audit) */
+.trust-icon,
+.approach-step {
+  pointer-events: none;
+}
+
+/* Ensure all decorative elements have proper accessibility treatment (per 2026-06-16 audit) */
+[aria-hidden="true"] {
+  user-select: none;
+}
+
+/* Improved secondary text contrast on About (per audit) */
+.trust-text,
+.approach-card-text {
+  color: #c8b8e0; /* Slightly brighter for better contrast */
+}

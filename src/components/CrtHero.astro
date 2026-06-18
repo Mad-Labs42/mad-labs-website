@@ -132,6 +132,9 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
 </div>
 
 <script>
+  if (document.documentElement.dataset.homeHero !== "crt") {
+    // Mobile-safe homepage selection: keep CRT DOM inert unless the classifier promotes it.
+  } else {
   const crtHeroCandidate = document.querySelector<HTMLElement>("[data-crt-hero]");
   const crtScreenCandidate = document.querySelector<HTMLElement>("[data-crt-screen]");
   const powerButtonCandidate = document.querySelector<HTMLButtonElement>("[data-crt-power-button]");
@@ -849,6 +852,7 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
       );
     }
   }
+  }
 </script>
 
 <style>
@@ -860,7 +864,7 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
     justify-content: center;
     min-height: 100svh;
     padding: clamp(1rem, 3vw, 2.5rem) 1rem;
-    background: linear-gradient(180deg, #020305 0%, #04060a 35%, #06080d 100%);
+    background: linear-gradient(180deg, #28184c 0%, #1f1439 100%);
     /* Isolate layout/style recalc to the hero subtree so the 14-phase
        intro animation doesn't push surrounding content (see web.dev CLS). */
     contain: layout style;
@@ -1006,7 +1010,25 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
   .is-restoring .crt-screen,
   .is-stable .crt-screen {
     animation: crtHeroFlicker 7.6s infinite;
-    background: #362866;
+    background:
+      radial-gradient(
+        ellipse at 50% 42%,
+        rgba(185, 151, 255, 0.28) 0%,
+        rgba(124, 86, 214, 0.2) 34%,
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse at 50% 100%,
+        rgba(226, 205, 255, 0.14) 0%,
+        rgba(126, 88, 206, 0.1) 34%,
+        transparent 70%
+      ),
+      linear-gradient(
+        180deg,
+        #5c4592 0%,
+        #403073 48%,
+        #2f235c 100%
+      );
     box-shadow:
       inset 0 0 0 4px rgba(93, 72, 132, 0.6),
       inset 0 0 0 8px rgba(36, 22, 56, 0.9),
@@ -1034,7 +1056,25 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
   .is-divider-opening .crt-metal,
   .is-restoring .crt-metal,
   .is-stable .crt-metal {
-    background: linear-gradient(145deg, #4a3880 0%, #362866 50%, #362866 100%);
+    background:
+      radial-gradient(
+        ellipse at 50% 42%,
+        rgba(185, 151, 255, 0.28) 0%,
+        rgba(124, 86, 214, 0.2) 34%,
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse at 50% 100%,
+        rgba(226, 205, 255, 0.14) 0%,
+        rgba(126, 88, 206, 0.1) 34%,
+        transparent 70%
+      ),
+      linear-gradient(
+        180deg,
+        #5c4592 0%,
+        #403073 48%,
+        #2f235c 100%
+      );
   }
 
   .crt-boot-overlay {
@@ -1536,89 +1576,6 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
     clip-path: polygon(8% 0%, 92% 0%, 84% 100%, 16% 100%);
   }
 
-  .crt-tint {
-    position: absolute;
-    inset: 0;
-    z-index: 22;
-    pointer-events: none;
-    border-radius: 30px;
-    mix-blend-mode: soft-light;
-    background: linear-gradient(
-      180deg,
-      rgba(60, 0, 80, 0.08) 0%,
-      rgba(20, 0, 60, 0.04) 50%,
-      rgba(60, 0, 80, 0.08) 100%
-    );
-  }
-
-  .crt-bands {
-    position: absolute;
-    inset: 0;
-    z-index: 23;
-    pointer-events: none;
-    opacity: 0.78;
-    mix-blend-mode: screen;
-    will-change: background-position;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 48px,
-      rgba(255, 255, 255, 0.012) 48px,
-      rgba(255, 255, 255, 0.012) 50px
-    );
-    animation: crtHeroRoll 10.7s linear infinite;
-  }
-
-  .crt-phosphor-dots {
-    position: absolute;
-    inset: 0;
-    z-index: 21;
-    pointer-events: none;
-    mix-blend-mode: screen;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
-    background-size: 3px 3px;
-  }
-
-  .crt-scanlines {
-    position: absolute;
-    inset: 0;
-    z-index: 19;
-    pointer-events: none;
-    opacity: 0.72;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 2px,
-      rgba(0, 0, 0, 0.12) 2px,
-      rgba(0, 0, 0, 0.12) 3px
-    );
-  }
-
-  .crt-vignette {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.18) 0%, transparent 50%),
-      radial-gradient(ellipse at top right, rgba(0, 0, 0, 0.18) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom left, rgba(0, 0, 0, 0.18) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(0, 0, 0, 0.18) 0%, transparent 50%);
-  }
-
-  .crt-bevel-inner {
-    position: absolute;
-    inset: 0;
-    z-index: 17;
-    pointer-events: none;
-    border-radius: 30px;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 1px 0 0 rgba(255, 255, 255, 0.05),
-      inset -1px 0 0 rgba(255, 255, 255, 0.05),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.42);
-  }
-
   .crt-corner {
     position: absolute;
     z-index: 30;
@@ -2061,37 +2018,8 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
     animation: crtProudGlow 0.98s ease-out both;
   }
 
-  .is-stable .crt-bands {
-    animation-duration: 10.7s;
-    opacity: 0.92;
-  }
-
-  .is-stable .crt-scanlines {
-    opacity: 0.82;
-  }
-
   .is-stable .crt-screen {
     filter: contrast(1.08) brightness(1.04) saturate(1.08);
-  }
-
-  .is-stable .crt-screen .crt-bands {
-    animation-duration: 10.7s;
-    opacity: 1;
-  }
-
-  .is-stable .crt-screen .crt-scanlines {
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 2px,
-      rgba(0, 0, 0, 0.2) 2px,
-      rgba(0, 0, 0, 0.2) 3px
-    );
-  }
-
-  .is-stable .crt-screen .crt-phosphor-dots {
-    opacity: 1;
-    filter: brightness(1.14);
   }
 
   @keyframes crtPowerBloom {

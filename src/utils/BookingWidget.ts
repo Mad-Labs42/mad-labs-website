@@ -21,11 +21,11 @@ export interface BookingConfig {
  * @param config — the parsed tablet config from the server-rendered JSON script tag
  * @returns the resolved Zoho embed URL, or null if the action is unknown
  */
-export function resolveBookingUrl(action: string, config: BookingConfig): string | null {
+export function resolveBookingUrl(_action: string, config: BookingConfig): string | null {
   // Single booking type — always uses the configured Zoho URL
   // Future: when the Zoho plan allows multiple types, extend this
   // to map actions to different URLs
-  void action;
+  // TODO: When multi-booking support is added, use `_action` param to select different Zoho embed URLs
   return config.zohoUrl;
 }
 

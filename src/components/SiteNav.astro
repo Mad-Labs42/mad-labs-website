@@ -1,0 +1,184 @@
+---
+import MadLabsAtomIcon from './MadLabsAtomIcon.astro';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Contact', href: '/contact/' },
+];
+
+function isCurrent(href: string): boolean {
+  const normalizedHref = href.replace(/\/$/, '') || '/';
+  return normalizedHref === currentPath;
+}
+---
+
+<nav aria-label="Main navigation" class="site-nav">
+  <div class="nav-rail">
+    <ul class="nav-links">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={isCurrent(item.href) ? 'active' : ''}
+            aria-current={isCurrent(item.href) ? 'page' : undefined}
+          >
+            {item.label === 'Home' && (
+              <MadLabsAtomIcon />
+            )}
+            {isCurrent(item.href) ? (
+              <span class="nav-cartouche">
+                <span class="nav-cartouche-inner">{item.label}</span>
+                <span class="nav-cartouche-corner tl" aria-hidden="true"></span>
+                <span class="nav-cartouche-corner tr" aria-hidden="true"></span>
+                <span class="nav-cartouche-corner bl" aria-hidden="true"></span>
+                <span class="nav-cartouche-corner br" aria-hidden="true"></span>
+              </span>
+            ) : (
+              item.label
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .site-nav {
+    width: 100%;
+    position: relative;
+    z-index: var(--z-sticky);
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 2px,
+        rgba(200, 180, 230, 0.035) 2px,
+        rgba(200, 180, 230, 0.035) 3px
+      ),
+      radial-gradient(
+        ellipse at 50% 50%,
+        rgba(140, 80, 240, 0.06) 0%,
+        transparent 60%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(10, 5, 28, 0.98) 0%,
+        rgba(18, 8, 40, 0.96) 100%
+      );
+    border-bottom: 2px solid var(--divider-orange);
+    box-shadow:
+      0 2px 16px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(247, 158, 85, 0.08),
+      inset 0 -1px 0 rgba(232, 144, 80, 0.12);
+  }
+
+  .nav-rail {
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 1.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+
+  .nav-links li { display: flex; align-items: center; }
+
+  .nav-links a {
+    font-family: "Early GameBoy", "Jersey 25", "VT323", monospace;
+    font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+    letter-spacing: 0.09em;
+    color: var(--lab-text);
+    text-decoration: none;
+    padding: 0.5rem 0.25rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: color 0.15s ease, text-shadow 0.15s ease;
+    text-transform: uppercase;
+  }
+
+  .nav-links a:hover {
+    color: var(--lab-accent);
+    text-shadow: 0 0 10px rgba(232, 144, 80, 0.5);
+  }
+
+  .nav-links a:focus-visible {
+    outline: 2px solid var(--lab-accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+    color: var(--crt-text);
+    text-shadow: 0 0 14px rgba(232, 144, 80, 0.7);
+  }
+
+  .nav-links li + li::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1.6em;
+    background: linear-gradient(180deg, transparent 0%, var(--divider-orange) 20%, var(--divider-orange) 80%, transparent 100%);
+    margin: 0 1rem;
+    filter: drop-shadow(0 0 4px rgba(247, 158, 85, 0.4));
+  }
+
+  .nav-links a.active {
+    color: var(--crt-text);
+    text-shadow: 0 0 12px rgba(240, 234, 255, 0.7);
+  }
+
+  .nav-cartouche {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 1rem;
+    background: radial-gradient(ellipse at 50% 50%, rgba(140, 80, 240, 0.18) 0%, rgba(26, 18, 40, 0.95) 70%);
+    border: 2px solid var(--divider-orange);
+    border-radius: 4px;
+    box-shadow: 0 0 16px rgba(247, 158, 85, 0.35), inset 0 0 12px rgba(247, 158, 85, 0.15), inset 0 1px 0 rgba(240, 234, 255, 0.1);
+  }
+
+  .nav-cartouche-corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--divider-orange);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .nav-cartouche-corner.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; border-radius: 3px 0 0 0; }
+  .nav-cartouche-corner.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; border-radius: 0 3px 0 0; }
+  .nav-cartouche-corner.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; border-radius: 0 0 0 3px; }
+  .nav-cartouche-corner.br { bottom: -2px; right: -2px; border-left: none; border-top: none; border-radius: 0 0 3px 0; }
+
+  @media (max-width: 820px) {
+    .nav-rail { padding: 0.5rem 1rem; }
+    .nav-links a { font-size: 0.85rem; padding: 0.4rem 0.15rem; }
+    .nav-links li + li::before { width: 2px; height: 1.4em; margin: 0 0.5rem; }
+    .nav-cartouche { padding: 0.25rem 0.7rem; }
+  }
+
+  @media (max-width: 520px) {
+    .nav-rail { justify-content: center; }
+    .nav-links li + li::before { margin: 0 0.35rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-links a { transition: none; }
+    .nav-cartouche { box-shadow: 0 0 8px rgba(247, 158, 85, 0.25), inset 0 0 8px rgba(247, 158, 85, 0.1); }
+  }
+</style>
