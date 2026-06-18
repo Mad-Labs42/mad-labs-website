@@ -10,6 +10,7 @@ const crtDivider = read("src/components/CrtDivider.astro");
 const crtScreenOverlays = read("src/components/CrtScreenOverlays.astro");
 const atomLogo = read("src/components/CrtAtomLogo.astro");
 const mobileHero = read("src/components/MobileHomeHero.astro");
+const glassNav = read("src/components/MadLabsGlassNav.astro");
 
 assert.match(index, /import\s+MobileHomeHero\s+from\s+["']\.\.\/components\/MobileHomeHero\.astro["'];/);
 assert.match(index, /<BaseLayout[^>]*homeHeroClassifier=\{true\}/);
@@ -45,6 +46,16 @@ assert.match(atomLogo, /fill=\{`url\(#\$\{gradientId\}\)`\}/);
 
 assert.match(mobileHero, /<MadLabsGlassNav\s+context=["']mobile-hero["']/);
 assert.match(mobileHero, /gradientId=["']nucleus-grad-mobile["']/);
+
+assert.match(glassNav, /--ml-nav-item-min-height:\s*clamp\(30px,\s*3\.1vw,\s*40px\);/);
+assert.match(glassNav, /--ml-nav-icon-size:\s*clamp\(16px,\s*1\.55vw,\s*20px\);/);
+assert.match(glassNav, /--ml-nav-label-size:\s*clamp\(0\.78rem,\s*0\.95vw,\s*0\.9rem\);/);
+assert.match(glassNav, /\.madlabs-glass-nav\.is-crt-taskbar::after[\s\S]*animation:\s*madlabsCrtTaskbarChase\s+11s\s+linear\s+infinite;/);
+assert.match(glassNav, /@keyframes\s+madlabsCrtTaskbarChase[\s\S]*transform:\s*translate3d\(-130%,\s*0,\s*0\)[\s\S]*transform:\s*translate3d\(130%,\s*0,\s*0\)/);
+assert.match(glassNav, /rgba\(238,\s*222,\s*255,\s*0\.95\)/);
+assert.match(glassNav, /rgba\(168,\s*116,\s*255,\s*0\.72\)/);
+assert.doesNotMatch(glassNav, /madlabsCrtTaskbarChase[\s\S]*rgba\(0,\s*240,\s*122/);
+assert.match(glassNav, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.madlabs-glass-nav\.is-crt-taskbar::after[\s\S]*animation:\s*none;/);
 
 assert.match(crtHero, /radial-gradient\(\s*ellipse at 50% 42%,\s*rgba\(185, 151, 255, 0\.28\) 0%,\s*rgba\(124, 86, 214, 0\.2\) 34%,\s*transparent 68%\s*\)/);
 assert.match(crtHero, /linear-gradient\(\s*180deg,\s*#5c4592 0%,\s*#403073 48%,\s*#2f235c 100%\s*\)/);

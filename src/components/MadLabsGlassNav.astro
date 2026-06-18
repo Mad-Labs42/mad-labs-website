@@ -317,27 +317,36 @@ const isActive = (href: string) =>
     opacity: 0.85;
   }
 
-  /* Static premium top-edge highlight (chase removed for recovery pass) */
+  /* Premium single-pass top-edge chase. Reduced motion reverts this to a static highlight. */
   .madlabs-glass-nav.is-crt-taskbar::after {
     content: "";
     position: absolute;
     top: 0;
-    left: 50%;
-    width: 70%;
-    height: 1px;
-    transform: translateX(-50%);
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translate3d(-130%, 0, 0);
     border-radius: 999px;
     pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.55) 50%,
-      transparent 100%
-    );
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 39%,
+        rgba(168, 116, 255, 0.18) 42%,
+        rgba(168, 116, 255, 0.72) 47%,
+        rgba(238, 222, 255, 0.95) 50%,
+        rgba(188, 148, 255, 0.72) 53%,
+        rgba(168, 116, 255, 0.18) 58%,
+        transparent 62%,
+        transparent 100%
+      );
     filter:
-      drop-shadow(0 0 4px rgba(225, 197, 255, 0.8))
-      drop-shadow(0 0 10px rgba(200, 160, 255, 0.45));
+      drop-shadow(0 0 4px rgba(238, 222, 255, 0.72))
+      drop-shadow(0 0 9px rgba(168, 116, 255, 0.48));
     z-index: 2;
+    will-change: transform;
+    animation: madlabsCrtTaskbarChase 11s linear infinite;
   }
 
   /* Improved Separators */
@@ -378,5 +387,32 @@ const isActive = (href: string) =>
 
   .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:active {
     transform: none;
+  }
+
+  @keyframes madlabsCrtTaskbarChase {
+    0% {
+      transform: translate3d(-130%, 0, 0);
+    }
+
+    100% {
+      transform: translate3d(130%, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .madlabs-glass-nav.is-crt-taskbar::after {
+      left: 50%;
+      width: 70%;
+      height: 1px;
+      transform: translateX(-50%);
+      animation: none;
+      will-change: auto;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(238, 222, 255, 0.7) 50%,
+        transparent 100%
+      );
+    }
   }
 </style>
