@@ -144,14 +144,14 @@ import MadLabsGlassNav from "./MadLabsGlassNav.astro";
 
   .mobile-lab-hud {
     inset: clamp(14px, 4vw, 28px);
-    opacity: 0.56;
+    opacity: 0.5;
     mix-blend-mode: screen;
   }
 
   .mobile-lab-hud__corner {
     position: absolute;
-    width: clamp(42px, 14vw, 76px);
-    height: clamp(42px, 14vw, 76px);
+    width: clamp(38px, 13vw, 68px);
+    height: clamp(38px, 13vw, 68px);
     border-color: rgba(238, 222, 255, 0.22);
     filter: drop-shadow(0 0 8px rgba(168, 116, 255, 0.22));
   }
@@ -248,7 +248,7 @@ import MadLabsGlassNav from "./MadLabsGlassNav.astro";
     border-radius: 999px;
     background:
       linear-gradient(90deg, transparent, rgba(238, 222, 255, 0.4), rgba(77, 231, 255, 0.34), transparent);
-    opacity: 0.64;
+    opacity: 0.54;
     transform: translate3d(0, 0, 0);
     animation: mobileHeroTraceScan 12s ease-in-out infinite;
     will-change: transform, opacity;
@@ -290,11 +290,11 @@ import MadLabsGlassNav from "./MadLabsGlassNav.astro";
 
   .mobile-lab-trace--tertiary {
     left: 50%;
-    bottom: 18%;
+    bottom: 20%;
     width: clamp(62px, 20vw, 112px);
     background:
       linear-gradient(90deg, transparent, rgba(0, 240, 122, 0.26), rgba(77, 231, 255, 0.3), transparent);
-    opacity: 0.45;
+    opacity: 0.36;
     animation-delay: -7s;
   }
 
@@ -433,10 +433,32 @@ import MadLabsGlassNav from "./MadLabsGlassNav.astro";
 
   /* Mobile nav slot */
   .mobile-hero-nav-slot {
+    position: relative;
+    isolation: isolate;
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+  }
+
+  .mobile-hero-nav-slot::before {
+    content: "";
+    position: absolute;
+    inset: -22px -18px -18px;
+    z-index: 0;
+    border-radius: 24px;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(238, 222, 255, 0.2) 0%, rgba(168, 116, 255, 0.11) 38%, transparent 72%),
+      linear-gradient(90deg, transparent 0%, rgba(77, 231, 255, 0.08) 20%, rgba(255, 79, 216, 0.1) 50%, rgba(0, 240, 122, 0.08) 80%, transparent 100%);
+    opacity: 0.72;
+    transform: scaleX(0.98);
+    animation: mobileHeroNavFieldPulse 10s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .mobile-hero-nav-slot :global(.madlabs-glass-nav) {
+    position: relative;
+    z-index: 1;
   }
 
   /* Scroll indicator */
@@ -521,12 +543,26 @@ import MadLabsGlassNav from "./MadLabsGlassNav.astro";
     }
   }
 
+  @keyframes mobileHeroNavFieldPulse {
+    0%,
+    100% {
+      opacity: 0.52;
+      transform: scaleX(0.96);
+    }
+
+    50% {
+      opacity: 0.78;
+      transform: scaleX(1);
+    }
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .mobile-energy-field,
     .mobile-energy-field__particle,
     .mobile-atom-slot::before,
-    .mobile-lab-trace {
+    .mobile-lab-trace,
+    .mobile-hero-nav-slot::before {
       animation: none;
       will-change: auto;
     }

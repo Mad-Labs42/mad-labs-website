@@ -52,11 +52,14 @@ assert.match(mobileHero, /class="mobile-energy-field__particle mobile-energy-fie
 assert.match(mobileHero, /class="mobile-lab-hud"/);
 assert.match(mobileHero, /class="mobile-lab-hud__corner mobile-lab-hud__corner--tl"/);
 assert.match(mobileHero, /class="mobile-lab-trace mobile-lab-trace--primary"/);
+assert.match(mobileHero, /\.mobile-hero-nav-slot::before/);
 assert.match(mobileHero, /@keyframes\s+mobileHeroEnergyDrift/);
 assert.match(mobileHero, /@keyframes\s+mobileHeroCorePulse/);
 assert.match(mobileHero, /@keyframes\s+mobileHeroTraceScan/);
+assert.match(mobileHero, /@keyframes\s+mobileHeroNavFieldPulse/);
 assert.match(mobileHero, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-energy-field[\s\S]*animation:\s*none;/);
 assert.match(mobileHero, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-lab-trace[\s\S]*animation:\s*none;/);
+assert.match(mobileHero, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-hero-nav-slot::before[\s\S]*animation:\s*none;/);
 
 assert.match(glassNav, /--ml-nav-item-min-height:\s*clamp\(30px,\s*3\.1vw,\s*40px\);/);
 assert.match(glassNav, /--ml-nav-icon-size:\s*clamp\(16px,\s*1\.55vw,\s*20px\);/);
