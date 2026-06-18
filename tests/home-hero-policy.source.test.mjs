@@ -61,25 +61,24 @@ assert.match(
   mobileHero,
   /class="mobile-energy-field__particle mobile-energy-field__particle--cyan"/,
 );
-assert.match(mobileHero, /class="mobile-lab-hud"/);
-assert.match(mobileHero, /class="mobile-lab-hud__corner mobile-lab-hud__corner--tl"/);
-assert.match(mobileHero, /class="mobile-lab-trace mobile-lab-trace--primary"/);
-assert.match(mobileHero, /\.mobile-hero-nav-slot::before/);
+assert.doesNotMatch(mobileHero, /class="mobile-lab-hud"/);
+assert.doesNotMatch(mobileHero, /class="mobile-lab-trace/);
+assert.doesNotMatch(mobileHero, /\.mobile-hero-nav-slot::before/);
 assert.match(mobileHero, /@keyframes\s+mobileHeroEnergyDrift/);
 assert.match(mobileHero, /@keyframes\s+mobileHeroCorePulse/);
-assert.match(mobileHero, /@keyframes\s+mobileHeroTraceScan/);
-assert.match(mobileHero, /@keyframes\s+mobileHeroNavFieldPulse/);
+assert.doesNotMatch(mobileHero, /@keyframes\s+mobileHeroTraceScan/);
+assert.doesNotMatch(mobileHero, /@keyframes\s+mobileHeroNavFieldPulse/);
 assert.match(
   mobileHero,
   /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-energy-field[\s\S]*animation:\s*none;/,
 );
 assert.match(
-  mobileHero,
-  /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-lab-trace[\s\S]*animation:\s*none;/,
+  index,
+  /<span class="welcome-line__sentence">Modern Tools\.<\/span>\s*<span class="welcome-line__sentence">Old-School Reliability\.<\/span>\s*<span class="welcome-line__sentence">Zero Tech Tantrums\.<\/span>/,
 );
 assert.match(
-  mobileHero,
-  /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-hero-nav-slot::before[\s\S]*animation:\s*none;/,
+  index,
+  /@media\s*\(max-width:\s*1120px\)[\s\S]*\.welcome-line[\s\S]*grid-template-columns:\s*1fr;/,
 );
 
 assert.match(glassNav, /--ml-nav-item-min-height:\s*clamp\(30px,\s*3\.1vw,\s*40px\);/);

@@ -5,7 +5,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Thank You" description="Your message has been received. MAD LABS will follow up within 2–4 hours during business hours." noindex>
+<BaseLayout
+  title="Thank You"
+  description="Your message has been received. MAD LABS will follow up within 2–4 hours during business hours."
+  noindex
+>
   <section class="lab-section thankyou-section">
     <div class="lab-section-inner thankyou-inner">
       <!-- CRT terminal chrome -->
@@ -84,23 +88,31 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     var text = document.getElementById("ty-booking-text");
     if (text) {
-      text.innerHTML = 'Your <strong>' + serviceName + '</strong> has been booked. We\'re looking forward to speaking with you.';
+      text.innerHTML =
+        "Your <strong>" +
+        serviceName +
+        "</strong> has been booked. We're looking forward to speaking with you.";
     }
 
     if (startTime) {
       try {
         var dt = new Date(startTime);
         var dateStr = dt.toLocaleDateString("en-US", {
-          weekday: "long", year: "numeric", month: "long", day: "numeric"
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         });
         var timeStr = dt.toLocaleTimeString("en-US", {
-          hour: "numeric", minute: "2-digit", timeZoneName: "short"
+          hour: "numeric",
+          minute: "2-digit",
+          timeZoneName: "short",
         });
         document.getElementById("ty-date").textContent = dateStr;
         document.getElementById("ty-time").textContent = timeStr;
         var details = document.getElementById("ty-details");
         if (details) details.hidden = false;
-      } catch (e) {
+      } catch {
         // ignore date parse errors
       }
     }
@@ -111,7 +123,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     // Update meta description
     var meta = document.querySelector('meta[name="description"]');
     if (meta) {
-      meta.setAttribute("content", "Your " + serviceName + " has been booked. MAD LABS will be ready for you.");
+      meta.setAttribute(
+        "content",
+        "Your " + serviceName + " has been booked. MAD LABS will be ready for you.",
+      );
     }
   })();
 </script>
@@ -170,8 +185,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 
   @keyframes led-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
   }
 
   .ty-screen {
@@ -317,13 +337,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <script>
   // Reduce hydration mismatch noise by ensuring initial state matches server render
-  document.addEventListener('DOMContentLoaded', () => {
-    const bookingView = document.getElementById('ty-booking-view');
+  document.addEventListener("DOMContentLoaded", () => {
+    const bookingView = document.getElementById("ty-booking-view");
     if (bookingView) {
       // Only show if URL params indicate booking (client-side enhancement)
       const params = new URLSearchParams(window.location.search);
-      if (!params.has('start_time')) {
-        bookingView.setAttribute('hidden', '');
+      if (!params.has("start_time")) {
+        bookingView.setAttribute("hidden", "");
       }
     }
   });
@@ -331,10 +351,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <script>
   // Enhance aria-live for better screen reader support (per audit)
-  document.addEventListener('DOMContentLoaded', () => {
-    const screen = document.querySelector('.ty-screen');
+  document.addEventListener("DOMContentLoaded", () => {
+    const screen = document.querySelector(".ty-screen");
     if (screen) {
-      screen.setAttribute('aria-live', 'polite');
+      screen.setAttribute("aria-live", "polite");
     }
   });
 </script>

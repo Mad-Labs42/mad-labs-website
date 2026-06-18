@@ -29,7 +29,12 @@ async function heroState(page) {
       if (!el) return false;
       const style = getComputedStyle(el);
       const rect = el.getBoundingClientRect();
-      return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        rect.width > 0 &&
+        rect.height > 0
+      );
     };
     const ids = [...document.querySelectorAll("[id]")].map((el) => el.id);
     const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -38,10 +43,17 @@ async function heroState(page) {
       stored: sessionStorage.getItem("madlabs-home-hero"),
       mobileVisible: visible(mobile),
       crtVisible: visible(crt),
-      visibleH1s: [...document.querySelectorAll("h1")].filter(visible).map((el) => el.textContent.trim()),
-      crtHeroClasses: crtHero ? classes.filter((className) => crtHero.classList.contains(className)) : [],
+      visibleH1s: [...document.querySelectorAll("h1")]
+        .filter(visible)
+        .map((el) => el.textContent.trim()),
+      crtHeroClasses: crtHero
+        ? classes.filter((className) => crtHero.classList.contains(className))
+        : [],
       duplicateIds: [...new Set(duplicates)],
-      overflowPx: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+      overflowPx: Math.max(
+        0,
+        document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      ),
     };
   }, phaseClasses);
 }
@@ -58,11 +70,32 @@ async function loadPage(context, viewport, options = {}) {
   return page;
 }
 
+async function welcomeLineState(page) {
+  return page.evaluate(() => {
+    const line = document.querySelector(".welcome-line");
+    const sentences = [...document.querySelectorAll(".welcome-line__sentence")];
+    return {
+      sentenceCount: sentences.length,
+      display: line ? getComputedStyle(line).display : "",
+      columns: line ? getComputedStyle(line).gridTemplateColumns : "",
+      rows: sentences.map((sentence) => {
+        const rect = sentence.getBoundingClientRect();
+        return Math.round(rect.top);
+      }),
+      internalWraps: sentences.map((sentence) => sentence.getClientRects().length),
+      texts: sentences.map((sentence) => sentence.textContent.trim()),
+    };
+  });
+}
+
 const browser = await chromium.launch({ headless: true });
 
 try {
   {
-    const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+      viewport: { width: 1440, height: 900 },
+    });
     const page = await context.newPage();
     await page.goto(baseUrl, { waitUntil: "load" });
     await page.waitForFunction(() => document.styleSheets.length > 0);
@@ -99,6 +132,25 @@ try {
   }
 
   {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await loadPage(context, { width: 1440, height: 900 });
+    const line = await welcomeLineState(page);
+    assert.equal(line.sentenceCount, 3, "welcome line should expose three sentence spans");
+    assert.deepEqual(line.texts, [
+      "Modern Tools.",
+      "Old-School Reliability.",
+      "Zero Tech Tantrums.",
+    ]);
+    assert.equal(new Set(line.rows).size, 1, "wide desktop should keep welcome line on one row");
+    assert.deepEqual(
+      line.internalWraps,
+      [1, 1, 1],
+      "wide desktop sentences should not internally wrap",
+    );
+    await context.close();
+  }
+
+  {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await loadPage(context, { width: 390, height: 844 });
     const state = await heroState(page);
@@ -106,10 +158,18 @@ try {
     assert.equal(state.stored, "mobile");
     assert.equal(state.mobileVisible, true);
     assert.equal(state.crtVisible, false);
-    assert.deepEqual(state.crtHeroClasses, [], "CRT state machine should not initialize for mobile selection");
+    assert.deepEqual(
+      state.crtHeroClasses,
+      [],
+      "CRT state machine should not initialize for mobile selection",
+    );
     assert.deepEqual(state.duplicateIds, []);
     assert.equal(state.overflowPx, 0);
     assert.deepEqual(state.visibleH1s, ["MAD LABS"]);
+    const line = await welcomeLineState(page);
+    assert.equal(line.sentenceCount, 3, "mobile welcome line should expose three sentence spans");
+    assert.equal(new Set(line.rows).size, 3, "mobile welcome line should render as three rows");
+    assert.deepEqual(line.internalWraps, [1, 1, 1], "mobile sentences should not internally wrap");
     await context.close();
   }
 
@@ -170,14 +230,42 @@ try {
       const context = await browser.newContext({ viewport });
       const page = await loadPage(context, viewport);
       const state = await heroState(page);
-      assert.equal(state.homeHero, viewport.expected, `${viewport.width}x${viewport.height} should select ${viewport.expected}`);
-      assert.equal(state.mobileVisible, viewport.expected === "mobile", `${viewport.width}x${viewport.height} mobile visibility`);
-      assert.equal(state.crtVisible, viewport.expected === "crt", `${viewport.width}x${viewport.height} CRT visibility`);
-      assert.equal(state.overflowPx, 0, `${viewport.width}x${viewport.height} should not horizontally overflow`);
-      assert.equal(state.visibleH1s.length, 1, `${viewport.width}x${viewport.height} should expose one visible h1`);
-      assert.deepEqual(state.duplicateIds, [], `${viewport.width}x${viewport.height} should not duplicate SVG IDs`);
+      assert.equal(
+        state.homeHero,
+        viewport.expected,
+        `${viewport.width}x${viewport.height} should select ${viewport.expected}`,
+      );
+      assert.equal(
+        state.mobileVisible,
+        viewport.expected === "mobile",
+        `${viewport.width}x${viewport.height} mobile visibility`,
+      );
+      assert.equal(
+        state.crtVisible,
+        viewport.expected === "crt",
+        `${viewport.width}x${viewport.height} CRT visibility`,
+      );
+      assert.equal(
+        state.overflowPx,
+        0,
+        `${viewport.width}x${viewport.height} should not horizontally overflow`,
+      );
+      assert.equal(
+        state.visibleH1s.length,
+        1,
+        `${viewport.width}x${viewport.height} should expose one visible h1`,
+      );
+      assert.deepEqual(
+        state.duplicateIds,
+        [],
+        `${viewport.width}x${viewport.height} should not duplicate SVG IDs`,
+      );
       if (viewport.expected === "mobile") {
-        assert.deepEqual(state.crtHeroClasses, [], `${viewport.width}x${viewport.height} should keep CRT state machine inert`);
+        assert.deepEqual(
+          state.crtHeroClasses,
+          [],
+          `${viewport.width}x${viewport.height} should keep CRT state machine inert`,
+        );
       }
       await context.close();
     }
