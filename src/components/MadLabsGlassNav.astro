@@ -1,42 +1,41 @@
 ---
 export interface Props {
-  context?: 'mobile-hero' | 'crt-taskbar';
+  context?: "mobile-hero" | "crt-taskbar";
   currentPath?: string;
 }
 
-const { context = 'mobile-hero', currentPath = Astro.url.pathname } = Astro.props as Props;
+const { context = "mobile-hero", currentPath = Astro.url.pathname } = Astro.props as Props;
 
 const navItems = [
   {
-    label: 'Services',
-    href: '/services/',
-    colorClass: 'services',
-    icon: 'chip',
+    label: "Services",
+    href: "/services/",
+    colorClass: "services",
+    icon: "chip",
   },
   {
-    label: 'About',
-    href: '/about/',
-    colorClass: 'about',
-    icon: 'profile',
+    label: "About",
+    href: "/about/",
+    colorClass: "about",
+    icon: "profile",
   },
   {
-    label: 'Contact',
-    href: '/contact/',
-    colorClass: 'contact',
-    icon: 'message',
+    label: "Contact",
+    href: "/contact/",
+    colorClass: "contact",
+    icon: "message",
   },
 ];
 
 const isActive = (href: string) =>
-  currentPath === href ||
-  (currentPath.startsWith(href.slice(0, -1)) && href !== '/services/');
+  currentPath === href || (currentPath.startsWith(href.slice(0, -1)) && href !== "/services/");
 ---
 
 <nav
   class="madlabs-glass-nav"
   class:list={[
-    { 'is-crt-taskbar': context === 'crt-taskbar' },
-    { 'is-mobile-hero': context === 'mobile-hero' },
+    { "is-crt-taskbar": context === "crt-taskbar" },
+    { "is-mobile-hero": context === "mobile-hero" },
   ]}
   aria-label="Primary navigation"
 >
@@ -47,14 +46,14 @@ const isActive = (href: string) =>
         <a
           href={item.href}
           class:list={[
-            'madlabs-glass-nav__item',
+            "madlabs-glass-nav__item",
             `madlabs-glass-nav__item--${item.colorClass}`,
-            { 'is-active': active },
+            { "is-active": active },
           ]}
-          {...(active ? { 'aria-current': 'page' } : {})}
+          {...(active ? { "aria-current": "page" } : {})}
         >
           <span class="madlabs-glass-nav__icon" aria-hidden="true">
-            {item.icon === 'chip' && (
+            {item.icon === "chip" && (
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -67,7 +66,7 @@ const isActive = (href: string) =>
                 <path d="M9 6V4M15 6V4M9 20v-2M15 20v-2M20 9h2M20 15h2M2 9h2M2 15h2" />
               </svg>
             )}
-            {item.icon === 'profile' && (
+            {item.icon === "profile" && (
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -80,7 +79,7 @@ const isActive = (href: string) =>
                 <circle cx="12" cy="7" r="4" />
               </svg>
             )}
-            {item.icon === 'message' && (
+            {item.icon === "message" && (
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -132,12 +131,14 @@ const isActive = (href: string) =>
       inset 0 1px 0 rgba(255, 255, 255, 0.18),
       inset 0 -1px 0 rgba(255, 150, 80, 0.12);
     overflow: hidden;
-    transition: box-shadow 0.18s ease-out, transform 0.18s ease-out;
+    transition:
+      box-shadow 0.18s ease-out,
+      transform 0.18s ease-out;
     will-change: transform;
   }
 
   .madlabs-glass-nav::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 1px;
     border-radius: inherit;
@@ -167,19 +168,26 @@ const isActive = (href: string) =>
     padding: var(--ml-nav-padding-y) var(--ml-nav-padding-x);
     text-decoration: none;
     color: inherit;
-    transition: background 0.16s ease-out, transform 0.16s cubic-bezier(0.18, 0.84, 0.24, 1);
+    transition:
+      background 0.16s ease-out,
+      transform 0.16s cubic-bezier(0.18, 0.84, 0.24, 1);
     outline: none;
     min-width: 0;
   }
 
   .madlabs-glass-nav__item:not(:last-child)::after {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 18%;
     height: 64%;
     width: 1px;
-    background: linear-gradient(180deg, transparent, rgba(205, 155, 255, var(--ml-nav-divider-opacity)), transparent);
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(205, 155, 255, var(--ml-nav-divider-opacity)),
+      transparent
+    );
     pointer-events: none;
   }
 
@@ -189,7 +197,9 @@ const isActive = (href: string) =>
     justify-content: center;
     width: var(--ml-nav-icon-size);
     height: var(--ml-nav-icon-size);
-    transition: transform 0.16s ease-out, filter 0.16s ease-out;
+    transition:
+      transform 0.16s ease-out,
+      filter 0.16s ease-out;
   }
 
   .madlabs-glass-nav__icon svg {
@@ -198,36 +208,50 @@ const isActive = (href: string) =>
   }
 
   .madlabs-glass-nav__label {
-    font-family: 'Jersey 25', 'Arial Rounded MT Bold', 'Trebuchet MS', monospace;
+    font-family: "Jersey 25", "Arial Rounded MT Bold", "Trebuchet MS", monospace;
     font-size: var(--ml-nav-label-size);
     font-weight: 500;
     letter-spacing: 0.08em;
     line-height: 1;
     text-transform: uppercase;
-    transition: color 0.16s ease-out, text-shadow 0.16s ease-out;
+    transition:
+      color 0.16s ease-out,
+      text-shadow 0.16s ease-out;
   }
 
   /* Color system */
-  .madlabs-glass-nav__item--services { color: #4de7ff; }
-  .madlabs-glass-nav__item--about { color: #ff4fd8; }
-  .madlabs-glass-nav__item--contact { color: #00f07a; }
+  .madlabs-glass-nav__item--services {
+    color: #4de7ff;
+  }
+  .madlabs-glass-nav__item--about {
+    color: #ff4fd8;
+  }
+  .madlabs-glass-nav__item--contact {
+    color: #00f07a;
+  }
 
   .madlabs-glass-nav__item--services .madlabs-glass-nav__icon {
     filter: drop-shadow(0 0 3px rgba(77, 231, 255, calc(0.45 * var(--ml-nav-glow-strength))))
-            drop-shadow(0 0 7px rgba(77, 231, 255, calc(0.22 * var(--ml-nav-glow-strength))));
+      drop-shadow(0 0 7px rgba(77, 231, 255, calc(0.22 * var(--ml-nav-glow-strength))));
   }
   .madlabs-glass-nav__item--about .madlabs-glass-nav__icon {
     filter: drop-shadow(0 0 3px rgba(255, 79, 216, calc(0.45 * var(--ml-nav-glow-strength))))
-            drop-shadow(0 0 7px rgba(255, 79, 216, calc(0.22 * var(--ml-nav-glow-strength))));
+      drop-shadow(0 0 7px rgba(255, 79, 216, calc(0.22 * var(--ml-nav-glow-strength))));
   }
   .madlabs-glass-nav__item--contact .madlabs-glass-nav__icon {
     filter: drop-shadow(0 0 3px rgba(0, 240, 122, calc(0.45 * var(--ml-nav-glow-strength))))
-            drop-shadow(0 0 7px rgba(0, 240, 122, calc(0.22 * var(--ml-nav-glow-strength))));
+      drop-shadow(0 0 7px rgba(0, 240, 122, calc(0.22 * var(--ml-nav-glow-strength))));
   }
 
-  .madlabs-glass-nav__item--services .madlabs-glass-nav__label { text-shadow: 0 0 5px rgba(77, 231, 255, calc(0.35 * var(--ml-nav-glow-strength))); }
-  .madlabs-glass-nav__item--about .madlabs-glass-nav__label { text-shadow: 0 0 5px rgba(255, 79, 216, calc(0.35 * var(--ml-nav-glow-strength))); }
-  .madlabs-glass-nav__item--contact .madlabs-glass-nav__label { text-shadow: 0 0 5px rgba(0, 240, 122, calc(0.35 * var(--ml-nav-glow-strength))); }
+  .madlabs-glass-nav__item--services .madlabs-glass-nav__label {
+    text-shadow: 0 0 5px rgba(77, 231, 255, calc(0.35 * var(--ml-nav-glow-strength)));
+  }
+  .madlabs-glass-nav__item--about .madlabs-glass-nav__label {
+    text-shadow: 0 0 5px rgba(255, 79, 216, calc(0.35 * var(--ml-nav-glow-strength)));
+  }
+  .madlabs-glass-nav__item--contact .madlabs-glass-nav__label {
+    text-shadow: 0 0 5px rgba(0, 240, 122, calc(0.35 * var(--ml-nav-glow-strength)));
+  }
 
   /* Interactions */
   .madlabs-glass-nav__item:hover,
@@ -291,11 +315,7 @@ const isActive = (href: string) =>
         var(--ml-nav-crt-surface-mid) 48%,
         var(--ml-nav-crt-surface-bottom) 100%
       ),
-      radial-gradient(
-        circle at 50% 0%,
-        rgba(200, 160, 255, 0.18) 0%,
-        transparent 65%
-      );
+      radial-gradient(circle at 50% 0%, rgba(200, 160, 255, 0.18) 0%, transparent 65%);
 
     border: 1px solid var(--ml-nav-crt-border);
     box-shadow:
@@ -312,8 +332,8 @@ const isActive = (href: string) =>
   /* Neon Border Enhancement */
   .madlabs-glass-nav.is-crt-taskbar::before {
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.28) 0%, transparent 38%),
-      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.18) 0%, transparent 55%);
+      linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, transparent 38%),
+      radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.18) 0%, transparent 55%);
     opacity: 0.85;
   }
 
@@ -328,21 +348,19 @@ const isActive = (href: string) =>
     transform: translate3d(-130%, 0, 0);
     border-radius: 999px;
     pointer-events: none;
-    background:
-      linear-gradient(
-        90deg,
-        transparent 0%,
-        transparent 39%,
-        rgba(168, 116, 255, 0.18) 42%,
-        rgba(168, 116, 255, 0.72) 47%,
-        rgba(238, 222, 255, 0.95) 50%,
-        rgba(188, 148, 255, 0.72) 53%,
-        rgba(168, 116, 255, 0.18) 58%,
-        transparent 62%,
-        transparent 100%
-      );
-    filter:
-      drop-shadow(0 0 4px rgba(238, 222, 255, 0.72))
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 39%,
+      rgba(168, 116, 255, 0.18) 42%,
+      rgba(168, 116, 255, 0.72) 47%,
+      rgba(238, 222, 255, 0.95) 50%,
+      rgba(188, 148, 255, 0.72) 53%,
+      rgba(168, 116, 255, 0.18) 58%,
+      transparent 62%,
+      transparent 100%
+    );
+    filter: drop-shadow(0 0 4px rgba(238, 222, 255, 0.72))
       drop-shadow(0 0 9px rgba(168, 116, 255, 0.48));
     z-index: 2;
     will-change: transform;
@@ -380,7 +398,9 @@ const isActive = (href: string) =>
   }
 
   .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:hover .madlabs-glass-nav__icon,
-  .madlabs-glass-nav.is-crt-taskbar .madlabs-glass-nav__item:focus-visible .madlabs-glass-nav__icon {
+  .madlabs-glass-nav.is-crt-taskbar
+    .madlabs-glass-nav__item:focus-visible
+    .madlabs-glass-nav__icon {
     transform: translateY(-0.5px);
     filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);
   }
