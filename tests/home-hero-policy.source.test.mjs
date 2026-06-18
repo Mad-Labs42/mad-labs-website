@@ -46,6 +46,12 @@ assert.match(atomLogo, /fill=\{`url\(#\$\{gradientId\}\)`\}/);
 
 assert.match(mobileHero, /<MadLabsGlassNav\s+context=["']mobile-hero["']/);
 assert.match(mobileHero, /gradientId=["']nucleus-grad-mobile["']/);
+assert.match(mobileHero, /class="mobile-hero__glass"/);
+assert.match(mobileHero, /class="mobile-energy-field"/);
+assert.match(mobileHero, /class="mobile-energy-field__particle mobile-energy-field__particle--cyan"/);
+assert.match(mobileHero, /@keyframes\s+mobileHeroEnergyDrift/);
+assert.match(mobileHero, /@keyframes\s+mobileHeroCorePulse/);
+assert.match(mobileHero, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mobile-energy-field[\s\S]*animation:\s*none;/);
 
 assert.match(glassNav, /--ml-nav-item-min-height:\s*clamp\(30px,\s*3\.1vw,\s*40px\);/);
 assert.match(glassNav, /--ml-nav-icon-size:\s*clamp\(16px,\s*1\.55vw,\s*20px\);/);
