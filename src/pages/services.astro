@@ -156,6 +156,9 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
     z-index: 1;
   }
   .trust-strip {
+    --mad-labs-icon-color: var(--lab-accent);
+    --mad-labs-icon-size: 1rem;
+
     position: relative;
     z-index: var(--z-base);
     display: flex;
@@ -187,24 +190,6 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
     gap: 0.35rem;
     margin: 0;
     line-height: 1.4;
-  }
-
-  .trust-icon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--lab-accent);
-  }
-
-  .trust-icon :global(svg) {
-    width: 100%;
-    height: 100%;
-    display: block;
-    stroke: var(--lab-accent);
-    stroke-width: 1.5;
   }
 
   @media (max-width: 480px) {
