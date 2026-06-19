@@ -1,6 +1,6 @@
 ---
 export interface Props {
-  name: "clock" | "check" | "shield" | "users";
+  name: "clock" | "check" | "line" | "shield" | "users";
   class?: string;
 }
 
@@ -9,6 +9,7 @@ const { name, class: className = "" } = Astro.props;
 const icons: Record<string, string> = {
   clock: `<circle cx="8" cy="8" r="6"/><path d="M8 5v3.5l2 1.5"/>`,
   check: `<path d="M4 8.5 6.5 11 12 5.5"/>`,
+  line: `<line x1="3" y1="8" x2="13" y2="8"/>`,
   shield: `<path d="M8 2.5 2 5.5v3c0 4.2 2.5 7.5 6 8.5 3.5-1 6-4.3 6-8.5v-3L8 2.5Z"/><path d="m6 8 1.5 1.5 3-3"/>`,
   users: `<path d="M3 10h14"/><path d="M10 3v14"/>`,
 };
