@@ -18,7 +18,11 @@
 // ready. The widget renders in the inline container. We poll for the
 // iframe that Nimbuspop creates to detect "ready" state.
 
-import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "../utils/BookingWidget";
+import {
+  resolveBookingUrl,
+  getNimbuspopScriptSrc,
+  type BookingConfig,
+} from "../utils/BookingWidget";
 
 (function () {
   "use strict";
@@ -57,7 +61,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
   const bookingStatus: HTMLElement = bookingStatusEl;
 
   const prefersReducedMotion: boolean = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
 
   // ─── Timing constants ───
@@ -100,8 +104,8 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    * we wait for the timer. This guarantees the nameplate looks intentional.
    */
   function tryRevealNameplate(): void {
-    if (!widgetReady) return;  // Widget hasn't rendered yet
-    if (!minVisibleTimerExpired) return;  // Still in minimum-visible window
+    if (!widgetReady) return; // Widget hasn't rendered yet
+    if (!minVisibleTimerExpired) return; // Still in minimum-visible window
     revealNameplate();
   }
 
@@ -179,9 +183,11 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       document.dispatchEvent(
         new CustomEvent("madlabs:analytics", {
           detail: { event: "contact_booking_widget_loaded" },
-        })
+        }),
       );
-    } catch { /* never throw */ }
+    } catch {
+      /* never throw */
+    }
   }
 
   /**
@@ -206,8 +212,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    */
   function showError(): void {
     tabletRoot.setAttribute("aria-busy", "false");
-    bookingStatus.textContent =
-      "Booking calendar failed to load. Call or email MAD LABS instead.";
+    bookingStatus.textContent = "Booking calendar failed to load. Call or email MAD LABS instead.";
 
     if (prefersReducedMotion) {
       nameplatePos!.style.display = "none";
@@ -224,9 +229,11 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       document.dispatchEvent(
         new CustomEvent("madlabs:analytics", {
           detail: { event: "contact_booking_widget_error" },
-        })
+        }),
       );
-    } catch { /* never throw */ }
+    } catch {
+      /* never throw */
+    }
   }
 
   /**
@@ -245,7 +252,8 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       }
       // Check if the iframe has already loaded
       try {
-        const doc: Document | null = iframe.contentDocument || (iframe.contentWindow?.document ?? null);
+        const doc: Document | null =
+          iframe.contentDocument || (iframe.contentWindow?.document ?? null);
         if (doc && doc.readyState === "complete") {
           window.setTimeout(onWidgetReady, 500);
           return;
@@ -318,10 +326,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
     if (minVisibleTimerExpired) {
       showError();
     } else {
-      window.setTimeout(
-        showError,
-        Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt))
-      );
+      window.setTimeout(showError, Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt)));
     }
   };
   document.head.appendChild(npScript);
@@ -339,10 +344,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       if (minVisibleTimerExpired) {
         showError();
       } else {
-        window.setTimeout(
-          showError,
-          Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt))
-        );
+        window.setTimeout(showError, Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt)));
       }
     }
   }, FAILURE_TIMEOUT_MS);

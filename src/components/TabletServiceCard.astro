@@ -43,11 +43,7 @@ interface Props {
 const { variant, action, badge, hint } = Astro.props;
 ---
 
-<button
-  class={`tablet-btn tablet-btn--${variant}`}
-  data-tablet-action={action}
-  type="button"
->
+<button class={`tablet-btn tablet-btn--${variant}`} data-tablet-action={action} type="button">
   <span class="tablet-btn-badge" aria-hidden="true">[{badge}]</span>
   <span class="tablet-btn-hint">{hint}</span>
 </button>

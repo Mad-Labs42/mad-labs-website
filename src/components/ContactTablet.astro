@@ -42,15 +42,12 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   aria-describedby="contact-tablet-instructions"
   aria-busy="true"
 >
-
   <div class="tablet-bezel">
-
     <div class="tablet-top-bar" aria-hidden="true">
       <span class="tablet-led"></span>
     </div>
 
     <div class="tablet-screen" data-tablet-screen data-tablet-state="loading">
-
       <div class="tablet-desktop-bg" aria-hidden="true"></div>
 
       <div class="tablet-backlight" aria-hidden="true"></div>
@@ -98,19 +95,13 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
             <span class="placeholder-icon" aria-hidden="true">[!]</span>
             <h3 class="placeholder-heading">Gremlins in the Wires</h3>
             <p class="placeholder-text">
-              Our contact form seems to be under attack from network gremlins. If your
-              devices are also under attack, give us a call — we'll get them sorted.
+              Our contact form seems to be under attack from network gremlins. If your devices are
+              also under attack, give us a call — we'll get them sorted.
             </p>
-            <a
-              href={`tel:${CONTACT_PHONE.replace(/[\s()-]/g, "")}`}
-              class="placeholder-fallback"
-            >
+            <a href={`tel:${CONTACT_PHONE.replace(/[\s()-]/g, "")}`} class="placeholder-fallback">
               Call {CONTACT_PHONE} →
             </a>
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              class="placeholder-fallback"
-            >
+            <a href={`mailto:${CONTACT_EMAIL}`} class="placeholder-fallback">
               Email {CONTACT_EMAIL} →
             </a>
           </div>
@@ -135,15 +126,40 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
       <div class="nameplate-positioner" data-tablet-nameplate>
         <div
           class="booking-nameplate"
-          id="booking-nameplate" aria-live="polite" aria-atomic="true"
+          id="booking-nameplate"
+          aria-live="polite"
+          aria-atomic="true"
           aria-hidden="true"
         >
           <span class="nameplate-mad">MAD</span>
           <span class="nameplate-atom" aria-hidden="true">
             <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9"></ellipse>
-              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(60 10 10)"></ellipse>
-              <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#e89050" stroke-width="1.0" opacity="0.9" transform="rotate(-60 10 10)"></ellipse>
+              <ellipse
+                cx="10"
+                cy="10"
+                rx="7"
+                ry="2.5"
+                stroke="#e89050"
+                stroke-width="1.0"
+                opacity="0.9"></ellipse>
+              <ellipse
+                cx="10"
+                cy="10"
+                rx="7"
+                ry="2.5"
+                stroke="#e89050"
+                stroke-width="1.0"
+                opacity="0.9"
+                transform="rotate(60 10 10)"></ellipse>
+              <ellipse
+                cx="10"
+                cy="10"
+                rx="7"
+                ry="2.5"
+                stroke="#e89050"
+                stroke-width="1.0"
+                opacity="0.9"
+                transform="rotate(-60 10 10)"></ellipse>
               <circle cx="10" cy="10" r="1.35" fill="#ffffff" opacity="1"></circle>
             </svg>
           </span>
@@ -167,12 +183,17 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   </div>
 </div>
 
-<script is:inline id="tablet-config" type="application/json" set:html={JSON.stringify({
-  zohoUrl: ZOHO_BOOKING_URL,
-  nimbuspopScriptSrc: NIMBUSPOP_SCRIPT_SRC,
-  contactPhone: CONTACT_PHONE,
-  contactEmail: CONTACT_EMAIL
-})}></script>
+<script
+  is:inline
+  id="tablet-config"
+  type="application/json"
+  set:html={JSON.stringify({
+    zohoUrl: ZOHO_BOOKING_URL,
+    nimbuspopScriptSrc: NIMBUSPOP_SCRIPT_SRC,
+    contactPhone: CONTACT_PHONE,
+    contactEmail: CONTACT_EMAIL,
+  })}
+/>
 
 <script src="./ContactTablet.client.ts"></script>
 
@@ -233,8 +254,13 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     animation: led-pulse 4s ease-in-out infinite;
   }
   @keyframes led-pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   /* ─── Screen ─── */
@@ -257,18 +283,9 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     position: absolute;
     inset: 0;
     z-index: 5;
-    background: radial-gradient(
-      ellipse at center,
-      #3a2e5c 0%,
-      #2c234a 35%,
-      #1c1638 75%,
-      #0c0820 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(200, 180, 240, 0.08) 0%,
-      rgba(180, 160, 230, 0.05) 100%
-    );
+    background:
+      radial-gradient(ellipse at center, #3a2e5c 0%, #2c234a 35%, #1c1638 75%, #0c0820 100%),
+      linear-gradient(180deg, rgba(200, 180, 240, 0.08) 0%, rgba(180, 160, 230, 0.05) 100%);
     pointer-events: none;
     transition: opacity 0.7s ease;
   }
@@ -376,20 +393,21 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     inset: 0;
     pointer-events: none;
     z-index: 12;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      transparent 96%,
-      rgba(255, 0, 80, 0.025) 98%,
-      transparent 100%
-    ),
-    linear-gradient(
-      270deg,
-      transparent 0%,
-      transparent 96%,
-      rgba(0, 255, 200, 0.025) 98%,
-      transparent 100%
-    );
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 96%,
+        rgba(255, 0, 80, 0.025) 98%,
+        transparent 100%
+      ),
+      linear-gradient(
+        270deg,
+        transparent 0%,
+        transparent 96%,
+        rgba(0, 255, 200, 0.025) 98%,
+        transparent 100%
+      );
   }
   .tablet-glare {
     position: absolute;
@@ -409,16 +427,9 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     inset: 0;
     pointer-events: none;
     z-index: 14;
-    background: radial-gradient(
-      ellipse at 30% 90%,
-      rgba(232, 144, 80, 0.05) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at 80% 10%,
-      rgba(140, 80, 240, 0.06) 0%,
-      transparent 50%
-    );
+    background:
+      radial-gradient(ellipse at 30% 90%, rgba(232, 144, 80, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 10%, rgba(140, 80, 240, 0.06) 0%, transparent 50%);
     mix-blend-mode: screen;
   }
   .tablet-bands {
@@ -437,8 +448,12 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     mix-blend-mode: overlay;
   }
   @keyframes bands-scroll {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 64px; }
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 64px;
+    }
   }
   .tablet-phosphor-dots {
     position: absolute;
@@ -455,20 +470,21 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     pointer-events: none;
     z-index: 17;
     opacity: 0.35;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 1px,
-      rgba(0, 0, 0, 0.04) 1px,
-      rgba(0, 0, 0, 0.04) 2px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 1px,
-      rgba(0, 0, 0, 0.04) 1px,
-      rgba(0, 0, 0, 0.04) 2px
-    );
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 1px,
+        rgba(0, 0, 0, 0.04) 1px,
+        rgba(0, 0, 0, 0.04) 2px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 1px,
+        rgba(0, 0, 0, 0.04) 1px,
+        rgba(0, 0, 0, 0.04) 2px
+      );
   }
   .tablet-scanlines {
     position: absolute;
@@ -533,8 +549,12 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     animation: scanbeam-travel 5s linear infinite;
   }
   @keyframes scanbeam-travel {
-    0% { top: -50px; }
-    100% { top: 560px; }
+    0% {
+      top: -50px;
+    }
+    100% {
+      top: 560px;
+    }
   }
   .tablet-flicker {
     position: absolute;
@@ -545,8 +565,13 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     animation: flicker-pulse 0.13s steps(1) infinite;
   }
   @keyframes flicker-pulse {
-    0%, 100% { opacity: 0.95; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.95;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   /* Corner brackets */
@@ -561,20 +586,28 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     z-index: 24;
   }
   .tablet-corner--tl {
-    top: 12px; left: 12px;
-    border-top-width: 1.5px; border-left-width: 1.5px;
+    top: 12px;
+    left: 12px;
+    border-top-width: 1.5px;
+    border-left-width: 1.5px;
   }
   .tablet-corner--tr {
-    top: 12px; right: 12px;
-    border-top-width: 1.5px; border-right-width: 1.5px;
+    top: 12px;
+    right: 12px;
+    border-top-width: 1.5px;
+    border-right-width: 1.5px;
   }
   .tablet-corner--bl {
-    bottom: 12px; left: 12px;
-    border-bottom-width: 1.5px; border-left-width: 1.5px;
+    bottom: 12px;
+    left: 12px;
+    border-bottom-width: 1.5px;
+    border-left-width: 1.5px;
   }
   .tablet-corner--br {
-    bottom: 12px; right: 12px;
-    border-bottom-width: 1.5px; border-right-width: 1.5px;
+    bottom: 12px;
+    right: 12px;
+    border-bottom-width: 1.5px;
+    border-right-width: 1.5px;
   }
 
   /* ─── Inline booking container (Nimbuspop renders Zoho here) ─── */
@@ -726,8 +759,13 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   }
   @keyframes nameplate-loader-blink {
-    0%, 100% { opacity: 0.55; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
   }
   .booking-nameplate .nameplate-loader::before {
     content: "";
@@ -767,8 +805,14 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     animation: nameplate-tracer 1.4s ease-in-out infinite;
   }
   @keyframes nameplate-tracer {
-    0% { transform: translateY(0); opacity: 0.9; }
-    100% { transform: translateY(120px); opacity: 0.3; }
+    0% {
+      transform: translateY(0);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(120px);
+      opacity: 0.3;
+    }
   }
   .nameplate-positioner.is-loaded,
   .nameplate-positioner.is-error {
@@ -794,8 +838,12 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     background: linear-gradient(transparent, rgba(18, 8, 40, 0.7) 50%, rgba(18, 8, 40, 0.85));
     transition: opacity 0.8s ease;
   }
-  .booking-scroll-hint.hint-visible { opacity: 1; }
-  .booking-scroll-hint.hint-hidden { opacity: 0; }
+  .booking-scroll-hint.hint-visible {
+    opacity: 1;
+  }
+  .booking-scroll-hint.hint-hidden {
+    opacity: 0;
+  }
   .scroll-hint-text {
     font-family: "VT323", "Courier New", monospace;
     font-size: 1rem;
@@ -814,7 +862,8 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     animation: scroll-hint-bounce 1.6s ease-in-out infinite;
   }
   @keyframes scroll-hint-bounce {
-    0%, 100% {
+    0%,
+    100% {
       transform: rotate(45deg) translateY(-2px);
       opacity: 0.6;
     }
@@ -832,17 +881,17 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(
-      180deg,
-      rgba(18, 8, 40, 0.85) 0%,
-      rgba(30, 12, 50, 0.92) 100%
-    );
+    background: linear-gradient(180deg, rgba(18, 8, 40, 0.85) 0%, rgba(30, 12, 50, 0.92) 100%);
     padding: 1.5rem 1.25rem;
     animation: placeholder-fade-in 0.5s ease;
   }
   @keyframes placeholder-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   .placeholder-panel {
     max-width: 360px;
@@ -880,7 +929,9 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     font-family: "Jersey 25", "VT323", monospace;
     font-size: 0.95rem;
     text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
   }
   .placeholder-fallback:hover {
     background: rgba(75, 35, 130, 0.7);
@@ -912,7 +963,9 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     gap: 3px;
     width: 30px;
   }
-  .tablet-speaker-grille--right { align-items: flex-end; }
+  .tablet-speaker-grille--right {
+    align-items: flex-end;
+  }
   .tablet-speaker-slot {
     width: 22px;
     height: 2px;

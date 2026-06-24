@@ -98,7 +98,6 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
         <CrtTaskbar currentPath={Astro.url.pathname} />
       </div>
 
-      
       <div class="crt-confirm-overlay" aria-hidden="true">
         <p class="crt-confirm-message">We're sorry to see you go! &mdash; ARE YOU SURE?</p>
         <div class="crt-confirm-buttons">
@@ -116,7 +115,6 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
       data-crt-power-button></button>
     <div class="crt-power-led" aria-hidden="true"></div>
 
-    
     <button
       class="crt-mute-btn"
       type="button"
@@ -135,723 +133,729 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
   if (document.documentElement.dataset.homeHero !== "crt") {
     // Mobile-safe homepage selection: keep CRT DOM inert unless the classifier promotes it.
   } else {
-  const crtHeroCandidate = document.querySelector<HTMLElement>("[data-crt-hero]");
-  const crtScreenCandidate = document.querySelector<HTMLElement>("[data-crt-screen]");
-  const powerButtonCandidate = document.querySelector<HTMLButtonElement>("[data-crt-power-button]");
-  const confirmOverlayCandidate = document.querySelector<HTMLElement>(".crt-confirm-overlay");
-  const confirmYesCandidate = document.querySelector<HTMLButtonElement>(".crt-confirm-yes");
-  const confirmNoCandidate = document.querySelector<HTMLButtonElement>(".crt-confirm-no");
+    const crtHeroCandidate = document.querySelector<HTMLElement>("[data-crt-hero]");
+    const crtScreenCandidate = document.querySelector<HTMLElement>("[data-crt-screen]");
+    const powerButtonCandidate =
+      document.querySelector<HTMLButtonElement>("[data-crt-power-button]");
+    const confirmOverlayCandidate = document.querySelector<HTMLElement>(".crt-confirm-overlay");
+    const confirmYesCandidate = document.querySelector<HTMLButtonElement>(".crt-confirm-yes");
+    const confirmNoCandidate = document.querySelector<HTMLButtonElement>(".crt-confirm-no");
 
-  if (
-    crtHeroCandidate &&
-    crtScreenCandidate &&
-    powerButtonCandidate &&
-    confirmOverlayCandidate &&
-    confirmYesCandidate &&
-    confirmNoCandidate
-  ) {
-    const crtHero = crtHeroCandidate;
-    const crtScreen = crtScreenCandidate;
-    const powerButton = powerButtonCandidate;
-    const confirmOverlay = confirmOverlayCandidate;
-    const confirmYesBtn = confirmYesCandidate;
-    const confirmNoBtn = confirmNoCandidate;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const TIMELINE_DURATION_MS = 14800;
-    const SAFETY_MARGIN_MS = 3000;
-    const timers: number[] = [];
-    let rafId: number | null = null;
-    let safetyTimerId: number | null = null;
-    let glareRafId: number | null = null;
+    if (
+      crtHeroCandidate &&
+      crtScreenCandidate &&
+      powerButtonCandidate &&
+      confirmOverlayCandidate &&
+      confirmYesCandidate &&
+      confirmNoCandidate
+    ) {
+      const crtHero = crtHeroCandidate;
+      const crtScreen = crtScreenCandidate;
+      const powerButton = powerButtonCandidate;
+      const confirmOverlay = confirmOverlayCandidate;
+      const confirmYesBtn = confirmYesCandidate;
+      const confirmNoBtn = confirmNoCandidate;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const TIMELINE_DURATION_MS = 14800;
+      const SAFETY_MARGIN_MS = 3000;
+      const timers: number[] = [];
+      let rafId: number | null = null;
+      let safetyTimerId: number | null = null;
+      let glareRafId: number | null = null;
 
-    const heroPhaseClasses = [
-      "is-loading",
-      "is-powering-on",
-      "is-atom-revealing",
-      "is-title-sequencing",
-      "is-title-glowing",
-      "is-divider-building",
-      "is-divider-opening",
-      "is-major-glitching",
-      "is-restoring",
-      "is-final-glow",
-      "is-stable",
-      "is-shutting-down",
-      "is-powered-off",
-    ];
-
-    const screenEffectClasses = [
-      "is-crt-flicker-pop",
-      "is-crt-glitch-minor",
-      "is-crt-glitch-major",
-      "is-crt-proud-glow",
-    ];
-
-    let isPoweredOn = true;
-    let introPaused = false;
-    let introWasActive = false; // Was the intro running when overlay was shown?
-
-    const introSeenStorageKey = "madlabs:crt-hero-intro-seen";
-
-    const hasSeenIntroThisSession = (): boolean => {
-      try {
-        return window.sessionStorage.getItem(introSeenStorageKey) === "true";
-      } catch {
-        return false;
-      }
-    };
-
-    const markIntroSeenThisSession = (): void => {
-      try {
-        window.sessionStorage.setItem(introSeenStorageKey, "true");
-      } catch {
-        // Storage can be unavailable in some privacy/browser modes.
-      }
-    };
-
-    const clearTimers = (): void => {
-      timers.forEach((timerId) => window.clearTimeout(timerId));
-      timers.length = 0;
-      if (rafId !== null) {
-        window.cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-      if (safetyTimerId !== null) {
-        window.clearTimeout(safetyTimerId);
-        safetyTimerId = null;
-      }
-      if (glareRafId !== null) {
-        window.cancelAnimationFrame(glareRafId);
-        glareRafId = null;
-      }
-    };
-
-    const schedule = (delay: number, callback: () => void): void => {
-      timers.push(window.setTimeout(callback, delay));
-    };
-
-    const resetHeroState = (): void => {
-      clearTimers();
-
-      heroPhaseClasses.forEach((className) => {
-        crtHero.classList.remove(className);
-      });
-
-      screenEffectClasses.forEach((className) => {
-        crtScreen.classList.remove(className);
-      });
-
-      window.dispatchEvent(new CustomEvent("madlabs:hero-reset"));
-    };
-
-    const setPowerButtonState = (poweredOn: boolean): void => {
-      powerButton.setAttribute(
-        "aria-label",
-        poweredOn ? "Turn CRT monitor off" : "Turn CRT monitor on",
-      );
-      powerButton.setAttribute("aria-pressed", poweredOn ? "true" : "false");
-    };
-
-    const showStablePoweredOnState = (): void => {
-      resetHeroState();
-      isPoweredOn = true;
-      setPowerButtonState(true);
-      crtHero.classList.add("is-stable");
-      markIntroSeenThisSession();
-    };
-
-    const restartTimedClass = (element: HTMLElement, className: string, duration: number): void => {
-      element.classList.remove(className);
-      void element.offsetWidth;
-      element.classList.add(className);
-
-      schedule(duration, () => {
-        element.classList.remove(className);
-      });
-    };
-
-    const addHeroPhase = (className: string): void => {
-      crtHero.classList.add(className);
-    };
-
-    const startTimeline = (): void => {
-      resetHeroState();
-      isPoweredOn = true;
-      setPowerButtonState(true);
-      void crtHero.offsetWidth;
-
-      // Phase schedule: [time_ms, callback]
-      // Times are relative to timeline start (t=0).
-      // Tightened from original ~18.04s to ~14.8s.
-      const phases: Array<[number, () => void]> = [
-        [0, () => addHeroPhase("is-loading")],
-        [
-          450,
-          () => {
-            addHeroPhase("is-powering-on");
-            startCrtHum();
-          },
-        ],
-        [2800, () => addHeroPhase("is-atom-revealing")],
-        [
-          3800,
-          () => {
-            addHeroPhase("is-title-sequencing");
-            scheduleTypingBlips();
-            window.dispatchEvent(new CustomEvent("madlabs:hero-title-sequence-start"));
-          },
-        ],
-        [
-          6400,
-          () => {
-            addHeroPhase("is-title-glowing");
-            window.dispatchEvent(new CustomEvent("madlabs:hero-title-glow-start"));
-          },
-        ],
-        [
-          7400,
-          () => {
-            crtHero.classList.remove("is-title-glowing");
-            addHeroPhase("is-divider-building");
-            window.dispatchEvent(new CustomEvent("madlabs:hero-divider-line-build"));
-          },
-        ],
-        [
-          8200,
-          () => {
-            addHeroPhase("is-divider-opening");
-            window.dispatchEvent(new CustomEvent("madlabs:hero-divider-open"));
-          },
-        ],
-        [9500, () => restartTimedClass(crtScreen, "is-crt-flicker-pop", 220)],
-        [9800, () => restartTimedClass(crtScreen, "is-crt-glitch-minor", 720)],
-        [
-          11000,
-          () => {
-            addHeroPhase("is-major-glitching");
-            restartTimedClass(crtScreen, "is-crt-glitch-major", 390);
-          },
-        ],
-        [11560, () => restartTimedClass(crtScreen, "is-crt-glitch-major", 520)],
-        [
-          12800,
-          () => {
-            crtHero.classList.remove("is-major-glitching");
-            addHeroPhase("is-restoring");
-          },
-        ],
-        [
-          14000,
-          () => {
-            addHeroPhase("is-final-glow");
-            // Use animationend (not timer) so JS stays in sync with CSS duration automatically.
-            crtScreen.classList.remove("is-crt-proud-glow");
-            void crtScreen.offsetWidth;
-            crtScreen.classList.add("is-crt-proud-glow");
-            const onGlowEnd = (e: AnimationEvent): void => {
-              if (e.animationName === "crtProudGlow") {
-                crtScreen.classList.remove("is-crt-proud-glow");
-                crtScreen.removeEventListener("animationend", onGlowEnd);
-              }
-            };
-            crtScreen.addEventListener("animationend", onGlowEnd);
-          },
-        ],
-        [
-          14800,
-          () => {
-            crtHero.classList.remove("is-final-glow");
-            addHeroPhase("is-stable");
-            stopCrtHum();
-            markIntroSeenThisSession();
-          },
-        ],
+      const heroPhaseClasses = [
+        "is-loading",
+        "is-powering-on",
+        "is-atom-revealing",
+        "is-title-sequencing",
+        "is-title-glowing",
+        "is-divider-building",
+        "is-divider-opening",
+        "is-major-glitching",
+        "is-restoring",
+        "is-final-glow",
+        "is-stable",
+        "is-shutting-down",
+        "is-powered-off",
       ];
 
-      // Set initial phase synchronously (avoids 1-frame gap before RAF starts)
-      addHeroPhase("is-loading");
+      const screenEffectClasses = [
+        "is-crt-flicker-pop",
+        "is-crt-glitch-minor",
+        "is-crt-glitch-major",
+        "is-crt-proud-glow",
+      ];
 
-      // ----- requestAnimationFrame clock -----
-      const startTime = performance.now();
-      let phaseIndex = 0;
+      let isPoweredOn = true;
+      let introPaused = false;
+      let introWasActive = false; // Was the intro running when overlay was shown?
 
-      const tick = (now: number): void => {
-        // Skip phase advancement while confirmation overlay is visible
-        if (introPaused) {
-          rafId = window.requestAnimationFrame(tick);
+      const introSeenStorageKey = "madlabs:crt-hero-intro-seen";
+
+      const hasSeenIntroThisSession = (): boolean => {
+        try {
+          return window.sessionStorage.getItem(introSeenStorageKey) === "true";
+        } catch {
+          return false;
+        }
+      };
+
+      const markIntroSeenThisSession = (): void => {
+        try {
+          window.sessionStorage.setItem(introSeenStorageKey, "true");
+        } catch {
+          // Storage can be unavailable in some privacy/browser modes.
+        }
+      };
+
+      const clearTimers = (): void => {
+        timers.forEach((timerId) => window.clearTimeout(timerId));
+        timers.length = 0;
+        if (rafId !== null) {
+          window.cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        if (safetyTimerId !== null) {
+          window.clearTimeout(safetyTimerId);
+          safetyTimerId = null;
+        }
+        if (glareRafId !== null) {
+          window.cancelAnimationFrame(glareRafId);
+          glareRafId = null;
+        }
+      };
+
+      const schedule = (delay: number, callback: () => void): void => {
+        timers.push(window.setTimeout(callback, delay));
+      };
+
+      const resetHeroState = (): void => {
+        clearTimers();
+
+        heroPhaseClasses.forEach((className) => {
+          crtHero.classList.remove(className);
+        });
+
+        screenEffectClasses.forEach((className) => {
+          crtScreen.classList.remove(className);
+        });
+
+        window.dispatchEvent(new CustomEvent("madlabs:hero-reset"));
+      };
+
+      const setPowerButtonState = (poweredOn: boolean): void => {
+        powerButton.setAttribute(
+          "aria-label",
+          poweredOn ? "Turn CRT monitor off" : "Turn CRT monitor on",
+        );
+        powerButton.setAttribute("aria-pressed", poweredOn ? "true" : "false");
+      };
+
+      const showStablePoweredOnState = (): void => {
+        resetHeroState();
+        isPoweredOn = true;
+        setPowerButtonState(true);
+        crtHero.classList.add("is-stable");
+        markIntroSeenThisSession();
+      };
+
+      const restartTimedClass = (
+        element: HTMLElement,
+        className: string,
+        duration: number,
+      ): void => {
+        element.classList.remove(className);
+        void element.offsetWidth;
+        element.classList.add(className);
+
+        schedule(duration, () => {
+          element.classList.remove(className);
+        });
+      };
+
+      const addHeroPhase = (className: string): void => {
+        crtHero.classList.add(className);
+      };
+
+      const startTimeline = (): void => {
+        resetHeroState();
+        isPoweredOn = true;
+        setPowerButtonState(true);
+        void crtHero.offsetWidth;
+
+        // Phase schedule: [time_ms, callback]
+        // Times are relative to timeline start (t=0).
+        // Tightened from original ~18.04s to ~14.8s.
+        const phases: Array<[number, () => void]> = [
+          [0, () => addHeroPhase("is-loading")],
+          [
+            450,
+            () => {
+              addHeroPhase("is-powering-on");
+              startCrtHum();
+            },
+          ],
+          [2800, () => addHeroPhase("is-atom-revealing")],
+          [
+            3800,
+            () => {
+              addHeroPhase("is-title-sequencing");
+              scheduleTypingBlips();
+              window.dispatchEvent(new CustomEvent("madlabs:hero-title-sequence-start"));
+            },
+          ],
+          [
+            6400,
+            () => {
+              addHeroPhase("is-title-glowing");
+              window.dispatchEvent(new CustomEvent("madlabs:hero-title-glow-start"));
+            },
+          ],
+          [
+            7400,
+            () => {
+              crtHero.classList.remove("is-title-glowing");
+              addHeroPhase("is-divider-building");
+              window.dispatchEvent(new CustomEvent("madlabs:hero-divider-line-build"));
+            },
+          ],
+          [
+            8200,
+            () => {
+              addHeroPhase("is-divider-opening");
+              window.dispatchEvent(new CustomEvent("madlabs:hero-divider-open"));
+            },
+          ],
+          [9500, () => restartTimedClass(crtScreen, "is-crt-flicker-pop", 220)],
+          [9800, () => restartTimedClass(crtScreen, "is-crt-glitch-minor", 720)],
+          [
+            11000,
+            () => {
+              addHeroPhase("is-major-glitching");
+              restartTimedClass(crtScreen, "is-crt-glitch-major", 390);
+            },
+          ],
+          [11560, () => restartTimedClass(crtScreen, "is-crt-glitch-major", 520)],
+          [
+            12800,
+            () => {
+              crtHero.classList.remove("is-major-glitching");
+              addHeroPhase("is-restoring");
+            },
+          ],
+          [
+            14000,
+            () => {
+              addHeroPhase("is-final-glow");
+              // Use animationend (not timer) so JS stays in sync with CSS duration automatically.
+              crtScreen.classList.remove("is-crt-proud-glow");
+              void crtScreen.offsetWidth;
+              crtScreen.classList.add("is-crt-proud-glow");
+              const onGlowEnd = (e: AnimationEvent): void => {
+                if (e.animationName === "crtProudGlow") {
+                  crtScreen.classList.remove("is-crt-proud-glow");
+                  crtScreen.removeEventListener("animationend", onGlowEnd);
+                }
+              };
+              crtScreen.addEventListener("animationend", onGlowEnd);
+            },
+          ],
+          [
+            14800,
+            () => {
+              crtHero.classList.remove("is-final-glow");
+              addHeroPhase("is-stable");
+              stopCrtHum();
+              markIntroSeenThisSession();
+            },
+          ],
+        ];
+
+        // Set initial phase synchronously (avoids 1-frame gap before RAF starts)
+        addHeroPhase("is-loading");
+
+        // ----- requestAnimationFrame clock -----
+        const startTime = performance.now();
+        let phaseIndex = 0;
+
+        const tick = (now: number): void => {
+          // Skip phase advancement while confirmation overlay is visible
+          if (introPaused) {
+            rafId = window.requestAnimationFrame(tick);
+            return;
+          }
+
+          const elapsed = now - startTime;
+
+          // Fire all phases that are due
+          while (phaseIndex < phases.length) {
+            const phase = phases[phaseIndex];
+            if (phase && elapsed >= phase[0]) {
+              phase[1]();
+              phaseIndex++;
+            } else {
+              break;
+            }
+          }
+
+          if (phaseIndex < phases.length) {
+            rafId = window.requestAnimationFrame(tick);
+          }
+        };
+
+        rafId = window.requestAnimationFrame(tick);
+
+        // ----- Fail-safe: force stable state if timeline stalls -----
+        safetyTimerId = window.setTimeout(() => {
+          if (!crtHero.classList.contains("is-stable")) {
+            showStablePoweredOnState();
+          }
+        }, TIMELINE_DURATION_MS + SAFETY_MARGIN_MS);
+      };
+
+      const shutDownMonitor = (): void => {
+        if (!isPoweredOn || crtHero.classList.contains("is-shutting-down")) {
           return;
         }
 
-        const elapsed = now - startTime;
+        isPoweredOn = false;
+        clearTimers();
 
-        // Fire all phases that are due
-        while (phaseIndex < phases.length) {
-          const phase = phases[phaseIndex];
-          if (phase && elapsed >= phase[0]) {
-            phase[1]();
-            phaseIndex++;
-          } else {
-            break;
-          }
+        heroPhaseClasses.forEach((className) => {
+          crtHero.classList.remove(className);
+        });
+
+        screenEffectClasses.forEach((className) => {
+          crtScreen.classList.remove(className);
+        });
+
+        stopCrtHum();
+
+        window.dispatchEvent(new CustomEvent("madlabs:hero-reset"));
+
+        crtHero.classList.add("is-shutting-down");
+        setPowerButtonState(false);
+
+        schedule(2850, () => {
+          crtHero.classList.remove("is-shutting-down");
+          crtHero.classList.add("is-powered-off");
+        });
+      };
+
+      const powerOnMonitor = (): void => {
+        if (isPoweredOn || crtHero.classList.contains("is-shutting-down")) {
+          return;
         }
 
-        if (phaseIndex < phases.length) {
-          rafId = window.requestAnimationFrame(tick);
+        startTimeline();
+      };
+
+      const showConfirmOverlay = (): void => {
+        confirmOverlay.classList.add("is-visible");
+        confirmOverlay.setAttribute("aria-hidden", "false");
+        confirmYesBtn.focus();
+
+        // Pause the intro timeline if it's running
+        if (
+          !crtHero.classList.contains("is-stable") &&
+          !crtHero.classList.contains("is-shutting-down") &&
+          !crtHero.classList.contains("is-powered-off")
+        ) {
+          introWasActive = true;
+          introPaused = true;
         }
       };
 
-      rafId = window.requestAnimationFrame(tick);
+      const hideConfirmOverlay = (): void => {
+        confirmOverlay.classList.remove("is-visible");
+        confirmOverlay.setAttribute("aria-hidden", "true");
 
-      // ----- Fail-safe: force stable state if timeline stalls -----
-      safetyTimerId = window.setTimeout(() => {
-        if (!crtHero.classList.contains("is-stable")) {
-          showStablePoweredOnState();
+        // Resume intro if it was paused
+        if (introWasActive) {
+          introPaused = false;
+          introWasActive = false;
         }
-      }, TIMELINE_DURATION_MS + SAFETY_MARGIN_MS);
-    };
+      };
 
-    const shutDownMonitor = (): void => {
-      if (!isPoweredOn || crtHero.classList.contains("is-shutting-down")) {
-        return;
-      }
+      powerButton.addEventListener("click", () => {
+        if (crtHero.classList.contains("is-powered-off")) {
+          powerOnMonitor();
+          return;
+        }
 
-      isPoweredOn = false;
-      clearTimers();
-
-      heroPhaseClasses.forEach((className) => {
-        crtHero.classList.remove(className);
+        // Always show confirmation overlay before any power action
+        showConfirmOverlay();
       });
 
-      screenEffectClasses.forEach((className) => {
-        crtScreen.classList.remove(className);
-      });
-
-      stopCrtHum();
-
-      window.dispatchEvent(new CustomEvent("madlabs:hero-reset"));
-
-      crtHero.classList.add("is-shutting-down");
-      setPowerButtonState(false);
-
-      schedule(2850, () => {
-        crtHero.classList.remove("is-shutting-down");
-        crtHero.classList.add("is-powered-off");
-      });
-    };
-
-    const powerOnMonitor = (): void => {
-      if (isPoweredOn || crtHero.classList.contains("is-shutting-down")) {
-        return;
-      }
-
-      startTimeline();
-    };
-
-    const showConfirmOverlay = (): void => {
-      confirmOverlay.classList.add("is-visible");
-      confirmOverlay.setAttribute("aria-hidden", "false");
-      confirmYesBtn.focus();
-
-      // Pause the intro timeline if it's running
-      if (
-        !crtHero.classList.contains("is-stable") &&
-        !crtHero.classList.contains("is-shutting-down") &&
-        !crtHero.classList.contains("is-powered-off")
-      ) {
-        introWasActive = true;
-        introPaused = true;
-      }
-    };
-
-    const hideConfirmOverlay = (): void => {
-      confirmOverlay.classList.remove("is-visible");
-      confirmOverlay.setAttribute("aria-hidden", "true");
-
-      // Resume intro if it was paused
-      if (introWasActive) {
+      confirmYesBtn.addEventListener("click", () => {
+        hideConfirmOverlay();
+        introWasActive = false; // Don't resume — we're shutting down
         introPaused = false;
-        introWasActive = false;
-      }
-    };
+        shutDownMonitor();
+      });
 
-    powerButton.addEventListener("click", () => {
-      if (crtHero.classList.contains("is-powered-off")) {
-        powerOnMonitor();
-        return;
-      }
+      confirmNoBtn.addEventListener("click", () => {
+        hideConfirmOverlay();
+        // Intro timeline resumes automatically via hideConfirmOverlay
+        // If stable, overlay just closes with no other action
+      });
 
-      // Always show confirmation overlay before any power action
-      showConfirmOverlay();
-    });
+      // ─── Audio System ──────────────────────────────────────
+      let audioCtx: AudioContext | null = null;
+      let crtHumOsc1: OscillatorNode | null = null;
+      let crtHumOsc2: OscillatorNode | null = null;
+      let crtHumGain: GainNode | null = null;
+      let isMuted = false;
 
-    confirmYesBtn.addEventListener("click", () => {
-      hideConfirmOverlay();
-      introWasActive = false; // Don't resume — we're shutting down
-      introPaused = false;
-      shutDownMonitor();
-    });
+      const MUTE_STORAGE_KEY = "madlabs:crt-mute";
 
-    confirmNoBtn.addEventListener("click", () => {
-      hideConfirmOverlay();
-      // Intro timeline resumes automatically via hideConfirmOverlay
-      // If stable, overlay just closes with no other action
-    });
-
-    // ─── Audio System ──────────────────────────────────────
-    let audioCtx: AudioContext | null = null;
-    let crtHumOsc1: OscillatorNode | null = null;
-    let crtHumOsc2: OscillatorNode | null = null;
-    let crtHumGain: GainNode | null = null;
-    let isMuted = false;
-
-    const MUTE_STORAGE_KEY = "madlabs:crt-mute";
-
-    /* AudioContext created lazily on first user gesture (browser autoplay policy).
+      /* AudioContext created lazily on first user gesture (browser autoplay policy).
        See initAudioCtx() below — registered on click/keydown/touchstart. */
 
-    const loadMutePreference = (): void => {
-      try {
-        isMuted = localStorage.getItem(MUTE_STORAGE_KEY) === "true";
-      } catch {
-        isMuted = false;
-      }
-    };
-
-    const saveMutePreference = (): void => {
-      try {
-        localStorage.setItem(MUTE_STORAGE_KEY, String(isMuted));
-      } catch {
-        // Storage may be unavailable
-      }
-    };
-
-    const ensureAudioContext = (): AudioContext | null => {
-      if (!audioCtx) return null;
-      if (audioCtx.state === "suspended") {
-        // Fire-and-forget resume; the blip will be silent if not yet resumed
-        audioCtx.resume().catch(() => {});
-      }
-      // Return the context regardless — the oscillator scheduling will
-      // play when the context is running. If still suspended, the sound
-      // is queued and plays as soon as the context resumes.
-      if (audioCtx.state === "closed") return null;
-      return audioCtx;
-    };
-
-    const playTypingBlip = (): void => {
-      const ctx = ensureAudioContext();
-      if (!ctx || isMuted) return;
-      try {
-        const now = ctx.currentTime;
-
-        // --- Main clack: the switch actuation snap ---
-        const clickOsc = ctx.createOscillator();
-        const clickGain = ctx.createGain();
-        clickOsc.type = "triangle";
-        clickOsc.frequency.setValueAtTime(1100, now);
-        clickOsc.frequency.exponentialRampToValueAtTime(600, now + 0.03);
-        clickGain.gain.setValueAtTime(0, now);
-        clickGain.gain.linearRampToValueAtTime(0.16, now + 0.002);
-        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
-        clickOsc.connect(clickGain).connect(ctx.destination);
-        clickOsc.start(now);
-        clickOsc.stop(now + 0.04);
-
-        // --- Keycap resonance: filtered noise burst for tactile character ---
-        const bufferSize = Math.floor(ctx.sampleRate * 0.025);
-        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
-        const noiseSrc = ctx.createBufferSource();
-        noiseSrc.buffer = noiseBuffer;
-        const noiseGain = ctx.createGain();
-        const noiseFilter = ctx.createBiquadFilter();
-        noiseFilter.type = "bandpass";
-        noiseFilter.frequency.setValueAtTime(3800, now);
-        noiseFilter.Q.setValueAtTime(0.8, now);
-        noiseGain.gain.setValueAtTime(0, now);
-        noiseGain.gain.linearRampToValueAtTime(0.08, now + 0.001);
-        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
-        noiseSrc.connect(noiseFilter).connect(noiseGain).connect(ctx.destination);
-        noiseSrc.start(now);
-        noiseSrc.stop(now + 0.025);
-
-        // --- Subtle metallic shimmer for futuristic edge ---
-        const shimOsc = ctx.createOscillator();
-        const shimGain = ctx.createGain();
-        shimOsc.type = "sine";
-        shimOsc.frequency.setValueAtTime(4200, now);
-        shimGain.gain.setValueAtTime(0, now);
-        shimGain.gain.linearRampToValueAtTime(0.025, now + 0.001);
-        shimGain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
-        shimOsc.connect(shimGain).connect(ctx.destination);
-        shimOsc.start(now);
-        shimOsc.stop(now + 0.02);
-      } catch {
-        // Audio context may be in a broken state; safely skip
-      }
-    };
-
-    const startCrtHum = (): void => {
-      const ctx = ensureAudioContext();
-      if (!ctx || isMuted || crtHumGain) return;
-      try {
-        crtHumGain = ctx.createGain();
-        crtHumGain.gain.setValueAtTime(0, ctx.currentTime);
-        crtHumGain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 1.2);
-
-        crtHumOsc1 = ctx.createOscillator();
-        crtHumOsc1.type = "sine";
-        crtHumOsc1.frequency.setValueAtTime(60, ctx.currentTime);
-
-        crtHumOsc2 = ctx.createOscillator();
-        crtHumOsc2.type = "sine";
-        crtHumOsc2.frequency.setValueAtTime(120, ctx.currentTime);
-
-        crtHumOsc1.connect(crtHumGain);
-        crtHumOsc2.connect(crtHumGain);
-        crtHumGain.connect(ctx.destination);
-
-        crtHumOsc1.start(ctx.currentTime);
-        crtHumOsc2.start(ctx.currentTime);
-      } catch {
-        // Tear down partial setup if any step failed
-        stopCrtHum();
-      }
-    };
-
-    const stopCrtHum = (): void => {
-      if (!crtHumGain || !audioCtx) {
-        crtHumGain = null;
-        crtHumOsc1 = null;
-        crtHumOsc2 = null;
-        return;
-      }
-      try {
-        // Capture references before nulling so the timeout cleanup still works
-        const gain = crtHumGain;
-        const osc1 = crtHumOsc1;
-        const osc2 = crtHumOsc2;
-
-        // Null immediately — allows a new hum to start right away
-        crtHumGain = null;
-        crtHumOsc1 = null;
-        crtHumOsc2 = null;
-
-        const now = audioCtx.currentTime;
-        gain.gain.cancelScheduledValues(0);
-        gain.gain.setValueAtTime(gain.gain.value, now);
-        gain.gain.linearRampToValueAtTime(0, now + 0.8);
-
-        // Disconnect after fade-out (don't keep the old nodes alive)
-        window.setTimeout(() => {
-          try {
-            osc1?.stop();
-          } catch {
-            /* already stopped */
-          }
-          try {
-            osc2?.stop();
-          } catch {
-            /* already stopped */
-          }
-          osc1?.disconnect();
-          osc2?.disconnect();
-          gain.disconnect();
-        }, 850);
-      } catch {
-        crtHumGain = null;
-        crtHumOsc1 = null;
-        crtHumOsc2 = null;
-      }
-    };
-
-    // Schedule typing blips to mirror CSS letter animation timing.
-    // Uses raw setTimeout (NOT schedule) so clearTimers() doesn't kill them.
-    const scheduleTypingBlips = (): void => {
-      // Letter timings (from CrtTypingLabel's letterStepSeconds: 0.228s)
-      // "M" "A" "D" " " "L" "A" "B" "S" — skip the space
-      const offsets = [0, 228, 456, /* space */ 912, 1140, 1368, 1596];
-      offsets.forEach((offset) => {
-        window.setTimeout(playTypingBlip, offset);
-      });
-    };
-
-    const muteButtonCandidate = document.querySelector<HTMLButtonElement>("[data-crt-mute-button]");
-
-    if (muteButtonCandidate) {
-      const muteBtn = muteButtonCandidate;
-      const muteLed = muteBtn.nextElementSibling;
-
-      loadMutePreference();
-
-      const updateMuteUI = (): void => {
-        muteBtn.setAttribute("aria-pressed", isMuted ? "true" : "false");
-        muteBtn.setAttribute("aria-label", isMuted ? "Unmute CRT sounds" : "Mute CRT sounds");
-        muteBtn.classList.toggle("is-muted", isMuted);
-        if (muteLed instanceof HTMLElement) {
-          muteLed.classList.toggle("is-muted", isMuted);
-        }
-      };
-
-      updateMuteUI();
-
-      muteBtn.addEventListener("click", () => {
-        isMuted = !isMuted;
-        updateMuteUI();
-        saveMutePreference();
-
-        if (isMuted) {
-          stopCrtHum();
-        } else {
-          // Restart hum if we're in any boot phase (not stable, not off, not shutting down)
-          const isBooting =
-            !crtHero.classList.contains("is-stable") &&
-            !crtHero.classList.contains("is-powered-off") &&
-            !crtHero.classList.contains("is-shutting-down");
-          if (isBooting) {
-            startCrtHum();
-          }
-        }
-      });
-    }
-
-    // Init AudioContext on first user interaction (browser autoplay policy).
-    // Creates the context lazily to avoid the "not allowed to start" warning.
-    const initAudioCtx = (): void => {
-      if (!audioCtx) {
+      const loadMutePreference = (): void => {
         try {
-          audioCtx = new AudioContext();
-          // If we're still in a boot phase, start the CRT hum now
-          if (!crtHero.classList.contains("is-stable")) {
-            startCrtHum();
-          }
+          isMuted = localStorage.getItem(MUTE_STORAGE_KEY) === "true";
         } catch {
-          // Web Audio API not available
+          isMuted = false;
         }
+      };
+
+      const saveMutePreference = (): void => {
+        try {
+          localStorage.setItem(MUTE_STORAGE_KEY, String(isMuted));
+        } catch {
+          // Storage may be unavailable
+        }
+      };
+
+      const ensureAudioContext = (): AudioContext | null => {
+        if (!audioCtx) return null;
+        if (audioCtx.state === "suspended") {
+          // Fire-and-forget resume; the blip will be silent if not yet resumed
+          audioCtx.resume().catch(() => {});
+        }
+        // Return the context regardless — the oscillator scheduling will
+        // play when the context is running. If still suspended, the sound
+        // is queued and plays as soon as the context resumes.
+        if (audioCtx.state === "closed") return null;
+        return audioCtx;
+      };
+
+      const playTypingBlip = (): void => {
+        const ctx = ensureAudioContext();
+        if (!ctx || isMuted) return;
+        try {
+          const now = ctx.currentTime;
+
+          // --- Main clack: the switch actuation snap ---
+          const clickOsc = ctx.createOscillator();
+          const clickGain = ctx.createGain();
+          clickOsc.type = "triangle";
+          clickOsc.frequency.setValueAtTime(1100, now);
+          clickOsc.frequency.exponentialRampToValueAtTime(600, now + 0.03);
+          clickGain.gain.setValueAtTime(0, now);
+          clickGain.gain.linearRampToValueAtTime(0.16, now + 0.002);
+          clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+          clickOsc.connect(clickGain).connect(ctx.destination);
+          clickOsc.start(now);
+          clickOsc.stop(now + 0.04);
+
+          // --- Keycap resonance: filtered noise burst for tactile character ---
+          const bufferSize = Math.floor(ctx.sampleRate * 0.025);
+          const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+          const noiseSrc = ctx.createBufferSource();
+          noiseSrc.buffer = noiseBuffer;
+          const noiseGain = ctx.createGain();
+          const noiseFilter = ctx.createBiquadFilter();
+          noiseFilter.type = "bandpass";
+          noiseFilter.frequency.setValueAtTime(3800, now);
+          noiseFilter.Q.setValueAtTime(0.8, now);
+          noiseGain.gain.setValueAtTime(0, now);
+          noiseGain.gain.linearRampToValueAtTime(0.08, now + 0.001);
+          noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+          noiseSrc.connect(noiseFilter).connect(noiseGain).connect(ctx.destination);
+          noiseSrc.start(now);
+          noiseSrc.stop(now + 0.025);
+
+          // --- Subtle metallic shimmer for futuristic edge ---
+          const shimOsc = ctx.createOscillator();
+          const shimGain = ctx.createGain();
+          shimOsc.type = "sine";
+          shimOsc.frequency.setValueAtTime(4200, now);
+          shimGain.gain.setValueAtTime(0, now);
+          shimGain.gain.linearRampToValueAtTime(0.025, now + 0.001);
+          shimGain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
+          shimOsc.connect(shimGain).connect(ctx.destination);
+          shimOsc.start(now);
+          shimOsc.stop(now + 0.02);
+        } catch {
+          // Audio context may be in a broken state; safely skip
+        }
+      };
+
+      const startCrtHum = (): void => {
+        const ctx = ensureAudioContext();
+        if (!ctx || isMuted || crtHumGain) return;
+        try {
+          crtHumGain = ctx.createGain();
+          crtHumGain.gain.setValueAtTime(0, ctx.currentTime);
+          crtHumGain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 1.2);
+
+          crtHumOsc1 = ctx.createOscillator();
+          crtHumOsc1.type = "sine";
+          crtHumOsc1.frequency.setValueAtTime(60, ctx.currentTime);
+
+          crtHumOsc2 = ctx.createOscillator();
+          crtHumOsc2.type = "sine";
+          crtHumOsc2.frequency.setValueAtTime(120, ctx.currentTime);
+
+          crtHumOsc1.connect(crtHumGain);
+          crtHumOsc2.connect(crtHumGain);
+          crtHumGain.connect(ctx.destination);
+
+          crtHumOsc1.start(ctx.currentTime);
+          crtHumOsc2.start(ctx.currentTime);
+        } catch {
+          // Tear down partial setup if any step failed
+          stopCrtHum();
+        }
+      };
+
+      const stopCrtHum = (): void => {
+        if (!crtHumGain || !audioCtx) {
+          crtHumGain = null;
+          crtHumOsc1 = null;
+          crtHumOsc2 = null;
+          return;
+        }
+        try {
+          // Capture references before nulling so the timeout cleanup still works
+          const gain = crtHumGain;
+          const osc1 = crtHumOsc1;
+          const osc2 = crtHumOsc2;
+
+          // Null immediately — allows a new hum to start right away
+          crtHumGain = null;
+          crtHumOsc1 = null;
+          crtHumOsc2 = null;
+
+          const now = audioCtx.currentTime;
+          gain.gain.cancelScheduledValues(0);
+          gain.gain.setValueAtTime(gain.gain.value, now);
+          gain.gain.linearRampToValueAtTime(0, now + 0.8);
+
+          // Disconnect after fade-out (don't keep the old nodes alive)
+          window.setTimeout(() => {
+            try {
+              osc1?.stop();
+            } catch {
+              /* already stopped */
+            }
+            try {
+              osc2?.stop();
+            } catch {
+              /* already stopped */
+            }
+            osc1?.disconnect();
+            osc2?.disconnect();
+            gain.disconnect();
+          }, 850);
+        } catch {
+          crtHumGain = null;
+          crtHumOsc1 = null;
+          crtHumOsc2 = null;
+        }
+      };
+
+      // Schedule typing blips to mirror CSS letter animation timing.
+      // Uses raw setTimeout (NOT schedule) so clearTimers() doesn't kill them.
+      const scheduleTypingBlips = (): void => {
+        // Letter timings (from CrtTypingLabel's letterStepSeconds: 0.228s)
+        // "M" "A" "D" " " "L" "A" "B" "S" — skip the space
+        const offsets = [0, 228, 456, /* space */ 912, 1140, 1368, 1596];
+        offsets.forEach((offset) => {
+          window.setTimeout(playTypingBlip, offset);
+        });
+      };
+
+      const muteButtonCandidate =
+        document.querySelector<HTMLButtonElement>("[data-crt-mute-button]");
+
+      if (muteButtonCandidate) {
+        const muteBtn = muteButtonCandidate;
+        const muteLed = muteBtn.nextElementSibling;
+
+        loadMutePreference();
+
+        const updateMuteUI = (): void => {
+          muteBtn.setAttribute("aria-pressed", isMuted ? "true" : "false");
+          muteBtn.setAttribute("aria-label", isMuted ? "Unmute CRT sounds" : "Mute CRT sounds");
+          muteBtn.classList.toggle("is-muted", isMuted);
+          if (muteLed instanceof HTMLElement) {
+            muteLed.classList.toggle("is-muted", isMuted);
+          }
+        };
+
+        updateMuteUI();
+
+        muteBtn.addEventListener("click", () => {
+          isMuted = !isMuted;
+          updateMuteUI();
+          saveMutePreference();
+
+          if (isMuted) {
+            stopCrtHum();
+          } else {
+            // Restart hum if we're in any boot phase (not stable, not off, not shutting down)
+            const isBooting =
+              !crtHero.classList.contains("is-stable") &&
+              !crtHero.classList.contains("is-powered-off") &&
+              !crtHero.classList.contains("is-shutting-down");
+            if (isBooting) {
+              startCrtHum();
+            }
+          }
+        });
       }
-      if (audioCtx && audioCtx.state === "suspended") {
-        audioCtx.resume().catch(() => {});
-      }
-    };
 
-    document.addEventListener("click", initAudioCtx, { once: true });
-    document.addEventListener("keydown", initAudioCtx, { once: true });
-    document.addEventListener("touchstart", initAudioCtx, { once: true, passive: true });
+      // Init AudioContext on first user interaction (browser autoplay policy).
+      // Creates the context lazily to avoid the "not allowed to start" warning.
+      const initAudioCtx = (): void => {
+        if (!audioCtx) {
+          try {
+            audioCtx = new AudioContext();
+            // If we're still in a boot phase, start the CRT hum now
+            if (!crtHero.classList.contains("is-stable")) {
+              startCrtHum();
+            }
+          } catch {
+            // Web Audio API not available
+          }
+        }
+        if (audioCtx && audioCtx.state === "suspended") {
+          audioCtx.resume().catch(() => {});
+        }
+      };
 
-    // ─── Mouse-Responsive Screen Glare ─────────────────────
-    const glare = crtScreen.querySelector<HTMLElement>(".crt-glare");
-    let targetGlareX = 0;
-    let targetGlareY = 0;
-    let currentGlareX = 0;
-    let currentGlareY = 0;
+      document.addEventListener("click", initAudioCtx, { once: true });
+      document.addEventListener("keydown", initAudioCtx, { once: true });
+      document.addEventListener("touchstart", initAudioCtx, { once: true, passive: true });
 
-    if (glare) {
-      const MAX_GLARE_SHIFT = 14;
+      // ─── Mouse-Responsive Screen Glare ─────────────────────
+      const glare = crtScreen.querySelector<HTMLElement>(".crt-glare");
+      let targetGlareX = 0;
+      let targetGlareY = 0;
+      let currentGlareX = 0;
+      let currentGlareY = 0;
 
-      crtScreen.addEventListener("mousemove", (e: MouseEvent) => {
-        const rect = crtScreen.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        targetGlareX = (x - 0.5) * 2 * MAX_GLARE_SHIFT;
-        targetGlareY = (y - 0.5) * 2 * MAX_GLARE_SHIFT;
-      });
+      if (glare) {
+        const MAX_GLARE_SHIFT = 14;
 
-      crtScreen.addEventListener("mouseleave", () => {
-        targetGlareX = 0;
-        targetGlareY = 0;
-      });
+        crtScreen.addEventListener("mousemove", (e: MouseEvent) => {
+          const rect = crtScreen.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          targetGlareX = (x - 0.5) * 2 * MAX_GLARE_SHIFT;
+          targetGlareY = (y - 0.5) * 2 * MAX_GLARE_SHIFT;
+        });
 
-      const updateGlarePosition = (): void => {
-        currentGlareX += (targetGlareX - currentGlareX) * 0.08;
-        currentGlareY += (targetGlareY - currentGlareY) * 0.08;
-        glare.style.transform = `translate(${currentGlareX.toFixed(1)}px, ${currentGlareY.toFixed(1)}px)`;
+        crtScreen.addEventListener("mouseleave", () => {
+          targetGlareX = 0;
+          targetGlareY = 0;
+        });
+
+        const updateGlarePosition = (): void => {
+          currentGlareX += (targetGlareX - currentGlareX) * 0.08;
+          currentGlareY += (targetGlareY - currentGlareY) * 0.08;
+          glare.style.transform = `translate(${currentGlareX.toFixed(1)}px, ${currentGlareY.toFixed(1)}px)`;
+          glareRafId = window.requestAnimationFrame(updateGlarePosition);
+        };
+
         glareRafId = window.requestAnimationFrame(updateGlarePosition);
-      };
-
-      glareRafId = window.requestAnimationFrame(updateGlarePosition);
-    }
-
-    if (prefersReducedMotion) {
-      crtHero.classList.add("is-reduced-motion");
-      showStablePoweredOnState();
-    } else if (hasSeenIntroThisSession()) {
-      showStablePoweredOnState();
-    } else {
-      startTimeline();
-    }
-
-    document.addEventListener(
-      "astro:before-swap",
-      () => {
-        clearTimers();
-      },
-      { once: true },
-    );
-
-    // ─── Momentum Skip-Link Handler ─────────────────────────
-    document.addEventListener("madlabs:skip-intro", () => {
-      if (!crtHero.classList.contains("is-stable")) {
-        // Accelerated transition: add all intermediate classes then
-        // force stable state after a brief blur animation
-        crtHero.classList.add("is-skip-compressing");
-        clearTimers();
-        stopCrtHum();
-        window.setTimeout(() => {
-          showStablePoweredOnState();
-        }, 600);
       }
-    });
 
-    // ─── Scroll-Down Indicator ──────────────────────────────
-    const scrollIndicator = document.querySelector<HTMLElement>("[data-scroll-indicator]");
+      if (prefersReducedMotion) {
+        crtHero.classList.add("is-reduced-motion");
+        showStablePoweredOnState();
+      } else if (hasSeenIntroThisSession()) {
+        showStablePoweredOnState();
+      } else {
+        startTimeline();
+      }
 
-    if (scrollIndicator) {
-      let indicatorShown = false;
+      document.addEventListener(
+        "astro:before-swap",
+        () => {
+          clearTimers();
+        },
+        { once: true },
+      );
 
-      const showIndicator = (): void => {
-        if (!indicatorShown) {
-          indicatorShown = true;
-          scrollIndicator.classList.add("is-visible");
-        }
-      };
-
-      const hideIndicator = (): void => {
-        if (indicatorShown) {
-          indicatorShown = false;
-          scrollIndicator.classList.remove("is-visible");
-        }
-      };
-
-      // Show indicator when stable, hide after 200px scroll
-      const observer = new MutationObserver(() => {
-        if (crtHero.classList.contains("is-stable") && !indicatorShown) {
-          showIndicator();
+      // ─── Momentum Skip-Link Handler ─────────────────────────
+      document.addEventListener("madlabs:skip-intro", () => {
+        if (!crtHero.classList.contains("is-stable")) {
+          // Accelerated transition: add all intermediate classes then
+          // force stable state after a brief blur animation
+          crtHero.classList.add("is-skip-compressing");
+          clearTimers();
+          stopCrtHum();
+          window.setTimeout(() => {
+            showStablePoweredOnState();
+          }, 600);
         }
       });
 
-      observer.observe(crtHero, { attributes: true, attributeFilter: ["class"] });
+      // ─── Scroll-Down Indicator ──────────────────────────────
+      const scrollIndicator = document.querySelector<HTMLElement>("[data-scroll-indicator]");
 
-      // Initial check in case we're already stable
-      if (crtHero.classList.contains("is-stable")) {
-        showIndicator();
-      }
+      if (scrollIndicator) {
+        let indicatorShown = false;
 
-      window.addEventListener(
-        "scroll",
-        () => {
-          if (window.scrollY > 200) {
-            hideIndicator();
-          } else if (crtHero.classList.contains("is-stable")) {
+        const showIndicator = (): void => {
+          if (!indicatorShown) {
+            indicatorShown = true;
+            scrollIndicator.classList.add("is-visible");
+          }
+        };
+
+        const hideIndicator = (): void => {
+          if (indicatorShown) {
+            indicatorShown = false;
+            scrollIndicator.classList.remove("is-visible");
+          }
+        };
+
+        // Show indicator when stable, hide after 200px scroll
+        const observer = new MutationObserver(() => {
+          if (crtHero.classList.contains("is-stable") && !indicatorShown) {
             showIndicator();
           }
-        },
-        { passive: true },
-      );
+        });
+
+        observer.observe(crtHero, { attributes: true, attributeFilter: ["class"] });
+
+        // Initial check in case we're already stable
+        if (crtHero.classList.contains("is-stable")) {
+          showIndicator();
+        }
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (window.scrollY > 200) {
+              hideIndicator();
+            } else if (crtHero.classList.contains("is-stable")) {
+              showIndicator();
+            }
+          },
+          { passive: true },
+        );
+      }
     }
-  }
   }
 </script>
 
@@ -1023,12 +1027,7 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
         rgba(126, 88, 206, 0.1) 34%,
         transparent 70%
       ),
-      linear-gradient(
-        180deg,
-        #5c4592 0%,
-        #403073 48%,
-        #2f235c 100%
-      );
+      linear-gradient(180deg, #5c4592 0%, #403073 48%, #2f235c 100%);
     box-shadow:
       inset 0 0 0 4px rgba(93, 72, 132, 0.6),
       inset 0 0 0 8px rgba(36, 22, 56, 0.9),
@@ -1069,12 +1068,7 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
         rgba(126, 88, 206, 0.1) 34%,
         transparent 70%
       ),
-      linear-gradient(
-        180deg,
-        #5c4592 0%,
-        #403073 48%,
-        #2f235c 100%
-      );
+      linear-gradient(180deg, #5c4592 0%, #403073 48%, #2f235c 100%);
   }
 
   .crt-boot-overlay {

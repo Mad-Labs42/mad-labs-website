@@ -21,10 +21,10 @@
   <defs>
     <!-- Soft purple glow filter -->
     <filter id="atom-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="coloredBlur"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="coloredBlur"></feGaussianBlur>
       <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="coloredBlur"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
       </feMerge>
     </filter>
   </defs>
@@ -38,8 +38,7 @@
     fill="none"
     stroke="#c084fc"
     stroke-width="4"
-    filter="url(#atom-glow)"
-  />
+    filter="url(#atom-glow)"></ellipse>
   <ellipse
     cx="50"
     cy="50"
@@ -49,8 +48,7 @@
     stroke="#c084fc"
     stroke-width="4"
     transform="rotate(60 50 50)"
-    filter="url(#atom-glow)"
-  />
+    filter="url(#atom-glow)"></ellipse>
   <ellipse
     cx="50"
     cy="50"
@@ -60,16 +58,10 @@
     stroke="#c084fc"
     stroke-width="4"
     transform="rotate(-60 50 50)"
-    filter="url(#atom-glow)"
-  />
+    filter="url(#atom-glow)"></ellipse>
 
   <!-- Solid white nucleus (10% smaller) -->
-  <circle
-    cx="50"
-    cy="50"
-    r="8.1"
-    fill="#ffffff"
-  />
+  <circle cx="50" cy="50" r="8.1" fill="#ffffff"></circle>
 </svg>
 
 <style>

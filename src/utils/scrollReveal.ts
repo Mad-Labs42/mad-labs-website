@@ -33,12 +33,12 @@ const defaultOptions: ScrollRevealOptions = {
  * Sets up an IntersectionObserver to reveal elements with a fade-in/up effect.
  * Skips initialization if the browser supports CSS View Timeline (animation-timeline).
  */
-export function observeScrollReveal(
-  selector: string,
-  options: ScrollRevealOptions = {},
-): void {
+export function observeScrollReveal(selector: string, options: ScrollRevealOptions = {}): void {
   // Respect reduced motion — users who prefer reduced motion skip animation entirely
-  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
     // Elements start visible; no animation needed
     document.querySelectorAll(selector).forEach((el) => {
       const target = el as HTMLElement;

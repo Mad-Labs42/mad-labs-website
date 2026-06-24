@@ -5,8 +5,11 @@ import ContactTablet from "../components/ContactTablet.astro";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
 ---
 
-<BaseLayout title="Book Computer Repair in Cincinnati" description={`Book a free 20-minute computer triage or 60-minute consultation with MAD LABS in Cincinnati. Same-day responses. Call ${CONTACT_PHONE} or book online.`} jsonLdType="contact">
-  
+<BaseLayout
+  title="Book Computer Repair in Cincinnati"
+  description={`Book a free 20-minute computer triage or 60-minute consultation with MAD LABS in Cincinnati. Same-day responses. Call ${CONTACT_PHONE} or book online.`}
+  jsonLdType="contact"
+>
   <section class="lab-section">
     <div class="lab-section-inner-wide">
       <div class="contact-hero-grid">
@@ -32,12 +35,12 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
     </div>
   </section>
 
-  
   <section class="lab-section-alt contact-layout-section">
     <div class="lab-section-inner-wide">
-          <a href="#contact-info-col" class="skip-to-info sr-only-focusable">Skip to contact information</a>
+      <a href="#contact-info-col" class="skip-to-info sr-only-focusable"
+        >Skip to contact information</a
+      >
       <div class="contact-layout">
-        
         <div id="contact-info-col" class="contact-info-col">
           <span class="lab-heading-accent contact-accent-wrap">
             <svg
@@ -50,35 +53,34 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              
               <path
                 d="M37 2.7H4.2C2.4 2.7 1 4.2 1 6v41c0 1.8 1.4 3.2 3.2 3.2h55.6c1.8 0 3.2-1.4 3.2-3.2V6c0-1.8-1.4-3.2-3.2-3.2L37 2.7h0zM5 40.5h58"
               ></path>
-              
+
               <circle cx="33.7" cy="19.9" r="4.1"></circle>
-              
+
               <path d="m33.7 24-2 5.3"></path>
-              
+
               <circle cx="30.7" cy="31.7" r="2.6"></circle>
-              
+
               <path d="M29.6 19.9h-5.1"></path>
-              
+
               <circle cx="21.9" cy="19.9" r="2.6"></circle>
-              
+
               <path d="m36.7 17 3.5-3.6"></path>
-              
+
               <circle cx="42.1" cy="11.5" r="2.6" transform="rotate(-45.001 42.086 11.513)"
               ></circle>
-              
+
               <path d="m36.7 22.8 3.5 3.6"></path>
-              
+
               <circle cx="42.1" cy="28.3" r="2.6" transform="rotate(-45.001 42.123 28.297)"
               ></circle>
-              
+
               <path d="m30.8 17-3.6-3.6"></path>
-              
+
               <circle cx="25.4" cy="11.5" r="2.6" transform="rotate(-45.001 25.373 11.48)"></circle>
-              
+
               <path
                 d="m42.3 57.1-.9-.6c-.2-.2-.5-.4-.6-.7H23.2c-.2.3-.4.5-.6.7l-.9.6c-.6.4-.9 1.1-.9 1.9v.9c0 .8.6 1.4 1.4 1.4h19.7c.8 0 1.4-.6 1.4-1.4V59c0-.8-.4-1.5-1-1.9zM40.4 55l-2-4.8H25.5l-2 4.8c-.1.3-.2.6-.4.8h17.6c0-.3-.2-.5-.3-.8zM29.4 45.4h5.2"
               ></path>
@@ -134,21 +136,15 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
                 Hours
               </h2>
               <dl style="margin:0; padding:0;">
-                <div
-                  class="hours-row"
-                >
+                <div class="hours-row">
                   <dt class="hours-day">Monday – Friday</dt>
                   <dd class="hours-time">9:00 AM – 6:00 PM</dd>
                 </div>
-                <div
-                  class="hours-row"
-                >
+                <div class="hours-row">
                   <dt class="hours-day">Saturday</dt>
                   <dd class="hours-time">10:00 AM – 4:00 PM</dd>
                 </div>
-                <div
-                  class="hours-row"
-                >
+                <div class="hours-row">
                   <dt class="hours-day">Sunday</dt>
                   <dd class="hours-time">Closed</dd>
                 </div>
@@ -160,9 +156,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
           </div>
         </div>
 
-        
         <div class="contact-tablet-col">
-          
           <div id="contact-tablet-instructions" class="contact-tablet-instruction">
             <span class="instruction-orange">Book a time below.</span>
             <span>Twenty-minute call. No charge, no commitment.</span>
@@ -172,7 +166,6 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
             >
           </div>
 
-          
           <p class="contact-scroll-cue" aria-hidden="true">
             <span class="scroll-chevron"></span>
             Scroll down to book a consultation or submit a repair ticket.
@@ -534,8 +527,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
   }
 </style>
 
-<style>
-</style>
+<style></style>
 
 <style>
   .skip-to-info.sr-only-focusable {

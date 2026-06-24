@@ -69,8 +69,6 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
       linear-gradient(180deg, #040208 0%, #0a0618 50%, #040208 100%);
   }
 
-
-
   .notfound-glow {
     position: absolute;
     top: 35%;
@@ -89,8 +87,15 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
   }
 
   @keyframes notfound-glow-pulse {
-    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+    0%,
+    100% {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.08);
+    }
   }
 
   .notfound-content {
@@ -170,7 +175,10 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
     font-size: 1.1rem;
     letter-spacing: 0.06em;
     text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      background 0.15s ease;
   }
 
   .notfound-btn--primary {
@@ -252,7 +260,9 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
     text-decoration: none;
     border-bottom: 1px solid rgba(232, 144, 80, 0.4);
     padding-bottom: 1px;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .notfound-direct-link:hover {
@@ -274,7 +284,9 @@ import { CONTACT_PHONE, CONTACT_EMAIL } from "../data/contact";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .notfound-glow { animation: none; }
+    .notfound-glow {
+      animation: none;
+    }
   }
 </style>
 
