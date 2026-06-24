@@ -6,7 +6,12 @@ import ReviewShower from "../components/ReviewShower.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 ---
 
-<BaseLayout title="MAD LABS" homeHeroClassifier={true}>
+<BaseLayout
+  title="Mobile Computer Repair, Tech Support & AI Solutions in Cincinnati"
+  description="MAD LABS brings mobile computer repair, tech support, and practical AI solutions to Cincinnati homes and small businesses."
+  jsonLdType="home"
+  homeHeroClassifier={true}
+>
   <div class="mobile-hero-wrapper">
     <MobileHomeHero />
   </div>
@@ -50,6 +55,8 @@ import SocialLinks from "../components/SocialLinks.astro";
       <span class="lab-heading-accent">Why Choose Us</span>
       <h2 id="trust-heading">Upfront Pricing. No Upsells. Results That Work for You.</h2>
       <p>
+        MAD LABS provides mobile computer repair and tech support across Cincinnati, bringing
+        practical help to your home, workspace, or small business without the storefront runaround.
         Every job starts with a full diagnostic and a clear explanation of the costs—before we touch
         a thing. We explain the problem, offer solutions, and let you make the call.
       </p>
@@ -224,19 +231,6 @@ import SocialLinks from "../components/SocialLinks.astro";
     margin-top: 1.25rem;
   }
 
-  @media (max-width: 1120px) {
-    .welcome-line {
-      grid-template-columns: 1fr;
-      justify-items: center;
-      row-gap: 0.2rem;
-      column-gap: 0;
-      width: min(100%, 24rem);
-      font-size: clamp(0.86rem, 4.15vw, 1.08rem);
-      line-height: 1.12;
-      letter-spacing: 0.015em;
-    }
-  }
-
   @media (max-width: 640px) {
     .sub-tagline {
       max-width: 94%;
@@ -261,6 +255,19 @@ import SocialLinks from "../components/SocialLinks.astro";
     .cta p {
       font-size: clamp(1rem, 4vw, 1.18rem);
       letter-spacing: 0.025em;
+    }
+  }
+
+  @media (max-width: 1120px) {
+    .welcome-line {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      row-gap: 0.2rem;
+      column-gap: 0;
+      width: min(100%, 24rem);
+      font-size: clamp(0.86rem, 4.15vw, 1.08rem);
+      line-height: 1.12;
+      letter-spacing: 0.015em;
     }
   }
 

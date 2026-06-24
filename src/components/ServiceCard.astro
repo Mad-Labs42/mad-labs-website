@@ -33,31 +33,31 @@ const icons: Record<string, string> = {
   <span class="card-category">{category}</span>
   <h2 class="card-title">{name}</h2>
 
-  <hr class="summary-divider">
-
-  <p class="card-summary">{shortDescription}</p>
-
-  <hr class="bullets-divider">
+  <div class="summary-frame">
+    <p class="card-summary">{shortDescription}</p>
+  </div>
 
   <ul class="card-bullets">
     {bullets.map((b) => <li>{b}</li>)}
   </ul>
 
-  <hr class="pricing-divider">
+  <hr class="pricing-divider" />
 
   <div class="card-pricing">
-    {pricing.includes("$") ? (
-      <>
-        <span class="pricing-label">{pricing.replace(/\s*\$.*$/, "").trim()}</span>
-        <span class="pricing-value">
-          <span class="prompt">$</span>
-          <span class="price-number">{pricing.replace(/^.*\$/, "")}</span>
-          <span class="cursor"></span>
-        </span>
-      </>
-    ) : (
-      <span class="pricing-label pricing-label--full">{pricing}</span>
-    )}
+    {
+      pricing.includes("$") ? (
+        <>
+          <span class="pricing-label">{pricing.replace(/\s*\$.*$/, "").trim()}</span>
+          <span class="pricing-value">
+            <span class="prompt">$</span>
+            <span class="price-number">{pricing.replace(/^.*\$/, "")}</span>
+            <span class="cursor" />
+          </span>
+        </>
+      ) : (
+        <span class="pricing-label pricing-label--full">{pricing}</span>
+      )
+    }
   </div>
 </article>
 
@@ -71,6 +71,7 @@ const icons: Record<string, string> = {
     display: flex;
     flex-direction: column;
     gap: 0;
+    height: 100%;
     isolation: isolate;
     overflow: visible;
     box-shadow:
@@ -78,7 +79,9 @@ const icons: Record<string, string> = {
       0 4px 20px rgba(0, 0, 0, 0.35),
       0 0 60px rgba(232, 144, 80, 0.025),
       inset 0 1px 0 rgba(240, 234, 255, 0.03);
-    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+    transition:
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
   }
 
   .service-card:hover {
@@ -90,103 +93,89 @@ const icons: Record<string, string> = {
       inset 0 1px 0 rgba(240, 234, 255, 0.05);
   }
 
-  /* Keyboard focus parity — matches hover visual feedback */
-  .service-card:focus-visible {
-    border-color: rgba(232, 144, 80, 0.32);
-    box-shadow:
-      0 0 0 1px rgba(240, 234, 255, 0.08),
-      0 4px 20px rgba(0, 0, 0, 0.35),
-      0 0 60px rgba(232, 144, 80, 0.04),
-      inset 0 1px 0 rgba(240, 234, 255, 0.05);
-    outline: 2px solid rgba(232, 144, 80, 0.5);
-    outline-offset: 2px;
-  }
-
-  .service-card:focus-visible::before {
-    background: linear-gradient(90deg,
-      rgba(232, 144, 80, 0.15) 0%,
-      rgba(232, 144, 80, 0.65) 30%,
-      rgba(232, 144, 80, 0.65) 70%,
-      rgba(232, 144, 80, 0.15) 100%);
-  }
-
-  .service-card:focus-visible::after {
-    background: radial-gradient(ellipse at 50% 25%, rgba(232,144,80,0.05) 0%, transparent 65%);
-  }
-
-  .service-card:focus-visible .icon-wrap {
-    background: rgba(232,144,80,0.1);
-    border-color: rgba(232,144,80,0.2);
-  }
-
-  .service-card:focus-visible .bullets-divider,
-  .service-card:focus-visible .summary-divider,
-  .service-card:focus-visible .pricing-divider {
-    box-shadow: 0 0 8px rgba(232, 144, 80, 0.25);
-    opacity: 0.9;
-  }
-
-  .service-card:focus-visible .card-bullets li::before {
-    border-color: rgba(232, 144, 80, 0.8);
-    box-shadow: 0 0 6px rgba(232, 144, 80, 0.3);
-  }
-
   /* Top accent bar */
   .service-card::before {
     content: "";
     position: absolute;
-    top: -1px; left: -1px; right: -1px;
+    top: -1px;
+    left: -1px;
+    right: -1px;
     height: 2.5px;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       rgba(232, 144, 80, 0.1) 0%,
       rgba(232, 144, 80, 0.5) 30%,
       rgba(232, 144, 80, 0.5) 70%,
-      rgba(232, 144, 80, 0.1) 100%);
+      rgba(232, 144, 80, 0.1) 100%
+    );
     border-radius: 8px 8px 0 0;
     pointer-events: none;
     z-index: 1;
   }
   .service-card:hover::before {
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       rgba(232, 144, 80, 0.15) 0%,
       rgba(232, 144, 80, 0.65) 30%,
       rgba(232, 144, 80, 0.65) 70%,
-      rgba(232, 144, 80, 0.15) 100%);
+      rgba(232, 144, 80, 0.15) 100%
+    );
   }
 
   /* Inner radial warmth */
   .service-card::after {
     content: "";
     position: absolute;
-    inset: 0; border-radius: 8px;
-    background: radial-gradient(ellipse at 50% 25%, rgba(232,144,80,0.025) 0%, transparent 65%);
-    pointer-events: none; z-index: -1;
+    inset: 0;
+    border-radius: 8px;
+    background: radial-gradient(ellipse at 50% 25%, rgba(232, 144, 80, 0.025) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: -1;
     transition: opacity 0.35s ease;
   }
   .service-card:hover::after {
-    background: radial-gradient(ellipse at 50% 25%, rgba(232,144,80,0.05) 0%, transparent 65%);
+    background: radial-gradient(ellipse at 50% 25%, rgba(232, 144, 80, 0.05) 0%, transparent 65%);
   }
 
   /* Icon circle */
   .icon-wrap {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 2.5rem; height: 2.5rem; border-radius: 50%;
-    background: rgba(232,144,80,0.06);
-    border: 1px solid rgba(232,144,80,0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(232, 144, 80, 0.06);
+    border: 1px solid rgba(232, 144, 80, 0.08);
     margin-bottom: 0.75rem;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease;
     flex-shrink: 0;
   }
-  .service-card:hover .icon-wrap { background: rgba(232,144,80,0.1); border-color: rgba(232,144,80,0.2); }
-  .icon-svg { color: var(--lab-accent, #e89050); width: 1.25rem; height: 1.25rem; display: block; }
-  .icon-svg :global(svg) { width: 100%; height: 100%; display: block; }
+  .service-card:hover .icon-wrap {
+    background: rgba(232, 144, 80, 0.1);
+    border-color: rgba(232, 144, 80, 0.2);
+  }
+  .icon-svg {
+    color: var(--lab-accent, #e89050);
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+  }
+  .icon-svg :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 
   /* Category label */
   .card-category {
     display: inline-block;
     font-family: "Jersey 25", monospace;
     font-size: clamp(0.5rem, 0.7vw, 0.6rem);
-    letter-spacing: 0.18em; text-transform: uppercase;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     color: rgba(232, 144, 80, 0.55);
     margin-bottom: 0.1rem;
   }
@@ -195,55 +184,61 @@ const icons: Record<string, string> = {
   .card-title {
     font-family: "Early GameBoy", "Jersey 25", "VT323", monospace;
     font-size: clamp(1rem, 1.6vw, 1.25rem);
-    color: var(--lab-heading, #e0d0ff); font-weight: 400;
-    letter-spacing: 0.04em; line-height: 1.2;
+    color: var(--lab-heading, #e0d0ff);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
     margin-bottom: 0.25rem;
   }
 
-  /* Divider before summary */
-  .summary-divider {
-    margin: 0.25rem 0 0.6rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(232,144,80,0.12) 0%, rgba(232,144,80,0.03) 100%);
-    border: none;
-    flex-shrink: 0;
-    transition: opacity 0.35s ease, box-shadow 0.35s ease;
+  /* Inset glass service brief */
+  .summary-frame {
+    margin: 0.35rem 0 0.75rem;
+    padding: 0.75rem 0.8rem;
+    border: 1px solid rgba(232, 144, 80, 0.14);
+    border-radius: 6px;
+    background:
+      linear-gradient(180deg, rgba(240, 234, 255, 0.035), transparent), rgba(10, 7, 22, 0.36);
+    box-shadow:
+      inset 0 1px 0 rgba(240, 234, 255, 0.035),
+      inset 3px 0 0 rgba(232, 144, 80, 0.22);
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      background 0.3s ease;
   }
 
-  /* Summary — indented, with left bar */
+  .service-card:hover .summary-frame {
+    border-color: rgba(232, 144, 80, 0.2);
+    background:
+      linear-gradient(180deg, rgba(240, 234, 255, 0.045), transparent), rgba(10, 7, 22, 0.4);
+    box-shadow:
+      inset 0 1px 0 rgba(240, 234, 255, 0.045),
+      inset 3px 0 0 rgba(232, 144, 80, 0.3);
+  }
+
   .card-summary {
     font-family: "Jersey 25", "VT323", monospace;
     font-size: clamp(0.68rem, 0.9vw, 0.78rem);
-    color: var(--lab-text-muted, #a8a0c8); line-height: 1.45;
-    margin-bottom: 0.75rem;
-    padding-left: 0.6rem;
-    border-left: 1px solid rgba(232, 144, 80, 0.1);
+    color: var(--lab-text-muted, #a8a0c8);
+    line-height: 1.45;
+    margin: 0;
     letter-spacing: 0.03em;
-  }
-
-  /* Divider before bullets */
-  .bullets-divider {
-    margin: 0 0 0.6rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(232,144,80,0.2) 0%, rgba(232,144,80,0.06) 100%);
-    border: none;
-    flex-shrink: 0;
-    transition: opacity 0.35s ease, box-shadow 0.35s ease;
   }
 
   /* Divider before pricing */
   .pricing-divider {
     margin: 0.5rem 0 0.6rem;
     height: 1px;
-    background: linear-gradient(90deg, rgba(232,144,80,0.2) 0%, rgba(232,144,80,0.06) 100%);
+    background: linear-gradient(90deg, rgba(232, 144, 80, 0.2) 0%, rgba(232, 144, 80, 0.06) 100%);
     border: none;
     flex-shrink: 0;
-    transition: opacity 0.35s ease, box-shadow 0.35s ease;
+    transition:
+      opacity 0.35s ease,
+      box-shadow 0.35s ease;
   }
 
   /* All dividers glow on card hover */
-  .service-card:hover .bullets-divider,
-  .service-card:hover .summary-divider,
   .service-card:hover .pricing-divider {
     box-shadow: 0 0 8px rgba(232, 144, 80, 0.25);
     opacity: 0.9;
@@ -251,14 +246,19 @@ const icons: Record<string, string> = {
 
   /* Bullets — Jersey 25 with orange pulse rings */
   .card-bullets {
-    list-style: none; padding: 0; margin: 0;
-    display: flex; flex-direction: column; gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
     flex: 1;
   }
   .card-bullets li {
     font-family: "VT323", "Courier New", monospace;
     font-size: clamp(0.7rem, 0.9vw, 0.78rem);
-    color: var(--lab-text, #b0a8c8); line-height: 1.35;
+    color: var(--lab-text, #b0a8c8);
+    line-height: 1.35;
     padding-left: 0.9rem;
     position: relative;
     letter-spacing: 0.02em;
@@ -266,11 +266,15 @@ const icons: Record<string, string> = {
   .card-bullets li::before {
     content: "";
     position: absolute;
-    left: 0; top: 0.2em;
-    width: 7px; height: 7px;
+    left: 0;
+    top: 0.2em;
+    width: 7px;
+    height: 7px;
     border: 1.5px solid rgba(232, 144, 80, 0.5);
     border-radius: 50%;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
   }
   .service-card:hover .card-bullets li::before {
     border-color: rgba(232, 144, 80, 0.8);
@@ -290,29 +294,61 @@ const icons: Record<string, string> = {
   .pricing-label {
     font-family: "Jersey 25", monospace;
     font-size: clamp(0.5rem, 0.7vw, 0.6rem);
-    letter-spacing: 0.12em; text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: rgba(232, 144, 80, 0.55);
   }
-  .pricing-value { display: flex; align-items: center; gap: 0.15rem; }
-  .prompt { color: var(--crt-led-on, #00e676); opacity: 0.75; font-size: 0.85em; }
-  .price-number { color: var(--crt-led-on, #00e676); }
+  .pricing-value {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+  .prompt {
+    color: var(--crt-led-on, #00e676);
+    opacity: 0.75;
+    font-size: 0.85em;
+  }
+  .price-number {
+    color: var(--crt-led-on, #00e676);
+  }
   .cursor {
-    display: inline-block; width: 5px; height: 0.8em;
+    display: inline-block;
+    width: 5px;
+    height: 0.8em;
     background: var(--crt-led-on, #00e676);
-    margin-left: 1px; vertical-align: text-bottom;
+    margin-left: 1px;
+    vertical-align: text-bottom;
     animation: cursor-blink 1s step-end infinite;
   }
 
-  @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes cursor-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .service-card, .service-card::before, .service-card::after,
-    .summary-divider, .bullets-divider, .pricing-divider,
-    .icon-wrap, .card-summary, .card-bullets li::before { transition: none; }
-    .service-card:hover {
-      box-shadow: 0 0 0 1px rgba(240, 234, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.35);
+    .service-card,
+    .service-card::before,
+    .service-card::after,
+    .pricing-divider,
+    .icon-wrap,
+    .summary-frame,
+    .card-bullets li::before {
+      transition: none;
     }
-    .cursor { display: none; }
+    .service-card:hover {
+      box-shadow:
+        0 0 0 1px rgba(240, 234, 255, 0.08),
+        0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+    .cursor {
+      display: none;
+    }
   }
 </style>

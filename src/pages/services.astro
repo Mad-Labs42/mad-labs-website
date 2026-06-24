@@ -7,8 +7,8 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
 ---
 
 <BaseLayout
-  title="IT Services & Computer Repair"
-  description="Computer repair, tuneups, malware removal, network setup, and AI automation services from MAD LABS in Cincinnati. Free 20-minute triage for new customers."
+  title="Cincinnati IT Services, Computer Repair & AI"
+  description="Mobile computer repair, websites, Wi-Fi and network setup, security, custom PCs, and practical AI automation for Cincinnati homes and small businesses. Free 20-minute triage for new customers."
   jsonLdType="services"
 >
   <section class="page-header lab-section">
@@ -16,8 +16,9 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
       <span class="lab-heading-accent">What We Do</span>
       <h1 class="page-heading">Services</h1>
       <p class="header-intro">
-        Every repair starts with a full diagnostic. We find the real problem, explain it clearly,
-        and only proceed with your approval.
+        Every project starts with a clear diagnostic: what is broken, what is possible, what it
+        costs, and whether MAD LABS is the right fit. Repairs, networks, websites, hardware,
+        security, and AI all get scoped before work begins.
       </p>
     </div>
   </section>
@@ -42,19 +43,19 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
       <!-- Trust strip — semantic list per WCAG 1.3.1 -->
       <ul class="trust-strip" aria-label="Our service promise">
         <li class="trust-item">
-          <MadLabsIcon name="clock" />
+          <MadLabsIcon name="diagnostic" />
           Full diagnostic first
         </li>
         <li class="trust-item">
-          <MadLabsIcon name="check" />
+          <MadLabsIcon name="quote" />
           Clear quote before work
         </li>
         <li class="trust-item">
-          <MadLabsIcon name="line" />
+          <MadLabsIcon name="no-upsell" />
           No upsells — just what you need
         </li>
         <li class="trust-item">
-          <MadLabsIcon name="shield" />
+          <MadLabsIcon name="discount" />
           Senior &amp; veteran discount
         </li>
       </ul>
@@ -62,23 +63,18 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
   </section>
 
   <section class="process-section lab-section">
-    <div class="lab-section-inner">
+    <div class="lab-section-inner-wide">
       <ProcessSteps />
     </div>
   </section>
 
   <section class="cta-section lab-section-alt">
-    <div class="lab-section-inner" style="text-align:center;">
+    <div class="lab-section-inner cta-inner">
       <span class="lab-heading-accent">Next Steps</span>
-      <h2
-        style="color:var(--lab-heading); font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem; font-family:'Early GameBoy','Jersey 25',monospace;"
-      >
-        Not sure what you need?
-      </h2>
-      <p
-        style="color:var(--lab-text-muted); max-width:500px; margin:0 auto 1.5rem; font-family:'Jersey 25',monospace;"
-      >
-        Describe your issue and we'll recommend the right service — no commitment, no pressure.
+      <h2 class="cta-heading">Not sure what you need?</h2>
+      <p class="cta-copy">
+        Describe the problem or project and we will recommend the right next step. No commitment, no
+        pressure, no mystery invoice.
       </p>
       <a href="/contact/" class="lab-button">Contact us for a diagnostic quote</a>
     </div>
@@ -151,10 +147,34 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
   .cta-section {
     position: relative;
   }
+
   .cta-section > * {
     position: relative;
     z-index: 1;
   }
+
+  .cta-inner {
+    text-align: center;
+  }
+
+  .cta-heading {
+    margin-bottom: 0.5rem;
+    color: var(--lab-heading);
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .cta-copy {
+    max-width: 560px;
+    margin: 0 auto 1.5rem;
+    color: var(--lab-text-muted);
+    font-family: "Jersey 25", monospace;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
   .trust-strip {
     --mad-labs-icon-color: var(--lab-accent);
     --mad-labs-icon-size: 1rem;

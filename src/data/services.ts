@@ -13,7 +13,7 @@ export const services: Service[] = [
     id: "computer-repair",
     name: "Computer Repair & Tune-Ups",
     shortDescription:
-      "Desktop and laptop diagnostics, repairs, and performance optimization for home and small business.",
+      "Desktop and laptop diagnostics, repairs, and performance optimization for Cincinnati homes and small businesses.",
     bullets: [
       "Full system diagnostics with clear findings and no guesswork",
       "Virus and malware removal with preventive hardening",
@@ -89,10 +89,10 @@ export const services: Service[] = [
     id: "ai-agents-local-ai",
     name: "Custom Agents & Local AI Setup",
     shortDescription:
-      "Custom AI systems built for you — agents that run locally, models you own, workflows that actually work.",
+      "Custom AI systems built around your workflow — local-first agents, private model setups, and practical automations.",
     bullets: [
       "Custom AI agents — Hermes, OpenClaw, AgentZero; orchestration, MCP servers, tool ecosystems",
-      "Local LLM infrastructure — llama.cpp, Ollama, vLLM; model selection, quantization, GPU/CPU tuning, full privacy",
+      "Local LLM infrastructure — llama.cpp, Ollama, vLLM; model selection, quantization, GPU/CPU tuning, privacy-focused setup",
       "Vibe coding setup — Claude Code, Cursor, Windsurf; skills authoring, MCP integration, background agent workflows",
       "AI workflow automation — custom integrations, agent pipelines, and tooling tailored to your stack",
     ],

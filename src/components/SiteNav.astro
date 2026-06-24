@@ -173,8 +173,10 @@ function isCurrent(href: string): boolean {
   }
 
   @media (max-width: 520px) {
-    .nav-rail { justify-content: center; }
-    .nav-links li + li::before { margin: 0 0.35rem; }
+    .nav-rail { justify-content: center; padding-inline: 0.5rem; }
+    .nav-links a { font-size: 0.7rem; }
+    .nav-links li + li::before { margin: 0 0.2rem; }
+    .nav-cartouche { padding-inline: 0.45rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

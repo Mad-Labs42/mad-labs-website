@@ -23,10 +23,13 @@ const {
   homeHeroClassifier = false,
 } = Astro.props;
 const pageTitle = title === "MAD LABS" ? "MAD LABS" : `${title} — MAD LABS`;
-const clarityId = import.meta.env.PUBLIC_CLARITY_ID || "x4385g64yq";
+const clarityId = import.meta.env.PUBLIC_CLARITY_ID || "";
+const enableClarity = import.meta.env.PUBLIC_ENABLE_CLARITY === "true" && clarityId.length > 0;
 const ga4MeasurementId = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID || "";
 
 const SITE_URL = Astro.site?.origin || "https://madlabs.rocks";
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL);
+const socialImageUrl = new URL(image, SITE_URL);
 
 const homeHeroClassifierScript = String.raw`
 (() => {
@@ -72,58 +75,142 @@ gtag("config", ${JSON.stringify(ga4MeasurementId)});
 `;
 
 const clarityScript = String.raw`
-(function (c, l, a, r, i, t, y) {
-  c[a] =
-    c[a] ||
-    function () {
-      (c[a].q = c[a].q || []).push(arguments);
-    };
-  t = l.createElement(r);
-  t.async = 1;
-  t.src = "https://www.clarity.ms/tag/" + i;
-  y = l.getElementsByTagName(r)[0];
-  y.parentNode.insertBefore(t, y);
-})(window, document, "clarity", "script", ${JSON.stringify(clarityId)});
+(() => {
+  const loadClarity = () => {
+    (function (c, l, a, r, i, t, y) {
+      c[a] =
+        c[a] ||
+        function () {
+          (c[a].q = c[a].q || []).push(arguments);
+        };
+      t = l.createElement(r);
+      t.async = 1;
+      t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", ${JSON.stringify(clarityId)});
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(loadClarity, { timeout: 2500 });
+  } else {
+    window.setTimeout(loadClarity, 1500);
+  }
+})();
 `;
+
+const serviceGraph = [
+  {
+    "@type": "Service",
+    name: "Computer repair and tune-ups",
+    serviceType:
+      "Computer repair, diagnostics, malware removal, tune-ups, and performance optimization",
+    areaServed: "Greater Cincinnati Area",
+  },
+  {
+    "@type": "Service",
+    name: "Small business websites",
+    serviceType:
+      "Website design, local business pages, contact forms, launch support, and website care",
+    areaServed: "Greater Cincinnati Area",
+  },
+  {
+    "@type": "Service",
+    name: "Wi-Fi, network and device setup",
+    serviceType:
+      "Wi-Fi troubleshooting, mesh networks, router setup, printers, peripherals, and smart-home setup",
+    areaServed: "Greater Cincinnati Area",
+  },
+  {
+    "@type": "Service",
+    name: "Hardware upgrades and custom PCs",
+    serviceType:
+      "Hardware upgrades, custom PC builds, home servers, NAS setup, and thermal maintenance",
+    areaServed: "Greater Cincinnati Area",
+  },
+  {
+    "@type": "Service",
+    name: "Security and backup",
+    serviceType:
+      "Security checkups, backup setup, cybersecurity hardening, parental controls, and safe browsing setup",
+    areaServed: "Greater Cincinnati Area",
+  },
+  {
+    "@type": "Service",
+    name: "Custom agents and local AI setup",
+    serviceType:
+      "Local AI setup, AI agents, model tooling, workflow automation, and practical AI consulting",
+    areaServed: "Greater Cincinnati Area",
+  },
+];
 
 // JSON-LD builders per page type. Uses @graph pattern for multi-type pages.
 function buildJsonLd(type: string): Record<string, unknown> {
   const localBusiness = {
-    "@type": "LocalBusiness",
+    "@id": `${SITE_URL}/#local-business`,
+    "@type": ["LocalBusiness", "ProfessionalService"],
     name: "MAD LABS",
     description:
-      "Computer repair, diagnostics, IT support, and AI automation in the Greater Cincinnati area.",
+      "Mobile computer repair, tech support, diagnostics, and practical AI solutions for Cincinnati homes and small businesses.",
     url: SITE_URL,
     telephone: CONTACT_PHONE,
     email: CONTACT_EMAIL,
-    areaServed: "Greater Cincinnati Area",
-    openingHoursSpecification: [
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Greater Cincinnati Area",
+    },
+    contactPoint: [
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "09:00",
-        closes: "18:00",
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "Saturday",
-        opens: "10:00",
-        closes: "16:00",
+        "@type": "ContactPoint",
+        telephone: CONTACT_PHONE,
+        email: CONTACT_EMAIL,
+        contactType: "customer support",
+        areaServed: "Greater Cincinnati Area",
       },
     ],
   };
+
+  const website = {
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    name: "MAD LABS",
+    url: SITE_URL,
+    publisher: { "@id": `${SITE_URL}/#local-business` },
+  };
+
+  const webPage = {
+    "@type": "WebPage",
+    "@id": `${canonicalUrl.href}#webpage`,
+    url: canonicalUrl.href,
+    name: pageTitle,
+    description,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#local-business` },
+  };
+
+  const serviceNodes = serviceGraph.map((service, index) => ({
+    "@id": `${SITE_URL}/#service-${index + 1}`,
+    provider: { "@id": `${SITE_URL}/#local-business` },
+    ...service,
+  }));
 
   switch (type) {
     case "home":
       return {
         "@context": "https://schema.org",
-        "@graph": [{ "@type": "WebSite", name: "MAD LABS", url: SITE_URL }, localBusiness],
+        "@graph": [website, webPage, localBusiness, ...serviceNodes],
       };
     case "about":
       return {
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "AboutPage", name: "About MAD LABS", url: `${SITE_URL}/about/` },
+          website,
+          {
+            ...webPage,
+            "@type": "AboutPage",
+            name: "About MAD LABS",
+            url: `${SITE_URL}/about/`,
+          },
           localBusiness,
         ],
       };
@@ -131,22 +218,27 @@ function buildJsonLd(type: string): Record<string, unknown> {
       return {
         "@context": "https://schema.org",
         "@graph": [
+          website,
           {
-            "@type": "Service",
-            name: "Computer Repair & IT Support",
-            provider: localBusiness,
-            areaServed: "Greater Cincinnati Area",
-            description:
-              "Computer repair, tuneups, malware removal, network setup, and AI automation services.",
+            ...webPage,
+            name: "Computer Repair & IT Support Services",
+            url: `${SITE_URL}/services/`,
           },
           localBusiness,
+          ...serviceNodes,
         ],
       };
     case "contact":
       return {
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "ContactPage", name: "Contact MAD LABS", url: `${SITE_URL}/contact/` },
+          website,
+          {
+            ...webPage,
+            "@type": "ContactPage",
+            name: "Contact MAD LABS",
+            url: `${SITE_URL}/contact/`,
+          },
           localBusiness,
         ],
       };
@@ -171,18 +263,7 @@ function buildJsonLd(type: string): Record<string, unknown> {
     {homeHeroClassifier && <script is:inline set:html={homeHeroClassifierScript} />}
 
     <!-- Canonical: absolute URL, strip query params -->
-    <link
-      rel="canonical"
-      href={`${Astro.site?.origin || "https://madlabs.rocks"}${Astro.url.pathname}`}
-    />
-
-    <!-- hreflang: primary (en) + x-default for language fallback -->
-    <link rel="alternate" hreflang="en" href={`https://madlabs.rocks${Astro.url.pathname}`} />
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href={`https://madlabs.rocks${Astro.url.pathname}`}
-    />
+    <link rel="canonical" href={canonicalUrl.href} />
 
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
@@ -207,9 +288,9 @@ function buildJsonLd(type: string): Record<string, unknown> {
     <!-- Open Graph / Social -->
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={`https://madlabs.rocks${Astro.url.pathname}`} />
+    <meta property="og:url" content={canonicalUrl.href} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={`https://madlabs.rocks${image}`} />
+    <meta property="og:image" content={socialImageUrl.href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
@@ -219,7 +300,7 @@ function buildJsonLd(type: string): Record<string, unknown> {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`https://madlabs.rocks${image}`} />
+    <meta name="twitter:image" content={socialImageUrl.href} />
 
     {
       jsonLdType !== "none" && (
@@ -245,8 +326,9 @@ function buildJsonLd(type: string): Record<string, unknown> {
       ) : null
     }
 
-    <!-- Microsoft Clarity — analytics -->
-    <script is:inline set:html={clarityScript} />
+    <!-- Microsoft Clarity - temporary UX-debugging instrumentation.
+         Remove after the short debugging window. Disclosed on /privacy/. -->
+    {enableClarity ? <script is:inline set:html={clarityScript} /> : null}
   </head>
 
   <body>
@@ -267,6 +349,7 @@ function buildJsonLd(type: string): Record<string, unknown> {
           <a href="mailto:customer-service@madlabs.rocks" class="footer-email"
             >customer-service@madlabs.rocks</a
           >
+          <a href="/privacy/" class="footer-privacy-link">Privacy</a>
           <a href="/sitemap-index.xml" class="footer-sitemap-link">Sitemap</a>
         </nav>
       </div>

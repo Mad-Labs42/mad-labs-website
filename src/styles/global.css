@@ -80,19 +80,19 @@
   --lab-text-muted: #a8a0c8; /* 5.8:1 on --lab-surface (#1a0e30) — passes WCAG AA */
 
   /* Z-index scale (ITCSS). Use these instead of raw numbers. */
-  --z-base: 1;            /* Default — content layers */
-  --z-content: 10;        /* Screen content, particles */
-  --z-overlay: 50;        /* Hover overlays, scroll hints */
-  --z-modal: 100;         /* Modals, menus, tooltips */
-  --z-sticky: 200;        /* Sticky headers */
-  --z-toast: 500;         /* Notifications */
-  --z-editor: 9999;       /* Editor overlays (admin) — escape hatch */
+  --z-base: 1; /* Default — content layers */
+  --z-content: 10; /* Screen content, particles */
+  --z-overlay: 50; /* Hover overlays, scroll hints */
+  --z-modal: 100; /* Modals, menus, tooltips */
+  --z-sticky: 200; /* Sticky headers */
+  --z-toast: 500; /* Notifications */
+  --z-editor: 9999; /* Editor overlays (admin) — escape hatch */
 
   /* Breakpoint tokens (CSS vars for documentation — use raw values in @media queries
      since var() is not supported in @media in all browsers). */
-  --bp-sm: 40rem;   /* 640px — mobile */
-  --bp-md: 64rem;   /* 1024px — tablet */
-  --bp-lg: 80rem;   /* 1280px — desktop */
+  --bp-sm: 40rem; /* 640px — mobile */
+  --bp-md: 64rem; /* 1024px — tablet */
+  --bp-lg: 80rem; /* 1280px — desktop */
 }
 
 /* ============================================
@@ -188,10 +188,12 @@ footer.site-footer {
   /* Regular content — email address stands on its own */
 }
 
+.footer-privacy-link,
 .footer-sitemap-link {
   /* Separated subtly from the email */
 }
 
+.footer-privacy-link::before,
 .footer-sitemap-link::before {
   content: "";
   display: inline-block;
@@ -240,8 +242,7 @@ footer.site-footer {
       rgba(200, 180, 230, 0.04) 2px,
       rgba(200, 180, 230, 0.04) 3px
     ),
-    radial-gradient(circle at 50% 0%, rgba(232, 144, 80, 0.04), transparent 38%),
-    var(--lab-surface);
+    radial-gradient(circle at 50% 0%, rgba(232, 144, 80, 0.04), transparent 38%), var(--lab-surface);
 }
 
 .lab-section-alt {
@@ -528,8 +529,12 @@ footer.site-footer {
    Shared Keyframes
    ============================================ */
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Standard screen-reader only class (WebAIM 7-property pattern) */

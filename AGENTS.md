@@ -59,7 +59,8 @@ Josh adds "FROM THE BOSS MAN" sections to memory.md files across the Obsidian va
 - **Deployment:** Cloudflare Pages (static)
 - **Visual:** CRT/neon retro — beige CRT bezel, purple screen, warm amber, green LED
 - **GitHub:** `Mad-Labs42/mad-labs-website` (remote TBD)
-
+- **Platform & Tool Documenation:** `"C:\Users\PC\Desktop\Igors Chambers\Igors Personal Vault\Stack-Docs"` local dev knowledge base full of dev docs
+  
 ## LFCM (Lifecycle Manager)
 
 - **NOT a daemon.** Event-driven post-cron sweeper.
@@ -67,3 +68,26 @@ Josh adds "FROM THE BOSS MAN" sections to memory.md files across the Obsidian va
 - Sweeps for 5 minutes, then exits.
 - 7-condition safety check before any kill.
 - See: `Stack-Docs/LFCM/` for full documentation.
+
+## Browser CDP (Hermes `browser_cdp` + Puppeteer Chrome 149)
+
+Use this for viewport emulation, layout metrics, and screenshots on **local preview/production URLs** — not only the chrome-devtools MCP.
+
+**Chrome binary (madlabs-website profile):**
+
+`/home/hitchhiker/.hermes/profiles/madlabs-website/home/.cache/puppeteer/chrome/linux-149.0.7827.22/chrome-linux64/chrome`
+
+(Config may also set this via `--executablePath` on chrome-devtools MCP; gateway restart required after config changes.)
+
+**Required pattern for `browser_cdp`:**
+
+1. `browser_navigate` to the URL first (attaches a CDP session).
+2. `browser_cdp` → `Target.getTargets` → take the **page** target’s `targetId`.
+3. Pass **`target_id`** on every page-scoped CDP call (`Emulation.setDeviceMetricsOverride`, `Runtime.evaluate`, `Page.captureScreenshot`). Calls **without** `target_id` often fail with `'Emulation.setDeviceMetricsOverride' wasn't found`.
+4. Standard viewports for this site: **375** (mobile), **768** (tablet), **1280** (desktop). Re-run `Runtime.evaluate` after each emulation change.
+
+**Preview URL for audits:** `pnpm build && pnpm preview` → typically `http://127.0.0.1:4322/`.
+
+**Prefer chrome-devtools MCP** for full workflows (console, network, trace) when enabled; use **`browser_cdp`** when you already have an active Hermes browser session or need raw CDP on the Puppeteer Chrome attached to the agent.
+
+**Do not** use `~` in `terminal()` paths in this profile — use `/home/hitchhiker/...` absolutes (`$HOME` is profile-scoped).

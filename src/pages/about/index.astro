@@ -1,9 +1,12 @@
 ---
-import MadLabsIcon from "../../components/MadLabsIcon.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Cincinnati's Trusted Computer Repair Experts" description="Learn about MAD LABS — a Cincinnati-based computer repair and IT support team helping homeowners and small businesses since 2020. Local, trusted, transparent." jsonLdType="about">
+<BaseLayout
+  title="About | Cincinnati Mobile Computer Repair & Practical Tech Support"
+  description="Learn about MAD LABS, an independent Cincinnati mobile computer repair and practical tech support lab offering diagnostics, upgrades, and hands-on help across Greater Cincinnati by appointment."
+  jsonLdType="about"
+>
   <!-- ─── Hero / The Lab ─── -->
   <section class="about-hero lab-section">
     <div class="lab-section-inner-wide">
@@ -13,37 +16,47 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <span class="about-brand">MAD LABS</span>
       </h1>
       <p class="about-intro">
-        MAD LABS is an independent computer repair and mobile IT diagnostics lab. We fix devices
-        that others have given up on — with transparency, skill, and a genuine love for the work.
+        MAD LABS is an independent mobile computer repair and diagnostics lab serving Greater
+        Cincinnati by appointment. We work on Windows PCs, workstations, and real-world tech
+        problems with transparency, skill, and a genuine love for the work.
       </p>
     </div>
   </section>
 
   <!-- ─── Origin / The Story ─── -->
-  <section class="about-story lab-section-alt">
+  <section class="about-story lab-section-alt" aria-labelledby="about-story-heading">
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Origin</span>
-      <h2 class="section-heading">The Story</h2>
+      <h2 id="about-story-heading" class="section-heading">The Story</h2>
       <p class="story-text">
-        MAD LABS started the same way most good repair shops do: a pile of broken laptops, a deep
-        curiosity about how things work, and frustration with an industry that often recommends
-        replacement over repair. What began as fixing friends' and family's computers grew into a
-        full diagnostic lab serving home users, small businesses, and creative professionals.
+        MAD LABS started the same way most good repair shops do: a pile of broken laptops and
+        desktops, a deep curiosity about how things work, and frustration with an industry that
+        often recommends replacement over repair. What began as fixing friends' and family's
+        computers grew into a by-appointment diagnostic lab serving home users, small businesses,
+        and creative professionals across Greater Cincinnati.
       </p>
       <p class="story-text">
-        Every device tells a story. A photographer's workstation with years of edits. A small
-        business's accounting machine running on borrowed time. A student's only laptop. We treat
-        each one with the same care: find the real problem, explain it clearly, and fix it right.
+        There is no walk-in storefront or drop-off counter. The work is mobile, hands-on, and
+        practical: a photographer's Windows workstation with years of edits, a small business
+        desktop running on borrowed time, a student's only laptop, or a custom PC that needs a
+        real diagnostic instead of a guess. We treat each system with the same care: find the real
+        problem, explain it clearly, and fix it right.
+      </p>
+      <p class="story-text">
+        That same mindset carries into newer workflow problems too. MAD LABS also spends time with
+        WSL-based workflows, local tooling, practical automation, lightweight agents, and websites
+        when the job calls for hands-on technical support rather than hype or a giant platform
+        project.
       </p>
     </div>
   </section>
 
   <!-- ─── Approach / How We Work ─── -->
-  <section class="about-approach lab-section">
+  <section class="about-approach lab-section" aria-labelledby="about-approach-heading">
     <div class="lab-section-inner-wide">
       <span class="lab-heading-accent">Approach</span>
-      <h2 class="section-heading">How We Work</h2>
-      <div class="approach-grid" style="display:grid;gap:1.25rem">
+      <h2 id="about-approach-heading" class="section-heading">How We Work</h2>
+      <div class="approach-grid">
         <div class="approach-card">
           <span class="approach-step" aria-hidden="true">01</span>
           <h3 class="approach-card-title">Diagnose First</h3>
@@ -73,54 +86,121 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   </section>
 
   <!-- ─── Trust / Why People Trust MAD LABS ─── -->
-  <section class="about-trust lab-section-alt">
+  <section class="about-trust lab-section-alt" aria-labelledby="about-trust-heading">
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Trust</span>
-      <h2 class="section-heading">Why People Trust MAD LABS</h2>
+      <h2 id="about-trust-heading" class="section-heading">Why People Trust MAD LABS</h2>
       <div class="trust-grid">
         <div class="trust-card">
-          <MadLabsIcon name="shield" />
+          <svg
+            class="trust-icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <g transform="translate(10 10) scale(0.78) translate(-10 -10)">
+              <path
+                d="M12.25 5.25a0.83 0.83 0 0 0 0 1.17l1.33 1.33a0.83 0.83 0 0 0 1.17 0l2.59-2.59a0.72 0.72 0 0 1 0.82 0.18 5 5 0 0 1-6.88 5.88l-6.59 6.59a0.83 0.83 0 0 1-2.5-2.5l6.59-6.59a5 5 0 0 1 5.88-6.88 0.72 0.72 0 0 1 0.18 0.82z"
+              ></path>
+            </g>
+          </svg>
           <div>
             <strong class="trust-label">Years of hands-on experience</strong>
             <p class="trust-text">
-              with PCs, Macs, phones, tablets, and networking — across major brands and operating
-              systems.
+              We work with Windows PCs, WSL-based workflows, hardware upgrades, diagnostics, tuneups,
+              troubleshooting, and real-world network problem solving.
             </p>
           </div>
         </div>
         <div class="trust-card">
-          <MadLabsIcon name="clock" />
+          <svg
+            class="trust-icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="10" cy="10" r="7.5"></circle>
+            <path d="M7 10.5 9 12.5 13 7.5"></path>
+          </svg>
           <div>
             <strong class="trust-label">Diagnostic-first approach</strong>
             <p class="trust-text">
-              means we find the real problem instead of guessing and replacing parts.
+              We find the real problem before we recommend repairs, upgrades, or replacement parts.
             </p>
           </div>
         </div>
         <div class="trust-card">
-          <MadLabsIcon name="clock" />
+          <svg
+            class="trust-icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M10 4.25v11.5"></path>
+            <path
+              d="M14.15 5.85H8.15a2.9 2.9 0 1 0 0 5.8h4.15a2.9 2.9 0 1 1 0 5.85H6.15"
+            ></path>
+          </svg>
           <div>
             <strong class="trust-label">Transparent pricing</strong>
             <p class="trust-text">
-              — we quote the work before we start, and never add hidden fees.
+              We quote the work before we start, explain what is included, and never add hidden fees.
             </p>
           </div>
         </div>
         <div class="trust-card">
-          <MadLabsIcon name="clock" />
+          <svg
+            class="trust-icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="10" cy="10" r="7.5"></circle>
+            <path d="M10 6v4.5l3 1.5"></path>
+          </svg>
           <div>
-            <strong class="trust-label">Same-day service</strong>
+            <strong class="trust-label">Fast turnaround when the job allows</strong>
             <p class="trust-text">
-              on most common repairs. We know you can't be without your device.
+              Many common repairs can be handled the same day when parts, scope, and scheduling line
+              up, because we know you cannot be without your computer for long.
             </p>
           </div>
         </div>
         <div class="trust-card">
-          <MadLabsIcon name="clock" />
+          <svg
+            class="trust-icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="7" width="14" height="11" rx="1.5"></rect>
+            <path d="M6.5 7V5a3.5 3.5 0 0 1 7 0v2"></path>
+          </svg>
           <div>
-            <strong class="trust-label">No data compromises</strong>
+            <strong class="trust-label">Privacy-conscious support</strong>
             <p class="trust-text">
-              — your privacy and data security are built into every step of our process.
+              We handle your system with care, explain data-sensitive steps clearly, and keep
+              privacy in mind throughout the repair and support process.
             </p>
           </div>
         </div>
@@ -128,17 +208,19 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <!-- ─── Memento Wall ─── -->
-  
   <!-- ─── Next Steps / CTA ─── -->
-  <section class="about-cta lab-section-alt">
+  <section class="about-cta lab-section-alt" aria-labelledby="about-cta-heading">
     <div class="lab-section-inner cta-inner">
       <span class="lab-heading-accent">Next Steps</span>
-      <h2 class="cta-heading">Have a device that needs attention?</h2>
+      <h2 id="about-cta-heading" class="cta-heading">Have a computer that needs attention?</h2>
       <p class="cta-text">
-        Tell us what's going on and we'll recommend the next steps — no charge, no commitment.
+        Tell us what's going on, or take a look at our core repair and support work before you
+        reach out.
       </p>
-      <a href="/contact/" class="lab-button">Contact MAD LABS</a>
+      <div class="cta-actions">
+        <a href="/services/" class="lab-button">See Services</a>
+        <a href="/contact/" class="cta-secondary-link lab-link">Contact MAD LABS</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -263,15 +345,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       0 0 40px rgba(232, 144, 80, 0.04);
   }
 
-  .approach-card:focus-visible {
-    border-color: rgba(232, 144, 80, 0.35);
-    box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.35),
-      0 0 40px rgba(232, 144, 80, 0.04);
-    outline: 2px solid rgba(232, 144, 80, 0.5);
-    outline-offset: 2px;
-  }
-
   .approach-card::after {
     content: "";
     position: absolute;
@@ -291,8 +364,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     pointer-events: none;
     z-index: -1;
   }
-  .approach-card:hover::after,
-  .approach-card:focus-visible::after {
+  .approach-card:hover::after {
     opacity: 1;
     animation: shimmer 2s ease-in-out infinite;
   }
@@ -383,15 +455,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       0 0 40px rgba(232, 144, 80, 0.04);
   }
 
-  .trust-card:focus-visible {
-    border-color: rgba(232, 144, 80, 0.3);
-    box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.35),
-      0 0 40px rgba(232, 144, 80, 0.04);
-    outline: 2px solid rgba(232, 144, 80, 0.5);
-    outline-offset: 2px;
-  }
-
   .trust-card::after {
     content: "";
     position: absolute;
@@ -411,13 +474,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     pointer-events: none;
     z-index: -1;
   }
-  .trust-card:hover::after,
-  .trust-card:focus-visible::after {
+  .trust-card:hover::after {
     opacity: 1;
     animation: shimmer 2s ease-in-out infinite;
   }
-  .trust-card:hover .trust-icon,
-  .trust-card:focus-visible .trust-icon {
+  .trust-card:hover .trust-icon {
     filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.35));
   }
 
@@ -478,6 +539,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     text-align: center;
   }
 
+  .cta-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
   .cta-heading {
     font-family: "Early GameBoy", "Jersey 25", monospace;
     font-size: clamp(1.25rem, 3vw, 1.75rem);
@@ -493,6 +561,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     max-width: 450px;
     margin: 0 auto 1.5rem;
     line-height: 1.5;
+  }
+
+  .cta-secondary-link {
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 640px) {
+    .cta-actions {
+      flex-direction: row;
+      justify-content: center;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

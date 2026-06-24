@@ -14,9 +14,12 @@ public/build/
 
 # Environment & secrets
 .env
+.env.*
+!.env.example
 .env.local
 .env.*.local
 .env.production
+.dna.md
 
 # IDE & editor
 .vscode/
@@ -28,6 +31,29 @@ public/build/
 
 # Cloudflare
 .wrangler/
+
+# Local tooling
+.agent/
+.agents/
+.code-scalpel/
+.codex/
+.hermes/
+.mcp.json
+.playwright-mcp/
+.pytest_cache/
+Cron-Jobs/
+logs_llm/
+run/
+artifacts/
+.codegraph/
+.depwire/
+depwire-output.json
+vectors.db
+vectors.db-shm
+vectors.db-wal
+*lighthouse.[0-9]*/
+undefined:/
+D:\Workspaces\mad-labs-website\undefined:\Users\undefined\AppData\Local\lighthouse.*/
 
 # Logs
 *.log

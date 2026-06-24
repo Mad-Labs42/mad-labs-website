@@ -68,49 +68,52 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 <script is:inline>
   (function () {
     "use strict";
-    var params = new URLSearchParams(window.location.search);
-    var isBooking = params.has("booking_id") || params.has("service_name");
+    const params = new URLSearchParams(window.location.search);
+    const isBooking = params.has("booking_id") || params.has("service_name");
     if (!isBooking) return;
 
-    var defaultView = document.getElementById("ty-default-view");
-    var bookingView = document.getElementById("ty-booking-view");
+    const defaultView = document.getElementById("ty-default-view");
+    const bookingView = document.getElementById("ty-booking-view");
     if (defaultView) defaultView.hidden = true;
     if (bookingView) bookingView.hidden = false;
 
-    var serviceName = params.get("service_name") || "appointment";
-    var customerName = params.get("customer_name") || "";
-    var startTime = params.get("booking_start_time") || "";
+    const serviceName = params.get("service_name") || "appointment";
+    const customerName = params.get("customer_name") || "";
+    const startTime = params.get("booking_start_time") || "";
 
-    var greeting = document.getElementById("ty-greeting");
+    const greeting = document.getElementById("ty-greeting");
     if (greeting && customerName) {
       greeting.textContent = "Thanks, " + customerName + ".";
     }
 
-    var text = document.getElementById("ty-booking-text");
+    const text = document.getElementById("ty-booking-text");
     if (text) {
-      text.innerHTML =
-        "Your <strong>" +
-        serviceName +
-        "</strong> has been booked. We're looking forward to speaking with you.";
+      const serviceNameEl = document.createElement("strong");
+      serviceNameEl.textContent = serviceName;
+      text.replaceChildren(
+        "Your ",
+        serviceNameEl,
+        " has been booked. We're looking forward to speaking with you.",
+      );
     }
 
     if (startTime) {
       try {
-        var dt = new Date(startTime);
-        var dateStr = dt.toLocaleDateString("en-US", {
+        const dt = new Date(startTime);
+        const dateStr = dt.toLocaleDateString("en-US", {
           weekday: "long",
           year: "numeric",
           month: "long",
           day: "numeric",
         });
-        var timeStr = dt.toLocaleTimeString("en-US", {
+        const timeStr = dt.toLocaleTimeString("en-US", {
           hour: "numeric",
           minute: "2-digit",
           timeZoneName: "short",
         });
         document.getElementById("ty-date").textContent = dateStr;
         document.getElementById("ty-time").textContent = timeStr;
-        var details = document.getElementById("ty-details");
+        const details = document.getElementById("ty-details");
         if (details) details.hidden = false;
       } catch {
         // ignore date parse errors
@@ -121,7 +124,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     document.title = "Booking Confirmed — MAD LABS";
 
     // Update meta description
-    var meta = document.querySelector('meta[name="description"]');
+    const meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.setAttribute(
         "content",

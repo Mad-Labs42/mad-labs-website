@@ -10,18 +10,14 @@
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  # Content-Security-Policy: deploy for 48h, review violation reports,
-  # then promote to Content-Security-Policy (enforcing). Captures false positives first.
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com https://bookings.nimbuspop.com; style-src 'self' 'unsafe-inline' https://bookings.nimbuspop.com; img-src 'self' data: https://*.clarity.ms https://www.google-analytics.com https://bookings.nimbuspop.com; font-src 'self' data: https://bookings.nimbuspop.com; frame-src 'self' https://madlabs.zohobookings.com https://*.zoho.com https://*.zohopublic.com https://*.zoho.eu https://*.zohopublic.eu https://*.zoho.in https://*.zohopublic.in https://*.zohomcp.com https://book.zoho.com https://forms.zoho.com https://desk.zoho.com https://bookings.nimbuspop.com; connect-src 'self' https://desk.zoho.com https://*.zoho.com https://*.zohomcp.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://bookings.nimbuspop.com; form-action 'self' https://desk.zoho.com; object-src 'none';
+  # CSP is report-only for this readiness pass. Promote to enforcing only after
+  # validating Clarity, GA4, Nimbuspop, Zoho, and Astro inline scripts in production.
+  Content-Security-Policy-Report-Only: default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com https://bookings.nimbuspop.com; style-src 'self' 'unsafe-inline' https://bookings.nimbuspop.com; img-src 'self' data: https://*.clarity.ms https://c.bing.com https://www.google-analytics.com https://bookings.nimbuspop.com; font-src 'self' data: https://bookings.nimbuspop.com; frame-src 'self' https://madlabs.zohobookings.com https://*.zoho.com https://*.zohopublic.com https://*.zoho.eu https://*.zohopublic.eu https://*.zoho.in https://*.zohopublic.in https://*.zohomcp.com https://book.zoho.com https://forms.zoho.com https://desk.zoho.com https://bookings.nimbuspop.com; connect-src 'self' https://desk.zoho.com https://*.zoho.com https://*.zohomcp.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com https://bookings.nimbuspop.com; form-action 'self' https://desk.zoho.com; object-src 'none';
 
 # ============================================
 # Enforce CSP on /contact (Zoho iframes)
 # The above Report-Only covers violations; once verified safe,
 # add a second block here with the same content as Content-Security-Policy (enforcing).
 # ============================================
-/contact
-  X-Robots-Tag: noindex
-
 /contact/thank-you
   X-Robots-Tag: noindex
-

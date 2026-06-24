@@ -1,7 +1,3 @@
-// @ts-nocheck — File uses `var` for hoisting in polling loops, untyped DOM
-// queries (getElementById results), and calls the external NimbusPop() API
-// which has no TypeScript types. These are runtime patterns that TypeScript
-// strict mode cannot express. Each usage is intentional and tested.
 // ContactTablet.client.ts
 // Nimbuspop inline Zoho booking for the contact page.
 //
@@ -27,23 +23,40 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
 (function () {
   "use strict";
 
-  var cfgEl = document.getElementById("tablet-config");
+  const cfgEl: HTMLElement | null = document.getElementById("tablet-config");
   if (!cfgEl) return;
-  // @ts-expect-error - config shape comes from JSON in a script tag, dynamic at runtime
-  var config;
-  try { config = JSON.parse(cfgEl.textContent || "{}"); } catch { return; }
+
+  let config: BookingConfig;
+  try {
+    config = JSON.parse(cfgEl.textContent || "{}") as BookingConfig;
+  } catch {
+    return;
+  }
   if (!config.zohoUrl || !config.nimbuspopScriptSrc) return;
 
   // ─── Element refs ───
   // booking-nameplate (inner div, visual content) and
   // nameplate-positioner (outer div, handles stacking + centering)
-  var nameplate = document.getElementById("booking-nameplate");
-  var nameplatePos = document.querySelector("[data-tablet-nameplate]");
-  var placeholder = document.getElementById("booking-placeholder");
-  var container = document.getElementById("inline-container");
-  if (!nameplate || !nameplatePos || !placeholder || !container) return;
+  const nameplate: HTMLElement | null = document.getElementById("booking-nameplate");
+  const nameplatePos: HTMLElement | null = document.querySelector("[data-tablet-nameplate]");
+  const placeholder: HTMLElement | null = document.getElementById("booking-placeholder");
+  const container: HTMLElement | null = document.getElementById("inline-container");
+  const tabletRootEl: HTMLElement | null = document.querySelector("[data-tablet-root]");
+  const bookingStatusEl: HTMLElement | null = document.getElementById("booking-loading-status");
+  if (
+    !nameplate ||
+    !nameplatePos ||
+    !placeholder ||
+    !container ||
+    !tabletRootEl ||
+    !bookingStatusEl
+  ) {
+    return;
+  }
+  const tabletRoot: HTMLElement = tabletRootEl;
+  const bookingStatus: HTMLElement = bookingStatusEl;
 
-  var prefersReducedMotion = window.matchMedia(
+  const prefersReducedMotion: boolean = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
@@ -52,20 +65,18 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
   // The user explicitly wants the beaker pattern + nameplate to stay for
   // 5-7 seconds to cover Zoho's plain "Mad Labs..." loading state.
   // We use 6 seconds as a middle ground.
-  var MIN_VISIBLE_MS = 6000;
+  const MIN_VISIBLE_MS = 6000;
 
   // If the widget hasn't rendered by this point, show the network
   // gremlin error panel.
-  var FAILURE_TIMEOUT_MS = 20000;
+  const FAILURE_TIMEOUT_MS = 20000;
 
   // ─── State ───
-  var widgetReady = false;
-  var minVisibleTimerExpired = false;
-  // @ts-expect-error - timer IDs assigned in nested callbacks, implicit any unavoidable
-  var failureTimer = null;
-  // @ts-expect-error - timer IDs assigned in nested callbacks, implicit any unavoidable
-  var pollTimer = null;
-  var startedAt = 0;
+  let widgetReady = false;
+  let minVisibleTimerExpired = false;
+  let failureTimer: number | null = null;
+  let pollTimer: number | null = null;
+  const startedAt = Date.now();
 
   /**
    * Called when the minimum-visible timer (6s) has expired. This signals
@@ -75,7 +86,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    * tied to the nameplate via the screen's .is-loaded class, which
    * BOTH of them flip together in revealNameplate().
    */
-  function onMinVisibleExpired() {
+  function onMinVisibleExpired(): void {
     minVisibleTimerExpired = true;
     tryRevealNameplate();
   }
@@ -88,21 +99,21 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    * If the minimum-visible timer hasn't expired when the widget renders,
    * we wait for the timer. This guarantees the nameplate looks intentional.
    */
-  function tryRevealNameplate() {
+  function tryRevealNameplate(): void {
     if (!widgetReady) return;  // Widget hasn't rendered yet
     if (!minVisibleTimerExpired) return;  // Still in minimum-visible window
     revealNameplate();
   }
 
-  function revealNameplate() {
+  function revealNameplate(): void {
+    tabletRoot.setAttribute("aria-busy", "false");
+    bookingStatus.textContent = "Booking calendar loaded. You can now choose a time.";
+
     if (prefersReducedMotion) {
-      // @ts-expect-error - nameplatePos checked non-null at init, narrowed by control flow
-      nameplatePos.style.display = "none";
+      nameplatePos!.style.display = "none";
     } else {
-      // @ts-expect-error - nameplatePos checked non-null at init
-      nameplatePos.classList.remove("is-loading");
-      // @ts-expect-error - nameplatePos checked non-null at init
-      nameplatePos.classList.add("is-loaded");
+      nameplatePos!.classList.remove("is-loading");
+      nameplatePos!.classList.add("is-loaded");
     }
 
     // Add the .is-loaded-tablet class to the beaker + atmosphere elements
@@ -114,7 +125,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
     //
     // The class name 'is-loaded-tablet' is single-word+hyphen; safe from
     // the minifier bug that was breaking '.is loaded' selectors.
-    var fadeTargets = [
+    const fadeTargets: string[] = [
       ".tablet-desktop-bg",
       ".tablet-backlight",
       ".tablet-ips-glow",
@@ -130,28 +141,28 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       ".tablet-scanbeam",
       ".tablet-flicker",
     ];
-    fadeTargets.forEach(function (selector) {
-      var els = document.querySelectorAll(selector);
-      for (var i = 0; i < els.length; i++) {
-        els[i].classList.add("is-loaded-tablet");
+    fadeTargets.forEach(function (selector: string): void {
+      const els: NodeListOf<Element> = document.querySelectorAll(selector);
+      for (let i = 0; i < els.length; i++) {
+        (els[i] as HTMLElement).classList.add("is-loaded-tablet");
       }
     });
     // Scanlines: special case — keep them at 0.3 opacity after fade
     // so the CRT aesthetic stays intact even when the beaker is gone.
-    var scanlines = document.querySelectorAll(".tablet-scanlines");
-    for (var j = 0; j < scanlines.length; j++) {
-      scanlines[j].classList.add("is-loaded-tablet");
+    const scanlines: NodeListOf<Element> = document.querySelectorAll(".tablet-scanlines");
+    for (let j = 0; j < scanlines.length; j++) {
+      (scanlines[j] as HTMLElement).classList.add("is-loaded-tablet");
     }
 
-    placeholder.hidden = true;
+    placeholder!.hidden = true;
 
     // Show the scroll hint briefly so the user knows they can scroll
     // within the inline widget
-    var hint = document.getElementById("booking-scroll-hint");
+    const hint: HTMLElement | null = document.getElementById("booking-scroll-hint");
     if (hint) {
       hint.classList.remove("hint-hidden");
       hint.classList.add("hint-visible");
-      window.setTimeout(function () {
+      window.setTimeout(function (): void {
         hint.classList.remove("hint-visible");
         hint.classList.add("hint-hidden");
       }, 5000);
@@ -159,7 +170,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
 
     // Stop polling for widget readiness
     if (pollTimer !== null) {
-      window.clearInterval(pollTimer);
+      window.clearTimeout(pollTimer);
       pollTimer = null;
     }
 
@@ -170,7 +181,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
           detail: { event: "contact_booking_widget_loaded" },
         })
       );
-    } catch {}
+    } catch { /* never throw */ }
   }
 
   /**
@@ -180,7 +191,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    * We detect "rendered" by polling for an iframe inside the container
    * (Nimbuspop injects an iframe into the inline-container).
    */
-  function onWidgetReady() {
+  function onWidgetReady(): void {
     widgetReady = true;
     if (failureTimer !== null) {
       window.clearTimeout(failureTimer);
@@ -193,25 +204,29 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    * Called when the widget fails to render (after FAILURE_TIMEOUT_MS).
    * Shows the network gremlin error panel.
    */
-  function showError() {
+  function showError(): void {
+    tabletRoot.setAttribute("aria-busy", "false");
+    bookingStatus.textContent =
+      "Booking calendar failed to load. Call or email MAD LABS instead.";
+
     if (prefersReducedMotion) {
-      nameplatePos.style.display = "none";
+      nameplatePos!.style.display = "none";
     } else {
-      nameplatePos.classList.remove("is-loading");
-      nameplatePos.classList.add("is-error");
+      nameplatePos!.classList.remove("is-loading");
+      nameplatePos!.classList.add("is-error");
     }
     if (pollTimer !== null) {
-      window.clearInterval(pollTimer);
+      window.clearTimeout(pollTimer);
       pollTimer = null;
     }
-    placeholder.hidden = false;
+    placeholder!.hidden = false;
     try {
       document.dispatchEvent(
         new CustomEvent("madlabs:analytics", {
           detail: { event: "contact_booking_widget_error" },
         })
       );
-    } catch {}
+    } catch { /* never throw */ }
   }
 
   /**
@@ -221,8 +236,8 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
    * The iframe's non-zero dimensions are not enough — Nimbuspop sets
    * width/height immediately, but Zoho's content takes time to load.
    */
-  function pollForWidget() {
-    var iframe = container.querySelector("iframe");
+  function pollForWidget(): void {
+    const iframe: HTMLIFrameElement | null = container!.querySelector("iframe");
     if (iframe) {
       // Ensure the iframe has a title for accessibility (Nimbuspop doesn't set one)
       if (!iframe.hasAttribute("title") || iframe.getAttribute("title") === "") {
@@ -230,19 +245,19 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       }
       // Check if the iframe has already loaded
       try {
-        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        const doc: Document | null = iframe.contentDocument || (iframe.contentWindow?.document ?? null);
         if (doc && doc.readyState === "complete") {
           window.setTimeout(onWidgetReady, 500);
           return;
         }
-      } catch (e) {
+      } catch (_e) {
         // Cross-origin error — we can't access the iframe's document.
         // Fall back to the load event.
       }
       // Attach a one-time load event if not already attached
       if (!iframe.hasAttribute("data-nimbuspop-listener")) {
         iframe.setAttribute("data-nimbuspop-listener", "true");
-        iframe.addEventListener("load", function () {
+        iframe.addEventListener("load", function (): void {
           window.setTimeout(onWidgetReady, 500);
         });
       }
@@ -252,7 +267,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
       return;
     }
     // Also check for direct DOM injection (some Nimbuspop versions do this)
-    if (container.children.length > 0 && !container.querySelector("script")) {
+    if (container!.children.length > 0 && !container!.querySelector("script")) {
       // The container has content that isn't a script
       window.setTimeout(onWidgetReady, 500);
       return;
@@ -262,7 +277,6 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
   }
 
   // ─── Start the loading flow on page load ───
-  startedAt = Date.now();
 
   // Mark the nameplate as loading (triggers scan line tracer)
   if (!prefersReducedMotion) {
@@ -272,15 +286,15 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
   // ─── Load the Nimbuspop script dynamically ───
   // The script reads window.Bookings.inlineEmbed() and renders the
   // widget in our container. We initialize AFTER the script loads.
-  var npScript = document.createElement("script");
+  const npScript: HTMLScriptElement = document.createElement("script");
   npScript.src = getNimbuspopScriptSrc(config);
   npScript.async = true;
-  npScript.onload = function () {
+  npScript.onload = function (): void {
     // Nimbuspop's Bookings object should be available now
     // @ts-expect-error - window.Bookings is injected by external Nimbuspop script, no types available
     if (window.Bookings && typeof window.Bookings.inlineEmbed === "function") {
       try {
-        var bookingUrl = resolveBookingUrl("booking", config);
+        const bookingUrl: string | null = resolveBookingUrl("booking", config);
         if (bookingUrl) {
           // @ts-expect-error - window.Bookings.inlineEmbed is from external Nimbuspop script, no types available
           window.Bookings.inlineEmbed({
@@ -289,14 +303,14 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
             height: "600px",
           });
         }
-      } catch (e) {
+      } catch (_e) {
         // If inlineEmbed throws, the poll will eventually time out
       }
     }
     // Start polling for the widget to render
     pollForWidget();
   };
-  npScript.onerror = function () {
+  npScript.onerror = function (): void {
     // Nimbuspop script failed to load — show error after the timer
     if (failureTimer !== null) {
       window.clearTimeout(failureTimer);
@@ -320,7 +334,7 @@ import { resolveBookingUrl, getNimbuspopScriptSrc, type BookingConfig } from "..
 
   // ─── Failure timer: if the widget hasn't rendered by now, show error.
   // The nameplate stays on screen until min-visible is also up. ───
-  failureTimer = window.setTimeout(function () {
+  failureTimer = window.setTimeout(function (): void {
     if (!widgetReady) {
       if (minVisibleTimerExpired) {
         showError();

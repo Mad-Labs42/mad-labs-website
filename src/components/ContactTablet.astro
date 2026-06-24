@@ -34,7 +34,14 @@ const ZOHO_BOOKING_URL = FALLBACK_EMBED_URL
 const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
 ---
 
-<div class="contact-tablet" data-tablet-root role="region" aria-label="MAD LABS intake terminal">
+<div
+  class="contact-tablet"
+  data-tablet-root
+  role="region"
+  aria-label="MAD LABS intake terminal"
+  aria-describedby="contact-tablet-instructions"
+  aria-busy="true"
+>
 
   <div class="tablet-bezel">
 
@@ -68,6 +75,9 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
       <div class="tablet-corner tablet-corner--br" aria-hidden="true"></div>
 
       <div class="tablet-iframe-wrapper" data-tablet-iframe-wrapper>
+        <p id="booking-loading-status" class="sr-only" aria-live="polite" aria-atomic="true">
+          Loading the booking calendar. The appointment form will appear here in a moment.
+        </p>
 
         <!-- Inline booking widget container.
              The Nimbuspop script will render the Zoho booking widget
