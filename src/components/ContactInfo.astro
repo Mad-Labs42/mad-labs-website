@@ -1,5 +1,7 @@
 ---
 // ContactInfo — structured contact details using a semantic <dl>.
+import AtomIcon from "./AtomIcon.astro";
+
 export interface Props {
   email: string;
   phone?: string;
@@ -14,69 +16,16 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
 <dl class="contact-list">
   <div class="contact-item">
     <dt class="ci-dt">
-      <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-        <ellipse cx="10" cy="10" rx="7" ry="2.5" stroke="#ffffff" stroke-width="0.8" opacity="0.7"
-        ></ellipse>
-        <ellipse
-          cx="10"
-          cy="10"
-          rx="7"
-          ry="2.5"
-          stroke="#ffffff"
-          stroke-width="0.8"
-          opacity="0.7"
-          transform="rotate(60 10 10)"></ellipse>
-        <ellipse
-          cx="10"
-          cy="10"
-          rx="7"
-          ry="2.5"
-          stroke="#ffffff"
-          stroke-width="0.8"
-          opacity="0.7"
-          transform="rotate(-60 10 10)"></ellipse>
-        <circle cx="10" cy="10" r="1.5" fill="#ffffff" opacity="0.9"></circle>
-      </svg>
+      <AtomIcon class="ci-atom" />
       Email
     </dt>
-    <dd><a href="mailto:{email}">{email}</a></dd>
+    <dd><a href={`mailto:${email}`}>{email}</a></dd>
   </div>
   {
     phone && (
       <div class="contact-item contact-phone">
         <dt class="ci-dt">
-          <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <ellipse
-              cx="10"
-              cy="10"
-              rx="7"
-              ry="2.5"
-              stroke="#ffffff"
-              stroke-width="0.8"
-              opacity="0.7"
-            />
-            <ellipse
-              cx="10"
-              cy="10"
-              rx="7"
-              ry="2.5"
-              stroke="#ffffff"
-              stroke-width="0.8"
-              opacity="0.7"
-              transform="rotate(60 10 10)"
-            />
-            <ellipse
-              cx="10"
-              cy="10"
-              rx="7"
-              ry="2.5"
-              stroke="#ffffff"
-              stroke-width="0.8"
-              opacity="0.7"
-              transform="rotate(-60 10 10)"
-            />
-            <circle cx="10" cy="10" r="1.5" fill="#ffffff" opacity="0.9" />
-          </svg>
+          <AtomIcon class="ci-atom" />
           Phone
         </dt>
         <dd>
@@ -89,38 +38,7 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
     location && (
       <div class="contact-item">
         <dt class="ci-dt">
-          <svg class="ci-atom" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <ellipse
-              cx="10"
-              cy="10"
-              rx="7"
-              ry="2.5"
-              stroke="#ffffff"
-              stroke-width="0.8"
-              opacity="0.7"
-            />
-            <ellipse
-              cx="10"
-              cy="10"
-              rx="7"
-              ry="2.5"
-              stroke="#ffffff"
-              stroke-width="0.8"
-              opacity="0.7"
-              transform="rotate(60 10 10)"
-            />
-            <ellipse
-              cx="10"
-              cy="10"
-              rx="7"
-              ry="2.5"
-              stroke="#ffffff"
-              stroke-width="0.8"
-              opacity="0.7"
-              transform="rotate(-60 10 10)"
-            />
-            <circle cx="10" cy="10" r="1.5" fill="#ffffff" opacity="0.9" />
-          </svg>
+          <AtomIcon class="ci-atom" />
           Location
         </dt>
         <dd>{location}</dd>
@@ -146,11 +64,11 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
     display: flex;
     align-items: center;
     gap: 0.35rem;
-    color: #e89050;
+    color: var(--lab-accent);
   }
 
   .contact-item > dd {
-    padding-left: calc(1.35rem + 0.35rem); /* match icon width + gap */
+    padding-left: calc(1.35rem + 0.35rem);
   }
 
   dt {
@@ -162,7 +80,7 @@ const telHref = phone ? `tel:${phone.replace(/[\s()-]/g, "")}` : "";
   }
 
   .ci-dt {
-    color: #e89050;
+    color: var(--lab-accent);
   }
 
   .ci-atom {

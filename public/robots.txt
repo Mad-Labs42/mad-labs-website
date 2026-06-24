@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /about/admin/
+
+Sitemap: https://madlabs.rocks/sitemap-index.xml

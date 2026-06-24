@@ -1,165 +1,174 @@
 ---
 // src/components/ContactTablet.astro
-// CRT-themed intake terminal with 3 states: menu, booking, ticket.
-// Placeholder-safe — replace realEmbedUrl values when Zoho snippets are provided.
+// CRT-themed intake terminal — INLINE Nimbuspop Zoho booking experience.
+//
+// The booking widget is rendered via Nimbuspop's inline embed (NOT an iframe).
+// This avoids the X-Frame-Options: SAMEORIGIN issue that was blocking the
+// iframe approach. The Nimbuspop script dynamically creates a Zoho booking
+// widget inside a div on our page.
+//
+// TIMING: The MAD LABS nameplate + beaker-pattern wallpaper stay for at LEAST
+// 6 seconds so the user never sees Zoho's plain "Mad Labs..." loading state.
+// After 6 seconds, OR when Nimbuspop signals the widget is ready (whichever
+// is later), the nameplate slides up and the beaker pattern fades out
+// TOGETHER. The user only sees our branded loading state, then the form.
+//
+// WHY NIMBUSPOP (not direct Zoho): Nimbuspop wraps Zoho Bookings and handles
+// the embed/X-Frame-Options complexity. The script is at
+// https://bookings.nimbuspop.com/assets/embed.js and exposes
+// window.Bookings.inlineEmbed({url, parent, height}).
+//
+// EMBED URL FORMAT: portal-embed + #/<serviceId> hash fragment. The hash
+// routes Zoho to the specific service. We use the Consult serviceId
+// (4947694000000102023) per the Zoho-Embed-Info.md vault file.
+import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
+
+const FALLBACK_EMBED_URL = import.meta.env.PUBLIC_BOOKING_EMBED_URL || "";
+// Vault file says use Consult serviceId for the inline embed.
+const CONSULT_SERVICE_ID = "4947694000000102023";
+// The Zoho URL that the Nimbuspop embed will load
+const ZOHO_BOOKING_URL = FALLBACK_EMBED_URL
+  ? `${FALLBACK_EMBED_URL}#/${CONSULT_SERVICE_ID}`
+  : `https://madlabs.zohobookings.com/portal-embed#/${CONSULT_SERVICE_ID}`;
+// Nimbuspop's public embed script
+const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
 ---
 
-<div class="contact-tablet" data-tablet-root aria-label="MAD LABS intake terminal">
-  <!-- Tablet bezel with integrated bottom housing -->
+<div
+  class="contact-tablet"
+  data-tablet-root
+  role="region"
+  aria-label="MAD LABS intake terminal"
+  aria-describedby="contact-tablet-instructions"
+  aria-busy="true"
+>
   <div class="tablet-bezel">
-    <!-- Top bezel strip with LED — minimal, like a tablet camera/sensor bar -->
     <div class="tablet-top-bar" aria-hidden="true">
       <span class="tablet-led"></span>
     </div>
 
-    <!-- Screen area -->
-    <div class="tablet-screen" data-tablet-screen>
+    <div class="tablet-screen" data-tablet-screen data-tablet-state="loading">
+      <div class="tablet-desktop-bg" aria-hidden="true"></div>
+
+      <div class="tablet-backlight" aria-hidden="true"></div>
+      <div class="tablet-ips-glow" aria-hidden="true"></div>
+      <div class="tablet-aberration" aria-hidden="true"></div>
+
       <div class="tablet-glare" aria-hidden="true"></div>
       <div class="tablet-tint" aria-hidden="true"></div>
       <div class="tablet-bands" aria-hidden="true"></div>
       <div class="tablet-phosphor-dots" aria-hidden="true"></div>
+      <div class="tablet-pixel-grid" aria-hidden="true"></div>
       <div class="tablet-scanlines" aria-hidden="true"></div>
+      <div class="tablet-grain" aria-hidden="true"></div>
       <div class="tablet-vignette" aria-hidden="true"></div>
       <div class="tablet-bevel-inner" aria-hidden="true"></div>
+      <div class="tablet-scanbeam" aria-hidden="true"></div>
+      <div class="tablet-flicker" aria-hidden="true"></div>
 
-      <!-- Corner brackets — lab equipment detail -->
       <div class="tablet-corner tablet-corner--tl" aria-hidden="true"></div>
       <div class="tablet-corner tablet-corner--tr" aria-hidden="true"></div>
       <div class="tablet-corner tablet-corner--bl" aria-hidden="true"></div>
       <div class="tablet-corner tablet-corner--br" aria-hidden="true"></div>
 
-      <!-- ─── State: Menu ─── -->
-      <div class="tablet-state" data-tablet-state="menu">
-        <div class="tablet-menu-content">
-          <p class="tablet-logo">
-            MAD<span class="tablet-logo-atom" aria-hidden="true"
-              ><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
-                ><ellipse
-                  cx="10"
-                  cy="10"
-                  rx="7"
-                  ry="2.5"
-                  stroke="#ffffff"
-                  stroke-width="0.8"
-                  opacity="0.7"></ellipse><ellipse
-                  cx="10"
-                  cy="10"
-                  rx="7"
-                  ry="2.5"
-                  stroke="#ffffff"
-                  stroke-width="0.8"
-                  opacity="0.7"
-                  transform="rotate(60 10 10)"></ellipse><ellipse
-                  cx="10"
-                  cy="10"
-                  rx="7"
-                  ry="2.5"
-                  stroke="#ffffff"
-                  stroke-width="0.8"
-                  opacity="0.7"
-                  transform="rotate(-60 10 10)"></ellipse><circle
-                  cx="10"
-                  cy="10"
-                  r="1.5"
-                  fill="#ffffff"
-                  opacity="0.9"></circle></svg
-              ></span
-            >LABS
-          </p>
-          <p class="tablet-menu-label">
-            Welcome!<span class="tablet-cursor" aria-hidden="true">_</span>
-          </p>
-          <div class="tablet-menu-buttons">
-            <button
-              class="tablet-btn tablet-btn--primary"
-              data-tablet-action="booking"
-              type="button"
-            >
-              <span class="tablet-btn-icon" aria-hidden="true">[BOOK]</span>
-              <span class="tablet-btn-label">Book a Consultation</span>
-              <span class="tablet-btn-hint"
-                >Diagnostics, service planning, AI help, websites, or questions</span
-              >
-            </button>
-            <button
-              class="tablet-btn tablet-btn--secondary"
-              data-tablet-action="ticket"
-              type="button"
-            >
-              <span class="tablet-btn-icon" aria-hidden="true">[REPAIR]</span>
-              <span class="tablet-btn-label">Submit a Repair Ticket</span>
-              <span class="tablet-btn-hint"
-                >Computer repair, tuneups, malware, network, or existing requests</span
-              >
-            </button>
+      <div class="tablet-iframe-wrapper" data-tablet-iframe-wrapper>
+        <p id="booking-loading-status" class="sr-only" aria-live="polite" aria-atomic="true">
+          Loading the booking calendar. The appointment form will appear here in a moment.
+        </p>
+
+        <!-- Inline booking widget container.
+             The Nimbuspop script will render the Zoho booking widget
+             INSIDE this div. The widget is NOT an iframe (no X-Frame-Options
+             issue). The nameplate sits on top of this container. -->
+        <div id="inline-container" class="bookings-inline-container"></div>
+
+        <!-- Scroll hint that appears briefly when the user enters booking mode. -->
+        <div class="booking-scroll-hint" id="booking-scroll-hint" aria-hidden="true">
+          <span class="scroll-hint-text">Scroll to book</span>
+          <span class="scroll-hint-chevron"></span>
+        </div>
+
+        <!-- Network gremlin error panel: only shown on Zoho failure (12s timeout
+             or onerror). Has phone + email fallbacks. -->
+        <div class="tablet-placeholder" id="booking-placeholder" hidden>
+          <div class="placeholder-panel">
+            <span class="placeholder-icon" aria-hidden="true">[!]</span>
+            <h3 class="placeholder-heading">Gremlins in the Wires</h3>
+            <p class="placeholder-text">
+              Our contact form seems to be under attack from network gremlins. If your devices are
+              also under attack, give us a call — we'll get them sorted.
+            </p>
+            <a href={`tel:${CONTACT_PHONE.replace(/[\s()-]/g, "")}`} class="placeholder-fallback">
+              Call {CONTACT_PHONE} →
+            </a>
+            <a href={`mailto:${CONTACT_EMAIL}`} class="placeholder-fallback">
+              Email {CONTACT_EMAIL} →
+            </a>
           </div>
         </div>
       </div>
 
-      <!-- ─── State: Booking ─── -->
-      <div class="tablet-state" data-tablet-state="booking" hidden>
-        <div class="tablet-iframe-wrapper">
-          <!--
-            When BOOKING_EMBED_URL is set, uncomment:
-            <iframe class="tablet-iframe" src={BOOKING_EMBED_URL} title="Book a consultation with MAD LABS" sandbox="allow-forms allow-scripts allow-same-origin allow-popups" loading="lazy"></iframe>
-          -->
-          <div class="tablet-placeholder">
-            <div class="placeholder-panel">
-              <span class="placeholder-icon" aria-hidden="true">[B]</span>
-              <h3 class="placeholder-heading">Booking Terminal Ready</h3>
-              <p class="placeholder-text">
-                The consultation booking system is configured and waiting for the Zoho Bookings
-                embed URL.
-              </p>
-              <div class="placeholder-status">
-                <span class="status-dot"></span>Awaiting embed URL
-              </div>
-              <a
-                href="mailto:customer-service@madlabs.rocks?subject=Consultation%20Request"
-                class="placeholder-fallback"
-                data-analytics-event="contact_fallback_booking"
-                target="_blank"
-                rel="noopener noreferrer">Book by Email instead →</a
-              >
-            </div>
-          </div>
-        </div>
-        <button class="tablet-back-btn" data-tablet-action="back" type="button">← Back</button>
-      </div>
+      <!-- The MAD LABS oval nameplate — COVERS the booking container while
+           Nimbuspop loads Zoho in the background. 20% bigger than the
+           original wide-pill. Stays for at least 6 seconds to feel
+           intentional, then slides up with a CRT scan line tracer.
 
-      <!-- ─── State: Ticket ─── -->
-      <div class="tablet-state" data-tablet-state="ticket" hidden>
-        <div class="tablet-iframe-wrapper">
-          <!--
-            When TICKET_EMBED_URL is set, uncomment:
-            <iframe class="tablet-iframe" src={TICKET_EMBED_URL} title="Submit a repair ticket to MAD LABS" sandbox="allow-forms allow-scripts allow-same-origin allow-popups" loading="lazy"></iframe>
-          -->
-          <div class="tablet-placeholder">
-            <div class="placeholder-panel">
-              <span class="placeholder-icon" aria-hidden="true">[T]</span>
-              <h3 class="placeholder-heading">Repair Ticket Terminal Ready</h3>
-              <p class="placeholder-text">
-                The repair ticket system is configured and waiting for the Zoho Forms or Zoho Desk
-                embed URL.
-              </p>
-              <div class="placeholder-status">
-                <span class="status-dot"></span>Awaiting embed URL
-              </div>
-              <a
-                href="mailto:customer-service@madlabs.rocks?subject=Repair%20Ticket"
-                class="placeholder-fallback"
-                data-analytics-event="contact_fallback_ticket"
-                target="_blank"
-                rel="noopener noreferrer">Submit by Email instead →</a
-              >
-            </div>
-          </div>
+           IMPORTANT: The nameplate is now a SIBLING of .tablet-iframe-wrapper
+           (not a child). If the nameplate is INSIDE the iframe-wrapper,
+           the iframe-wrapper's z-index (4) becomes the effective z-index
+           for the nameplate in the root context — which is LOWER than
+           the beaker's z-index (5). That means the beaker would render
+           on top of the nameplate. By moving the nameplate to be a
+           sibling at the root level, its z-index 6 properly stacks above
+           the beaker's z-index 5. (CSS stacking context rule: child
+           z-indexes are only compared within the parent's context —
+           see https://web.dev/learn/css/z-index/) -->
+      <div class="nameplate-positioner" data-tablet-nameplate>
+        <div
+          class="booking-nameplate"
+          id="booking-nameplate"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-hidden="true"
+        >
+          <span class="nameplate-mad">MAD</span>
+          <span class="nameplate-atom" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse
+                cx="10"
+                cy="10"
+                rx="7"
+                ry="2.5"
+                stroke="#e89050"
+                stroke-width="1.0"
+                opacity="0.9"></ellipse>
+              <ellipse
+                cx="10"
+                cy="10"
+                rx="7"
+                ry="2.5"
+                stroke="#e89050"
+                stroke-width="1.0"
+                opacity="0.9"
+                transform="rotate(60 10 10)"></ellipse>
+              <ellipse
+                cx="10"
+                cy="10"
+                rx="7"
+                ry="2.5"
+                stroke="#e89050"
+                stroke-width="1.0"
+                opacity="0.9"
+                transform="rotate(-60 10 10)"></ellipse>
+              <circle cx="10" cy="10" r="1.35" fill="#ffffff" opacity="1"></circle>
+            </svg>
+          </span>
+          <span class="nameplate-labs">LABS</span>
+          <span class="nameplate-loader" aria-hidden="true">LOADING…</span>
         </div>
-        <button class="tablet-back-btn" data-tablet-action="back" type="button">← Back</button>
       </div>
     </div>
 
-    <!-- Bottom housing — slim, integrated into bezel -->
     <div class="tablet-bottom-housing" aria-hidden="true">
       <div class="tablet-speaker-grille tablet-speaker-grille--left">
         <span class="tablet-speaker-slot"></span>
@@ -174,104 +183,30 @@
   </div>
 </div>
 
-<script>
-  /* eslint-disable @typescript-eslint/ban-ts-comment */
-  // @ts-nocheck
-  (function () {
-    "use strict";
-    const root = document.querySelector("[data-tablet-root]");
-    if (!root) return;
-    const screen = root.querySelector("[data-tablet-screen]");
-    if (!screen) return;
-    const states = {
-      menu: screen.querySelector('[data-tablet-state="menu"]'),
-      booking: screen.querySelector('[data-tablet-state="booking"]'),
-      ticket: screen.querySelector('[data-tablet-state="ticket"]'),
-    };
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    function trackEvent(name) {
-      // TODO: Wire Clarity project ID — uncomment after setup:
-      // if (typeof clarity !== "undefined") { clarity("event", name); }
-      if (import.meta.env.DEV) {
-        console.log("[Analytics]", name);
-      }
-    }
-    function focusBackButton(target) {
-      const stateEl = states[target];
-      if (stateEl) {
-        const backBtn = stateEl.querySelector(".tablet-back-btn");
-        if (backBtn && !prefersReducedMotion) {
-          window.setTimeout(function () {
-            backBtn.focus();
-          }, 50);
-        }
-      }
-    }
-    function switchState(target) {
-      Object.keys(states).forEach(function (key) {
-        const el = states[key];
-        if (el) el.hidden = true;
-      });
-      const targetEl = states[target];
-      if (targetEl) targetEl.hidden = false;
-      if (target === "booking") {
-        trackEvent("contact_tablet_interact_booking");
-        focusBackButton("booking");
-      } else if (target === "ticket") {
-        trackEvent("contact_tablet_interact_ticket");
-        focusBackButton("ticket");
-      } else if (target === "menu") {
-        trackEvent("contact_back_to_menu");
-      }
-    }
-    function handleAction(action) {
-      if (!action) return;
-      if (action === "booking" || action === "ticket") {
-        switchState(action);
-        window.setTimeout(function () {
-          trackEvent("contact_" + action + "_iframe_load");
-        }, 500);
-      } else if (action === "back") {
-        switchState("menu");
-      }
-    }
-    screen.addEventListener("click", function (e) {
-      const target = e.target.closest("[data-tablet-action], [data-analytics-event]");
-      if (!target) return;
-      const action = target.getAttribute("data-tablet-action");
-      if (action) {
-        handleAction(action);
-      }
-      const analyticsEvent = target.getAttribute("data-analytics-event");
-      if (analyticsEvent) {
-        trackEvent(analyticsEvent);
-      }
-    });
-    root.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
-        let currentKey = null;
-        for (const key in states) {
-          if (states[key] && !states[key].hidden && key !== "menu") {
-            currentKey = key;
-            break;
-          }
-        }
-        if (currentKey) {
-          switchState("menu");
-        }
-      }
-    });
-    switchState("menu");
-    // === TODO: Add Zoho Forms postMessage listener when Zoho URLs are configured ===
-  })();
-</script>
+<script
+  is:inline
+  id="tablet-config"
+  type="application/json"
+  set:html={JSON.stringify({
+    zohoUrl: ZOHO_BOOKING_URL,
+    nimbuspopScriptSrc: NIMBUSPOP_SCRIPT_SRC,
+    contactPhone: CONTACT_PHONE,
+    contactEmail: CONTACT_EMAIL,
+  })}
+/>
+
+<script src="./ContactTablet.client.ts"></script>
 
 <style>
+  /* 3D perspective tilt — real tablets are never perfectly flat-on.
+     preserve-3d removed: it breaks hit-testing inside overflow:hidden children in Chrome.
+     The tilt is applied as a flat texture rotation so all internal events work correctly. */
   .contact-tablet {
     width: 100%;
     max-width: 560px;
     margin: 0 auto;
     font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    transform: perspective(1600px) rotateY(-0.8deg) rotateX(0.4deg);
   }
 
   /* ─── Bezel: tablet-form-factor, not monitor ─── */
@@ -279,684 +214,792 @@
     position: relative;
     border-radius: 14px;
     padding: 8px;
-    background: linear-gradient(180deg, #d7d0ca 0%, #c9c2bc 22%, #c3bcb6 56%, #b6b0ab 100%);
+    background: linear-gradient(180deg, #d8d0e0 0%, #c8c0d0 22%, #bfb8c8 56%, #b8b0c0 100%);
     box-shadow:
-      inset 0 6px 10px rgba(255, 255, 255, 0.2),
-      inset 4px 0 8px rgba(255, 255, 255, 0.08),
-      inset 0 -8px 10px rgba(94, 87, 82, 0.25),
-      inset -6px 0 8px rgba(118, 111, 105, 0.15),
-      0 0 0 1.5px rgba(98, 90, 86, 0.7),
-      0 0 0 4px rgba(47, 43, 41, 0.45),
-      0 12px 36px rgba(0, 0, 0, 0.55);
-  }
-  .tablet-bezel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 15%, transparent 100%),
-      repeating-linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.006) 0 2px,
-        rgba(0, 0, 0, 0.005) 2px 4px
-      ),
-      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.008) 0 1px, transparent 1px 3px);
-    opacity: 0.6;
-  }
-  .tablet-bezel::after {
-    content: "";
-    position: absolute;
-    inset: 4px;
-    border-radius: 11px;
-    pointer-events: none;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      inset 0 -1px 0 rgba(58, 52, 49, 0.2),
-      inset 1px 0 0 rgba(255, 255, 255, 0.1),
-      inset -1px 0 0 rgba(58, 52, 49, 0.1);
-    opacity: 1;
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      inset 1px 0 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(18, 12, 8, 0.55),
+      inset -1px 0 0 rgba(18, 12, 8, 0.28),
+      inset 0 5px 14px rgba(255, 255, 255, 0.18),
+      inset 3px 0 8px rgba(255, 255, 255, 0.07),
+      inset 0 -8px 14px rgba(0, 0, 0, 0.22),
+      inset -5px 0 10px rgba(0, 0, 0, 0.11),
+      0 0 0 1px rgba(72, 65, 61, 0.9),
+      0 0 0 3.5px rgba(36, 30, 28, 0.62),
+      0 5px 14px rgba(0, 0, 0, 0.48),
+      0 14px 38px rgba(0, 0, 0, 0.56),
+      0 30px 68px rgba(0, 0, 0, 0.4);
   }
 
-  /* ─── Top bar: minimal LED indicator ─── */
+  /* ─── Top bar ─── */
   .tablet-top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 18px;
+    z-index: 20;
+    pointer-events: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px 0 2px;
+    background: linear-gradient(180deg, rgba(36, 30, 28, 0.4) 0%, transparent 100%);
   }
   .tablet-led {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
-    background: #00e676;
-    box-shadow:
-      0 0 3px rgba(0, 230, 118, 0.7),
-      0 0 8px rgba(0, 230, 118, 0.3);
-    flex-shrink: 0;
+    background: rgba(140, 80, 240, 0.8);
+    box-shadow: 0 0 4px rgba(140, 80, 240, 0.6);
+    animation: led-pulse 4s ease-in-out infinite;
+  }
+  @keyframes led-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
-  /* ─── Screen: uniform small radius, thin gasket ─── */
+  /* ─── Screen ─── */
   .tablet-screen {
     position: relative;
-    min-height: 310px;
+    height: 560px;
     border-radius: 4px;
-    background: #362866;
     overflow: hidden;
-    box-shadow:
-      inset 0 0 0 2px rgba(93, 72, 132, 0.4),
-      inset 0 0 0 3px rgba(22, 14, 38, 0.75),
-      inset 2px 3px 6px rgba(0, 0, 0, 0.55),
-      inset -1px -1px 4px rgba(0, 0, 0, 0.35),
-      0 0 24px rgba(180, 126, 255, 0.1);
-    animation: screen-power-on 1.5s ease-out forwards;
   }
-  @keyframes screen-power-on {
-    0% {
-      box-shadow:
-        inset 0 0 0 2px rgba(93, 72, 132, 0.4),
-        inset 0 0 0 3px rgba(22, 14, 38, 0.75),
-        inset 2px 3px 6px rgba(0, 0, 0, 0.55),
-        inset -1px -1px 4px rgba(0, 0, 0, 0.35),
-        0 0 60px rgba(180, 126, 255, 0.25);
-    }
-    100% {
-      box-shadow:
-        inset 0 0 0 2px rgba(93, 72, 132, 0.4),
-        inset 0 0 0 3px rgba(22, 14, 38, 0.75),
-        inset 2px 3px 6px rgba(0, 0, 0, 0.55),
-        inset -1px -1px 4px rgba(0, 0, 0, 0.35),
-        0 0 24px rgba(180, 126, 255, 0.1);
-    }
+  /* Purple gradient background — now on a POSITIONED pseudo-element at
+     z-index 5 so it renders ABOVE the Zoho form (z-index 4). The form's
+     opaque white background was covering this gradient on the base
+     .tablet-screen (which is at z-index auto). The ::before at z-index 5
+     sits above the form, below the beaker (z-index 6). The user sees
+     the purple + beaker + nameplate as a unified loading state.
+     When the .is-loaded-tablet class is added (at 6s), this fades
+     together with the beaker and atmosphere effects. */
+  .tablet-screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background:
+      radial-gradient(ellipse at center, #3a2e5c 0%, #2c234a 35%, #1c1638 75%, #0c0820 100%),
+      linear-gradient(180deg, rgba(200, 180, 240, 0.08) 0%, rgba(180, 160, 230, 0.05) 100%);
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+  }
+  /* Fade the purple gradient together with the beaker + atmosphere.
+     Triggered by JS adding .is-loaded-tablet to .tablet-screen. */
+  .tablet-screen.is-loaded-tablet::before {
+    opacity: 0 !important;
   }
 
-  /* ─── Atmosphere layers ─── */
+  /* Desktop wallpaper — tiled mad-science beaker icons. Z-INDEX 1, sits
+     behind all other content layers. */
+  .tablet-desktop-bg {
+    position: absolute;
+    inset: 0;
+    /* Z-index 6: positioned ABOVE the purple gradient (z-index 5)
+       and the iframe-wrapper (z-index 4). The beaker sits on top
+       of the purple gradient, which covers the opaque Zoho form
+       background. The nameplate-positioner (z-index 7) is above
+       everything. */
+    z-index: 6;
+    pointer-events: none;
+    opacity: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M28 24 L28 48 L18 65 L62 65 L52 48 L52 24 Z' fill='none' stroke='rgba(170,145,215,0.45)' stroke-width='1.5' stroke-linejoin='round'/%3E%3Crect x='25' y='18' width='30' height='7' rx='2' fill='none' stroke='rgba(170,145,215,0.45)' stroke-width='1.5'/%3E%3Cpath d='M20 55 L60 55' stroke='rgba(170,145,215,0.32)' stroke-width='1'/%3E%3Ccircle cx='34' cy='60' r='4' fill='none' stroke='rgba(170,145,215,0.38)' stroke-width='1'/%3E%3Ccircle cx='46' cy='58' r='3' fill='none' stroke='rgba(170,145,215,0.35)' stroke-width='1'/%3E%3Ccircle cx='40' cy='54' r='2.5' fill='none' stroke='rgba(170,145,215,0.32)' stroke-width='1'/%3E%3Ccircle cx='37' cy='46' r='2' fill='none' stroke='rgba(170,145,215,0.30)' stroke-width='0.8'/%3E%3Ccircle cx='43' cy='40' r='1.5' fill='none' stroke='rgba(170,145,215,0.27)' stroke-width='0.8'/%3E%3Ccircle cx='38' cy='33' r='1.2' fill='none' stroke='rgba(170,145,215,0.22)' stroke-width='0.8'/%3E%3Ccircle cx='35' cy='15' r='1.5' fill='none' stroke='rgba(170,145,215,0.27)' stroke-width='0.7'/%3E%3Ccircle cx='43' cy='12' r='1' fill='none' stroke='rgba(170,145,215,0.22)' stroke-width='0.7'/%3E%3Ccircle cx='39' cy='8' r='0.8' fill='none' stroke='rgba(170,145,215,0.19)' stroke-width='0.6'/%3E%3Cpath d='M68 6 L62 18 L67 18 L61 30' fill='none' stroke='rgba(170,145,215,0.35)' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10 40 L14 46 L11 46 L15 52' fill='none' stroke='rgba(170,145,215,0.25)' stroke-width='0.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: 40px 40px;
+    background-repeat: repeat;
+    transition: opacity 0.7s ease;
+  }
+  /* Make ALL atmosphere + chrome elements that get the .is-loaded-tablet
+     class fade out with a 0.7s transition. The base rule sets the
+     transition; the loaded rule changes the opacity. Without the base
+     transition, the change would be instant. */
+  .tablet-backlight,
+  .tablet-ips-glow,
+  .tablet-aberration,
+  .tablet-glare,
+  .tablet-tint,
+  .tablet-bands,
+  .tablet-phosphor-dots,
+  .tablet-pixel-grid,
+  .tablet-grain,
+  .tablet-vignette,
+  .tablet-bevel-inner,
+  .tablet-scanbeam,
+  .tablet-flicker {
+    transition: opacity 0.7s ease;
+  }
+
+  /* The beaker + CRT atmosphere effects fade out together with the
+     nameplate. Triggered by the .is-loaded-tablet class which the JS
+     adds to each element directly via .forEach() in revealNameplate().
+
+     opacity:0 hides the element visually. NOTE: .tablet-screen is NOT
+     given opacity:0 here — that would cascade to all children at the
+     rendering level and hide the Zoho iframe. Instead, its ::before
+     pseudo-element (purple gradient) fades via :has() below. */
+  .is-loaded-tablet {
+    opacity: 0 !important;
+  }
+  /* The purple gradient (::before) fades when the beaker gets
+     .is-loaded-tablet. We use :has() to detect this relationship
+     without setting opacity on .tablet-screen itself (which would
+     cascade to all children including the iframe). */
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet)::before {
+    opacity: 0 !important;
+  }
+  /* When the tablet is loaded, the iframe wrapper and its contents
+     (the Zoho form) MUST be visible despite any parent inheriting
+     from is-loaded-tablet rules. */
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet) .tablet-iframe-wrapper,
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet) .bookings-inline-container,
+  .tablet-screen:has(.tablet-desktop-bg.is-loaded-tablet) iframe {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  /* Special case: scanlines stay at 0.3 opacity (intentional CRT look)
+     even after the nameplate + beaker fade. The JS adds .is-loaded-tablet
+     to scanlines too; this rule overrides the generic above. */
+  .tablet-scanlines.is-loaded-tablet {
+    opacity: 0.3 !important;
+  }
+
+  .tablet-backlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background: radial-gradient(
+      ellipse 80% 60% at center,
+      transparent 0%,
+      transparent 50%,
+      rgba(18, 12, 28, 0.4) 100%
+    );
+  }
+  .tablet-ips-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 11;
+    box-shadow:
+      inset 0 0 0 1px rgba(180, 160, 230, 0.18),
+      inset 0 0 18px rgba(180, 160, 230, 0.08);
+  }
+  .tablet-aberration {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 12;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 96%,
+        rgba(255, 0, 80, 0.025) 98%,
+        transparent 100%
+      ),
+      linear-gradient(
+        270deg,
+        transparent 0%,
+        transparent 96%,
+        rgba(0, 255, 200, 0.025) 98%,
+        transparent 100%
+      );
+  }
   .tablet-glare {
     position: absolute;
     inset: 0;
-    z-index: 12;
     pointer-events: none;
+    z-index: 13;
     background: linear-gradient(
-      162deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(255, 255, 255, 0.01) 30%,
-      transparent 55%,
+      135deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.04) 18%,
+      transparent 38%,
       transparent 100%
     );
-    clip-path: polygon(8% 0%, 92% 0%, 88% 100%, 12% 100%);
   }
   .tablet-tint {
     position: absolute;
     inset: 0;
-    z-index: 13;
     pointer-events: none;
-    mix-blend-mode: soft-light;
-    background: linear-gradient(
-      180deg,
-      rgba(60, 0, 80, 0.06) 0%,
-      rgba(20, 0, 60, 0.02) 50%,
-      rgba(60, 0, 80, 0.06) 100%
-    );
+    z-index: 14;
+    background:
+      radial-gradient(ellipse at 30% 90%, rgba(232, 144, 80, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 10%, rgba(140, 80, 240, 0.06) 0%, transparent 50%);
+    mix-blend-mode: screen;
   }
   .tablet-bands {
     position: absolute;
     inset: 0;
-    z-index: 14;
     pointer-events: none;
-    opacity: 0.5;
-    mix-blend-mode: screen;
+    z-index: 15;
     background: repeating-linear-gradient(
       180deg,
       transparent 0,
-      transparent 48px,
-      rgba(255, 255, 255, 0.008) 48px,
-      rgba(255, 255, 255, 0.008) 50px
+      transparent 60px,
+      rgba(140, 80, 240, 0.04) 62px,
+      transparent 64px
     );
+    animation: bands-scroll 8s linear infinite;
+    mix-blend-mode: overlay;
+  }
+  @keyframes bands-scroll {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 64px;
+    }
   }
   .tablet-phosphor-dots {
     position: absolute;
     inset: 0;
-    z-index: 15;
     pointer-events: none;
-    mix-blend-mode: screen;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    z-index: 16;
+    opacity: 0.5;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     background-size: 3px 3px;
+  }
+  .tablet-pixel-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 17;
+    opacity: 0.35;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 1px,
+        rgba(0, 0, 0, 0.04) 1px,
+        rgba(0, 0, 0, 0.04) 2px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 1px,
+        rgba(0, 0, 0, 0.04) 1px,
+        rgba(0, 0, 0, 0.04) 2px
+      );
   }
   .tablet-scanlines {
     position: absolute;
     inset: 0;
-    z-index: 16;
     pointer-events: none;
-    opacity: 0.55;
+    z-index: 18;
+    opacity: 0.5;
     background: repeating-linear-gradient(
       180deg,
       transparent 0,
       transparent 2px,
-      rgba(0, 0, 0, 0.08) 2px,
-      rgba(0, 0, 0, 0.08) 3px
+      rgba(0, 0, 0, 0.12) 2px,
+      rgba(0, 0, 0, 0.12) 3px
     );
+    transition: opacity 0.7s ease;
+  }
+  .tablet-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 19;
+    opacity: 0.22;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68 0.72' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    mix-blend-mode: overlay;
   }
   .tablet-vignette {
     position: absolute;
     inset: 0;
-    z-index: 17;
     pointer-events: none;
-    background:
-      radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at top right, rgba(0, 0, 0, 0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom left, rgba(0, 0, 0, 0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(0, 0, 0, 0.12) 0%, transparent 50%);
+    z-index: 20;
+    background: radial-gradient(
+      ellipse 95% 95% at center,
+      transparent 60%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
   }
   .tablet-bevel-inner {
     position: absolute;
     inset: 0;
-    z-index: 18;
     pointer-events: none;
-    border-radius: 4px;
+    z-index: 21;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      inset 1px 0 0 rgba(255, 255, 255, 0.03),
-      inset -1px 0 0 rgba(255, 255, 255, 0.03),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 1px 0 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+      inset -1px 0 0 rgba(0, 0, 0, 0.18);
   }
-
-  /* ─── Bottom housing: slim, integrated ─── */
-  .tablet-bottom-housing {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 6px 0 2px;
-    position: relative;
-  }
-  .tablet-speaker-grille {
-    display: flex;
-    gap: 3px;
-    opacity: 0.3;
-  }
-  .tablet-speaker-slot {
-    display: block;
-    width: 10px;
-    height: 2px;
-    border-radius: 1px;
-    background: rgba(60, 54, 50, 0.45);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-  }
-  .tablet-power-btn {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #c0b8b0 0%, #9a928c 55%, #7d7671 100%);
-    box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.35),
-      inset 0 1px 2px rgba(255, 255, 255, 0.12),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.15);
-    position: relative;
-    flex-shrink: 0;
-  }
-  .tablet-power-btn::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at 35% 28%,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.01) 60%,
-      transparent 100%
-    );
-    pointer-events: none;
-  }
-
-  /* ─── States ─── */
-  .tablet-state {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    min-height: 310px;
-  }
-  .tablet-menu-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.75rem;
-    padding: 1.5rem 1.25rem 1.25rem;
-  }
-  .tablet-logo {
-    margin: 0 0 0.25rem;
-    font-family: "Monofett", "VT323", monospace;
-    font-size: 2.1rem;
-    color: #e89050;
-    letter-spacing: 0.12em;
-    text-shadow: 0 0 12px rgba(232, 144, 80, 0.5);
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.15em;
-  }
-  .tablet-logo-atom {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 0.8em;
-    height: 0.8em;
-    flex-shrink: 0;
-  }
-  .tablet-logo-atom svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  .tablet-menu-label {
-    margin: 0;
-    color: var(--lab-heading, #e0d0ff);
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 1rem;
-    letter-spacing: 0.08em;
-    text-shadow: 0 0 10px rgba(232, 144, 80, 0.3);
-    animation: welcome-glow 2s ease-out forwards;
-  }
-  @keyframes welcome-glow {
-    0% {
-      text-shadow:
-        0 0 20px rgba(232, 144, 80, 0.6),
-        0 0 40px rgba(232, 144, 80, 0.2);
-    }
-    100% {
-      text-shadow: 0 0 10px rgba(232, 144, 80, 0.3);
-    }
-  }
-  .tablet-menu-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    max-width: 340px;
-  }
-  .tablet-btn {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.2rem;
-    width: 100%;
-    padding: 0.75rem 1rem 0.65rem;
-    border: 1px solid rgba(255, 213, 164, 0.25);
-    border-radius: 8px;
-    background: linear-gradient(180deg, rgba(50, 36, 70, 0.65) 0%, rgba(18, 12, 28, 0.75) 100%);
-    color: var(--crt-text, #f0eaff);
-    cursor: pointer;
-    font-family: inherit;
-    text-align: center;
-    box-shadow:
-      0 3px 0 rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
-    transition:
-      background 0.18s ease,
-      border-color 0.18s ease,
-      box-shadow 0.18s ease,
-      transform 0.1s ease;
-    transform: translateY(0);
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tablet-btn::before {
-    content: "";
+  .tablet-scanbeam {
     position: absolute;
     left: 0;
-    top: 6px;
-    bottom: 6px;
-    width: 3px;
-    border-radius: 2px;
-    background: rgba(232, 144, 80, 0.35);
-    transition: background 0.18s ease;
+    right: 0;
+    height: 50px;
+    pointer-events: none;
+    z-index: 22;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    animation: scanbeam-travel 5s linear infinite;
   }
-  .tablet-btn:hover::before {
-    background: rgba(232, 144, 80, 0.7);
+  @keyframes scanbeam-travel {
+    0% {
+      top: -50px;
+    }
+    100% {
+      top: 560px;
+    }
   }
-  .tablet-btn:focus-visible {
-    outline: 2px solid var(--lab-accent, #e89050);
-    outline-offset: 3px;
+  .tablet-flicker {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 23;
+    background: rgba(255, 255, 255, 0.02);
+    animation: flicker-pulse 0.13s steps(1) infinite;
   }
-  .tablet-btn:hover {
-    background: linear-gradient(180deg, rgba(232, 144, 80, 0.18) 0%, rgba(232, 144, 80, 0.08) 100%);
-    border-color: rgba(255, 213, 164, 0.5);
-    box-shadow:
-      0 3px 0 rgba(0, 0, 0, 0.35),
-      0 0 20px rgba(232, 144, 80, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+  @keyframes flicker-pulse {
+    0%,
+    100% {
+      opacity: 0.95;
+    }
+    50% {
+      opacity: 1;
+    }
   }
-  .tablet-btn:active {
-    transform: translateY(2px);
-    box-shadow:
-      0 1px 0 rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+  /* Corner brackets */
+  .tablet-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(232, 144, 80, 0.5);
+    border-style: solid;
+    border-width: 0;
+    pointer-events: none;
+    z-index: 24;
   }
-  .tablet-btn-icon {
-    display: inline-block;
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.85rem;
-    color: #ffffff;
-    padding: 0.15rem 0.6rem 0.1rem;
-    border: 1px solid #e89050;
-    border-radius: 6px;
-    background: rgba(30, 26, 50, 0.95);
-    text-shadow: 0 0 8px rgba(232, 144, 80, 0.4);
-    letter-spacing: 0.08em;
-    line-height: 1.3;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-      0 2px 4px rgba(0, 0, 0, 0.3);
+  .tablet-corner--tl {
+    top: 12px;
+    left: 12px;
+    border-top-width: 1.5px;
+    border-left-width: 1.5px;
   }
-  .tablet-btn-label {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
+  .tablet-corner--tr {
+    top: 12px;
+    right: 12px;
+    border-top-width: 1.5px;
+    border-right-width: 1.5px;
   }
-  .tablet-btn-hint {
-    font-size: 0.72rem;
-    color: var(--crt-text-muted, #d0bcf4);
-    opacity: 0.75;
-    line-height: 1.25;
+  .tablet-corner--bl {
+    bottom: 12px;
+    left: 12px;
+    border-bottom-width: 1.5px;
+    border-left-width: 1.5px;
   }
+  .tablet-corner--br {
+    bottom: 12px;
+    right: 12px;
+    border-bottom-width: 1.5px;
+    border-right-width: 1.5px;
+  }
+
+  /* ─── Inline booking container (Nimbuspop renders Zoho here) ─── */
   .tablet-iframe-wrapper {
-    flex: 1;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    overflow: hidden;
   }
-  .tablet-iframe {
+
+  /* Nimbuspop injects the Zoho booking widget into this div.
+     The widget is 600px tall by default, fills the container width. */
+  .bookings-inline-container {
     width: 100%;
+    height: 100%;
+    min-height: 400px;
     flex: 1;
-    border: none;
-    min-height: 320px;
+    overflow-y: auto;
+    background: transparent;
   }
-  .tablet-placeholder {
-    flex: 1;
+  /* Nimbuspop adds its own elements (iframe, scripts). Style them. */
+  .bookings-inline-container iframe {
+    width: 100% !important;
+    min-height: 100%;
+    border: none;
+    display: block;
+    background: transparent;
+  }
+
+  /* The MAD LABS nameplate loading cover.
+     WIDE OVAL PILL, 20% BIGGER than the original. Sits dead-center of the
+     iframe area so it covers any Zoho loading text ("Mad Labs...") the
+     user might see. Slides up + scan line tracer when Zoho finishes.
+
+     NAVIGATING CSS STACKING CONTEXTS:
+     The beaker (.tablet-desktop-bg) has opacity:0.6 which creates a
+     stacking context at z-index 5. The nameplate needs to render ABOVE
+     the beaker. If the nameplate itself has a transform (for centering),
+     it ALSO creates a stacking context — and with two sibling contexts,
+     ordering depends on z-index comparison at the parent level.
+
+     To make this reliable, we use a TWO-LAYER approach:
+     Layer 1 — .nameplate-positioner (outer, absolute): handles centering
+     via transform:translate(-50%,-50%) AND carries the z-index 6. This
+     is the atomic unit in the root stacking context.
+     Layer 2 — .booking-nameplate (inner, relative): carries the visual
+     content (gradient, text, border) but NO transform and NO explicit
+     z-index. It's just a child of the positioner's stacking context.
+
+     In the root stacking context:
+       beaker: opacity-based context at z-index 5
+       nameplate-positioner: transform-based context at z-index 6
+       5 < 6 → positioner (and its children) render above the beaker. */
+  .nameplate-positioner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 7;
+    pointer-events: none;
+    transition:
+      top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.7s ease;
+  }
+  .nameplate-positioner.is-loaded,
+  .nameplate-positioner.is-error {
+    /* Slide the positioner up out of view. The inner nameplate
+       follows because it's a child. */
+    top: -200px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .booking-nameplate {
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem 1.25rem;
+    gap: 0.5rem;
+    padding: 1.1rem 3.6rem;
+    background: linear-gradient(
+      160deg,
+      #4a2d7a 0%,
+      #3a2068 35%,
+      #2e1858 55%,
+      #3a2068 75%,
+      #42257a 100%
+    );
+    border-radius: 999px;
+    border: 1.5px solid rgba(232, 144, 80, 0.4);
+    box-shadow:
+      0 0 32px rgba(150, 110, 255, 0.4),
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   }
-  .placeholder-panel {
+
+  /* 20% larger text */
+  .booking-nameplate .nameplate-mad,
+  .booking-nameplate .nameplate-labs {
+    font-family: "Monofett", "VT323", monospace;
+    font-size: clamp(1.8rem, 5vw, 3.1rem);
+    color: #ffffff;
+    letter-spacing: 0.1em;
+    paint-order: stroke fill;
+    -webkit-text-stroke: 1.5px #000;
+    text-shadow:
+      0 0 14px rgba(232, 144, 80, 0.5),
+      0 0 4px rgba(255, 255, 255, 0.4);
+    line-height: 1;
+  }
+
+  .booking-nameplate .nameplate-atom {
+    display: inline-flex;
+    width: 0.85em;
+    height: 0.85em;
+    color: var(--lab-accent);
+    margin: 0 0.1em -0.05em;
+  }
+  .booking-nameplate .nameplate-atom svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* "LOADING..." text — placed BELOW the nameplate so the pill stays its
+     original wide oval shape. Connected to the nameplate visually. */
+  .booking-nameplate .nameplate-loader {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    max-width: 340px;
-    text-align: center;
-  }
-  .placeholder-icon {
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(18, 8, 40, 0.88);
+    border: 1px solid rgba(232, 144, 80, 0.4);
+    border-radius: 999px;
     font-family: "VT323", "Courier New", monospace;
-    font-size: 1.8rem;
-    color: var(--lab-accent, #e89050);
-    text-shadow: 0 0 12px rgba(232, 144, 80, 0.3);
-  }
-  .placeholder-heading {
-    margin: 0;
-    color: var(--lab-heading, #e0d0ff);
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.06em;
-  }
-  .placeholder-text {
-    margin: 0;
-    color: var(--crt-text-muted, #d0bcf4);
-    font-family: "Jersey 25", "VT323", monospace;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    opacity: 0.85;
-  }
-  .placeholder-status {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.25rem;
-    font-family: "VT323", "Courier New", monospace;
-    font-size: 0.72rem;
-    color: var(--lab-accent-dim, rgba(232, 144, 80, 0.6));
+    font-size: 0.78rem;
+    color: rgba(232, 144, 80, 0.95);
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    white-space: nowrap;
+    animation: nameplate-loader-blink 1.2s ease-in-out infinite;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   }
-  .status-dot {
+  @keyframes nameplate-loader-blink {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  .booking-nameplate .nameplate-loader::before {
+    content: "";
+    display: inline-block;
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--lab-accent, #e89050);
-    box-shadow: 0 0 4px rgba(232, 144, 80, 0.5);
+    background: var(--lab-accent);
+    box-shadow: 0 0 5px rgba(232, 144, 80, 0.7);
   }
-  .placeholder-fallback {
-    margin-top: 0.5rem;
-    color: var(--lab-accent, #e89050);
-    font-family: "Jersey 25", "VT323", monospace;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: color 0.2s ease;
+
+  /* CRT scan line tracer that appears as the nameplate is "swept up". */
+  .booking-nameplate::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: -3px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #6ee7ff 30%,
+      #ffffff 50%,
+      #6ee7ff 70%,
+      transparent 100%
+    );
+    box-shadow:
+      0 0 12px #6ee7ff,
+      0 0 4px #ffffff;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
   }
-  .placeholder-fallback:hover {
-    color: #fff;
-    text-decoration: underline;
+  .nameplate-positioner.is-loading .booking-nameplate::after {
+    opacity: 1;
+    animation: nameplate-tracer 1.4s ease-in-out infinite;
   }
-  .placeholder-fallback:focus-visible {
-    outline: 2px solid var(--lab-accent, #e89050);
-    outline-offset: 3px;
-    border-radius: 2px;
+  @keyframes nameplate-tracer {
+    0% {
+      transform: translateY(0);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(120px);
+      opacity: 0.3;
+    }
   }
-  .tablet-back-btn {
-    display: inline-flex;
+  .nameplate-positioner.is-loaded,
+  .nameplate-positioner.is-error {
+    top: -200px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Scroll hint */
+  .booking-scroll-hint {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 2rem 0 0.75rem;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(transparent, rgba(18, 8, 40, 0.7) 50%, rgba(18, 8, 40, 0.85));
+    transition: opacity 0.8s ease;
+  }
+  .booking-scroll-hint.hint-visible {
+    opacity: 1;
+  }
+  .booking-scroll-hint.hint-hidden {
+    opacity: 0;
+  }
+  .scroll-hint-text {
+    font-family: "VT323", "Courier New", monospace;
+    font-size: 1rem;
+    color: var(--lab-text);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .scroll-hint-chevron {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-right: 2px solid var(--lab-accent);
+    border-bottom: 2px solid var(--lab-accent);
+    transform: rotate(45deg);
+    margin-top: 4px;
+    animation: scroll-hint-bounce 1.6s ease-in-out infinite;
+  }
+  @keyframes scroll-hint-bounce {
+    0%,
+    100% {
+      transform: rotate(45deg) translateY(-2px);
+      opacity: 0.6;
+    }
+    50% {
+      transform: rotate(45deg) translateY(4px);
+      opacity: 1;
+    }
+  }
+
+  /* Network gremlin error panel */
+  .tablet-placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
-    margin: 0.75rem;
-    padding: 0.45rem 1rem;
-    border: 1px solid rgba(255, 213, 164, 0.3);
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.25);
-    color: var(--crt-text, #f0eaff);
-    cursor: pointer;
+    background: linear-gradient(180deg, rgba(18, 8, 40, 0.85) 0%, rgba(30, 12, 50, 0.92) 100%);
+    padding: 1.5rem 1.25rem;
+    animation: placeholder-fade-in 0.5s ease;
+  }
+  @keyframes placeholder-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .placeholder-panel {
+    max-width: 360px;
+    text-align: center;
+  }
+  .placeholder-icon {
+    display: inline-block;
     font-family: "VT323", "Courier New", monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 1.8rem;
+    color: var(--lab-accent);
+    margin-bottom: 0.5rem;
+  }
+  .placeholder-heading {
+    font-family: "Jersey 25", "VT323", monospace;
+    font-size: 1.5rem;
+    color: #f0eaff;
+    margin: 0 0 0.75rem;
+  }
+  .placeholder-text {
+    font-family: "Jersey 25", "VT323", monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #b0a8c8;
+    margin: 0 0 1.25rem;
+  }
+  .placeholder-fallback {
+    display: block;
+    margin: 0.5rem auto 0;
+    max-width: 280px;
+    padding: 0.55rem 1rem;
+    color: #f0eaff;
+    background: rgba(45, 20, 85, 0.55);
+    border: 1px solid rgba(180, 140, 255, 0.4);
+    border-radius: 6px;
+    font-family: "Jersey 25", "VT323", monospace;
+    font-size: 0.95rem;
+    text-decoration: none;
     transition:
       background 0.2s ease,
       border-color 0.2s ease;
-    align-self: flex-start;
-    -webkit-tap-highlight-color: transparent;
   }
-  .tablet-back-btn:hover {
-    background: rgba(232, 144, 80, 0.12);
-    border-color: rgba(255, 213, 164, 0.5);
+  .placeholder-fallback:hover {
+    background: rgba(75, 35, 130, 0.7);
+    border-color: rgba(220, 180, 255, 0.6);
   }
-  .tablet-back-btn:focus-visible {
-    outline: 2px solid var(--lab-accent, #e89050);
-    outline-offset: 3px;
+  .placeholder-fallback:focus-visible {
+    outline: 2px solid var(--lab-accent);
+    outline-offset: 2px;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .tablet-btn,
-    .tablet-back-btn,
-    .tablet-power-btn {
-      transition: none;
-      transform: none;
-    }
-    .tablet-btn:hover {
-      transform: none;
-    }
-    .tablet-btn:active {
-      transform: none;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .contact-tablet {
-      max-width: 100%;
-    }
-    .tablet-screen {
-      min-height: 260px;
-    }
-    .tablet-state {
-      min-height: 260px;
-    }
-    .tablet-menu-content {
-      padding: 1.25rem 1rem;
-    }
-    .tablet-btn {
-      padding: 0.75rem 1rem;
-    }
-    .tablet-btn-label {
-      font-size: 0.9rem;
-    }
-    .tablet-placeholder {
-      padding: 1.25rem 1rem;
-    }
-  }
-
-  /* ─── Blinking cursor ─── */
-  .tablet-cursor {
-    display: inline-block;
-    margin-left: 0.15em;
-    color: #e89050;
-    animation: cursor-blink 1s step-end infinite;
-  }
-  @keyframes cursor-blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-
-  /* ─── Corner brackets ─── */
-  .tablet-corner {
+  /* Bottom housing */
+  .tablet-bottom-housing {
     position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
     z-index: 20;
-    width: 14px;
-    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: linear-gradient(180deg, transparent 0%, rgba(36, 30, 28, 0.3) 100%);
     pointer-events: none;
   }
-  .tablet-corner::before,
-  .tablet-corner::after {
-    content: "";
-    position: absolute;
-    background: rgba(232, 144, 80, 0.15);
+  .tablet-speaker-grille {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 30px;
   }
-  .tablet-corner--tl {
-    top: 10px;
-    left: 10px;
+  .tablet-speaker-grille--right {
+    align-items: flex-end;
   }
-  .tablet-corner--tl::before {
-    top: 0;
-    left: 0;
-    width: 14px;
+  .tablet-speaker-slot {
+    width: 22px;
     height: 2px;
+    background: rgba(36, 30, 28, 0.7);
+    border-radius: 1px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
-  .tablet-corner--tl::after {
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 14px;
-  }
-  .tablet-corner--tr {
-    top: 10px;
-    right: 10px;
-  }
-  .tablet-corner--tr::before {
-    top: 0;
-    right: 0;
-    width: 14px;
-    height: 2px;
-  }
-  .tablet-corner--tr::after {
-    top: 0;
-    right: 0;
-    width: 2px;
-    height: 14px;
-  }
-  .tablet-corner--bl {
-    bottom: 10px;
-    left: 10px;
-  }
-  .tablet-corner--bl::before {
-    bottom: 0;
-    left: 0;
-    width: 14px;
-    height: 2px;
-  }
-  .tablet-corner--bl::after {
-    bottom: 0;
-    left: 0;
-    width: 2px;
-    height: 14px;
-  }
-  .tablet-corner--br {
-    bottom: 10px;
-    right: 10px;
-  }
-  .tablet-corner--br::before {
-    bottom: 0;
-    right: 0;
-    width: 14px;
-    height: 2px;
-  }
-  .tablet-corner--br::after {
-    bottom: 0;
-    right: 0;
-    width: 2px;
-    height: 14px;
+  .tablet-power-btn {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #4a3d6a 0%, #2c234a 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 0 4px rgba(0, 0, 0, 0.4);
   }
 
-  /* ─── Scanning line on placeholder ─── */
-  .placeholder-status {
-    position: relative;
-    overflow: hidden;
-  }
-  .placeholder-status::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(232, 144, 80, 0.4), transparent);
-    animation: status-scan 2.5s ease-in-out infinite;
-  }
-  @keyframes status-scan {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .tablet-cursor {
-      animation: none;
+    .nameplate-positioner,
+    .nameplate-positioner .booking-nameplate::after {
+      animation: none !important;
+      transition: none !important;
     }
-    .placeholder-status::after {
-      animation: none;
+    .nameplate-positioner.is-loaded,
+    .nameplate-positioner.is-error {
+      top: -200px !important;
+      opacity: 0 !important;
     }
-    .tablet-menu-label {
-      animation: none;
-    }
-    .tablet-screen {
-      animation: none;
+    .tablet-bands,
+    .tablet-scanbeam,
+    .tablet-flicker,
+    .tablet-led {
+      animation: none !important;
     }
   }
 </style>

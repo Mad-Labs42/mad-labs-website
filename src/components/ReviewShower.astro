@@ -70,6 +70,12 @@ const { reviews = [] } = Astro.props;
     text-transform: uppercase;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .review-shower-track {
+      animation: none;
+    }
+  }
+
   @keyframes reviewScroll {
     0% {
       transform: translateX(0);

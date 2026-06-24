@@ -1,0 +1,79 @@
+---
+// src/components/InteriorNav.astro
+// Primary navigation for interior pages (services, about, contact, etc.)
+// Design per 2026-06-16 plan: top-right, Jersey 25, subtle amber separators, no decorative elements
+---
+
+<nav aria-label="Primary" class="interior-nav">
+  <ul>
+    <li><a href="/services/">Services</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+</nav>
+
+<style>
+  .interior-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .interior-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .interior-nav li {
+    display: flex;
+    align-items: center;
+  }
+
+  .interior-nav a {
+    font-family: "Jersey 25", "VT323", "Courier New", monospace;
+    font-size: clamp(0.88rem, 1.25vw, 1.05rem);
+    color: var(--lab-text);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s ease;
+  }
+
+  .interior-nav a:hover,
+  .interior-nav a:focus-visible {
+    color: var(--lab-accent);
+  }
+
+  /* Subtle amber separator between links */
+  .interior-nav li + li::before {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 1.1em;
+    background: rgba(232, 144, 80, 0.3);
+    margin: 0 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .interior-nav {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .interior-nav ul {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.25rem;
+    }
+
+    .interior-nav li + li::before {
+      display: none;
+    }
+  }
+</style>

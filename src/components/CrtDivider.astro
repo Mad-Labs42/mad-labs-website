@@ -9,58 +9,62 @@
 </div>
 
 <script>
-  const dividerCandidate = document.querySelector("[data-crt-divider]");
+  if (document.documentElement.dataset.homeHero !== "crt") {
+    // Mobile-safe homepage selection: keep CRT divider listeners inert unless CRT is selected.
+  } else {
+    const dividerCandidate = document.querySelector("[data-crt-divider]");
 
-  if (dividerCandidate instanceof HTMLElement) {
-    const divider = dividerCandidate;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timers: number[] = [];
+    if (dividerCandidate instanceof HTMLElement) {
+      const divider = dividerCandidate;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const timers: number[] = [];
 
-    const schedule = (delay: number, callback: () => void): void => {
-      timers.push(window.setTimeout(callback, delay));
-    };
-
-    if (prefersReducedMotion) {
-      divider.classList.add("is-line-built", "is-divider-open");
-    } else {
-      window.addEventListener("madlabs:hero-divider-line-build", () => {
-        resetDivider();
-        divider.classList.add("is-line-building");
-
-        schedule(820, () => {
-          divider.classList.add("is-line-built");
-        });
-      });
-
-      const resetDivider = (): void => {
-        timers.forEach((timerId) => window.clearTimeout(timerId));
-        timers.length = 0;
-
-        divider.classList.remove("is-line-building", "is-line-built", "is-divider-open");
+      const schedule = (delay: number, callback: () => void): void => {
+        timers.push(window.setTimeout(callback, delay));
       };
 
-      window.addEventListener("madlabs:hero-reset", resetDivider);
+      if (prefersReducedMotion) {
+        divider.classList.add("is-line-built", "is-divider-open");
+      } else {
+        window.addEventListener("madlabs:hero-divider-line-build", () => {
+          resetDivider();
+          divider.classList.add("is-line-building");
 
-      window.addEventListener(
-        "madlabs:hero-divider-open",
-        () => {
-          divider.classList.add("is-line-built");
-
-          window.requestAnimationFrame(() => {
-            divider.classList.add("is-divider-open");
+          schedule(820, () => {
+            divider.classList.add("is-line-built");
           });
+        });
+
+        const resetDivider = (): void => {
+          timers.forEach((timerId) => window.clearTimeout(timerId));
+          timers.length = 0;
+
+          divider.classList.remove("is-line-building", "is-line-built", "is-divider-open");
+        };
+
+        window.addEventListener("madlabs:hero-reset", resetDivider);
+
+        window.addEventListener(
+          "madlabs:hero-divider-open",
+          () => {
+            divider.classList.add("is-line-built");
+
+            window.requestAnimationFrame(() => {
+              divider.classList.add("is-divider-open");
+            });
+          },
+          { once: true },
+        );
+      }
+
+      document.addEventListener(
+        "astro:before-swap",
+        () => {
+          timers.forEach((timerId) => window.clearTimeout(timerId));
         },
         { once: true },
       );
     }
-
-    document.addEventListener(
-      "astro:before-swap",
-      () => {
-        timers.forEach((timerId) => window.clearTimeout(timerId));
-      },
-      { once: true },
-    );
   }
 </script>
 

@@ -1,0 +1,2 @@
+# Prettier ignore — exclude auto-generated and tool output files
+.depwire/

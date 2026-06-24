@@ -1,12 +1,24 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CrtHero from "../components/CrtHero.astro";
+import MobileHomeHero from "../components/MobileHomeHero.astro";
 import ReviewShower from "../components/ReviewShower.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 ---
 
-<BaseLayout title="MAD LABS">
-  <CrtHero />
+<BaseLayout
+  title="Mobile Computer Repair, Tech Support & AI Solutions in Cincinnati"
+  description="MAD LABS brings mobile computer repair, tech support, and practical AI solutions to Cincinnati homes and small businesses."
+  jsonLdType="home"
+  homeHeroClassifier={true}
+>
+  <div class="mobile-hero-wrapper">
+    <MobileHomeHero />
+  </div>
+
+  <div class="desktop-crt-wrapper">
+    <CrtHero />
+  </div>
 
   <section class="hero-sub lab-section" aria-labelledby="home-tagline">
     <div class="lab-section-inner-wide">
@@ -43,10 +55,16 @@ import SocialLinks from "../components/SocialLinks.astro";
       <span class="lab-heading-accent">Why Choose Us</span>
       <h2 id="trust-heading">Upfront Pricing. No Upsells. Results That Work for You.</h2>
       <p>
+        MAD LABS provides mobile computer repair and tech support across Cincinnati, bringing
+        practical help to your home, workspace, or small business without the storefront runaround.
         Every job starts with a full diagnostic and a clear explanation of the costs—before we touch
         a thing. We explain the problem, offer solutions, and let you make the call.
       </p>
-      <span class="welcome-line">Modern tools. Old-school reliability. Zero tech tantrums.</span>
+      <span class="welcome-line">
+        <span class="welcome-line__sentence">Modern Tools.</span>
+        <span class="welcome-line__sentence">Old-School Reliability.</span>
+        <span class="welcome-line__sentence">Zero Tech Tantrums.</span>
+      </span>
     </div>
   </section>
 
@@ -68,6 +86,30 @@ import SocialLinks from "../components/SocialLinks.astro";
 </BaseLayout>
 
 <style>
+  .mobile-hero-wrapper {
+    display: block;
+  }
+
+  .desktop-crt-wrapper {
+    display: none;
+  }
+
+  :global(html[data-home-hero="crt"]) .mobile-hero-wrapper {
+    display: none;
+  }
+
+  :global(html[data-home-hero="crt"]) .desktop-crt-wrapper {
+    display: block;
+  }
+
+  :global(html[data-home-hero="mobile"]) .mobile-hero-wrapper {
+    display: block;
+  }
+
+  :global(html[data-home-hero="mobile"]) .desktop-crt-wrapper {
+    display: none;
+  }
+
   .cta-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -133,32 +175,23 @@ import SocialLinks from "../components/SocialLinks.astro";
   }
 
   .welcome-line {
-    display: block;
+    display: inline-grid;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: center;
+    align-items: baseline;
+    column-gap: 0.42em;
+    max-width: 100%;
     margin-top: 1.5rem;
     color: var(--lab-heading);
-    font-size: 1.12em;
+    font-size: clamp(1rem, 2.25vw, 1.35rem);
+    line-height: 1.05;
     text-shadow:
       0 0 8px rgba(216, 180, 254, 0.28),
       0 0 18px rgba(147, 51, 234, 0.18);
   }
 
-  .what-we-do {
-    position: relative;
-  }
-  .what-we-do::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-  .what-we-do > * {
-    position: relative;
-    z-index: 1;
+  .welcome-line__sentence {
+    white-space: nowrap;
   }
 
   .what-we-do h2,
@@ -194,25 +227,6 @@ import SocialLinks from "../components/SocialLinks.astro";
     text-align: center;
   }
 
-  .cta {
-    position: relative;
-  }
-  .cta::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-  .cta > * {
-    position: relative;
-    z-index: 1;
-  }
-
   .cta .lab-button {
     margin-top: 1.25rem;
   }
@@ -241,6 +255,19 @@ import SocialLinks from "../components/SocialLinks.astro";
     .cta p {
       font-size: clamp(1rem, 4vw, 1.18rem);
       letter-spacing: 0.025em;
+    }
+  }
+
+  @media (max-width: 1120px) {
+    .welcome-line {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      row-gap: 0.2rem;
+      column-gap: 0;
+      width: min(100%, 24rem);
+      font-size: clamp(0.86rem, 4.15vw, 1.08rem);
+      line-height: 1.12;
+      letter-spacing: 0.015em;
     }
   }
 

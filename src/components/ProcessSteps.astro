@@ -1,166 +1,418 @@
 ---
-// Process Steps — "How It Works" for Services page.
-// Semantic <ol> with numbered steps for screen-reader clarity.
-export interface Step {
-  number: number;
+type GateIcon = "stethoscope" | "check" | "rocket" | "shield-check";
+
+interface Step {
+  gate: "diagnose" | "approve" | "execute" | "verify";
+  icon: GateIcon;
+  label: string;
   title: string;
   description: string;
 }
 
 const steps: Step[] = [
   {
-    number: 1,
+    gate: "diagnose",
+    icon: "stethoscope",
+    label: "Scan",
     title: "Diagnose",
-    description:
-      "We start by understanding the issue, checking the setup, and identifying the best path forward.",
+    description: "We understand the machine, network, website, or workflow before proposing work.",
   },
   {
-    number: 2,
-    title: "Quote",
-    description:
-      "You get a clear explanation of the work, the cost, and any parts or third-party services involved.",
+    gate: "approve",
+    icon: "check",
+    label: "Confirm",
+    title: "Approve",
+    description: "You get a clear scope, price, and next move before the approval gate opens.",
   },
   {
-    number: 3,
-    title: "Fix / Build / Configure",
-    description:
-      "With your approval, we repair, upgrade, configure, automate, or build the solution.",
+    gate: "execute",
+    icon: "rocket",
+    label: "Work",
+    title: "Execute",
+    description: "We complete the approved repair, build, configuration, or automation.",
   },
   {
-    number: 4,
-    title: "Test & Walk Through",
-    description:
-      "We verify the work and make sure you understand what changed before the job is done.",
+    gate: "verify",
+    icon: "shield-check",
+    label: "Pass",
+    title: "Verify",
+    description: "We test the result, explain what changed, and walk through the handoff.",
   },
 ];
+
+const icons: Record<GateIcon, string> = {
+  stethoscope:
+    '<path d="M6 4v6a6 6 0 0 0 12 0V4"/><path d="M4 4h4"/><path d="M16 4h4"/><path d="M12 16v3a5 5 0 0 0 10 0"/><circle cx="22" cy="22" r="3"/>',
+  check: '<path d="m5 14 5.5 5.5L23 7" stroke-width="1.725"/>',
+  rocket:
+    '<path d="M15 4c4-2 7-2 9-1 1 2 1 5-1 9l-7 7-7-7 6-8Z"/><path d="m9 12-4 1-2 4 7 1"/><path d="m16 19-1 5-4 1-1-7"/><circle cx="19" cy="8" r="2"/><path d="m7 20-3 3"/>',
+  "shield-check":
+    '<path d="M14 2.5 4 6v6c0 6.5 4 11.5 10 13.5 6-2 10-7 10-13.5V6L14 2.5Z"/><path d="m9.5 13.5 3 3 6-6"/>',
+};
 ---
 
-<section class="process">
-  <h2 class="process-heading">How It Works</h2>
-  <ol class="process-list">
-    {
-      steps.map((step) => (
-        <li class="process-step">
-          <div class="step-marker" aria-hidden="true">
-            <span class="step-number">{step.number}</span>
-          </div>
-          <div class="step-content">
-            <h3 class="step-title">{step.title}</h3>
-            <p class="step-desc">{step.description}</p>
-          </div>
-        </li>
-      ))
-    }
-  </ol>
+<section class="process" aria-labelledby="process-heading">
+  <div class="process-header">
+    <span class="process-kicker">Approval Gates</span>
+    <h2 id="process-heading" class="process-heading">How It Works</h2>
+    <p class="process-intro">
+      A clear checkpoint at every stage keeps the scope, cost, work, and handoff understandable.
+    </p>
+  </div>
+
+  <div class="process-chassis">
+    <ol class="process-list">
+      {
+        steps.map((step) => (
+          <li class="process-step" data-gate={step.gate}>
+            <span class="status-light" aria-hidden="true" />
+            <span class="step-icon" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 28 28"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <g set:html={icons[step.icon]} />
+              </svg>
+            </span>
+            <div class="step-content">
+              <span class="step-label">{step.label}</span>
+              <h3 class="step-title">{step.title}</h3>
+              <p class="step-desc">{step.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
 </section>
 
 <style>
   .process {
-    max-width: 700px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
+  .process-header {
+    max-width: 650px;
+    margin: 0 auto 1.75rem;
+    text-align: center;
+  }
+
+  .process-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.5rem;
+    color: var(--lab-accent, #e89050);
+    font-family: "Jersey 25", monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(232, 144, 80, 0.26);
+  }
+
+  .process-kicker::before,
+  .process-kicker::after {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232, 144, 80, 0.72));
+  }
+
+  .process-kicker::after {
+    background: linear-gradient(90deg, rgba(232, 144, 80, 0.72), transparent);
+  }
+
   .process-heading {
+    margin-bottom: 0.65rem;
+    color: var(--lab-heading, #e0d0ff);
     font-family: "Early GameBoy", "Jersey 25", monospace;
     font-size: clamp(1.25rem, 3vw, 1.75rem);
     font-weight: 400;
-    color: var(--lab-heading, #e0d0ff);
-    text-align: center;
-    margin-bottom: 2rem;
+    line-height: 1.25;
   }
 
-  ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  li {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    position: relative;
-  }
-
-  /* ─── Vertical connector trace ─── */
-  .step-marker {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-    width: 36px;
-    padding-top: 2px;
-  }
-
-  .step-number {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--lab-accent, #e89050);
-    color: #000;
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 12px rgba(232, 144, 80, 0.3);
-    font-family: "Jersey 25", monospace;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Trace line connecting steps */
-  .step-marker::after {
-    content: "";
-    position: absolute;
-    top: 38px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: calc(100% + 1rem);
-    background: linear-gradient(
-      to bottom,
-      rgba(232, 144, 80, 0.35),
-      rgba(232, 144, 80, 0.1) 60%,
-      transparent
-    );
-  }
-
-  li:last-child .step-marker::after {
-    display: none;
-  }
-
-  .step-content {
-    flex: 1;
-    padding-bottom: 1.5rem;
-  }
-
-  li:last-child .step-content {
-    padding-bottom: 0;
-  }
-
-  .step-title {
-    font-family: "Jersey 25", monospace;
-    font-size: 1.05rem;
-    font-weight: 400;
-    color: var(--lab-heading, #e0d0ff);
-    margin-bottom: 0.2rem;
-  }
-
-  .step-desc {
-    font-family: "Jersey 25", monospace;
-    font-size: 0.9rem;
-    color: var(--lab-text, #b0b0c8);
+  .process-intro {
+    color: var(--crt-text-muted, #d0bcf4);
+    font-family: "Jersey 25", "VT323", monospace;
+    font-size: clamp(0.95rem, 1.7vw, 1.08rem);
     line-height: 1.5;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .step-marker::after {
+  .process-chassis {
+    position: relative;
+    padding: clamp(0.9rem, 2vw, 1.15rem);
+    overflow: hidden;
+    border: 1px solid rgba(247, 158, 85, 0.3);
+    border-radius: 8px;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 3px,
+        rgba(240, 234, 255, 0.025) 3px,
+        rgba(240, 234, 255, 0.025) 4px
+      ),
+      radial-gradient(ellipse at 50% 25%, rgba(140, 80, 240, 0.14), transparent 58%),
+      linear-gradient(180deg, rgba(74, 61, 106, 0.24), rgba(26, 18, 40, 0.58)),
+      rgba(19, 19, 37, 0.82);
+    box-shadow:
+      0 0 0 1px rgba(240, 234, 255, 0.04),
+      0 12px 32px rgba(0, 0, 0, 0.28),
+      inset 0 0 16px rgba(140, 80, 240, 0.12),
+      inset 0 1px 0 rgba(240, 234, 255, 0.06);
+  }
+
+  .process-chassis::before {
+    content: "";
+    position: absolute;
+    left: 2.5rem;
+    right: 2.5rem;
+    bottom: 1.75rem;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(247, 158, 85, 0.42),
+      rgba(206, 71, 255, 0.2),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  .process-list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process-step {
+    --gate-color: var(--lab-accent, #e89050);
+    --gate-rgb: 232, 144, 80;
+
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 12.75rem;
+    flex-direction: column;
+    padding: 1.1rem;
+    border: 1px solid rgba(247, 158, 85, 0.22);
+    border-radius: 8px;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(var(--gate-rgb), 0.065), transparent 62%),
+      linear-gradient(180deg, rgba(18, 14, 34, 0.97), rgba(9, 7, 20, 0.94));
+    box-shadow:
+      0 0 0 1px rgba(240, 234, 255, 0.035),
+      0 5px 18px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(240, 234, 255, 0.04);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .process-step::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    left: -1px;
+    height: 2px;
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(
+      90deg,
+      rgba(232, 144, 80, 0.08),
+      rgba(var(--gate-rgb), 0.55),
+      rgba(232, 144, 80, 0.08)
+    );
+  }
+
+  .process-step::after {
+    content: "";
+    position: absolute;
+    top: 3rem;
+    left: 100%;
+    width: 1rem;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(var(--gate-rgb), 0.42), rgba(247, 158, 85, 0.18));
+  }
+
+  .process-step:last-child::after {
+    display: none;
+  }
+
+  .process-step[data-gate="approve"] {
+    --gate-color: #51b7ff;
+    --gate-rgb: 81, 183, 255;
+  }
+
+  .process-step[data-gate="execute"] {
+    --gate-color: var(--neon-purple, #ce47ff);
+    --gate-rgb: 206, 71, 255;
+  }
+
+  .process-step[data-gate="verify"] {
+    --gate-color: var(--crt-led-on, #00e676);
+    --gate-rgb: 0, 230, 118;
+  }
+
+  .status-light {
+    position: absolute;
+    top: 0.95rem;
+    right: 0.95rem;
+    width: 0.48rem;
+    height: 0.48rem;
+    border: 1px solid rgba(var(--gate-rgb), 0.85);
+    border-radius: 50%;
+    background: rgba(var(--gate-rgb), 0.72);
+    box-shadow: 0 0 9px rgba(var(--gate-rgb), 0.62);
+  }
+
+  .step-icon {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+    border: 1px solid rgba(var(--gate-rgb), 0.28);
+    border-radius: 50%;
+    background: rgba(var(--gate-rgb), 0.075);
+    color: var(--gate-color);
+    box-shadow: 0 0 14px rgba(var(--gate-rgb), 0.08);
+  }
+
+  .step-icon svg {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke: currentColor;
+  }
+
+  .step-content {
+    min-width: 0;
+  }
+
+  .step-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: rgba(232, 144, 80, 0.7);
+    font-family: "Jersey 25", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .step-title {
+    margin-bottom: 0.45rem;
+    color: var(--lab-heading, #e0d0ff);
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+  }
+
+  .step-desc {
+    color: var(--lab-text, #b0a8c8);
+    font-family: "Jersey 25", "VT323", monospace;
+    font-size: clamp(0.86rem, 1.05vw, 0.94rem);
+    line-height: 1.45;
+  }
+
+  @media (hover: hover) {
+    .process-step:hover {
+      border-color: rgba(var(--gate-rgb), 0.38);
+      box-shadow:
+        0 0 0 1px rgba(240, 234, 255, 0.045),
+        0 7px 22px rgba(0, 0, 0, 0.34),
+        0 0 18px rgba(var(--gate-rgb), 0.055),
+        inset 0 1px 0 rgba(240, 234, 255, 0.05);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .process-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .process-chassis::before,
+    .process-step::after {
       display: none;
+    }
+
+    .process-step {
+      min-height: 11.75rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .process-header {
+      margin-bottom: 1.35rem;
+      text-align: left;
+    }
+
+    .process-kicker::before {
+      display: none;
+    }
+
+    .process-list {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .process-chassis {
+      padding: 0.75rem;
+    }
+
+    .process-step {
+      display: grid;
+      min-height: auto;
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+      gap: 0 0.85rem;
+      padding: 0.95rem;
+    }
+
+    .step-icon {
+      grid-row: 1;
+      margin: 0;
+    }
+
+    .step-content {
+      grid-column: 2;
+    }
+
+    .status-light {
+      top: 0.85rem;
+      right: 0.85rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .process-step {
+      transition: none;
+    }
+
+    .process-step:hover {
+      box-shadow:
+        0 0 0 1px rgba(240, 234, 255, 0.035),
+        0 5px 18px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(240, 234, 255, 0.04);
+    }
+
+    .status-light,
+    .step-icon {
+      box-shadow: none;
     }
   }
 </style>

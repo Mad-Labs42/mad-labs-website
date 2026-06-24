@@ -1,0 +1,74 @@
+---
+/**
+ * MadLabsAtomIcon
+ * Clean atomic symbol for MAD LABS navigation (updated per feedback)
+ * - No outer ring (removed to prevent overlap with orbits)
+ * - Exactly 3 smooth forward-facing orbit ellipses
+ * - Solid white nucleus (10% smaller)
+ * - Soft purple glow
+ */
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+  width="1.33em"
+  height="1.33em"
+  aria-hidden="true"
+  focusable="false"
+  class="madlabs-atom-icon"
+>
+  <defs>
+    <!-- Soft purple glow filter -->
+    <filter id="atom-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="coloredBlur"></feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="coloredBlur"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Three smooth forward-facing orbit ellipses -->
+  <ellipse
+    cx="50"
+    cy="50"
+    rx="38"
+    ry="14"
+    fill="none"
+    stroke="#c084fc"
+    stroke-width="4"
+    filter="url(#atom-glow)"></ellipse>
+  <ellipse
+    cx="50"
+    cy="50"
+    rx="38"
+    ry="14"
+    fill="none"
+    stroke="#c084fc"
+    stroke-width="4"
+    transform="rotate(60 50 50)"
+    filter="url(#atom-glow)"></ellipse>
+  <ellipse
+    cx="50"
+    cy="50"
+    rx="38"
+    ry="14"
+    fill="none"
+    stroke="#c084fc"
+    stroke-width="4"
+    transform="rotate(-60 50 50)"
+    filter="url(#atom-glow)"></ellipse>
+
+  <!-- Solid white nucleus (10% smaller) -->
+  <circle cx="50" cy="50" r="8.1" fill="#ffffff"></circle>
+</svg>
+
+<style>
+  .madlabs-atom-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.6em;
+    flex-shrink: 0;
+  }
+</style>

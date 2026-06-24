@@ -3,16 +3,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ServiceCard from "../components/ServiceCard.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
 import { services } from "../data/services";
+import MadLabsIcon from "../components/MadLabsIcon.astro";
 ---
 
-<BaseLayout title="Services">
+<BaseLayout
+  title="Cincinnati IT Services, Computer Repair & AI"
+  description="Mobile computer repair, websites, Wi-Fi and network setup, security, custom PCs, and practical AI automation for Cincinnati homes and small businesses. Free 20-minute triage for new customers."
+  jsonLdType="services"
+>
   <section class="page-header lab-section">
     <div class="lab-section-inner-wide">
       <span class="lab-heading-accent">What We Do</span>
       <h1 class="page-heading">Services</h1>
       <p class="header-intro">
-        Every repair starts with a full diagnostic. We find the real problem, explain it clearly,
-        and only proceed with your approval.
+        Every project starts with a clear diagnostic: what is broken, what is possible, what it
+        costs, and whether MAD LABS is the right fit. Repairs, networks, websites, hardware,
+        security, and AI all get scoped before work begins.
       </p>
     </div>
   </section>
@@ -28,94 +34,47 @@ import { services } from "../data/services";
               bullets={s.bullets}
               icon={s.icon}
               pricing={s.pricing}
+              category={s.category}
             />
           ))
         }
       </div>
 
-      <!-- Trust strip -->
-      <div class="trust-strip" aria-label="Our service promise">
-        <p class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3.5l2 1.5"></path></svg
-            >
-          </span>
+      <!-- Trust strip — semantic list per WCAG 1.3.1 -->
+      <ul class="trust-strip" aria-label="Our service promise">
+        <li class="trust-item">
+          <MadLabsIcon name="diagnostic" />
           Full diagnostic first
-        </p>
-        <p class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"><path d="M4 8.5 6.5 11 12 5.5"></path></svg
-            >
-          </span>
+        </li>
+        <li class="trust-item">
+          <MadLabsIcon name="quote" />
           Clear quote before work
-        </p>
-        <p class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"></line></svg
-            >
-          </span>
+        </li>
+        <li class="trust-item">
+          <MadLabsIcon name="no-upsell" />
           No upsells — just what you need
-        </p>
-        <p class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="#e89050"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><path d="M8 2.5 2 5.5v3c0 4.2 2.5 7.5 6 8.5 3.5-1 6-4.3 6-8.5v-3L8 2.5Z"></path><path
-                d="m6 8 1.5 1.5 3-3"></path></svg
-            >
-          </span>
+        </li>
+        <li class="trust-item">
+          <MadLabsIcon name="discount" />
           Senior &amp; veteran discount
-        </p>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 
   <section class="process-section lab-section">
-    <div class="lab-section-inner">
+    <div class="lab-section-inner-wide">
       <ProcessSteps />
     </div>
   </section>
 
   <section class="cta-section lab-section-alt">
-    <div class="lab-section-inner" style="text-align:center;">
+    <div class="lab-section-inner cta-inner">
       <span class="lab-heading-accent">Next Steps</span>
-      <h2
-        style="color:var(--lab-heading); font-size:clamp(1.25rem,3vw,1.75rem); margin-bottom:0.5rem; font-family:'Early GameBoy','Jersey 25',monospace;"
-      >
-        Not sure what you need?
-      </h2>
-      <p
-        style="color:var(--lab-text-muted); max-width:500px; margin:0 auto 1.5rem; font-family:'Jersey 25',monospace;"
-      >
-        Describe your issue and we'll recommend the right service — no commitment, no pressure.
+      <h2 class="cta-heading">Not sure what you need?</h2>
+      <p class="cta-copy">
+        Describe the problem or project and we will recommend the right next step. No commitment, no
+        pressure, no mystery invoice.
       </p>
       <a href="/contact/" class="lab-button">Contact us for a diagnostic quote</a>
     </div>
@@ -147,19 +106,6 @@ import { services } from "../data/services";
     overflow: hidden;
   }
 
-  .services-grid-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      /* Faint grid lines — diagnostic equipment feel */
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-
   .services-grid-section::after {
     content: "";
     position: absolute;
@@ -181,45 +127,66 @@ import { services } from "../data/services";
     z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   @media (min-width: 640px) {
     .services-grid {
       grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
   }
 
   @media (min-width: 1024px) {
     .services-grid {
       grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 2.5rem;
     }
   }
 
   .cta-section {
     position: relative;
   }
-  .cta-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
+
   .cta-section > * {
     position: relative;
     z-index: 1;
   }
+
+  .cta-inner {
+    text-align: center;
+  }
+
+  .cta-heading {
+    margin-bottom: 0.5rem;
+    color: var(--lab-heading);
+    font-family: "Early GameBoy", "Jersey 25", monospace;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .cta-copy {
+    max-width: 560px;
+    margin: 0 auto 1.5rem;
+    color: var(--lab-text-muted);
+    font-family: "Jersey 25", monospace;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
   .trust-strip {
+    --mad-labs-icon-color: var(--lab-accent);
+    --mad-labs-icon-size: 1rem;
+
     position: relative;
-    z-index: 1;
+    z-index: var(--z-base);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     gap: 0.75rem 1.5rem;
     margin-top: 2rem;
     padding: 1.25rem 1rem;
@@ -233,41 +200,16 @@ import { services } from "../data/services";
       border-color 0.25s ease,
       box-shadow 0.25s ease;
   }
-  .trust-strip:hover {
-    border-color: rgba(232, 144, 80, 0.3);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 6px 24px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(232, 144, 80, 0.04);
-  }
 
   .trust-item {
     font-family: "Jersey 25", monospace;
     font-size: 0.9rem;
-    color: #d0bcf4;
+    color: var(--lab-text);
     display: flex;
     align-items: center;
     gap: 0.35rem;
     margin: 0;
     line-height: 1.4;
-  }
-
-  .trust-icon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e89050;
-  }
-
-  .trust-icon :global(svg) {
-    width: 100%;
-    height: 100%;
-    display: block;
-    stroke: #e89050;
-    stroke-width: 1.5;
   }
 
   @media (max-width: 480px) {

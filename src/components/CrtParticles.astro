@@ -1,0 +1,86 @@
+---
+// CrtParticles — ambient floating dust/phosphor particles inside the CRT screen.
+//
+// Purely decorative (aria-hidden). Each particle drifts on its own vector and
+// duration via CSS custom properties, so the set below is data — tweak or add
+// particles here without touching CSS. Values are byte-exact from the original
+// CrtHero implementation.
+
+interface Particle {
+  x: string; // initial left position
+  y: string; // initial top position
+  driftX: string; // horizontal drift distance
+  driftY: string; // vertical drift distance
+  duration: string; // full drift cycle duration
+  delay: string; // stagger offset
+}
+
+const particles: Particle[] = [
+  { x: "12%", y: "22%", driftX: "18px", driftY: "-14px", duration: "12s", delay: "0s" },
+  { x: "28%", y: "65%", driftX: "-22px", driftY: "10px", duration: "15s", delay: "1.8s" },
+  { x: "45%", y: "38%", driftX: "14px", driftY: "-20px", duration: "18s", delay: "3.2s" },
+  { x: "62%", y: "72%", driftX: "-16px", driftY: "-8px", duration: "13s", delay: "5s" },
+  { x: "78%", y: "18%", driftX: "20px", driftY: "16px", duration: "16s", delay: "0.6s" },
+  { x: "88%", y: "52%", driftX: "-10px", driftY: "22px", duration: "20s", delay: "7s" },
+  { x: "8%", y: "80%", driftX: "24px", driftY: "-6px", duration: "14s", delay: "2.4s" },
+  { x: "55%", y: "8%", driftX: "-18px", driftY: "-16px", duration: "17s", delay: "4.6s" },
+];
+---
+
+<div class="crt-particles" aria-hidden="true">
+  {
+    particles.map((p) => (
+      <span
+        class="crt-particle"
+        style={`--drift-x: ${p.driftX}; --drift-y: ${p.driftY}; --drift-dur: ${p.duration}; --drift-delay: ${p.delay}; left: ${p.x}; top: ${p.y};`}
+      />
+    ))
+  }
+</div>
+
+<style>
+  /* ─── Ambient Particles ─────────────────────────────────── */
+  .crt-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  .crt-particle {
+    position: absolute;
+    width: 1.6px;
+    height: 1.6px;
+    border-radius: 50%;
+    background: rgba(232, 144, 80, 0.45);
+    box-shadow: 0 0 2px rgba(232, 144, 80, 0.22);
+    animation: crtParticleDrift var(--drift-dur, 14s) var(--drift-delay, 0s) ease-in-out infinite;
+  }
+
+  @keyframes crtParticleDrift {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+
+    15% {
+      opacity: 0.55;
+    }
+
+    50% {
+      transform: translate(var(--drift-x, 10px), var(--drift-y, -10px));
+      opacity: 0.35;
+    }
+
+    85% {
+      opacity: 0.5;
+    }
+
+    100% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+  }
+</style>

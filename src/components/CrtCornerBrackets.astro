@@ -1,0 +1,70 @@
+---
+// CrtCornerBrackets — decorative HUD-style corner brackets on the CRT screen.
+//
+// Purely decorative (aria-hidden), pointer-transparent. State coupling: parent
+// CrtHero's state machine sets is-major-glitching / is-restoring / is-stable on
+// [data-crt-hero]; the :global() rules below react to those ancestor classes.
+//
+// NOTE: Bottom brackets removed per user request (2026-06-17). Top brackets remain.
+---
+
+<div class="crt-corner crt-corner--tl" aria-hidden="true"></div>
+<div class="crt-corner crt-corner--tr" aria-hidden="true"></div>
+<!-- Bottom brackets removed per user request -->
+
+<style>
+  .crt-corner {
+    position: absolute;
+    z-index: 30;
+    width: 19px;
+    height: 19px;
+    pointer-events: none;
+    border-color: #9333ea;
+    border-style: solid;
+    opacity: 0.6;
+    transition:
+      opacity 0.38s ease,
+      transform 0.38s ease;
+  }
+
+  :global(.is-major-glitching) .crt-corner,
+  :global(.is-restoring) .crt-corner {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  /* Corner brackets remain subtly visible in stable state */
+  :global(.is-stable) .crt-corner {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+
+  .crt-corner--tl {
+    top: 16px;
+    left: 16px;
+    border-width: 2px 0 0 2px;
+  }
+
+  .crt-corner--tr {
+    top: 16px;
+    right: 16px;
+    border-width: 2px 2px 0 0;
+  }
+
+  @media (max-width: 640px) {
+    .crt-corner {
+      width: 14px;
+      height: 14px;
+    }
+
+    .crt-corner--tl {
+      top: 8px;
+      left: 8px;
+    }
+
+    .crt-corner--tr {
+      top: 8px;
+      right: 8px;
+    }
+  }
+</style>

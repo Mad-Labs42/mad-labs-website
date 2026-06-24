@@ -2,10 +2,14 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactInfo from "../components/ContactInfo.astro";
 import ContactTablet from "../components/ContactTablet.astro";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
 ---
 
-<BaseLayout title="Contact">
-  <!-- ─── Hero: intro + instruction (2-col on desktop) ─── -->
+<BaseLayout
+  title="Book Computer Repair in Cincinnati"
+  description={`Book a free 20-minute computer triage or 60-minute consultation with MAD LABS in Cincinnati. Same-day responses. Call ${CONTACT_PHONE} or book online.`}
+  jsonLdType="contact"
+>
   <section class="lab-section">
     <div class="lab-section-inner-wide">
       <div class="contact-hero-grid">
@@ -19,14 +23,11 @@ import ContactTablet from "../components/ContactTablet.astro";
         </div>
         <div class="contact-hero-right">
           <div class="contact-tablet-instruction">
-            <span class="instruction-orange">You may use this tablet to contact us online.</span>
+            <span class="instruction-orange">Book a time below.</span>
+            <span>Twenty-minute call. No charge, no commitment.</span>
             <span
-              >— Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help,
-              websites, or questions about what you need.</span
-            >
-            <span
-              >— Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup,
-              network issues, or existing support requests.</span
+              >For complex jobs (repairs, tuneups, malware cleanup, networks, custom builds), we'll
+              quote and schedule after the call.</span
             >
           </div>
         </div>
@@ -34,12 +35,13 @@ import ContactTablet from "../components/ContactTablet.astro";
     </div>
   </section>
 
-  <!-- ─── Contact Info + Tablet (side-by-side on desktop) ─── -->
   <section class="lab-section-alt contact-layout-section">
     <div class="lab-section-inner-wide">
+      <a href="#contact-info-col" class="skip-to-info sr-only-focusable"
+        >Skip to contact information</a
+      >
       <div class="contact-layout">
-        <!-- Left: contact details, service area, hours -->
-        <div class="contact-info-col">
+        <div id="contact-info-col" class="contact-info-col">
           <span class="lab-heading-accent contact-accent-wrap">
             <svg
               class="contact-accent-icon"
@@ -51,35 +53,34 @@ import ContactTablet from "../components/ContactTablet.astro";
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Monitor outline + base line -->
               <path
                 d="M37 2.7H4.2C2.4 2.7 1 4.2 1 6v41c0 1.8 1.4 3.2 3.2 3.2h55.6c1.8 0 3.2-1.4 3.2-3.2V6c0-1.8-1.4-3.2-3.2-3.2L37 2.7h0zM5 40.5h58"
               ></path>
-              <!-- CPU center -->
+
               <circle cx="33.7" cy="19.9" r="4.1"></circle>
-              <!-- CPU pin down -->
+
               <path d="m33.7 24-2 5.3"></path>
-              <!-- Lower node -->
+
               <circle cx="30.7" cy="31.7" r="2.6"></circle>
-              <!-- CPU pin left -->
+
               <path d="M29.6 19.9h-5.1"></path>
-              <!-- Left node -->
+
               <circle cx="21.9" cy="19.9" r="2.6"></circle>
-              <!-- CPU pin up-right -->
+
               <path d="m36.7 17 3.5-3.6"></path>
-              <!-- Top-right node -->
+
               <circle cx="42.1" cy="11.5" r="2.6" transform="rotate(-45.001 42.086 11.513)"
               ></circle>
-              <!-- CPU pin down-right -->
+
               <path d="m36.7 22.8 3.5 3.6"></path>
-              <!-- Bottom-right node -->
+
               <circle cx="42.1" cy="28.3" r="2.6" transform="rotate(-45.001 42.123 28.297)"
               ></circle>
-              <!-- CPU pin up-left -->
+
               <path d="m30.8 17-3.6-3.6"></path>
-              <!-- Top-left node -->
+
               <circle cx="25.4" cy="11.5" r="2.6" transform="rotate(-45.001 25.373 11.48)"></circle>
-              <!-- Stand + base -->
+
               <path
                 d="m42.3 57.1-.9-.6c-.2-.2-.5-.4-.6-.7H23.2c-.2.3-.4.5-.6.7l-.9.6c-.6.4-.9 1.1-.9 1.9v.9c0 .8.6 1.4 1.4 1.4h19.7c.8 0 1.4-.6 1.4-1.4V59c0-.8-.4-1.5-1-1.9zM40.4 55l-2-4.8H25.5l-2 4.8c-.1.3-.2.6-.4.8h17.6c0-.3-.2-.5-.3-.8zM29.4 45.4h5.2"
               ></path>
@@ -95,8 +96,8 @@ import ContactTablet from "../components/ContactTablet.astro";
           <div style="display:flex; flex-direction:column; gap:0.75rem;">
             <div class="contact-info-card">
               <ContactInfo
-                email="customer-service@madlabs.rocks"
-                phone="(513) 306-5331"
+                email={CONTACT_EMAIL}
+                phone={CONTACT_PHONE}
                 location="Greater Cincinnati Area"
               />
             </div>
@@ -114,7 +115,7 @@ import ContactTablet from "../components/ContactTablet.astro";
             <div>
               <h2
                 class="lab-heading"
-                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:#e89050;"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:var(--lab-accent);"
               >
                 Service Area
               </h2>
@@ -130,28 +131,22 @@ import ContactTablet from "../components/ContactTablet.astro";
             <div>
               <h2
                 class="lab-heading"
-                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:#e89050;"
+                style="font-size:clamp(1rem,2vw,1.3rem); margin-bottom:0.75rem; color:var(--lab-accent);"
               >
                 Hours
               </h2>
               <dl style="margin:0; padding:0;">
-                <div
-                  style="display:flex; justify-content:space-between; padding:0.35rem 0; border-bottom:1.15px solid rgba(232, 144, 80, 0.18); font-size:0.9rem;"
-                >
-                  <dt style="color:var(--lab-heading); font-weight:500;">Monday – Friday</dt>
-                  <dd style="color:var(--lab-text-muted); margin:0;">9:00 AM – 6:00 PM</dd>
+                <div class="hours-row">
+                  <dt class="hours-day">Monday – Friday</dt>
+                  <dd class="hours-time">9:00 AM – 6:00 PM</dd>
                 </div>
-                <div
-                  style="display:flex; justify-content:space-between; padding:0.35rem 0; border-bottom:1.15px solid rgba(232, 144, 80, 0.18); font-size:0.9rem;"
-                >
-                  <dt style="color:var(--lab-heading); font-weight:500;">Saturday</dt>
-                  <dd style="color:var(--lab-text-muted); margin:0;">10:00 AM – 4:00 PM</dd>
+                <div class="hours-row">
+                  <dt class="hours-day">Saturday</dt>
+                  <dd class="hours-time">10:00 AM – 4:00 PM</dd>
                 </div>
-                <div
-                  style="display:flex; justify-content:space-between; padding:0.35rem 0; font-size:0.9rem;"
-                >
-                  <dt style="color:var(--lab-heading); font-weight:500;">Sunday</dt>
-                  <dd style="color:var(--lab-text-muted); margin:0;">Closed</dd>
+                <div class="hours-row">
+                  <dt class="hours-day">Sunday</dt>
+                  <dd class="hours-time">Closed</dd>
                 </div>
               </dl>
               <p class="contact-dropoff-text">
@@ -161,22 +156,16 @@ import ContactTablet from "../components/ContactTablet.astro";
           </div>
         </div>
 
-        <!-- Right: tablet terminal -->
         <div class="contact-tablet-col">
-          <!-- Instruction text — visible on all widths, positioned above tablet -->
-          <div class="contact-tablet-instruction">
-            <span class="instruction-orange">You may use this tablet to contact us online.</span>
+          <div id="contact-tablet-instructions" class="contact-tablet-instruction">
+            <span class="instruction-orange">Book a time below.</span>
+            <span>Twenty-minute call. No charge, no commitment.</span>
             <span
-              >— Click <strong>Book a Consultation</strong> for diagnostics, service planning, AI help,
-              websites, or questions about what you need.</span
-            >
-            <span
-              >— Click <strong>Submit a Repair Ticket</strong> for computer repair, tuneups, malware cleanup,
-              network issues, or existing support requests.</span
+              >For complex jobs (repairs, tuneups, malware cleanup, networks, custom builds), we'll
+              quote and schedule after the call.</span
             >
           </div>
 
-          <!-- Mobile scroll cue -->
           <p class="contact-scroll-cue" aria-hidden="true">
             <span class="scroll-chevron"></span>
             Scroll down to book a consultation or submit a repair ticket.
@@ -245,17 +234,6 @@ import ContactTablet from "../components/ContactTablet.astro";
   /* ─── Contact Us + Tablet section ─── */
   .contact-layout-section {
     position: relative;
-  }
-  .contact-layout-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      linear-gradient(rgba(232, 144, 80, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232, 144, 80, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
   }
   .contact-layout-section > * {
     position: relative;
@@ -423,18 +401,10 @@ import ContactTablet from "../components/ContactTablet.astro";
     z-index: -1;
   }
 
-  .contact-response-card:hover::after {
+  .contact-response-card:hover::after,
+  .contact-response-card:focus-visible::after {
     opacity: 1;
-    animation: response-shimmer 2s ease-in-out infinite;
-  }
-
-  @keyframes response-shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
+    animation: shimmer 2s ease-in-out infinite;
   }
 
   /* ─── Tablet column ─── */
@@ -534,5 +504,54 @@ import ContactTablet from "../components/ContactTablet.astro";
     .scroll-chevron {
       animation: none;
     }
+  }
+
+  /* ─── Hours and service area inline style cleanup ─── */
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    border-bottom: 1.15px solid rgba(232, 144, 80, 0.18);
+    font-size: 0.9rem;
+  }
+  .hours-row:last-of-type {
+    border-bottom: none;
+  }
+  .hours-day {
+    color: var(--lab-heading);
+    font-weight: 500;
+  }
+  .hours-time {
+    color: var(--lab-text-muted);
+    margin: 0;
+  }
+</style>
+
+<style></style>
+
+<style>
+  .skip-to-info.sr-only-focusable {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .skip-to-info.sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    background: var(--lab-card);
+    color: var(--lab-accent);
+    border: 1px solid var(--divider-orange);
+    border-radius: 4px;
+    font-family: "Jersey 25", monospace;
+    font-size: 0.85rem;
+    z-index: 100;
+    margin-bottom: 1rem;
+    display: inline-block;
   }
 </style>
