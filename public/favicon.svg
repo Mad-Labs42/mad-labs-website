@@ -1,4 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="4" fill="#000"/>
-  <text x="16" y="22" font-family="monospace" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">M</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <filter id="thin-glow" x="-24%" y="-24%" width="148%" height="148%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="192" height="192" rx="34" fill="#5b2dbe"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#thin-glow)">
+    <ellipse cx="96" cy="96" rx="65" ry="24" stroke="#4de7ff" stroke-width="5"/>
+    <ellipse cx="96" cy="96" rx="65" ry="24" stroke="#ce47ff" stroke-width="5" transform="rotate(60 96 96)"/>
+    <ellipse cx="96" cy="96" rx="65" ry="24" stroke="#00f07a" stroke-width="5" transform="rotate(-60 96 96)"/>
+  </g>
+  <circle cx="96" cy="96" r="8" fill="#ffffff"/>
 </svg>

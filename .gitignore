@@ -38,15 +38,19 @@ public/build/
 .code-scalpel/
 .codex/
 .hermes/
+.hermes.md
 .mcp.json
 .playwright-mcp/
 .pytest_cache/
+.superpowers/
 Cron-Jobs/
 logs_llm/
 run/
 artifacts/
 .codegraph/
 .depwire/
+src/.codegraph/
+src/.depwire/
 depwire-output.json
 vectors.db
 vectors.db-shm
@@ -58,6 +62,7 @@ D:\Workspaces\mad-labs-website\undefined:\Users\undefined\AppData\Local\lighthou
 # Logs
 *.log
 npm-debug.log*
+public/favicon-white.svg
 
 # OS
 Thumbs.db

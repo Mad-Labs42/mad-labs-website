@@ -1,7 +1,7 @@
 /* global console, process */
 
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = process.cwd();
@@ -63,8 +63,23 @@ assert.match(
 );
 
 assert.doesNotMatch(baseLayout, /hreflang=/, "BaseLayout should not emit hreflang alternates");
-assert.match(headers, /Content-Security-Policy-Report-Only:/, "CSP should remain report-only");
+assert.doesNotMatch(
+  headers,
+  /Content-Security-Policy-Report-Only:/,
+  "CSP should be enforced after production validation",
+);
+assert.match(headers, /Content-Security-Policy:/, "CSP should be enforced");
+for (const route of ["/", "/about/", "/services/", "/contact/", "/privacy/", "/contact/thank-you", "/404.html"]) {
+  const escapedRoute = route.replaceAll("/", "\\/");
+  assert.match(
+    headers,
+    new RegExp(`${escapedRoute}\\s*\\r?\\n(?:\\s+[^\\n]+\\r?\\n)*\\s+Cache-Control: public, max-age=3600, s-maxage=86400`),
+    `${route} should receive the production HTML cache policy`,
+  );
+}
 assert.match(headers, /\/contact\/thank-you\s*\r?\n\s*X-Robots-Tag: noindex/);
-assert.doesNotMatch(headers, /^\s*Content-Security-Policy:/m, "CSP should not be enforcing yet");
+
+assert.equal(statSync(resolve(root, "public/favicon.ico")).size > 0, true);
+assert.equal(statSync(resolve(root, "public/apple-touch-icon.png")).size > 0, true);
 
 console.log("launch readiness source checks passed");

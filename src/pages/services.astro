@@ -72,10 +72,12 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
     <div class="lab-section-inner cta-inner">
       <span class="lab-heading-accent">Next Steps</span>
       <h2 class="cta-heading">Not sure what you need?</h2>
-      <p class="cta-copy">
-        Describe the problem or project and we will recommend the right next step. No commitment, no
-        pressure, no mystery invoice.
-      </p>
+      <div class="lab-statement-panel cta-statement">
+        <p class="cta-copy">
+          Describe the problem or project and we will recommend the right next step. No commitment,
+          no pressure, no mystery invoice.
+        </p>
+      </div>
       <a href="/contact/" class="lab-button">Contact us for a diagnostic quote</a>
     </div>
   </section>
@@ -168,11 +170,17 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
 
   .cta-copy {
     max-width: 560px;
-    margin: 0 auto 1.5rem;
+    margin: 0;
     color: var(--lab-text-muted);
     font-family: "Jersey 25", monospace;
     font-size: 1rem;
     line-height: 1.55;
+  }
+
+  .cta-statement {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    padding: 1rem 1.1rem;
   }
 
   .trust-strip {
@@ -190,12 +198,6 @@ import MadLabsIcon from "../components/MadLabsIcon.astro";
     gap: 0.75rem 1.5rem;
     margin-top: 2rem;
     padding: 1.25rem 1rem;
-    border: 1px solid rgba(232, 144, 80, 0.15);
-    border-radius: 8px;
-    background: rgba(30, 26, 50, 0.6);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 4px 16px rgba(0, 0, 0, 0.2);
     transition:
       border-color 0.25s ease,
       box-shadow 0.25s ease;

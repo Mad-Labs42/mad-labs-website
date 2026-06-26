@@ -28,26 +28,32 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <div class="lab-section-inner">
       <span class="lab-heading-accent">Origin</span>
       <h2 id="about-story-heading" class="section-heading">The Story</h2>
-      <p class="story-text">
-        MAD LABS started the same way most good repair shops do: a pile of broken laptops and
-        desktops, a deep curiosity about how things work, and frustration with an industry that
-        often recommends replacement over repair. What began as fixing friends' and family's
-        computers grew into a by-appointment diagnostic lab serving home users, small businesses,
-        and creative professionals across Greater Cincinnati.
-      </p>
-      <p class="story-text">
-        MAD LABS is mobile by design — not because it's trendy, but because it's more convenient
-        for our customers. Trying to disconnect, tear everything down, and lug it all to some big
-        box store is a pain. We know because we've been there. That's why we come to you, diagnose
-        on site, and do our best to get you back up and running again.
-      </p>
-      <p class="story-text">
-        When a job needs more than a house call, we bring it back to the lab. That's where the real
-        hardware lives — and that's where things get ... interesting. We've got rigs that make
-        other nerds ask "what are you running on that thing?" — and we love answering. Whether
-        we're designing killer websites, automating custom AI workflows, or tweaking an overclocked
-        gaming PC that stays fast AND quiet, our workbench is always running wide open. MAD LABS.
-        Making computer science MAD again.
+      <div class="story-body">
+        <p class="story-text">
+          MAD LABS started the same way most good repair shops do: a pile of broken laptops and
+          desktops, a deep curiosity about how things work, and frustration with an industry that
+          often recommends replacement over repair. What began as fixing friends' and family's
+          computers grew into a by-appointment diagnostic lab serving home users, small businesses,
+          and creative professionals across Greater Cincinnati.
+        </p>
+        <p class="story-text story-text--offset">
+          MAD LABS is mobile by design — not because it's trendy, but because it's more convenient
+          for our customers. Trying to disconnect, tear everything down, and lug it all to some big
+          box store is a pain. We know because we've been there. That's why we come to you, diagnose
+          on site, and do our best to get you back up and running again.
+        </p>
+        <p class="story-text">
+          When a job needs more than a house call, we bring it back to the lab. That's where the
+          real hardware lives — and that's where things get ... interesting. We've got rigs that
+          make other nerds ask "what are you running on that thing?" — and we love answering.
+          Whether we're designing killer websites, automating custom AI workflows, or tweaking an
+          overclocked gaming PC that stays fast AND quiet, our workbench is always running wide
+          open.
+        </p>
+      </div>
+      <p class="story-tagline" aria-label="MAD LABS tagline">
+        <span class="story-tagline-brand">MAD LABS</span>
+        <span class="story-tagline-line">Making <em>computer</em> science MAD again.</span>
       </p>
     </div>
   </section>
@@ -213,13 +219,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <div class="lab-section-inner cta-inner">
       <span class="lab-heading-accent">Next Steps</span>
       <h2 id="about-cta-heading" class="cta-heading">Have a computer that needs attention?</h2>
-      <p class="cta-text">
-        Tell us what's going on, or take a look at our core repair and support work before you reach
-        out.
-      </p>
+      <div class="lab-statement-panel cta-statement">
+        <p class="cta-text">
+          Tell us what's going on, or take a look at our core repair and support work before you
+          reach out.
+        </p>
+      </div>
       <div class="cta-actions">
         <a href="/services/" class="lab-button">See Services</a>
-        <a href="/contact/" class="cta-secondary-link lab-link">Contact MAD LABS</a>
+        <a href="/contact/" class="lab-button">Contact MAD LABS</a>
       </div>
     </div>
   </section>
@@ -290,17 +298,127 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     margin-bottom: 1.5rem;
   }
 
+  .story-body {
+    --story-indent: clamp(1.875rem, 5.5vw, 3.25rem);
+    --story-divider-width: clamp(3.8rem, 14.4%, 5rem);
+
+    max-width: 820px;
+    padding: 1.2rem 1.25rem 1.2rem;
+    margin: 0;
+    border: 1px solid rgba(247, 158, 85, 0.28);
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+      rgba(19, 19, 37, 0.34);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.035),
+      0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+
   .story-text {
+    position: relative;
     font-family: "Jersey 25", monospace;
     font-size: clamp(1.35rem, 2.25vw, 1.575rem);
     color: var(--lab-text);
     line-height: 1.6;
-    max-width: 780px;
-    margin-bottom: 1.5rem;
+    max-width: 100%;
+    margin-bottom: 0;
   }
 
-  .story-text:last-child {
-    margin-bottom: 0;
+  .story-text + .story-text {
+    margin-top: 1.15rem;
+  }
+
+  .story-text--offset {
+    padding-top: 1.05rem;
+    padding-bottom: 1.05rem;
+    margin-left: var(--story-indent);
+    max-width: calc(100% - var(--story-indent));
+    border-left: 2px solid rgba(247, 158, 85, 0.42);
+    padding-left: 1rem;
+  }
+
+  .story-text--offset::before,
+  .story-text--offset::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: var(--story-divider-width);
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(247, 158, 85, 0.62), rgba(247, 158, 85, 0));
+  }
+
+  .story-text--offset::before {
+    top: 0;
+  }
+
+  .story-text--offset::after {
+    bottom: 0;
+  }
+
+  .story-tagline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    max-width: 780px;
+    margin: 2.15rem auto 0;
+    text-align: center;
+    color: var(--lab-heading);
+    text-transform: uppercase;
+  }
+
+  .story-tagline-brand {
+    font-family: "Monofett", "Jersey 25", monospace;
+    font-size: clamp(2.2rem, 4.6vw, 3rem);
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    text-shadow:
+      0 0 10px rgba(216, 180, 254, 0.26),
+      0 0 20px rgba(147, 51, 234, 0.16);
+  }
+
+  .story-tagline-brand::after {
+    content: "";
+    display: block;
+    width: clamp(6rem, 18vw, 7rem);
+    height: 2px;
+    margin: 0.55rem auto 0;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(232, 144, 80, 0.78) 50%,
+      transparent 100%
+    );
+  }
+
+  .story-tagline-line {
+    font-family: "Jersey 25", monospace;
+    font-size: clamp(1.45rem, 2.65vw, 1.8rem);
+    line-height: 1.02;
+    letter-spacing: 0.045em;
+    text-shadow:
+      0 0 8px rgba(216, 180, 254, 0.18),
+      0 0 16px rgba(147, 51, 234, 0.12);
+  }
+
+  .story-tagline-line em {
+    font-style: italic;
+  }
+
+  @media (max-width: 640px) {
+    .story-body {
+      padding: 1.35rem 1.1rem 1.25rem;
+      border-radius: 10px;
+    }
+
+    .story-body::before,
+    .story-body::after {
+      width: 22px;
+      height: 22px;
+    }
   }
 
   /* ─── Approach grid ─── */
@@ -543,7 +661,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.85rem;
+    gap: 0.95rem;
   }
 
   .cta-heading {
@@ -559,18 +677,39 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     font-size: clamp(0.9rem, 1.6vw, 1rem);
     color: var(--lab-text-muted, #706888);
     max-width: 450px;
-    margin: 0 auto 1.5rem;
+    margin: 0;
     line-height: 1.5;
   }
 
-  .cta-secondary-link {
-    font-size: 0.95rem;
+  .cta-statement {
+    max-width: 520px;
+    margin: 0 auto 1.5rem;
+    padding: 1rem 1.1rem;
   }
 
   @media (min-width: 640px) {
     .cta-actions {
       flex-direction: row;
       justify-content: center;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .story-body {
+      --story-indent: 1.375rem;
+      padding: 1.05rem 1rem 1.1rem;
+    }
+
+    .story-text + .story-text {
+      margin-top: 1rem;
+      padding-top: 0.95rem;
+    }
+
+    .story-text--offset {
+      margin-left: var(--story-indent);
+      max-width: calc(100% - var(--story-indent));
+      padding-left: 0.85rem;
     }
   }
 
