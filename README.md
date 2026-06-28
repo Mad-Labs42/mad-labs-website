@@ -74,7 +74,7 @@ See [docs/memory-strategy.md](docs/memory-strategy.md) for details.
 | Playwright MCP | Browser automation / visual smoke tests |
 | Cloudflare Docs MCP | Cloudflare documentation search |
 | Figma MCP | Design reviews (reserved — see Figma Gate below) |
-| Cloudflare API MCP | **Configured but disabled** until explicitly approved |
+| Cloudflare API MCP | **Working** — full-access account token. Use GraphQL `/client/v4/graphql` for analytics. |
 
 ## Figma Gate
 

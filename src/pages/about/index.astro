@@ -8,7 +8,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   jsonLdType="about"
 >
   <!-- ─── Hero / The Lab ─── -->
-  <section class="about-hero lab-section">
+  <section class="about-hero lab-section interior-header-divider">
     <div class="lab-section-inner-wide">
       <span class="lab-heading-accent">The Lab</span>
       <h1 class="about-heading">
@@ -300,7 +300,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   .story-body {
     --story-indent: clamp(1.875rem, 5.5vw, 3.25rem);
-    --story-divider-width: clamp(3.8rem, 14.4%, 5rem);
+    --story-divider-width: clamp(1.9rem, 7.2%, 2.5rem);
 
     max-width: 820px;
     padding: 1.2rem 1.25rem 1.2rem;
@@ -334,7 +334,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     padding-bottom: 1.05rem;
     margin-left: var(--story-indent);
     max-width: calc(100% - var(--story-indent));
-    border-left: 2px solid rgba(247, 158, 85, 0.42);
     padding-left: 1rem;
   }
 
@@ -344,17 +343,27 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     position: absolute;
     left: 0;
     width: var(--story-divider-width);
-    height: 2px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(247, 158, 85, 0.62), rgba(247, 158, 85, 0));
+    pointer-events: none;
   }
 
   .story-text--offset::before {
     top: 0;
+    bottom: 0;
+    border-top: 1px solid rgba(247, 158, 85, 0.62);
+    border-left: 1px solid rgba(247, 158, 85, 0.42);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 
   .story-text--offset::after {
     bottom: 0;
+    height: 10px;
+    border-bottom: 1px solid rgba(247, 158, 85, 0.62);
+    border-bottom-left-radius: 10px;
+  }
+
+  .interior-header-divider {
+    border-bottom: 0.8px solid rgba(247, 158, 85, 0.82);
   }
 
   .story-tagline {

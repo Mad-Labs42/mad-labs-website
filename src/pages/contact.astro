@@ -10,7 +10,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
   description={`Book a free 20-minute computer triage or 60-minute consultation with MAD LABS in Cincinnati. Same-day responses. Call ${CONTACT_PHONE} or book online.`}
   jsonLdType="contact"
 >
-  <section class="lab-section">
+  <section class="lab-section interior-header-divider">
     <div class="lab-section-inner-wide">
       <div class="contact-hero-grid">
         <div class="contact-hero-left">
@@ -180,6 +180,10 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact";
 </BaseLayout>
 
 <style>
+  .interior-header-divider {
+    border-bottom: 0.8px solid rgba(247, 158, 85, 0.82);
+  }
+
   /* ─── Hero: 2-column grid (left=intro, right=instruction) ─── */
   .contact-hero-grid {
     display: grid;
