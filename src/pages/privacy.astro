@@ -6,14 +6,14 @@ const summaryItems = [
   "We do not sell your data.",
   "We do not run ad pixels or remarketing.",
   "We do not track you across the web.",
-  "We use temporary diagnostics to see whether the site is working.",
+  "We use limited launch diagnostics to see whether the site is working.",
   "If you contact us, we use what you send only to respond and help.",
 ];
 
 const collectedItems = [
-  "Basic visit, device, browser, and performance information needed to run and improve the site.",
+  "Basic page views, traffic sources, device, browser, and performance information from Google Analytics 4 and Cloudflare Web Analytics/RUM.",
   "Page interactions while Microsoft Clarity is enabled, such as clicks, scroll behavior, page navigation, session replay, and heatmap-style diagnostics.",
-  "Contact, booking, or service details you choose to send, such as your name, email, phone number, appointment details, and issue description.",
+  "Contact, booking, or service details you choose to send through MAD LABS or Zoho Bookings/Nimbuspop, such as your name, email, phone number, appointment details, and issue description.",
 ];
 
 const notDoneItems = [
@@ -26,9 +26,10 @@ const notDoneItems = [
 ];
 
 const thirdPartyTools = [
+  "Google Analytics 4 for basic page views, traffic sources, device/browser information, and launch health checks.",
   "Microsoft Clarity for temporary behavior diagnostics during the early launch window.",
-  "Zoho for booking, contact, and help-desk style workflows.",
-  "Cloudflare for hosting, security, and performance.",
+  "Cloudflare Web Analytics/RUM for site traffic, performance, and reliability signals on the Cloudflare-hosted site.",
+  "Zoho Bookings/Nimbuspop as the embedded booking provider on the contact page.",
   "Email providers and payment processors as needed for normal business operations.",
 ];
 ---
@@ -81,6 +82,11 @@ const thirdPartyTools = [
           information so we can tell whether the site works, where people get stuck, and what needs
           repair.
         </p>
+        <p>
+          During the launch/debugging window, that includes basic page views and site health signals
+          from Google Analytics 4 and Cloudflare Web Analytics/RUM, behavior diagnostics from
+          Microsoft Clarity, and booking details you choose to send through Zoho Bookings/Nimbuspop.
+        </p>
         <ul>
           {collectedItems.map((item) => <li>{item}</li>)}
         </ul>
@@ -129,8 +135,9 @@ const thirdPartyTools = [
         <p>
           When you contact MAD LABS, book a call, or submit a request, we receive the information
           you choose to send: name, email, phone number, appointment details, and issue description.
-          We use that information to respond, schedule work, provide service, support you, and keep
-          basic business records.
+          The booking flow is handled through Zoho Bookings/Nimbuspop as the embedded booking
+          provider. We use what you send to respond, schedule work, provide service, support you, and
+          keep basic business records.
         </p>
         <p>
           We may need to keep service messages or records long enough to complete work, answer
@@ -163,7 +170,7 @@ const thirdPartyTools = [
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. We will handle it like humans,
           not like a maze.
         </p>
-        <p class="privacy-updated">Last updated: June 19, 2026</p>
+        <p class="privacy-updated">Last updated: June 29, 2026</p>
       </article>
     </div>
   </section>

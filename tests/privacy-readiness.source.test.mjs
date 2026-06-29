@@ -43,12 +43,17 @@ for (const required of [
   "We do not sell your data.",
   "We do not run ad pixels or remarketing.",
   "Microsoft Clarity",
+  "Google Analytics 4",
+  "Cloudflare Web Analytics/RUM",
+  "Zoho Bookings/Nimbuspop",
   "clicks",
   "scroll",
   "session replay",
+  "page views",
+  "booking provider",
   "Zoho",
   "Cloudflare",
-  "Last updated: June 19, 2026",
+  "Last updated: June 29, 2026",
 ]) {
   assert.ok(privacy.includes(required), `privacy copy should include: ${required}`);
 }
@@ -61,6 +66,7 @@ for (const forbidden of [
   "aforementioned",
   "pursuant",
   "TODO",
+  "Last updated: June 19, 2026",
 ]) {
   assert.doesNotMatch(
     privacy,
