@@ -296,6 +296,18 @@ import SocialLinks from "../components/SocialLinks.astro";
   }
 </style>
 
+<style is:global>
+  html[data-home-hero="crt"] .mobile-hero-wrapper *,
+  html[data-home-hero="crt"] .mobile-hero-wrapper *::before,
+  html[data-home-hero="crt"] .mobile-hero-wrapper *::after,
+  html[data-home-hero="mobile"] .desktop-crt-wrapper *,
+  html[data-home-hero="mobile"] .desktop-crt-wrapper *::before,
+  html[data-home-hero="mobile"] .desktop-crt-wrapper *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+</style>
+
 <script is:inline>
   if (!CSS.supports("animation-timeline", "view()")) {
     const observer = new IntersectionObserver(

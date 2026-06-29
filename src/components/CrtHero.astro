@@ -162,6 +162,8 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
       let rafId: number | null = null;
       let safetyTimerId: number | null = null;
       let glareRafId: number | null = null;
+      let glareObserver: IntersectionObserver | null = null;
+      let handleGlareVisibilityChange: (() => void) | null = null;
 
       const heroPhaseClasses = [
         "is-loading",
@@ -754,28 +756,98 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
 
       if (glare) {
         const MAX_GLARE_SHIFT = 14;
+        const GLARE_SETTLE_PX = 1;
+        let isHeroInView = true;
+
+        const stopGlareLoop = (): void => {
+          if (glareRafId !== null) {
+            window.cancelAnimationFrame(glareRafId);
+            glareRafId = null;
+          }
+        };
+
+        const isGlareEligible = (): boolean =>
+          document.visibilityState === "visible" &&
+          isHeroInView &&
+          isPoweredOn &&
+          !crtHero.classList.contains("is-powered-off") &&
+          !crtHero.classList.contains("is-shutting-down");
+
+        const applyGlareTransform = (): void => {
+          glare.style.transform = `translate(${currentGlareX.toFixed(1)}px, ${currentGlareY.toFixed(1)}px)`;
+        };
+
+        const updateGlarePosition = (): void => {
+          glareRafId = null;
+
+          if (!isGlareEligible()) {
+            return;
+          }
+
+          const deltaX = targetGlareX - currentGlareX;
+          const deltaY = targetGlareY - currentGlareY;
+
+          if (Math.abs(deltaX) < GLARE_SETTLE_PX && Math.abs(deltaY) < GLARE_SETTLE_PX) {
+            currentGlareX = targetGlareX;
+            currentGlareY = targetGlareY;
+            applyGlareTransform();
+            return;
+          }
+
+          currentGlareX += deltaX * 0.08;
+          currentGlareY += deltaY * 0.08;
+          applyGlareTransform();
+          glareRafId = window.requestAnimationFrame(updateGlarePosition);
+        };
+
+        const scheduleGlareUpdate = (): void => {
+          if (glareRafId === null && isGlareEligible()) {
+            glareRafId = window.requestAnimationFrame(updateGlarePosition);
+          }
+        };
 
         crtScreen.addEventListener("mousemove", (e: MouseEvent) => {
+          if (!isGlareEligible()) {
+            return;
+          }
+
           const rect = crtScreen.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width;
           const y = (e.clientY - rect.top) / rect.height;
           targetGlareX = (x - 0.5) * 2 * MAX_GLARE_SHIFT;
           targetGlareY = (y - 0.5) * 2 * MAX_GLARE_SHIFT;
+          scheduleGlareUpdate();
         });
 
         crtScreen.addEventListener("mouseleave", () => {
           targetGlareX = 0;
           targetGlareY = 0;
+          scheduleGlareUpdate();
         });
 
-        const updateGlarePosition = (): void => {
-          currentGlareX += (targetGlareX - currentGlareX) * 0.08;
-          currentGlareY += (targetGlareY - currentGlareY) * 0.08;
-          glare.style.transform = `translate(${currentGlareX.toFixed(1)}px, ${currentGlareY.toFixed(1)}px)`;
-          glareRafId = window.requestAnimationFrame(updateGlarePosition);
+        if ("IntersectionObserver" in window) {
+          glareObserver = new IntersectionObserver((entries) => {
+            const entry = entries[0];
+            isHeroInView = entry ? entry.isIntersecting : true;
+
+            if (isHeroInView) {
+              scheduleGlareUpdate();
+            } else {
+              stopGlareLoop();
+            }
+          });
+          glareObserver.observe(crtHero);
+        }
+
+        handleGlareVisibilityChange = () => {
+          if (document.visibilityState === "visible") {
+            scheduleGlareUpdate();
+          } else {
+            stopGlareLoop();
+          }
         };
 
-        glareRafId = window.requestAnimationFrame(updateGlarePosition);
+        document.addEventListener("visibilitychange", handleGlareVisibilityChange);
       }
 
       if (prefersReducedMotion) {
@@ -791,6 +863,10 @@ import CrtAtomLogo from "./CrtAtomLogo.astro";
         "astro:before-swap",
         () => {
           clearTimers();
+          glareObserver?.disconnect();
+          if (handleGlareVisibilityChange) {
+            document.removeEventListener("visibilitychange", handleGlareVisibilityChange);
+          }
         },
         { once: true },
       );

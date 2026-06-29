@@ -550,6 +550,7 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   }
   .tablet-scanbeam {
     position: absolute;
+    top: 0;
     left: 0;
     right: 0;
     height: 50px;
@@ -565,10 +566,10 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   }
   @keyframes scanbeam-travel {
     0% {
-      top: -50px;
+      transform: translateY(-50px);
     }
     100% {
-      top: 560px;
+      transform: translateY(560px);
     }
   }
   .tablet-flicker {
@@ -683,18 +684,19 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     position: absolute;
     top: 50%;
     left: 50%;
+    --nameplate-exit-y: -480px;
     transform: translate(-50%, -50%);
     z-index: 7;
     pointer-events: none;
     transition:
-      top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+      transform 0.7s cubic-bezier(0.65, 0, 0.35, 1),
       opacity 0.7s ease;
   }
   .nameplate-positioner.is-loaded,
   .nameplate-positioner.is-error {
     /* Slide the positioner up out of view. The inner nameplate
-       follows because it's a child. */
-    top: -200px;
+	       follows because it's a child. */
+    transform: translate(-50%, -50%) translateY(var(--nameplate-exit-y));
     opacity: 0;
     pointer-events: none;
   }
@@ -831,7 +833,7 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
   }
   .nameplate-positioner.is-loaded,
   .nameplate-positioner.is-error {
-    top: -200px;
+    transform: translate(-50%, -50%) translateY(var(--nameplate-exit-y));
     opacity: 0;
     pointer-events: none;
   }
@@ -1011,7 +1013,7 @@ const NIMBUSPOP_SCRIPT_SRC = "https://bookings.nimbuspop.com/assets/embed.js";
     }
     .nameplate-positioner.is-loaded,
     .nameplate-positioner.is-error {
-      top: -200px !important;
+      transform: translate(-50%, -50%) translateY(var(--nameplate-exit-y)) !important;
       opacity: 0 !important;
     }
     .tablet-bands,
