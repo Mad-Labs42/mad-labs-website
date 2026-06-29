@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import { chromium } from "@playwright/test";
 
-const baseUrl = process.env.PRIVACY_READINESS_URL || "http://127.0.0.1:4322";
+const baseUrl = process.env.MAD_LABS_TEST_URL || "http://127.0.0.1:4322";
 const screenshotDir = "artifacts/privacy-readiness";
 
 mkdirSync(screenshotDir, { recursive: true });

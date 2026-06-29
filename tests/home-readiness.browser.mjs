@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import { chromium } from "@playwright/test";
 
-const url = process.env.HOME_READINESS_URL || "http://127.0.0.1:4322/";
+const baseUrl = process.env.MAD_LABS_TEST_URL || "http://127.0.0.1:4322";
 const screenshotDir = "artifacts/home-readiness";
 
 mkdirSync(screenshotDir, { recursive: true });
@@ -28,7 +28,10 @@ for (const viewport of [
     if (msg.type() === "error") consoleErrors.push(msg.text());
   });
 
-  const response = await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
+  const response = await page.goto(new URL("/", baseUrl).toString(), {
+    waitUntil: "networkidle",
+    timeout: 30000,
+  });
   await page.screenshot({
     path: `${screenshotDir}/${viewport.name}.png`,
     fullPage: false,
