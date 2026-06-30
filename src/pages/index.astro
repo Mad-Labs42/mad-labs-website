@@ -2,8 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CrtHero from "../components/CrtHero.astro";
 import MobileHomeHero from "../components/MobileHomeHero.astro";
-import ReviewShower from "../components/ReviewShower.astro";
-import SocialLinks from "../components/SocialLinks.astro";
 ---
 
 <BaseLayout
@@ -70,16 +68,10 @@ import SocialLinks from "../components/SocialLinks.astro";
 
   <section class="cta lab-section-alt" aria-labelledby="cta-heading">
     <div class="lab-section-inner-wide cta-inner">
-      <div class="cta-grid">
-        <div class="cta-reviews">
-          <ReviewShower reviews={[]} />
-        </div>
-        <div class="cta-action">
-          <span class="lab-heading-accent">Get Started</span>
-          <h2 id="cta-heading">Let MAD LABS tame your tech!</h2>
-          <a href="/contact/" class="lab-button">Contact MAD LABS</a>
-          <SocialLinks socialLinks={{}} />
-        </div>
+      <div class="cta-action">
+        <span class="lab-heading-accent">Get Started</span>
+        <h2 id="cta-heading">Let MAD LABS tame your tech!</h2>
+        <a href="/contact/" class="lab-button">Contact MAD LABS</a>
       </div>
     </div>
   </section>
@@ -110,31 +102,14 @@ import SocialLinks from "../components/SocialLinks.astro";
     display: none;
   }
 
-  .cta-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: center;
-    width: 100%;
-  }
-
-  .cta-reviews {
-    min-height: 0;
-  }
-
   .cta-action {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: min(100%, 46rem);
+    margin-inline: auto;
     gap: 0.75rem;
     text-align: center;
-  }
-
-  @media (max-width: 768px) {
-    .cta-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
   }
 
   .brand-wordmark {
