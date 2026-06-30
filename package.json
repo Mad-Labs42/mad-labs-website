@@ -13,6 +13,7 @@
     "lint": "eslint src tests",
     "test": "pnpm test:source",
     "test:source": "node tests/run-source-tests.mjs",
+    "test:visual": "node tests/visual-qa-guardrail.browser.mjs",
     "format": "prettier --write src tests package.json eslint.config.js astro.config.mjs",
     "format:check": "prettier --check src tests package.json eslint.config.js astro.config.mjs",
     "ci": "pnpm install && pnpm check && pnpm lint && pnpm test:source && pnpm format:check && pnpm build",

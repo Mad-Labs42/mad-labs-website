@@ -29,6 +29,7 @@ export default [
         process: "readonly",
         sessionStorage: "readonly",
         URL: "readonly",
+        window: "readonly",
       },
     },
     rules: {

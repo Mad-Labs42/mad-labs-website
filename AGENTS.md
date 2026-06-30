@@ -57,6 +57,7 @@ Josh adds "FROM THE BOSS MAN" sections to memory.md files across the Obsidian va
 - **Workspace:** `/mnt/d/Workspaces/mad-labs-website`
 - **Stack:** Astro 7 + TypeScript 6 strict + Tailwind v4 (CSS @import) + pnpm 11.9.0 + Node 24.18 LTS
 - **Deployment:** Cloudflare Pages (static) — see [docs/ops/cloudflare-pages.md](docs/ops/cloudflare-pages.md)
+- **Visual QA:** `pnpm test:visual` after `pnpm build && pnpm preview` — see [docs/ops/visual-qa.md](docs/ops/visual-qa.md)
 - **Visual:** CRT/neon retro — beige CRT bezel, purple screen, warm amber, green LED
 - **GitHub:** `Mad-Labs42/mad-labs-website` (remote TBD)
 - **Platform & Tool Documenation:** `"C:\Users\PC\Desktop\Igors Chambers\Igors Personal Vault\Stack-Docs"` local dev knowledge base full of dev docs
