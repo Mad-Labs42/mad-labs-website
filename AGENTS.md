@@ -55,12 +55,42 @@ Josh adds "FROM THE BOSS MAN" sections to memory.md files across the Obsidian va
 ## Project Context
 
 - **Workspace:** `/mnt/d/Workspaces/mad-labs-website`
-- **Stack:** Astro 5 + TypeScript strict + Tailwind v4 (CSS @import) + pnpm 10
+- **Stack:** Astro 7 + TypeScript 6 strict + Tailwind v4 (CSS @import) + pnpm 11.9.0 + Node 24.18 LTS
 - **Deployment:** Cloudflare Pages (static)
 - **Visual:** CRT/neon retro — beige CRT bezel, purple screen, warm amber, green LED
 - **GitHub:** `Mad-Labs42/mad-labs-website` (remote TBD)
 - **Platform & Tool Documenation:** `"C:\Users\PC\Desktop\Igors Chambers\Igors Personal Vault\Stack-Docs"` local dev knowledge base full of dev docs
-  
+- **Branches:** `dev` is the active improvement lane; `main` is production — do not modify `main` unless explicitly directed.
+
+## Dev Branch Mission
+
+The site works and has an approved identity. Work on `dev` **elevates** it — ultra-premium craft, senior execution, MAD LABS style — as a portfolio proof point for prospective webdev clients.
+
+**Every change should advance one or more of:**
+
+| Area | Intent |
+|------|--------|
+| **Visuals** | Sharper hierarchy, richer polish, tighter cohesion — CRT/neon retro intact |
+| **Animations** | Intentional motion, refined timing, `prefers-reduced-motion` respected |
+| **Responsiveness** | Solid across viewports and input types |
+| **Performance** | Core Web Vitals, bundle weight, render path — measurable gains |
+| **Accessibility** | Keyboard, focus, contrast, landmarks, reduced motion |
+| **SEO / local SEO** | Discoverability, meta/schema, sitemap, local signals |
+| **AEO** | Answer-engine-ready structure, clear entity signals |
+| **Stability** | Fewer regressions, guarded signature components, source tests |
+| **Infrastructure** | Tooling, CI, deps, Cloudflare Pages static deploy, Zoho/booking |
+| **Cohesiveness** | One product feel across pages, breakpoints, conversion paths |
+
+**Identity:** Stay retro, CRT, atomic, neon, technical, playful, confident — more premium, not generic.
+
+**Constraints:**
+- Do not flatten, redesign, or casually simplify signature visuals (CrtHero, contact tablet, CRT effects, booking flow).
+- Never invent business facts (address, hours, reviews, ratings, awards, certifications).
+- Preserve privacy-first analytics, CSP, and booking behavior.
+- No casual stack changes — justify packages, migrations, or refactors by clear impact on site health.
+- Hard upgrades worth doing: document impact; owner decides.
+- Prefer official docs and live tooling over stale assumptions. Test before claiming success. Stop at slice boundaries.
+
 ## LFCM (Lifecycle Manager)
 
 - **NOT a daemon.** Event-driven post-cron sweeper.
