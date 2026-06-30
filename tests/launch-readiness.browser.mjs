@@ -10,9 +10,17 @@ const screenshotDir = "artifacts/launch-readiness";
 mkdirSync(screenshotDir, { recursive: true });
 
 const routes = [
-  { path: "/", title: /Mobile Computer Repair, Tech Support .* Cincinnati .* MAD LABS/, noindex: false },
+  {
+    path: "/",
+    title: /Mobile Computer Repair, Tech Support .* Cincinnati .* MAD LABS/,
+    noindex: false,
+  },
   { path: "/about/", title: /About .* MAD LABS/, noindex: false },
-  { path: "/services/", title: /Cincinnati IT Services, Computer Repair .* MAD LABS/, noindex: false },
+  {
+    path: "/services/",
+    title: /Cincinnati IT Services, Computer Repair .* MAD LABS/,
+    noindex: false,
+  },
   { path: "/contact/", title: /Book Computer Repair in Cincinnati .* MAD LABS/, noindex: false },
   { path: "/privacy/", title: /Privacy Policy .* MAD LABS/, noindex: false },
   { path: "/contact/thank-you/", title: /Thank You .* MAD LABS/, noindex: true },
@@ -54,9 +62,8 @@ try {
       const visibleH1Count = await page.locator("h1:visible").count();
       const canonical = await page.locator("link[rel='canonical']").getAttribute("href");
       const robotsLocator = page.locator("meta[name='robots']");
-      const robots = (await robotsLocator.count()) > 0
-        ? await robotsLocator.getAttribute("content")
-        : null;
+      const robots =
+        (await robotsLocator.count()) > 0 ? await robotsLocator.getAttribute("content") : null;
       const hasJsonLd = (await page.locator('script[type="application/ld+json"]').count()) > 0;
 
       await page.keyboard.press("Tab");
@@ -81,12 +88,24 @@ try {
       assert.equal(response?.status(), 200, `${route.path} should load for ${viewport.name}`);
       assert.match(await page.title(), route.title, `${route.path} title should stay correct`);
       assert.equal(visibleH1Count, 1, `${route.path} should expose one visible H1`);
-      assert.equal(canonical, `https://madlabs.rocks${route.path}`, `${route.path} should keep a canonical`);
-      assert.equal(route.noindex ? robots : robots ?? "", route.noindex ? "noindex, nofollow" : "", `${route.path} robots state should be correct`);
+      assert.equal(
+        canonical,
+        `https://madlabs.rocks${route.path}`,
+        `${route.path} should keep a canonical`,
+      );
+      assert.equal(
+        route.noindex ? robots : (robots ?? ""),
+        route.noindex ? "noindex, nofollow" : "",
+        `${route.path} robots state should be correct`,
+      );
       if (route.path !== "/privacy/" && route.path !== "/contact/thank-you/") {
         assert.equal(hasJsonLd, true, `${route.path} should expose JSON-LD`);
       }
-      assert.deepEqual(consoleErrors, [], `${route.path} should not emit console errors for ${viewport.name}`);
+      assert.deepEqual(
+        consoleErrors,
+        [],
+        `${route.path} should not emit console errors for ${viewport.name}`,
+      );
       assert.notEqual(
         activeElement.tagName,
         "",
@@ -99,7 +118,10 @@ try {
         const tabletRegion = page.locator("[data-tablet-root]");
         const iframe = page.locator("#inline-container iframe");
 
-        assert.equal(await tabletRegion.getAttribute("aria-describedby"), "contact-tablet-instructions");
+        assert.equal(
+          await tabletRegion.getAttribute("aria-describedby"),
+          "contact-tablet-instructions",
+        );
         assert.equal(
           await iframe.getAttribute("title"),
           "Book a free 20-minute tech call with MAD LABS",
@@ -132,13 +154,24 @@ try {
   reducedMotionPage.on("console", (msg) => {
     if (msg.type() === "error") reducedMotionErrors.push(msg.text());
   });
-  const reducedMotionResponse = await reducedMotionPage.goto(new URL("/contact/", baseUrl).toString(), {
-    waitUntil: "networkidle",
-    timeout: 45000,
-  });
+  const reducedMotionResponse = await reducedMotionPage.goto(
+    new URL("/contact/", baseUrl).toString(),
+    {
+      waitUntil: "networkidle",
+      timeout: 45000,
+    },
+  );
   await reducedMotionPage.waitForSelector("#inline-container iframe", { timeout: 30000 });
-  assert.equal(reducedMotionResponse?.status(), 200, "contact page should load with reduced motion");
-  assert.deepEqual(reducedMotionErrors, [], "contact page should not emit console errors with reduced motion");
+  assert.equal(
+    reducedMotionResponse?.status(),
+    200,
+    "contact page should load with reduced motion",
+  );
+  assert.deepEqual(
+    reducedMotionErrors,
+    [],
+    "contact page should not emit console errors with reduced motion",
+  );
   await reducedMotionContext.close();
 } finally {
   await browser.close();

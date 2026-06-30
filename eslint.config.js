@@ -18,6 +18,24 @@ export default [
     ignores: ["dist/**", "node_modules/**", ".astro/**"],
   },
   {
+    files: ["tests/**/*.mjs"],
+    languageOptions: {
+      globals: {
+        console: "readonly",
+        document: "readonly",
+        Element: "readonly",
+        getComputedStyle: "readonly",
+        NodeFilter: "readonly",
+        process: "readonly",
+        sessionStorage: "readonly",
+        URL: "readonly",
+      },
+    },
+    rules: {
+      "no-redeclare": "off",
+    },
+  },
+  {
     rules: {
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     },

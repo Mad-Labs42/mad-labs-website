@@ -110,7 +110,7 @@ assert.match(
 );
 assert.match(
   crtScreenOverlays,
-  /background-image: radial-gradient\(circle, rgba\(235, 224, 255, 0\.045\) 0 0\.75px, transparent 0\.9px\);/,
+  /background-image:\s*radial-gradient\(\s*circle,\s*rgba\(235,\s*224,\s*255,\s*0\.045\)\s*0\s*0\.75px,\s*transparent\s*0\.9px\s*\);/,
 );
 assert.match(crtScreenOverlays, /background-size: 6px 6px;/);
 assert.match(crtScreenOverlays, /\.crt-scanlines\s*\{[\s\S]*?opacity: 0\.34;/);
