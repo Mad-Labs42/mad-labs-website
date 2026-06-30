@@ -30,7 +30,11 @@ assert.match(baseLayout, /const canonicalUrl = new URL\(Astro\.url\.pathname, SI
 assert.match(baseLayout, /<link\s+rel="canonical"\s+href=\{canonicalUrl\.href\}/);
 assert.match(baseLayout, /<meta property="og:url" content=\{canonicalUrl\.href\}/);
 assert.match(baseLayout, /<meta name="twitter:image" content=\{socialImageUrl\.href\}/);
-assert.doesNotMatch(baseLayout, /hreflang=/, "single-language site should not emit hreflang alternates");
+assert.doesNotMatch(
+  baseLayout,
+  /hreflang=/,
+  "single-language site should not emit hreflang alternates",
+);
 
 assert.match(baseLayout, /PUBLIC_CLARITY_ID \|\| ""/);
 assert.doesNotMatch(baseLayout, /x4385g64yq/, "Clarity should not ship with a default project ID");
@@ -52,12 +56,17 @@ assert.match(
 );
 assert.match(robots, /Sitemap: https:\/\/madlabs\.rocks\/sitemap-index\.xml/);
 
-assert.match(headers, /Content-Security-Policy-Report-Only:/);
-assert.doesNotMatch(headers, /^\s*Content-Security-Policy:/m);
+assert.doesNotMatch(
+  headers,
+  /Content-Security-Policy-Report-Only:/,
+  "homepage readiness should reflect the current enforced CSP launch posture",
+);
+assert.match(headers, /^\s*Content-Security-Policy:/m, "CSP should be enforced");
 assert.match(headers, /X-Content-Type-Options: nosniff/);
 assert.match(headers, /Referrer-Policy: strict-origin-when-cross-origin/);
 assert.match(headers, /Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)/);
 assert.doesNotMatch(headers, /\/contact\s*\r?\n\s*X-Robots-Tag:\s*noindex/);
 assert.match(headers, /\/contact\/thank-you\s*\r?\n\s*X-Robots-Tag: noindex/);
+assert.match(headers, /\/contact\/thank-you\/\s*\r?\n\s*X-Robots-Tag: noindex/);
 
 console.log("home readiness source checks passed");

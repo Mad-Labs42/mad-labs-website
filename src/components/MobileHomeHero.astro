@@ -222,6 +222,14 @@ import MadLabsGlassNav from "./MadLabsGlassNav.astro";
       drop-shadow(0 0 24px rgba(0, 240, 122, 0.28));
   }
 
+  @media (max-width: 768px) {
+    .mobile-hero-inner .mobile-atom-slot :global(.atom-orbit-highlight),
+    .mobile-hero-inner .mobile-atom-slot :global(.atom-nucleus-halo),
+    .mobile-hero-inner .mobile-atom-slot :global(.atom-nucleus-core) {
+      animation: none;
+    }
+  }
+
   /* Wordmark */
   .mobile-wordmark {
     margin: 0 0 0.75rem;

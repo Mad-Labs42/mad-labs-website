@@ -20,11 +20,7 @@ assert.match(
   "contact tablet instructions should expose an ID for region description",
 );
 
-assert.match(
-  contactTablet,
-  /role="region"/,
-  "contact tablet should remain a named region",
-);
+assert.match(contactTablet, /role="region"/, "contact tablet should remain a named region");
 assert.match(
   contactTablet,
   /aria-describedby="contact-tablet-instructions"/,
@@ -69,15 +65,27 @@ assert.doesNotMatch(
   "CSP should be enforced after production validation",
 );
 assert.match(headers, /Content-Security-Policy:/, "CSP should be enforced");
-for (const route of ["/", "/about/", "/services/", "/contact/", "/privacy/", "/contact/thank-you", "/404.html"]) {
+for (const route of [
+  "/",
+  "/about/",
+  "/services/",
+  "/contact/",
+  "/privacy/",
+  "/contact/thank-you",
+  "/contact/thank-you/",
+  "/404.html",
+]) {
   const escapedRoute = route.replaceAll("/", "\\/");
   assert.match(
     headers,
-    new RegExp(`${escapedRoute}\\s*\\r?\\n(?:\\s+[^\\n]+\\r?\\n)*\\s+Cache-Control: public, max-age=3600, s-maxage=86400`),
+    new RegExp(
+      `${escapedRoute}\\s*\\r?\\n(?:\\s+[^\\n]+\\r?\\n)*\\s+Cache-Control: public, max-age=3600, s-maxage=86400`,
+    ),
     `${route} should receive the production HTML cache policy`,
   );
 }
 assert.match(headers, /\/contact\/thank-you\s*\r?\n\s*X-Robots-Tag: noindex/);
+assert.match(headers, /\/contact\/thank-you\/\s*\r?\n\s*X-Robots-Tag: noindex/);
 
 assert.equal(statSync(resolve(root, "public/favicon.ico")).size > 0, true);
 assert.equal(statSync(resolve(root, "public/apple-touch-icon.png")).size > 0, true);
