@@ -427,6 +427,11 @@ footer.site-footer {
     animation: none !important;
   }
 
+  /* Orbit pills are omitted entirely from the static atom. */
+  .atom-orbit-highlight {
+    display: none !important;
+  }
+
   /* --- Disable transitions --- */
   .crt-taskbar-link,
   .crt-taskbar-link::after,

@@ -31,10 +31,10 @@ assert.doesNotMatch(
   "cache policies must not use no-transform while Cloudflare analytics injection is intentional",
 );
 
-assert.match(
+assert.doesNotMatch(
   mobileHero,
   /@media\s*\(max-width:\s*768px\)[\s\S]*\.mobile-hero-inner \.mobile-atom-slot :global\(\.atom-orbit-highlight\)[\s\S]*animation:\s*none;/,
-  "mobile atom should disable paint-heavy orbit highlight shimmer while keeping the atom visible",
+  "mobile performance overrides must preserve pill travel around each ellipse",
 );
 assert.match(
   mobileHero,
